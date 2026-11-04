@@ -10,22 +10,6 @@ var portrait:=false
 var notice: PanelContainer
 var notice_label: Label
 
-class VehicleStage extends Node2D:
-	var owner_ui: WorkshopScreen
-	var area:=Vector2.ZERO
-	func _draw() -> void:
-		var g: Node2D=owner_ui.game
-		if area.x<1 or area.y<1: return
-		if g.showroom_texture:
-			var texture_size: Vector2=g.showroom_texture.get_size()
-			var fit_scale: float=maxf(area.x/texture_size.x,area.y/texture_size.y)
-			var region_size: Vector2=area/fit_scale
-			draw_texture_rect_region(g.showroom_texture,Rect2(Vector2.ZERO,area),Rect2((texture_size-region_size)*.5,region_size),Color(.68,.77,.88))
-		draw_rect(Rect2(Vector2.ZERO,area),Color(.015,.035,.055,.25))
-		var s: float=minf(area.x/255.0,area.y/84.0)
-		var p:=Vector2((area.x-s*232)*.5,(area.y-s*83.5)*.5+10)
-		VehicleRenderer.draw(self,p,s,g.profile.vehicle_id,g.profile.appearance_for(g.profile.vehicle_id),g.car,false,Vector2.ZERO,0,false,g.profile.effects_quality)
-
 class DynoPlot extends Control:
 	var current: Drivetrain
 	var candidate: Drivetrain
@@ -81,11 +65,7 @@ func sync() -> void:
 	visible=supports()
 	if not visible: return
 	portrait=game.is_portrait(); size=Vector2(600,1300) if portrait else Vector2(1200,760)
-	var w: UpgradeWorkshop=game.workshop
-	var projection: String=""
-	if game.tab=="performance" and not game.menu.hub.categories and game.menu.hub.selected>=7:
-		projection=game.menu.hub.studio.race_comparison(game.menu.hub.studio.candidate())
-	var key:=JSON.stringify([size,game.tab,game.profile.vehicle_id,game.profile.credits,game.profile.xp,game.profile.stages,game.profile.hardware,game.profile.appearance_for(game.profile.vehicle_id),game.menu.hub.categories,game.menu.hub.selected,game.menu.hub.studio.system,w.mode,w.slot_index,w.parts_page,w.preview_stage,w.selected_hardware,w.details,game.profile.muted,game.profile.effects_quality,projection,PerformanceClasses.label(game.profile)])
+	var key:=state_key()
 	if key!=signature:
 		signature=key
 		for child in get_children():
@@ -93,7 +73,14 @@ func sync() -> void:
 			child.queue_free()
 		targets.clear(); build()
 	publish_targets()
-	if game.tab=="garage" or game.menu.hub.categories: game.draw_navigation()
+	if game.tab!="performance" or game.menu.hub.categories: game.draw_navigation()
+
+func state_key() -> String:
+	var w: UpgradeWorkshop=game.workshop
+	var projection: String=""
+	if game.tab=="performance" and not game.menu.hub.categories and game.menu.hub.selected>=7:
+		projection=game.menu.hub.studio.race_comparison(game.menu.hub.studio.candidate())
+	return JSON.stringify([size,game.tab,game.profile.vehicle_id,game.profile.credits,game.profile.xp,game.profile.stages,game.profile.hardware,game.profile.appearance_for(game.profile.vehicle_id),game.menu.hub.categories,game.menu.hub.selected,game.menu.hub.studio.system,w.mode,w.slot_index,w.parts_page,w.preview_stage,w.selected_hardware,w.details,game.profile.muted,game.profile.effects_quality,projection,PerformanceClasses.label(game.profile)])
 
 func _process(_delta: float) -> void:
 	if not visible: return
@@ -108,6 +95,7 @@ func publish_targets() -> void:
 	game.buttons=game.buttons.filter(func(entry): return entry.get("native_owner")!=self)
 	for id in targets:
 		var b: Button=targets[id]
+		if not b.is_visible_in_tree(): continue
 		var r:=Rect2(game.to_local(b.global_position),b.size)
 		var ancestor: Node=b.get_parent()
 		while ancestor!=self and ancestor!=null:
@@ -125,6 +113,19 @@ func container(rect: Rect2) -> VBoxContainer:
 
 func build() -> void:
 	var body:=container(Rect2(24,20,552,1100) if portrait else Rect2(36,20,1128,630))
+	header(body)
+	var h: GarageHub=game.menu.hub
+	var modal: bool=game.tab=="performance" and not h.categories
+	if game.tab=="garage": garage(body)
+	else: overview(body)
+	if modal:
+		targets.clear()
+		var dim:=ColorRect.new(); dim.color=Color(0,.015,.025,.86); dim.mouse_filter=Control.MOUSE_FILTER_STOP
+		add_child(dim); dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		modal_content()
+	build_notice()
+
+func header(body: VBoxContainer) -> void:
 	var header:=AutomotiveUI.row(body)
 	header.custom_minimum_size.y=44
 	var logo:=AutomotiveUI.row(header,8)
@@ -135,15 +136,8 @@ func build() -> void:
 	wallet.size_flags_horizontal=Control.SIZE_SHRINK_END; header.add_child(wallet)
 	if not portrait:
 		var sound:=button(header,"sound","Muted" if game.profile.muted else "Sound on"); sound.custom_minimum_size.x=108; sound.size_flags_horizontal=Control.SIZE_SHRINK_END
-	var h: GarageHub=game.menu.hub
-	var modal: bool=game.tab=="performance" and not h.categories
-	if game.tab=="garage": garage(body)
-	else: overview(body)
-	if modal:
-		targets.clear()
-		var dim:=ColorRect.new(); dim.color=Color(0,.015,.025,.86); dim.mouse_filter=Control.MOUSE_FILTER_STOP
-		add_child(dim); dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		modal_content()
+
+func build_notice() -> void:
 	notice=PanelContainer.new(); add_child(notice); notice.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	notice.position=Vector2(24,74) if portrait else Vector2(350,66)
 	notice.size=Vector2(552,62) if portrait else Vector2(500,48)
@@ -152,10 +146,9 @@ func build() -> void:
 	notice.visible=game.toast_left>0
 
 func preview(parent: Node,height: float) -> void:
-	var c:=Control.new(); c.custom_minimum_size.y=height; c.size_flags_vertical=Control.SIZE_EXPAND_FILL
-	c.mouse_filter=Control.MOUSE_FILTER_IGNORE; c.clip_contents=true; parent.add_child(c)
-	var art:=VehicleStage.new(); art.owner_ui=self; c.add_child(art)
-	c.resized.connect(func(): art.area=c.size; art.queue_redraw())
+	var view:=VehiclePreview.new(); parent.add_child(view)
+	view.configure(game,game.profile.vehicle_id,game.car,game.profile.appearance_for(game.profile.vehicle_id),true,height)
+	view.size_flags_vertical=Control.SIZE_EXPAND_FILL
 
 func garage(body: VBoxContainer) -> void:
 	var spec:=GameCatalog.spec(game.profile.vehicle_id)

@@ -10,6 +10,18 @@ purchasing sheet. Desktop uses columns; portrait uses stacked content, a
 scrollable comparison area and fixed actions. The root inherits `main.gd`'s
 existing safe-area transform and logical canvas size.
 
+`CollectionScreen` extends that same lifecycle, Theme, header, notifications,
+focus and action-boundary adapter for the dealership, owned-car collection and
+customization. It reuses `DealershipView`, `CustomizationView` and `GarageHub`
+as models/controllers rather than introducing another purchase system.
+
+`VehiclePreview` is now the common opaque vehicle surface for Garage heroes,
+dealer class cards, showroom vehicles, collection thumbnails and cosmetic
+previews. It uses the existing VehicleRenderer, actual per-car appearance and
+build data, shared bounds and a small reduced-motion-aware position transition.
+`CosmeticSwatch` reuses authored factory wheels or WheelVisuals as appropriate;
+body changes use a small preview of the actual configured vehicle.
+
 Vehicles stay in `VehicleRenderer`, rendered by a small Node2D inside a clipped
 native preview region. Paint, wheels, proportions and opaque body assets remain
 unchanged. The compact dyno is custom drawing from actual drivetrain torque.
@@ -36,9 +48,8 @@ included in the presentation signature so measuring states resolve correctly.
 
 ## Deliberately retained
 
-Gearbox configuration, advanced tuning/testing, expanded dyno, owned-car,
-dealership, customization, career and racing keep their existing controllers.
-They share bundled fonts and the native dock. Their custom charts, gauges,
+Gearbox configuration, advanced tuning/testing, expanded dyno, career and racing
+keep their existing presentation/controllers. Their custom charts, gauges,
 vehicles and gameplay are not rewritten. Future migrations should reuse the
 above boundary one screen at a time. F6 in a development build still switches
 to the existing presentation for comparison; it does not change save data.
@@ -54,3 +65,11 @@ and phone sizes. It is registered in both validation runners.
 category, modal isolation, affordability, preview purity and save compatibility.
 `tests/capture_ui.gd` writes desktop/phone captures to `validation/ui_after`.
 The same script with `-- --before` produced the pre-migration baseline.
+
+`test_collection_ui.gd` pushes viewport mouse/touch events through all six dealer
+classes and four window sizes. It checks native bounds and overlap, exact-price
+purchases, purchase-without-equipping, owned-car switching, preview isolation,
+cosmetic ownership/reinstallation, persistence, and locked/unaffordable states.
+It is registered in the full validation runner. `capture_collection_ui.gd`
+captures the class overview, showroom, collection and customization on desktop
+and phone; `-- --before` selects the pre-migration baseline directory.

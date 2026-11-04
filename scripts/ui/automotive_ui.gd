@@ -90,6 +90,33 @@ static func button(parent: Node,title: String,variant: String="Secondary",height
 	b.focus_mode=Control.FOCUS_NONE; b.mouse_filter=Control.MOUSE_FILTER_PASS
 	parent.add_child(b); return b
 
+static func content_card(parent: Node,height: float,selected: bool=false) -> Button:
+	var b:=button(parent,"","Selection",height); b.toggle_mode=true; b.set_pressed_no_signal(selected)
+	var margin:=MarginContainer.new(); b.add_child(margin); margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT); margin.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	for side in ["left","right"]: margin.add_theme_constant_override("margin_"+side,14)
+	for side in ["top","bottom"]: margin.add_theme_constant_override("margin_"+side,8)
+	var content:=column(margin,3); b.set_meta("content",content)
+	return b
+
+static func comparison(parent: Node,title: String,before: float,after: float,unit: String,less_better: bool=false,precision: int=0) -> void:
+	var r:=row(parent,8)
+	r.add_child(label(title,15,MUTED))
+	var format: String="%."+str(precision)+"f"
+	var delta:=after-before
+	var color:=MUTED if absf(delta)<.001 else (Color("91c9ad") if (delta<0 if less_better else delta>0) else Color("eea29b"))
+	var result:=label((format%before)+" → "+(format%after)+" "+unit,17,color,true)
+	result.custom_minimum_size.x=230; result.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT; r.add_child(result)
+
+static func vehicle_card(parent: Node,g: Node2D,id: String,car: Drivetrain,look: Dictionary,state: String,selected: bool,height: float=110) -> Button:
+	var b:=content_card(parent,height,selected)
+	var content: VBoxContainer=b.get_meta("content")
+	var thumb:=VehiclePreview.new(); content.add_child(thumb); thumb.configure(g,id,car,look,false,height-59)
+	content.add_child(label(str(GameCatalog.spec(id).name),17))
+	var state_color: Color=Color("91c9ad") if state.begins_with("Equipped") else (BLUE if state.begins_with("Owned") else (Color("eea29b") if state.begins_with("Level") else MUTED))
+	content.add_child(label(state,14,state_color))
+	b.tooltip_text=str(GameCatalog.spec(id).name)+" / "+state
+	return b
+
 static func selection(parent: Node,title: String,state: String,detail: String,selected: bool,height: float,icon_key: String="",state_color: Color=MUTED) -> Button:
 	var b:=button(parent,"","Selection",height); b.toggle_mode=true; b.set_pressed_no_signal(selected)
 	var m:=MarginContainer.new(); m.mouse_filter=Control.MOUSE_FILTER_IGNORE

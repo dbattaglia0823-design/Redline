@@ -1,0 +1,108 @@
+{
+  "native_results": {
+    "checks": 11320,
+    "passed": true,
+    "viewport_mouse_touch": true
+  },
+  "passed": true,
+  "test_count": 19,
+  "phase": 2,
+  "tests": [
+    {
+      "log": "validation/test_collection_ui.log",
+      "test": "test_collection_ui",
+      "passed": true
+    },
+    {
+      "log": "validation/test_glass_ui.log",
+      "test": "test_glass_ui",
+      "passed": true
+    },
+    {
+      "log": "validation/test_native_workshop.log",
+      "test": "test_native_workshop",
+      "passed": true
+    },
+    {
+      "log": "validation/test_dealer_classes_ui.log",
+      "test": "test_dealer_classes_ui",
+      "passed": true
+    },
+    {
+      "log": "validation/test_dealership.log",
+      "test": "test_dealership",
+      "passed": true
+    },
+    {
+      "log": "validation/test_customization_ui.log",
+      "test": "test_customization_ui",
+      "passed": true
+    },
+    {
+      "log": "validation/test_vehicle_presentation.log",
+      "test": "test_vehicle_presentation",
+      "passed": true
+    },
+    {
+      "log": "validation/test_visual_rendering.log",
+      "test": "test_visual_rendering",
+      "passed": true
+    },
+    {
+      "log": "validation/test_rim_rendering.log",
+      "test": "test_rim_rendering",
+      "passed": true
+    },
+    {
+      "log": "validation/test_garage_hub.log",
+      "test": "test_garage_hub",
+      "passed": true
+    },
+    {
+      "log": "validation/test_qol_ui.log",
+      "test": "test_qol_ui",
+      "passed": true
+    },
+    {
+      "log": "validation/test_quality_ui.log",
+      "test": "test_quality_ui",
+      "passed": true
+    },
+    {
+      "log": "validation/test_physics.log",
+      "test": "test_physics",
+      "passed": true
+    },
+    {
+      "log": "validation/test_upgrade_model.log",
+      "test": "test_upgrade_model",
+      "passed": true
+    },
+    {
+      "log": "validation/test_customization.log",
+      "test": "test_customization",
+      "passed": true
+    },
+    {
+      "log": "validation/test_roster.log",
+      "test": "test_roster",
+      "passed": true
+    },
+    {
+      "log": "validation/test_controls.log",
+      "test": "test_controls",
+      "passed": true
+    },
+    {
+      "log": "validation/test_flow.log",
+      "test": "test_flow",
+      "passed": true
+    },
+    {
+      "log": "validation/test_shutdown.log",
+      "test": "test_shutdown",
+      "passed": true
+    }
+  ],
+  "scope": "Targeted UI and gameplay regression; not the full suite"
+}

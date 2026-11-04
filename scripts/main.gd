@@ -112,7 +112,7 @@ func _ready() -> void:
 	sound.enabled = not profile.muted
 	audio_lab=AudioLab.new(); add_child(audio_lab); audio_lab.setup(self)
 	dock = GlassDock.new(); add_child(dock); dock.setup(self)
-	native_workshop=WorkshopScreen.new(); add_child(native_workshop); native_workshop.setup(self)
+	native_workshop=CollectionScreen.new(); add_child(native_workshop); native_workshop.setup(self)
 	RenderingServer.set_default_clear_color(glass.PALETTE.background)
 	get_window().size_changed.connect(sync_menu_size)
 	get_tree().auto_accept_quit = false
