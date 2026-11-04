@@ -1,0 +1,427 @@
+{
+  "checks": 198,
+  "limits": "Native rendering/capture checks; screenshots still require artistic review. No physical iPhone claim.",
+  "passed": true,
+  "roster": [
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "miata",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "civic_si",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "gti_vr6",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "rsx",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "brz",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "integra",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "gti",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "s2000",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "gr86",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "z350",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "supra",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "m3",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "sti",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "evo",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "type_r",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "mustang",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "supra_gr",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "camaro",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "golf_r",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "z400",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "z06",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "gtr",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "r8",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "gt500",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "redeye",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "turbo_s",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "mclaren",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "sf90",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "demon",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    },
+    {
+      "artistic_approval": "REVIEW REQUIRED",
+      "id": "chiron",
+      "render_checks": true,
+      "views_captured": [
+        "garage",
+        "upgrades",
+        "collection",
+        "dealer",
+        "customize",
+        "appearance_preview",
+        "race"
+      ]
+    }
+  ]
+}

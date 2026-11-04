@@ -1,0 +1,277 @@
+{
+  "beginner_100m_s": 7.76249999999988,
+  "first_rival_100m_s": 8.84142336666535,
+  "passed": true,
+  "rows": [
+    {
+      "career": 0,
+      "hp": 116,
+      "model": "miata",
+      "quarter_s": 19.254717887358,
+      "reaction": 0.65,
+      "rival": 0,
+      "stages": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "career": 0,
+      "hp": 132,
+      "model": "miata",
+      "quarter_s": 17.6331217748949,
+      "reaction": 0.59,
+      "rival": 1,
+      "stages": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "career": 0,
+      "hp": 193,
+      "model": "civic_si",
+      "quarter_s": 16.6076419011148,
+      "reaction": 0.53,
+      "rival": 2,
+      "stages": [
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "career": 0,
+      "hp": 208,
+      "model": "gti_vr6",
+      "quarter_s": 15.0384384322802,
+      "reaction": 0.47,
+      "rival": 3,
+      "stages": [
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "career": 0,
+      "hp": 242,
+      "model": "rsx",
+      "quarter_s": 14.314874919819,
+      "reaction": 0.41,
+      "rival": 4,
+      "stages": [
+        1,
+        0,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "career": 1,
+      "hp": 271,
+      "model": "brz",
+      "quarter_s": 13.5313760635983,
+      "reaction": 0.24,
+      "rival": 0,
+      "stages": [
+        2,
+        0,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "career": 1,
+      "hp": 296,
+      "model": "gti",
+      "quarter_s": 13.4953690631986,
+      "reaction": 0.228,
+      "rival": 1,
+      "stages": [
+        2,
+        1,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "career": 1,
+      "hp": 421,
+      "model": "supra",
+      "quarter_s": 12.1545727170274,
+      "reaction": 0.216,
+      "rival": 2,
+      "stages": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "career": 1,
+      "hp": 400,
+      "model": "evo",
+      "quarter_s": 11.8265385888916,
+      "reaction": 0.204,
+      "rival": 3,
+      "stages": [
+        2,
+        1,
+        2,
+        1,
+        3,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "career": 1,
+      "hp": 472,
+      "model": "supra",
+      "quarter_s": 11.1477762492817,
+      "reaction": 0.192,
+      "rival": 4,
+      "stages": [
+        2,
+        1,
+        2,
+        1,
+        4,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "career": 2,
+      "hp": 580,
+      "model": "mustang",
+      "quarter_s": 11.1455688985794,
+      "reaction": 0.18,
+      "rival": 0,
+      "stages": [
+        1,
+        0,
+        2,
+        1,
+        3,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "career": 2,
+      "hp": 652,
+      "model": "camaro",
+      "quarter_s": 10.5453165131587,
+      "reaction": 0.168,
+      "rival": 1,
+      "stages": [
+        2,
+        0,
+        2,
+        1,
+        4,
+        2,
+        0,
+        0
+      ]
+    },
+    {
+      "career": 2,
+      "hp": 886,
+      "model": "gtr",
+      "quarter_s": 9.81950075666099,
+      "reaction": 0.156,
+      "rival": 2,
+      "stages": [
+        2,
+        1,
+        2,
+        1,
+        4,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "career": 2,
+      "hp": 992,
+      "model": "mclaren",
+      "quarter_s": 9.22974601674983,
+      "reaction": 0.144,
+      "rival": 3,
+      "stages": [
+        1,
+        1,
+        2,
+        1,
+        4,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "career": 2,
+      "hp": 2306,
+      "model": "chiron",
+      "quarter_s": 8.40886592106677,
+      "reaction": 0.132,
+      "rival": 4,
+      "stages": [
+        2,
+        1,
+        3,
+        2,
+        5,
+        2,
+        0,
+        0
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2668 @@
+{
+	"auto10_wins": 16,
+	"conditions": "Kaze-based stock street fixture or all-tier-3 built fixture (effective base grip .9); Pro Race gearbox; identical final-drive, radiator, converter kit/stall per pair. Stall zero means each gearbox factory converter.",
+	"drag3_wins": 2,
+	"runs": [
+		{
+			"capacity_nm": 3995.0,
+			"effective_shift_loss_s": 0.0133333333333333,
+			"efficiency": 0.975,
+			"eighth_et_s": 8.69872731019091,
+			"eighth_mph": 88.3710473389474,
+			"eighth_s": 9.02437041414525,
+			"engine_c": 93.0520527043517,
+			"final_drive": 2.73,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				2.1,
+				1.4,
+				1.0
+			],
+			"mass_kg": 1289.0,
+			"policy": "optimized",
+			"quarter_et_s": 13.1447278642205,
+			"quarter_s": 13.4703709681748,
+			"reaction_s": 0.325643103954333,
+			"rpm_max": 7501.11393835625,
+			"rpm_mean": 5563.40199646434,
+			"rpm_min": 3702.42106282977,
+			"safety_clamps": 0,
+			"setup": "street",
+			"shift_count": 1,
+			"shift_map": [
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.0333333333333333,
+			"shifts": [
+				{
+					"at_s": 9.96249999999976,
+					"cut_s": 0.035,
+					"from_rpm": 7501.11393835625,
+					"settled_rpm": 6603.1862044833,
+					"to_gear": 2
+				}
+			],
+			"sixty_ft_s": 2.19564694422368,
+			"stall": 0.0,
+			"transmission": "drag3",
+			"transmission_c": 81.082524924651,
+			"trap_mph": 111.40111894119,
+			"wear": 0.0,
+			"wheelspin_s": 0.0958333333333333,
+			"zero_100_s": 10.8284643839394,
+			"zero_60_s": 5.28896959644327
+		},
+		{
+			"capacity_nm": 2585.0,
+			"effective_shift_loss_s": 0.159375,
+			"efficiency": 0.955,
+			"eighth_et_s": 8.4931122611081,
+			"eighth_mph": 90.8010705909374,
+			"eighth_s": 8.76660046757793,
+			"engine_c": 93.3399160450011,
+			"final_drive": 2.73,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				4.696,
+				2.985,
+				2.146,
+				1.769,
+				1.52,
+				1.275,
+				1.0,
+				0.854,
+				0.689,
+				0.636
+			],
+			"mass_kg": 1339.0,
+			"policy": "optimized",
+			"quarter_et_s": 12.8606396698526,
+			"quarter_s": 13.1341278763225,
+			"reaction_s": 0.273488206469836,
+			"rpm_max": 7506.72338080413,
+			"rpm_mean": 6046.07314356445,
+			"rpm_min": 2308.03705324221,
+			"safety_clamps": 0,
+			"setup": "street",
+			"shift_count": 3,
+			"shift_map": [
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.2125,
+			"shifts": [
+				{
+					"at_s": 3.44166666666673,
+					"cut_s": 0.0731,
+					"from_rpm": 7505.31962898289,
+					"settled_rpm": 6654.64119280626,
+					"to_gear": 2
+				},
+				{
+					"at_s": 5.70833333333333,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.94882050421,
+					"settled_rpm": 6309.0547050065,
+					"to_gear": 3
+				},
+				{
+					"at_s": 9.37916666666646,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.21993083791,
+					"settled_rpm": 6360.43134540706,
+					"to_gear": 4
+				}
+			],
+			"sixty_ft_s": 2.2508006793097,
+			"stall": 0.0,
+			"transmission": "auto10",
+			"transmission_c": 80.0633279792934,
+			"trap_mph": 113.5122870829,
+			"wear": 0.0,
+			"wheelspin_s": 1.35833333333333,
+			"zero_100_s": 10.2832996871221,
+			"zero_60_s": 4.84061836598787
+		},
+		{
+			"capacity_nm": 3995.0,
+			"effective_shift_loss_s": 0.0133333333333333,
+			"efficiency": 0.975,
+			"eighth_et_s": 9.39428483495337,
+			"eighth_mph": 84.4689619919318,
+			"eighth_s": 9.66889946012678,
+			"engine_c": 92.5204330881851,
+			"final_drive": 2.73,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				2.1,
+				1.4,
+				1.0
+			],
+			"mass_kg": 1289.0,
+			"policy": "optimized",
+			"quarter_et_s": 13.9580741911227,
+			"quarter_s": 14.2326888162961,
+			"reaction_s": 0.274614625173413,
+			"rpm_max": 7501.44050169956,
+			"rpm_mean": 4961.54450005434,
+			"rpm_min": 3386.63521861379,
+			"safety_clamps": 0,
+			"setup": "street",
+			"shift_count": 1,
+			"shift_map": [
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.0333333333333333,
+			"shifts": [
+				{
+					"at_s": 11.3416666666663,
+					"cut_s": 0.035,
+					"from_rpm": 7501.44050169956,
+					"settled_rpm": 6252.71337354103,
+					"to_gear": 2
+				}
+			],
+			"sixty_ft_s": 2.26269674012392,
+			"stall": 3600.0,
+			"transmission": "drag3",
+			"transmission_c": 80.4825077534075,
+			"trap_mph": 109.800634369744,
+			"wear": 0.0,
+			"wheelspin_s": 0.3,
+			"zero_100_s": 11.9755621150068,
+			"zero_60_s": 6.48355832366468
+		},
+		{
+			"capacity_nm": 2585.0,
+			"effective_shift_loss_s": 0.159375,
+			"efficiency": 0.955,
+			"eighth_et_s": 8.19939740405113,
+			"eighth_mph": 91.2408477216885,
+			"eighth_s": 8.47288561052097,
+			"engine_c": 93.4181201545078,
+			"final_drive": 2.73,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				4.696,
+				2.985,
+				2.146,
+				1.769,
+				1.52,
+				1.275,
+				1.0,
+				0.854,
+				0.689,
+				0.636
+			],
+			"mass_kg": 1339.0,
+			"policy": "optimized",
+			"quarter_et_s": 12.552778095,
+			"quarter_s": 12.8262663014699,
+			"reaction_s": 0.273488206469836,
+			"rpm_max": 7505.34434587733,
+			"rpm_mean": 6231.50897590567,
+			"rpm_min": 3361.80551231993,
+			"safety_clamps": 0,
+			"setup": "street",
+			"shift_count": 3,
+			"shift_map": [
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.2125,
+			"shifts": [
+				{
+					"at_s": 3.05000000000005,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.5808525675,
+					"settled_rpm": 6636.60891978347,
+					"to_gear": 2
+				},
+				{
+					"at_s": 5.34166666666668,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.56723927203,
+					"settled_rpm": 6307.51745224872,
+					"to_gear": 3
+				},
+				{
+					"at_s": 9.01249999999981,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.41248519293,
+					"settled_rpm": 6359.71113861502,
+					"to_gear": 4
+				}
+			],
+			"sixty_ft_s": 2.08603547195021,
+			"stall": 3600.0,
+			"transmission": "auto10",
+			"transmission_c": 80.0771891470828,
+			"trap_mph": 113.751413395729,
+			"wear": 0.0,
+			"wheelspin_s": 1.96666666666666,
+			"zero_100_s": 9.91858215014762,
+			"zero_60_s": 4.47541874231843
+		},
+		{
+			"capacity_nm": 3995.0,
+			"effective_shift_loss_s": 0.0133333333333333,
+			"efficiency": 0.975,
+			"eighth_et_s": 8.5446472929229,
+			"eighth_mph": 88.8304692052088,
+			"eighth_s": 8.85554808845803,
+			"engine_c": 93.0290467053657,
+			"final_drive": 2.73,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				2.1,
+				1.4,
+				1.0
+			],
+			"mass_kg": 1289.0,
+			"policy": "optimized",
+			"quarter_et_s": 12.9748659392568,
+			"quarter_s": 13.2857667347919,
+			"reaction_s": 0.310900795535129,
+			"rpm_max": 7501.54676896052,
+			"rpm_mean": 5576.65066482252,
+			"rpm_min": 3702.42106282977,
+			"safety_clamps": 0,
+			"setup": "street",
+			"shift_count": 1,
+			"shift_map": [
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.0333333333333333,
+			"shifts": [
+				{
+					"at_s": 9.72499999999977,
+					"cut_s": 0.035,
+					"from_rpm": 7501.54676896052,
+					"settled_rpm": 6603.46870521177,
+					"to_gear": 2
+				}
+			],
+			"sixty_ft_s": 2.12517634458487,
+			"stall": 4600.0,
+			"transmission": "drag3",
+			"transmission_c": 80.9450666854005,
+			"trap_mph": 111.692612646461,
+			"wear": 0.0,
+			"wheelspin_s": 0.1,
+			"zero_100_s": 10.5823967874934,
+			"zero_60_s": 5.06103544480879
+		},
+		{
+			"capacity_nm": 2585.0,
+			"effective_shift_loss_s": 0.159375,
+			"efficiency": 0.955,
+			"eighth_et_s": 8.13319784019031,
+			"eighth_mph": 91.3794158890918,
+			"eighth_s": 8.40668604666015,
+			"engine_c": 93.5586142581229,
+			"final_drive": 2.73,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				4.696,
+				2.985,
+				2.146,
+				1.769,
+				1.52,
+				1.275,
+				1.0,
+				0.854,
+				0.689,
+				0.636
+			],
+			"mass_kg": 1339.0,
+			"policy": "optimized",
+			"quarter_et_s": 12.4821268852577,
+			"quarter_s": 12.7556150917275,
+			"reaction_s": 0.273488206469836,
+			"rpm_max": 7506.4000223123,
+			"rpm_mean": 6441.32058529085,
+			"rpm_min": 3700.48741314718,
+			"safety_clamps": 0,
+			"setup": "street",
+			"shift_count": 3,
+			"shift_map": [
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.2125,
+			"shifts": [
+				{
+					"at_s": 2.56666666666669,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.66997711155,
+					"settled_rpm": 6603.93454748462,
+					"to_gear": 2
+				},
+				{
+					"at_s": 5.25416666666669,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.62421320748,
+					"settled_rpm": 6308.16334378622,
+					"to_gear": 3
+				},
+				{
+					"at_s": 8.92499999999981,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.98713171972,
+					"settled_rpm": 6360.13213974558,
+					"to_gear": 4
+				}
+			],
+			"sixty_ft_s": 2.07571003923746,
+			"stall": 4600.0,
+			"transmission": "auto10",
+			"transmission_c": 80.1064577711276,
+			"trap_mph": 113.827399483034,
+			"wear": 0.0,
+			"wheelspin_s": 3.35416666666673,
+			"zero_100_s": 9.82980491091572,
+			"zero_60_s": 4.38680434639755
+		},
+		{
+			"capacity_nm": 3995.0,
+			"effective_shift_loss_s": 0.0133333333333333,
+			"efficiency": 0.975,
+			"eighth_et_s": 8.49405962866976,
+			"eighth_mph": 90.701483690654,
+			"eighth_s": 8.80633143430745,
+			"engine_c": 93.1670440730594,
+			"final_drive": 3.0,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				2.1,
+				1.4,
+				1.0
+			],
+			"mass_kg": 1289.0,
+			"policy": "optimized",
+			"quarter_et_s": 12.9120746502588,
+			"quarter_s": 13.2243464558965,
+			"reaction_s": 0.312271805637689,
+			"rpm_max": 7500.90296712056,
+			"rpm_mean": 5683.79632261223,
+			"rpm_min": 3702.42106282977,
+			"safety_clamps": 0,
+			"setup": "street",
+			"shift_count": 1,
+			"shift_map": [
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.0333333333333333,
+			"shifts": [
+				{
+					"at_s": 8.24166666666652,
+					"cut_s": 0.035,
+					"from_rpm": 7500.90296712056,
+					"settled_rpm": 6603.35163036576,
+					"to_gear": 2
+				}
+			],
+			"sixty_ft_s": 2.12988538336674,
+			"stall": 0.0,
+			"transmission": "drag3",
+			"transmission_c": 80.9286126522447,
+			"trap_mph": 112.246840205505,
+			"wear": 0.0,
+			"wheelspin_s": 0.133333333333333,
+			"zero_100_s": 10.6003478474607,
+			"zero_60_s": 5.02766749376288
+		},
+		{
+			"capacity_nm": 2585.0,
+			"effective_shift_loss_s": 0.2125,
+			"efficiency": 0.955,
+			"eighth_et_s": 8.27655637834934,
+			"eighth_mph": 91.7400481502903,
+			"eighth_s": 8.54969733342301,
+			"engine_c": 93.3696568829872,
+			"final_drive": 3.0,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				4.696,
+				2.985,
+				2.146,
+				1.769,
+				1.52,
+				1.275,
+				1.0,
+				0.854,
+				0.689,
+				0.636
+			],
+			"mass_kg": 1339.0,
+			"policy": "optimized",
+			"quarter_et_s": 12.6216318683781,
+			"quarter_s": 12.8947728234518,
+			"reaction_s": 0.273140955073674,
+			"rpm_max": 7506.50028049114,
+			"rpm_mean": 6224.8714032572,
+			"rpm_min": 2707.99766112279,
+			"safety_clamps": 0,
+			"setup": "street",
+			"shift_count": 4,
+			"shift_map": [
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.283333333333334,
+			"shifts": [
+				{
+					"at_s": 2.89583333333337,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.10418075325,
+					"settled_rpm": 6763.83428244267,
+					"to_gear": 2
+				},
+				{
+					"at_s": 4.77916666666672,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.72545298125,
+					"settled_rpm": 6435.49600190909,
+					"to_gear": 3
+				},
+				{
+					"at_s": 7.73333333333321,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.60370921076,
+					"settled_rpm": 6386.28287862274,
+					"to_gear": 4
+				},
+				{
+					"at_s": 10.8291666666664,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.22911896719,
+					"settled_rpm": 6593.42008531768,
+					"to_gear": 5
+				}
+			],
+			"sixty_ft_s": 2.14573674643287,
+			"stall": 0.0,
+			"transmission": "auto10",
+			"transmission_c": 80.058246273797,
+			"trap_mph": 114.029711014696,
+			"wear": 0.0,
+			"wheelspin_s": 1.65833333333333,
+			"zero_100_s": 9.99879688294361,
+			"zero_60_s": 4.58714910128239
+		},
+		{
+			"capacity_nm": 3995.0,
+			"effective_shift_loss_s": 0.0133333333333333,
+			"efficiency": 0.975,
+			"eighth_et_s": 9.11396871889759,
+			"eighth_mph": 87.0477435659945,
+			"eighth_s": 9.38820342578904,
+			"engine_c": 92.7187067206723,
+			"final_drive": 3.0,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				2.1,
+				1.4,
+				1.0
+			],
+			"mass_kg": 1289.0,
+			"policy": "optimized",
+			"quarter_et_s": 13.6061049927497,
+			"quarter_s": 13.8803396996411,
+			"reaction_s": 0.274234706891448,
+			"rpm_max": 7500.65496633911,
+			"rpm_mean": 5143.08536968088,
+			"rpm_min": 3386.63521861379,
+			"safety_clamps": 0,
+			"setup": "street",
+			"shift_count": 1,
+			"shift_map": [
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.0333333333333333,
+			"shifts": [
+				{
+					"at_s": 9.37499999999979,
+					"cut_s": 0.035,
+					"from_rpm": 7500.65496633911,
+					"settled_rpm": 6369.98380690556,
+					"to_gear": 2
+				}
+			],
+			"sixty_ft_s": 2.20267574292622,
+			"stall": 3600.0,
+			"transmission": "drag3",
+			"transmission_c": 80.4161616465232,
+			"trap_mph": 110.976958611901,
+			"wear": 0.0,
+			"wheelspin_s": 0.599999999999999,
+			"zero_100_s": 11.5550187968304,
+			"zero_60_s": 6.02593653488851
+		},
+		{
+			"capacity_nm": 2585.0,
+			"effective_shift_loss_s": 0.2125,
+			"efficiency": 0.955,
+			"eighth_et_s": 8.10032164092241,
+			"eighth_mph": 92.117513541692,
+			"eighth_s": 8.37346259599608,
+			"engine_c": 93.461359494462,
+			"final_drive": 3.0,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				4.696,
+				2.985,
+				2.146,
+				1.769,
+				1.52,
+				1.275,
+				1.0,
+				0.854,
+				0.689,
+				0.636
+			],
+			"mass_kg": 1339.0,
+			"policy": "optimized",
+			"quarter_et_s": 12.433080609355,
+			"quarter_s": 12.7062215644287,
+			"reaction_s": 0.273140955073674,
+			"rpm_max": 7508.71673458525,
+			"rpm_mean": 6400.47413004682,
+			"rpm_min": 3361.80551231993,
+			"safety_clamps": 0,
+			"setup": "street",
+			"shift_count": 4,
+			"shift_map": [
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.283333333333334,
+			"shifts": [
+				{
+					"at_s": 2.61666666666669,
+					"cut_s": 0.0731,
+					"from_rpm": 7504.93121080777,
+					"settled_rpm": 6748.69546961797,
+					"to_gear": 2
+				},
+				{
+					"at_s": 4.54166666666673,
+					"cut_s": 0.0731,
+					"from_rpm": 7503.9446302331,
+					"settled_rpm": 6437.38770174695,
+					"to_gear": 3
+				},
+				{
+					"at_s": 7.49166666666656,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.49004861363,
+					"settled_rpm": 6385.23420223212,
+					"to_gear": 4
+				},
+				{
+					"at_s": 10.5916666666664,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.9571252438,
+					"settled_rpm": 6594.02736450328,
+					"to_gear": 5
+				}
+			],
+			"sixty_ft_s": 2.07570855023954,
+			"stall": 3600.0,
+			"transmission": "auto10",
+			"transmission_c": 80.0676193277394,
+			"trap_mph": 114.243837538883,
+			"wear": 0.0,
+			"wheelspin_s": 2.8041666666667,
+			"zero_100_s": 9.7592552057486,
+			"zero_60_s": 4.34767985545707
+		},
+		{
+			"capacity_nm": 3995.0,
+			"effective_shift_loss_s": 0.0133333333333333,
+			"efficiency": 0.975,
+			"eighth_et_s": 8.40362994890486,
+			"eighth_mph": 90.9621878846419,
+			"eighth_s": 8.70182658821548,
+			"engine_c": 93.1553224528193,
+			"final_drive": 3.0,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				2.1,
+				1.4,
+				1.0
+			],
+			"mass_kg": 1289.0,
+			"policy": "optimized",
+			"quarter_et_s": 12.8110066368832,
+			"quarter_s": 13.1092032761938,
+			"reaction_s": 0.298196639310622,
+			"rpm_max": 7502.07407496326,
+			"rpm_mean": 5695.68565855164,
+			"rpm_min": 3702.42106282977,
+			"safety_clamps": 0,
+			"setup": "street",
+			"shift_count": 1,
+			"shift_map": [
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.0333333333333333,
+			"shifts": [
+				{
+					"at_s": 8.09583333333319,
+					"cut_s": 0.035,
+					"from_rpm": 7502.07407496326,
+					"settled_rpm": 6604.11377950442,
+					"to_gear": 2
+				}
+			],
+			"sixty_ft_s": 2.09536473187825,
+			"stall": 4600.0,
+			"transmission": "drag3",
+			"transmission_c": 80.7936614637403,
+			"trap_mph": 112.469706091395,
+			"wear": 0.0,
+			"wheelspin_s": 1.225,
+			"zero_100_s": 10.4411495273775,
+			"zero_60_s": 4.88580366206648
+		},
+		{
+			"capacity_nm": 2585.0,
+			"effective_shift_loss_s": 0.2125,
+			"efficiency": 0.955,
+			"eighth_et_s": 8.11486979013101,
+			"eighth_mph": 92.0136647984981,
+			"eighth_s": 8.38801074520469,
+			"engine_c": 93.5514595863348,
+			"final_drive": 3.0,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				4.696,
+				2.985,
+				2.146,
+				1.769,
+				1.52,
+				1.275,
+				1.0,
+				0.854,
+				0.689,
+				0.636
+			],
+			"mass_kg": 1339.0,
+			"policy": "optimized",
+			"quarter_et_s": 12.4510126105401,
+			"quarter_s": 12.7241535656138,
+			"reaction_s": 0.273140955073674,
+			"rpm_max": 7600.18163451014,
+			"rpm_mean": 6539.23918752414,
+			"rpm_min": 3700.48741314718,
+			"safety_clamps": 0,
+			"setup": "street",
+			"shift_count": 4,
+			"shift_map": [
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.283333333333334,
+			"shifts": [
+				{
+					"at_s": 2.22916666666667,
+					"cut_s": 0.0731,
+					"from_rpm": 7552.95319592463,
+					"settled_rpm": 6768.82524721867,
+					"to_gear": 2
+				},
+				{
+					"at_s": 4.57083333333339,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.17785025996,
+					"settled_rpm": 6434.59193114777,
+					"to_gear": 3
+				},
+				{
+					"at_s": 7.52499999999989,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.24459449091,
+					"settled_rpm": 6385.77274136849,
+					"to_gear": 4
+				},
+				{
+					"at_s": 10.6249999999997,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.43662092099,
+					"settled_rpm": 6594.42515976799,
+					"to_gear": 5
+				}
+			],
+			"sixty_ft_s": 2.07570855023954,
+			"stall": 4600.0,
+			"transmission": "auto10",
+			"transmission_c": 80.0905504495032,
+			"trap_mph": 114.185185193665,
+			"wear": 0.0,
+			"wheelspin_s": 3.28333333333339,
+			"zero_100_s": 9.79124353848827,
+			"zero_60_s": 4.37930467482074
+		},
+		{
+			"capacity_nm": 3995.0,
+			"effective_shift_loss_s": 0.0266666666666667,
+			"efficiency": 0.975,
+			"eighth_et_s": 8.21898922341542,
+			"eighth_mph": 91.4095308662619,
+			"eighth_s": 8.49996848443882,
+			"engine_c": 93.2454638328759,
+			"final_drive": 3.85,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				2.1,
+				1.4,
+				1.0
+			],
+			"mass_kg": 1289.0,
+			"policy": "optimized",
+			"quarter_et_s": 12.5564286946667,
+			"quarter_s": 12.8374079556901,
+			"reaction_s": 0.280979261023396,
+			"rpm_max": 7500.69729307512,
+			"rpm_mean": 5933.85694319331,
+			"rpm_min": 3702.42106282977,
+			"safety_clamps": 0,
+			"setup": "street",
+			"shift_count": 2,
+			"shift_map": [
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.0666666666666667,
+			"shifts": [
+				{
+					"at_s": 5.32083333333335,
+					"cut_s": 0.035,
+					"from_rpm": 7500.06132455016,
+					"settled_rpm": 6711.66566899482,
+					"to_gear": 2
+				},
+				{
+					"at_s": 9.99999999999975,
+					"cut_s": 0.035,
+					"from_rpm": 7500.69729307512,
+					"settled_rpm": 6602.7394933286,
+					"to_gear": 3
+				}
+			],
+			"sixty_ft_s": 2.07847346495507,
+			"stall": 0.0,
+			"transmission": "drag3",
+			"transmission_c": 80.6279244747904,
+			"trap_mph": 113.796196842721,
+			"wear": 0.0,
+			"wheelspin_s": 2.01249999999999,
+			"zero_100_s": 9.93526480530892,
+			"zero_60_s": 4.59361952359529
+		},
+		{
+			"capacity_nm": 2585.0,
+			"effective_shift_loss_s": 0.318749999999999,
+			"efficiency": 0.955,
+			"eighth_et_s": 8.07254210981663,
+			"eighth_mph": 92.33317500828,
+			"eighth_s": 8.34529010526757,
+			"engine_c": 93.4545973871511,
+			"final_drive": 3.85,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				4.696,
+				2.985,
+				2.146,
+				1.769,
+				1.52,
+				1.275,
+				1.0,
+				0.854,
+				0.689,
+				0.636
+			],
+			"mass_kg": 1339.0,
+			"policy": "optimized",
+			"quarter_et_s": 12.3889704684893,
+			"quarter_s": 12.6617184639402,
+			"reaction_s": 0.272747995450936,
+			"rpm_max": 7507.81340680279,
+			"rpm_mean": 6629.03200285027,
+			"rpm_min": 2820.33340011817,
+			"safety_clamps": 0,
+			"setup": "street",
+			"shift_count": 6,
+			"shift_map": [
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.425,
+			"shifts": [
+				{
+					"at_s": 1.82916666666666,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.64895960934,
+					"settled_rpm": 7015.69099792866,
+					"to_gear": 2
+				},
+				{
+					"at_s": 3.14583333333338,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.2859763586,
+					"settled_rpm": 6736.35827430822,
+					"to_gear": 3
+				},
+				{
+					"at_s": 5.0291666666667,
+					"cut_s": 0.0731,
+					"from_rpm": 7503.040446093,
+					"settled_rpm": 6627.51803105258,
+					"to_gear": 4
+				},
+				{
+					"at_s": 6.73749999999994,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.43364109925,
+					"settled_rpm": 6635.80801143542,
+					"to_gear": 5
+				},
+				{
+					"at_s": 8.72499999999983,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.91953008346,
+					"settled_rpm": 6462.56564380712,
+					"to_gear": 6
+				},
+				{
+					"at_s": 12.2791666666663,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.35776457872,
+					"settled_rpm": 6041.93462875865,
+					"to_gear": 7
+				}
+			],
+			"sixty_ft_s": 2.07570590761056,
+			"stall": 0.0,
+			"transmission": "auto10",
+			"transmission_c": 80.0630242223689,
+			"trap_mph": 114.943123844851,
+			"wear": 0.0,
+			"wheelspin_s": 3.35416666666673,
+			"zero_100_s": 9.61571594989355,
+			"zero_60_s": 4.26727316156177
+		},
+		{
+			"capacity_nm": 3995.0,
+			"effective_shift_loss_s": 0.0266666666666667,
+			"efficiency": 0.975,
+			"eighth_et_s": 8.57743482538821,
+			"eighth_mph": 90.3279330210364,
+			"eighth_s": 8.85088227666512,
+			"engine_c": 92.9893487712175,
+			"final_drive": 3.85,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				2.1,
+				1.4,
+				1.0
+			],
+			"mass_kg": 1289.0,
+			"policy": "optimized",
+			"quarter_et_s": 12.9442023133926,
+			"quarter_s": 13.2176497646695,
+			"reaction_s": 0.273447451276915,
+			"rpm_max": 7502.31006592373,
+			"rpm_mean": 5582.48241561034,
+			"rpm_min": 3386.63521861379,
+			"safety_clamps": 0,
+			"setup": "street",
+			"shift_count": 2,
+			"shift_map": [
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.0666666666666667,
+			"shifts": [
+				{
+					"at_s": 5.94999999999998,
+					"cut_s": 0.035,
+					"from_rpm": 7502.31006592373,
+					"settled_rpm": 6671.1146046622,
+					"to_gear": 2
+				},
+				{
+					"at_s": 10.7166666666664,
+					"cut_s": 0.035,
+					"from_rpm": 7500.42664450237,
+					"settled_rpm": 6376.17098692025,
+					"to_gear": 3
+				}
+			],
+			"sixty_ft_s": 2.13302774231559,
+			"stall": 3600.0,
+			"transmission": "drag3",
+			"transmission_c": 80.3002158569899,
+			"trap_mph": 113.504211989254,
+			"wear": 0.0,
+			"wheelspin_s": 1.33333333333333,
+			"zero_100_s": 10.4437257306667,
+			"zero_60_s": 5.14205980772382
+		},
+		{
+			"capacity_nm": 2585.0,
+			"effective_shift_loss_s": 0.318749999999999,
+			"efficiency": 0.955,
+			"eighth_et_s": 8.0784685614806,
+			"eighth_mph": 92.281539951009,
+			"eighth_s": 8.35121655693154,
+			"engine_c": 93.4857426302548,
+			"final_drive": 3.85,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				4.696,
+				2.985,
+				2.146,
+				1.769,
+				1.52,
+				1.275,
+				1.0,
+				0.854,
+				0.689,
+				0.636
+			],
+			"mass_kg": 1339.0,
+			"policy": "optimized",
+			"quarter_et_s": 12.396610820653,
+			"quarter_s": 12.6693588161039,
+			"reaction_s": 0.272747995450936,
+			"rpm_max": 7610.26418499765,
+			"rpm_mean": 6691.61921599682,
+			"rpm_min": 3362.27516724202,
+			"safety_clamps": 0,
+			"setup": "street",
+			"shift_count": 6,
+			"shift_map": [
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.425,
+			"shifts": [
+				{
+					"at_s": 1.73333333333333,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.79070113498,
+					"settled_rpm": 7002.63578483535,
+					"to_gear": 2
+				},
+				{
+					"at_s": 3.06666666666671,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.67629702366,
+					"settled_rpm": 6736.60035616365,
+					"to_gear": 3
+				},
+				{
+					"at_s": 5.0416666666667,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.33345600374,
+					"settled_rpm": 6625.86577913784,
+					"to_gear": 4
+				},
+				{
+					"at_s": 6.74999999999994,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.21102826762,
+					"settled_rpm": 6634.7198841468,
+					"to_gear": 5
+				},
+				{
+					"at_s": 8.73749999999982,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.01196453401,
+					"settled_rpm": 6461.75332832418,
+					"to_gear": 6
+				},
+				{
+					"at_s": 12.295833333333,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.92778740484,
+					"settled_rpm": 6042.33665654416,
+					"to_gear": 7
+				}
+			],
+			"sixty_ft_s": 2.07570590761056,
+			"stall": 3600.0,
+			"transmission": "auto10",
+			"transmission_c": 80.0667635507489,
+			"trap_mph": 114.918119152024,
+			"wear": 0.0,
+			"wheelspin_s": 3.4083333333334,
+			"zero_100_s": 9.63037491583013,
+			"zero_60_s": 4.28153724622149
+		},
+		{
+			"capacity_nm": 3995.0,
+			"effective_shift_loss_s": 0.0266666666666667,
+			"efficiency": 0.975,
+			"eighth_et_s": 8.20344221555762,
+			"eighth_mph": 91.5154049212304,
+			"eighth_s": 8.47688966683453,
+			"engine_c": 93.242274474255,
+			"final_drive": 3.85,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				2.1,
+				1.4,
+				1.0
+			],
+			"mass_kg": 1289.0,
+			"policy": "optimized",
+			"quarter_et_s": 12.5365369840495,
+			"quarter_s": 12.8099844353264,
+			"reaction_s": 0.273447451276915,
+			"rpm_max": 7501.48990177205,
+			"rpm_mean": 5936.74607412773,
+			"rpm_min": 3702.42106282977,
+			"safety_clamps": 0,
+			"setup": "street",
+			"shift_count": 2,
+			"shift_map": [
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.0666666666666667,
+			"shifts": [
+				{
+					"at_s": 5.29166666666669,
+					"cut_s": 0.035,
+					"from_rpm": 7501.48990177205,
+					"settled_rpm": 6716.38340945038,
+					"to_gear": 2
+				},
+				{
+					"at_s": 9.95833333333309,
+					"cut_s": 0.035,
+					"from_rpm": 7500.72431134809,
+					"settled_rpm": 6602.75830272456,
+					"to_gear": 3
+				}
+			],
+			"sixty_ft_s": 2.07581451434697,
+			"stall": 4600.0,
+			"transmission": "drag3",
+			"transmission_c": 80.5342907428699,
+			"trap_mph": 113.901644890849,
+			"wear": 0.0,
+			"wheelspin_s": 2.26250000000001,
+			"zero_100_s": 9.89358406718898,
+			"zero_60_s": 4.56373528129362
+		},
+		{
+			"capacity_nm": 2585.0,
+			"effective_shift_loss_s": 0.318749999999999,
+			"efficiency": 0.955,
+			"eighth_et_s": 8.08158079033874,
+			"eighth_mph": 92.2557508170564,
+			"eighth_s": 8.35432878578968,
+			"engine_c": 93.5042272832502,
+			"final_drive": 3.85,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				4.696,
+				2.985,
+				2.146,
+				1.769,
+				1.52,
+				1.275,
+				1.0,
+				0.854,
+				0.689,
+				0.636
+			],
+			"mass_kg": 1339.0,
+			"policy": "optimized",
+			"quarter_et_s": 12.400552107618,
+			"quarter_s": 12.673300103069,
+			"reaction_s": 0.272747995450936,
+			"rpm_max": 7608.76439035023,
+			"rpm_mean": 6756.79097003726,
+			"rpm_min": 3700.48741314718,
+			"safety_clamps": 0,
+			"setup": "street",
+			"shift_count": 6,
+			"shift_map": [
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.425,
+			"shifts": [
+				{
+					"at_s": 1.73333333333333,
+					"cut_s": 0.0731,
+					"from_rpm": 7550.59206066733,
+					"settled_rpm": 7028.55059441393,
+					"to_gear": 2
+				},
+				{
+					"at_s": 3.02500000000005,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.55955315783,
+					"settled_rpm": 6736.340538882,
+					"to_gear": 3
+				},
+				{
+					"at_s": 5.05000000000003,
+					"cut_s": 0.0731,
+					"from_rpm": 7502.22310778008,
+					"settled_rpm": 6626.56438873261,
+					"to_gear": 4
+				},
+				{
+					"at_s": 6.75833333333327,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.82695368586,
+					"settled_rpm": 6635.22651264677,
+					"to_gear": 5
+				},
+				{
+					"at_s": 8.74583333333316,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.4515865866,
+					"settled_rpm": 6462.08529662257,
+					"to_gear": 6
+				},
+				{
+					"at_s": 12.2999999999996,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.01887329417,
+					"settled_rpm": 6041.54962286278,
+					"to_gear": 7
+				}
+			],
+			"sixty_ft_s": 2.07570590761056,
+			"stall": 4600.0,
+			"transmission": "auto10",
+			"transmission_c": 80.081072154625,
+			"trap_mph": 114.903269091284,
+			"wear": 0.0,
+			"wheelspin_s": 3.42916666666673,
+			"zero_100_s": 9.63774274411541,
+			"zero_60_s": 4.28895190062738
+		},
+		{
+			"capacity_nm": 3995.0,
+			"effective_shift_loss_s": 0.0266666666666667,
+			"efficiency": 0.975,
+			"eighth_et_s": 5.93533526484299,
+			"eighth_mph": 126.560368594493,
+			"eighth_s": 6.20287857535987,
+			"engine_c": 101.390388459195,
+			"final_drive": 2.73,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				2.1,
+				1.4,
+				1.0
+			],
+			"mass_kg": 1094.0,
+			"policy": "optimized",
+			"quarter_et_s": 9.09691831811761,
+			"quarter_s": 9.36446162863449,
+			"reaction_s": 0.26754331051688,
+			"rpm_max": 7502.94054112481,
+			"rpm_mean": 6872.09327147765,
+			"rpm_min": 3858.50632912064,
+			"safety_clamps": 0,
+			"setup": "built",
+			"shift_count": 2,
+			"shift_map": [
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.0666666666666667,
+			"shifts": [
+				{
+					"at_s": 3.74583333333341,
+					"cut_s": 0.035,
+					"from_rpm": 7502.94054112481,
+					"settled_rpm": 7052.01837556117,
+					"to_gear": 2
+				},
+				{
+					"at_s": 7.18749999999991,
+					"cut_s": 0.035,
+					"from_rpm": 7500.87225001635,
+					"settled_rpm": 7049.43515359792,
+					"to_gear": 3
+				}
+			],
+			"sixty_ft_s": 1.54676792594809,
+			"stall": 0.0,
+			"transmission": "drag3",
+			"transmission_c": 83.4038015623464,
+			"trap_mph": 155.349139562123,
+			"wear": 0.0,
+			"wheelspin_s": 0.712499999999999,
+			"zero_100_s": 4.22709189385696,
+			"zero_60_s": 2.26838672658571
+		},
+		{
+			"capacity_nm": 2585.0,
+			"effective_shift_loss_s": 0.265625,
+			"efficiency": 0.955,
+			"eighth_et_s": 6.05689024782326,
+			"eighth_mph": 125.747309823958,
+			"eighth_s": 6.25510055517485,
+			"engine_c": 100.211554633475,
+			"final_drive": 2.73,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				4.696,
+				2.985,
+				2.146,
+				1.769,
+				1.52,
+				1.275,
+				1.0,
+				0.854,
+				0.689,
+				0.636
+			],
+			"mass_kg": 1144.0,
+			"policy": "optimized",
+			"quarter_et_s": 9.2297990888046,
+			"quarter_s": 9.42800939615619,
+			"reaction_s": 0.19821030735159,
+			"rpm_max": 7523.04622726017,
+			"rpm_mean": 6404.30942116829,
+			"rpm_min": 3076.22670194927,
+			"safety_clamps": 0,
+			"setup": "built",
+			"shift_count": 5,
+			"shift_map": [
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.354166666666667,
+			"shifts": [
+				{
+					"at_s": 1.72916666666666,
+					"cut_s": 0.0731,
+					"from_rpm": 7508.20241934364,
+					"settled_rpm": 6462.19251529079,
+					"to_gear": 2
+				},
+				{
+					"at_s": 2.67500000000003,
+					"cut_s": 0.0731,
+					"from_rpm": 7509.5675631659,
+					"settled_rpm": 6079.1356782274,
+					"to_gear": 3
+				},
+				{
+					"at_s": 4.02083333333343,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.628858604,
+					"settled_rpm": 6505.33968840931,
+					"to_gear": 4
+				},
+				{
+					"at_s": 5.36250000000002,
+					"cut_s": 0.0731,
+					"from_rpm": 7503.15995775301,
+					"settled_rpm": 6720.67113182645,
+					"to_gear": 5
+				},
+				{
+					"at_s": 6.93749999999993,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.54082582065,
+					"settled_rpm": 6548.69050005774,
+					"to_gear": 6
+				}
+			],
+			"sixty_ft_s": 1.59542344698414,
+			"stall": 0.0,
+			"transmission": "auto10",
+			"transmission_c": 80.1802219190789,
+			"trap_mph": 155.889720152089,
+			"wear": 0.0,
+			"wheelspin_s": 0.866666666666665,
+			"zero_100_s": 4.352869548057,
+			"zero_60_s": 2.33068508659944
+		},
+		{
+			"capacity_nm": 3995.0,
+			"effective_shift_loss_s": 0.0266666666666667,
+			"efficiency": 0.975,
+			"eighth_et_s": 6.09724456881337,
+			"eighth_mph": 124.597592839843,
+			"eighth_s": 6.31873977301305,
+			"engine_c": 99.8085603383461,
+			"final_drive": 2.73,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				2.1,
+				1.4,
+				1.0
+			],
+			"mass_kg": 1094.0,
+			"policy": "optimized",
+			"quarter_et_s": 9.2775360782901,
+			"quarter_s": 9.49903128248978,
+			"reaction_s": 0.221495204199682,
+			"rpm_max": 7501.5671094861,
+			"rpm_mean": 5957.64587180532,
+			"rpm_min": 3748.42278001898,
+			"safety_clamps": 0,
+			"setup": "built",
+			"shift_count": 2,
+			"shift_map": [
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.0666666666666667,
+			"shifts": [
+				{
+					"at_s": 4.14583333333342,
+					"cut_s": 0.035,
+					"from_rpm": 7500.68615217295,
+					"settled_rpm": 6395.08437953974,
+					"to_gear": 2
+				},
+				{
+					"at_s": 7.79583333333321,
+					"cut_s": 0.035,
+					"from_rpm": 7501.5671094861,
+					"settled_rpm": 6400.48229480031,
+					"to_gear": 3
+				}
+			],
+			"sixty_ft_s": 1.55157563999558,
+			"stall": 3600.0,
+			"transmission": "drag3",
+			"transmission_c": 81.1922099755684,
+			"trap_mph": 155.070775273071,
+			"wear": 0.0,
+			"wheelspin_s": 0.0541666666666667,
+			"zero_100_s": 4.43006198101017,
+			"zero_60_s": 2.39299757977195
+		},
+		{
+			"capacity_nm": 2585.0,
+			"effective_shift_loss_s": 0.265625,
+			"efficiency": 0.955,
+			"eighth_et_s": 5.86091068874624,
+			"eighth_mph": 126.419881278874,
+			"eighth_s": 6.05912099609783,
+			"engine_c": 100.459908991037,
+			"final_drive": 2.73,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				4.696,
+				2.985,
+				2.146,
+				1.769,
+				1.52,
+				1.275,
+				1.0,
+				0.854,
+				0.689,
+				0.636
+			],
+			"mass_kg": 1144.0,
+			"policy": "optimized",
+			"quarter_et_s": 9.02279556838277,
+			"quarter_s": 9.22100587573436,
+			"reaction_s": 0.19821030735159,
+			"rpm_max": 7522.48034346551,
+			"rpm_mean": 6611.92179865671,
+			"rpm_min": 3769.80365204292,
+			"safety_clamps": 0,
+			"setup": "built",
+			"shift_count": 5,
+			"shift_map": [
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.354166666666667,
+			"shifts": [
+				{
+					"at_s": 1.32083333333333,
+					"cut_s": 0.0731,
+					"from_rpm": 7504.39977802669,
+					"settled_rpm": 6447.03106194906,
+					"to_gear": 2
+				},
+				{
+					"at_s": 2.42500000000002,
+					"cut_s": 0.0731,
+					"from_rpm": 7508.84428751231,
+					"settled_rpm": 6084.03949347409,
+					"to_gear": 3
+				},
+				{
+					"at_s": 3.77083333333342,
+					"cut_s": 0.0731,
+					"from_rpm": 7504.6481448934,
+					"settled_rpm": 6508.62574876739,
+					"to_gear": 4
+				},
+				{
+					"at_s": 5.10833333333336,
+					"cut_s": 0.0731,
+					"from_rpm": 7502.54251334413,
+					"settled_rpm": 6720.05234537118,
+					"to_gear": 5
+				},
+				{
+					"at_s": 6.68333333333327,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.09755046187,
+					"settled_rpm": 6548.21207404178,
+					"to_gear": 6
+				}
+			],
+			"sixty_ft_s": 1.48887091037667,
+			"stall": 3600.0,
+			"transmission": "auto10",
+			"transmission_c": 80.2079256404489,
+			"trap_mph": 156.249714642101,
+			"wear": 0.0,
+			"wheelspin_s": 1.91666666666666,
+			"zero_100_s": 4.09957346921355,
+			"zero_60_s": 2.09214400965778
+		},
+		{
+			"capacity_nm": 3995.0,
+			"effective_shift_loss_s": 0.0266666666666667,
+			"efficiency": 0.975,
+			"eighth_et_s": 5.88292878555004,
+			"eighth_mph": 127.274373282271,
+			"eighth_s": 6.13930170568375,
+			"engine_c": 101.319216267634,
+			"final_drive": 2.73,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				2.1,
+				1.4,
+				1.0
+			],
+			"mass_kg": 1094.0,
+			"policy": "optimized",
+			"quarter_et_s": 9.0288985410531,
+			"quarter_s": 9.28527146118681,
+			"reaction_s": 0.256372920133713,
+			"rpm_max": 7502.47012815897,
+			"rpm_mean": 6870.89747854819,
+			"rpm_min": 3858.50632912064,
+			"safety_clamps": 0,
+			"setup": "built",
+			"shift_count": 2,
+			"shift_map": [
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.0666666666666667,
+			"shifts": [
+				{
+					"at_s": 3.66666666666674,
+					"cut_s": 0.035,
+					"from_rpm": 7502.47012815897,
+					"settled_rpm": 7051.67696373662,
+					"to_gear": 2
+				},
+				{
+					"at_s": 7.05833333333325,
+					"cut_s": 0.035,
+					"from_rpm": 7500.26719744418,
+					"settled_rpm": 7049.08554323133,
+					"to_gear": 3
+				}
+			],
+			"sixty_ft_s": 1.52697965876291,
+			"stall": 4600.0,
+			"transmission": "drag3",
+			"transmission_c": 82.8358512054373,
+			"trap_mph": 156.180669902972,
+			"wear": 0.0,
+			"wheelspin_s": 1.22083333333333,
+			"zero_100_s": 4.13409958099216,
+			"zero_60_s": 2.20949334791043
+		},
+		{
+			"capacity_nm": 2585.0,
+			"effective_shift_loss_s": 0.265625,
+			"efficiency": 0.955,
+			"eighth_et_s": 5.85236793953283,
+			"eighth_mph": 126.525341511157,
+			"eighth_s": 6.05137518153674,
+			"engine_c": 100.597708463844,
+			"final_drive": 2.73,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				4.696,
+				2.985,
+				2.146,
+				1.769,
+				1.52,
+				1.275,
+				1.0,
+				0.854,
+				0.689,
+				0.636
+			],
+			"mass_kg": 1144.0,
+			"policy": "optimized",
+			"quarter_et_s": 9.01253553371292,
+			"quarter_s": 9.21154277571682,
+			"reaction_s": 0.199007242003907,
+			"rpm_max": 7614.98486116595,
+			"rpm_mean": 6767.24719394804,
+			"rpm_min": 3888.49256099395,
+			"safety_clamps": 0,
+			"setup": "built",
+			"shift_count": 5,
+			"shift_map": [
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.354166666666667,
+			"shifts": [
+				{
+					"at_s": 1.2625,
+					"cut_s": 0.0731,
+					"from_rpm": 7559.79239716405,
+					"settled_rpm": 6489.73383078855,
+					"to_gear": 2
+				},
+				{
+					"at_s": 2.40833333333335,
+					"cut_s": 0.0731,
+					"from_rpm": 7504.90685415361,
+					"settled_rpm": 6083.93471180454,
+					"to_gear": 3
+				},
+				{
+					"at_s": 3.75416666666675,
+					"cut_s": 0.0731,
+					"from_rpm": 7504.74602054374,
+					"settled_rpm": 6508.58362401489,
+					"to_gear": 4
+				},
+				{
+					"at_s": 5.0916666666667,
+					"cut_s": 0.0731,
+					"from_rpm": 7502.68788044981,
+					"settled_rpm": 6720.02180724539,
+					"to_gear": 5
+				},
+				{
+					"at_s": 6.66666666666661,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.1768078119,
+					"settled_rpm": 6548.11053378971,
+					"to_gear": 6
+				}
+			],
+			"sixty_ft_s": 1.48909002479239,
+			"stall": 4600.0,
+			"transmission": "auto10",
+			"transmission_c": 80.2777558251773,
+			"trap_mph": 156.306019968292,
+			"wear": 0.0,
+			"wheelspin_s": 1.87499999999999,
+			"zero_100_s": 4.08282774451719,
+			"zero_60_s": 2.09318946551816
+		},
+		{
+			"capacity_nm": 3995.0,
+			"effective_shift_loss_s": 0.0266666666666667,
+			"efficiency": 0.975,
+			"eighth_et_s": 5.88432165699995,
+			"eighth_mph": 127.523451497774,
+			"eighth_s": 6.1418444143892,
+			"engine_c": 101.338650669341,
+			"final_drive": 3.0,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				2.1,
+				1.4,
+				1.0
+			],
+			"mass_kg": 1094.0,
+			"policy": "optimized",
+			"quarter_et_s": 9.04499980544724,
+			"quarter_s": 9.30252256283648,
+			"reaction_s": 0.257522757389244,
+			"rpm_max": 7502.46501561633,
+			"rpm_mean": 6863.371628353,
+			"rpm_min": 3858.50632912064,
+			"safety_clamps": 0,
+			"setup": "built",
+			"shift_count": 2,
+			"shift_map": [
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.0666666666666667,
+			"shifts": [
+				{
+					"at_s": 3.23333333333339,
+					"cut_s": 0.035,
+					"from_rpm": 7502.46501561633,
+					"settled_rpm": 7051.61973320386,
+					"to_gear": 2
+				},
+				{
+					"at_s": 5.96666666666665,
+					"cut_s": 0.035,
+					"from_rpm": 7501.36229854113,
+					"settled_rpm": 7050.04665269518,
+					"to_gear": 3
+				}
+			],
+			"sixty_ft_s": 1.52888620581141,
+			"stall": 0.0,
+			"transmission": "drag3",
+			"transmission_c": 82.9510167798916,
+			"trap_mph": 155.909617306155,
+			"wear": 0.0,
+			"wheelspin_s": 1.2375,
+			"zero_100_s": 4.16810690491159,
+			"zero_60_s": 2.20931348246662
+		},
+		{
+			"capacity_nm": 2585.0,
+			"effective_shift_loss_s": 0.318749999999999,
+			"efficiency": 0.955,
+			"eighth_et_s": 5.98149119519021,
+			"eighth_mph": 126.085784198617,
+			"eighth_s": 6.17919158026826,
+			"engine_c": 100.008518077662,
+			"final_drive": 3.0,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				4.696,
+				2.985,
+				2.146,
+				1.769,
+				1.52,
+				1.275,
+				1.0,
+				0.854,
+				0.689,
+				0.636
+			],
+			"mass_kg": 1144.0,
+			"policy": "optimized",
+			"quarter_et_s": 9.14995357027473,
+			"quarter_s": 9.34765395535278,
+			"reaction_s": 0.197700385078046,
+			"rpm_max": 7518.08897525542,
+			"rpm_mean": 6409.79161488466,
+			"rpm_min": 3134.96390629005,
+			"safety_clamps": 0,
+			"setup": "built",
+			"shift_count": 6,
+			"shift_map": [
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.425,
+			"shifts": [
+				{
+					"at_s": 1.5125,
+					"cut_s": 0.0731,
+					"from_rpm": 7512.15163862673,
+					"settled_rpm": 6613.11402357862,
+					"to_gear": 2
+				},
+				{
+					"at_s": 2.32083333333334,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.52617497256,
+					"settled_rpm": 6200.53184942951,
+					"to_gear": 3
+				},
+				{
+					"at_s": 3.44166666666673,
+					"cut_s": 0.0731,
+					"from_rpm": 7504.27804408439,
+					"settled_rpm": 6532.20272305156,
+					"to_gear": 4
+				},
+				{
+					"at_s": 4.52916666666673,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.12860245611,
+					"settled_rpm": 6735.26125407296,
+					"to_gear": 5
+				},
+				{
+					"at_s": 5.78333333333333,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.27358676595,
+					"settled_rpm": 6561.82769097538,
+					"to_gear": 6
+				},
+				{
+					"at_s": 7.98749999999987,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.31194156726,
+					"settled_rpm": 6141.80950972725,
+					"to_gear": 7
+				}
+			],
+			"sixty_ft_s": 1.56042070996566,
+			"stall": 0.0,
+			"transmission": "auto10",
+			"transmission_c": 80.1998031491357,
+			"trap_mph": 155.52876187864,
+			"wear": 0.0,
+			"wheelspin_s": 1.00833333333333,
+			"zero_100_s": 4.25055828285842,
+			"zero_60_s": 2.24443795243322
+		},
+		{
+			"capacity_nm": 3995.0,
+			"effective_shift_loss_s": 0.0266666666666667,
+			"efficiency": 0.975,
+			"eighth_et_s": 6.00633259278056,
+			"eighth_mph": 125.914084747552,
+			"eighth_s": 6.21912209575877,
+			"engine_c": 99.8999554665444,
+			"final_drive": 3.0,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				2.1,
+				1.4,
+				1.0
+			],
+			"mass_kg": 1094.0,
+			"policy": "optimized",
+			"quarter_et_s": 9.17566908416796,
+			"quarter_s": 9.38845858714617,
+			"reaction_s": 0.212789502978212,
+			"rpm_max": 7500.89245139896,
+			"rpm_mean": 5997.23091593646,
+			"rpm_min": 3748.42278001898,
+			"safety_clamps": 0,
+			"setup": "built",
+			"shift_count": 2,
+			"shift_map": [
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.0666666666666667,
+			"shifts": [
+				{
+					"at_s": 3.54166666666674,
+					"cut_s": 0.035,
+					"from_rpm": 7500.89245139896,
+					"settled_rpm": 6391.4333637873,
+					"to_gear": 2
+				},
+				{
+					"at_s": 6.42916666666662,
+					"cut_s": 0.035,
+					"from_rpm": 7500.60646814008,
+					"settled_rpm": 6400.05711657818,
+					"to_gear": 3
+				}
+			],
+			"sixty_ft_s": 1.51476862838285,
+			"stall": 3600.0,
+			"transmission": "drag3",
+			"transmission_c": 81.0324787107706,
+			"trap_mph": 155.579112115894,
+			"wear": 0.0,
+			"wheelspin_s": 0.0833333333333333,
+			"zero_100_s": 4.343231133438,
+			"zero_60_s": 2.30244723351838
+		},
+		{
+			"capacity_nm": 2585.0,
+			"effective_shift_loss_s": 0.318749999999999,
+			"efficiency": 0.955,
+			"eighth_et_s": 5.85264079085878,
+			"eighth_mph": 126.5170285727,
+			"eighth_s": 6.05034117593683,
+			"engine_c": 100.237522890658,
+			"final_drive": 3.0,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				4.696,
+				2.985,
+				2.146,
+				1.769,
+				1.52,
+				1.275,
+				1.0,
+				0.854,
+				0.689,
+				0.636
+			],
+			"mass_kg": 1144.0,
+			"policy": "optimized",
+			"quarter_et_s": 9.01390235430359,
+			"quarter_s": 9.21160273938163,
+			"reaction_s": 0.197700385078046,
+			"rpm_max": 7517.43975936606,
+			"rpm_mean": 6587.85427718813,
+			"rpm_min": 3769.80365204292,
+			"safety_clamps": 0,
+			"setup": "built",
+			"shift_count": 6,
+			"shift_map": [
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.425,
+			"shifts": [
+				{
+					"at_s": 1.15,
+					"cut_s": 0.0731,
+					"from_rpm": 7515.30405824933,
+					"settled_rpm": 6603.58826639418,
+					"to_gear": 2
+				},
+				{
+					"at_s": 2.12083333333333,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.14957485376,
+					"settled_rpm": 6194.5533108208,
+					"to_gear": 3
+				},
+				{
+					"at_s": 3.27500000000006,
+					"cut_s": 0.0731,
+					"from_rpm": 7503.59727517523,
+					"settled_rpm": 6531.88216902009,
+					"to_gear": 4
+				},
+				{
+					"at_s": 4.36250000000007,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.44961562224,
+					"settled_rpm": 6735.47724288726,
+					"to_gear": 5
+				},
+				{
+					"at_s": 5.61666666666667,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.57734810203,
+					"settled_rpm": 6561.97138417298,
+					"to_gear": 6
+				},
+				{
+					"at_s": 7.82083333333321,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.5001143837,
+					"settled_rpm": 6141.81596183225,
+					"to_gear": 7
+				}
+			],
+			"sixty_ft_s": 1.48886603768838,
+			"stall": 3600.0,
+			"transmission": "auto10",
+			"transmission_c": 80.2250336530181,
+			"trap_mph": 155.754280958567,
+			"wear": 0.0,
+			"wheelspin_s": 1.96249999999999,
+			"zero_100_s": 4.08368956538788,
+			"zero_60_s": 2.09162902675365
+		},
+		{
+			"capacity_nm": 3995.0,
+			"effective_shift_loss_s": 0.0266666666666667,
+			"efficiency": 0.975,
+			"eighth_et_s": 5.84930629748077,
+			"eighth_mph": 128.007221140782,
+			"eighth_s": 6.09610656807659,
+			"engine_c": 101.285825936623,
+			"final_drive": 3.0,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				2.1,
+				1.4,
+				1.0
+			],
+			"mass_kg": 1094.0,
+			"policy": "optimized",
+			"quarter_et_s": 8.99503461383556,
+			"quarter_s": 9.24183488443138,
+			"reaction_s": 0.246800270595817,
+			"rpm_max": 7505.96796835354,
+			"rpm_mean": 6862.57875930644,
+			"rpm_min": 3858.50632912064,
+			"safety_clamps": 0,
+			"setup": "built",
+			"shift_count": 2,
+			"shift_map": [
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.0666666666666667,
+			"shifts": [
+				{
+					"at_s": 3.18750000000005,
+					"cut_s": 0.035,
+					"from_rpm": 7505.96796835354,
+					"settled_rpm": 7053.57189317913,
+					"to_gear": 2
+				},
+				{
+					"at_s": 5.87916666666665,
+					"cut_s": 0.035,
+					"from_rpm": 7500.31239630076,
+					"settled_rpm": 7049.43636648602,
+					"to_gear": 3
+				}
+			],
+			"sixty_ft_s": 1.51455130002784,
+			"stall": 4600.0,
+			"transmission": "drag3",
+			"transmission_c": 82.4469273923635,
+			"trap_mph": 156.651260405437,
+			"wear": 0.0,
+			"wheelspin_s": 1.5125,
+			"zero_100_s": 4.0967531458712,
+			"zero_60_s": 2.17155394777748
+		},
+		{
+			"capacity_nm": 2585.0,
+			"effective_shift_loss_s": 0.318749999999999,
+			"efficiency": 0.955,
+			"eighth_et_s": 5.86361314958443,
+			"eighth_mph": 126.371885595397,
+			"eighth_s": 6.06131353466248,
+			"engine_c": 100.313775991291,
+			"final_drive": 3.0,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				4.696,
+				2.985,
+				2.146,
+				1.769,
+				1.52,
+				1.275,
+				1.0,
+				0.854,
+				0.689,
+				0.636
+			],
+			"mass_kg": 1144.0,
+			"policy": "optimized",
+			"quarter_et_s": 9.02732476013012,
+			"quarter_s": 9.22502514520816,
+			"reaction_s": 0.197700385078046,
+			"rpm_max": 7618.04390217377,
+			"rpm_mean": 6683.19834297035,
+			"rpm_min": 3888.49256099395,
+			"safety_clamps": 0,
+			"setup": "built",
+			"shift_count": 6,
+			"shift_map": [
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.425,
+			"shifts": [
+				{
+					"at_s": 1.15,
+					"cut_s": 0.0731,
+					"from_rpm": 7553.04594093694,
+					"settled_rpm": 6620.96859637543,
+					"to_gear": 2
+				},
+				{
+					"at_s": 1.97083333333333,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.0135261628,
+					"settled_rpm": 6191.80068101375,
+					"to_gear": 3
+				},
+				{
+					"at_s": 3.29583333333339,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.11763077155,
+					"settled_rpm": 6528.5644637493,
+					"to_gear": 4
+				},
+				{
+					"at_s": 4.38750000000007,
+					"cut_s": 0.0731,
+					"from_rpm": 7502.79280100266,
+					"settled_rpm": 6736.425091506,
+					"to_gear": 5
+				},
+				{
+					"at_s": 5.64166666666667,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.45675135294,
+					"settled_rpm": 6562.52824826489,
+					"to_gear": 6
+				},
+				{
+					"at_s": 7.84166666666654,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.07031006747,
+					"settled_rpm": 6140.50480743619,
+					"to_gear": 7
+				}
+			],
+			"sixty_ft_s": 1.48886603768838,
+			"stall": 4600.0,
+			"transmission": "auto10",
+			"transmission_c": 80.2841322451289,
+			"trap_mph": 155.674484640559,
+			"wear": 0.0,
+			"wheelspin_s": 2.025,
+			"zero_100_s": 4.10737577327614,
+			"zero_60_s": 2.09162902675365
+		},
+		{
+			"capacity_nm": 3995.0,
+			"effective_shift_loss_s": 0.0266666666666667,
+			"efficiency": 0.975,
+			"eighth_et_s": 5.84977700477633,
+			"eighth_mph": 127.281213657664,
+			"eighth_s": 6.08347430224932,
+			"engine_c": 98.0200345811392,
+			"final_drive": 3.85,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				2.1,
+				1.4,
+				1.0
+			],
+			"mass_kg": 1094.0,
+			"policy": "optimized",
+			"quarter_et_s": 9.09415134690957,
+			"quarter_s": 9.32784864438256,
+			"reaction_s": 0.23369729747299,
+			"rpm_max": 7631.78216849137,
+			"rpm_mean": 7035.45010030182,
+			"rpm_min": 3858.50632912064,
+			"safety_clamps": 0,
+			"setup": "built",
+			"shift_count": 2,
+			"shift_map": [
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.0666666666666667,
+			"shifts": [
+				{
+					"at_s": 2.1,
+					"cut_s": 0.035,
+					"from_rpm": 7502.30375537924,
+					"settled_rpm": 7040.73802406826,
+					"to_gear": 2
+				},
+				{
+					"at_s": 3.94583333333342,
+					"cut_s": 0.035,
+					"from_rpm": 7504.02018872786,
+					"settled_rpm": 7052.43297095746,
+					"to_gear": 3
+				}
+			],
+			"sixty_ft_s": 1.50284318792934,
+			"stall": 0.0,
+			"transmission": "drag3",
+			"transmission_c": 81.5169328218294,
+			"trap_mph": 141.942557112117,
+			"wear": 0.0,
+			"wheelspin_s": 1.95416666666666,
+			"zero_100_s": 4.0550233150085,
+			"zero_60_s": 2.1439225684677
+		},
+		{
+			"capacity_nm": 2585.0,
+			"effective_shift_loss_s": 0.371874999999999,
+			"efficiency": 0.955,
+			"eighth_et_s": 5.85877938951009,
+			"eighth_mph": 126.224204260145,
+			"eighth_s": 6.05557811141219,
+			"engine_c": 100.272445028046,
+			"final_drive": 3.85,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				4.696,
+				2.985,
+				2.146,
+				1.769,
+				1.52,
+				1.275,
+				1.0,
+				0.854,
+				0.689,
+				0.636
+			],
+			"mass_kg": 1144.0,
+			"policy": "optimized",
+			"quarter_et_s": 9.02383317263881,
+			"quarter_s": 9.22063189454091,
+			"reaction_s": 0.196798721902097,
+			"rpm_max": 7603.49349472978,
+			"rpm_mean": 6624.25224491054,
+			"rpm_min": 3207.96555849279,
+			"safety_clamps": 0,
+			"setup": "built",
+			"shift_count": 7,
+			"shift_map": [
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.495833333333333,
+			"shifts": [
+				{
+					"at_s": 1.05833333333333,
+					"cut_s": 0.0731,
+					"from_rpm": 7507.42656249826,
+					"settled_rpm": 6955.85385520715,
+					"to_gear": 2
+				},
+				{
+					"at_s": 1.40833333333333,
+					"cut_s": 0.0731,
+					"from_rpm": 7603.49349472978,
+					"settled_rpm": 6643.95531347115,
+					"to_gear": 3
+				},
+				{
+					"at_s": 2.37500000000001,
+					"cut_s": 0.0731,
+					"from_rpm": 7505.69119720036,
+					"settled_rpm": 6615.92631336651,
+					"to_gear": 4
+				},
+				{
+					"at_s": 3.03333333333338,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.04795815443,
+					"settled_rpm": 6791.07336681971,
+					"to_gear": 5
+				},
+				{
+					"at_s": 3.76666666666675,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.70444096567,
+					"settled_rpm": 6609.92273898847,
+					"to_gear": 6
+				},
+				{
+					"at_s": 4.96250000000004,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.46583076638,
+					"settled_rpm": 6179.65276159249,
+					"to_gear": 7
+				},
+				{
+					"at_s": 7.74583333333321,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.48566432224,
+					"settled_rpm": 6649.78966702896,
+					"to_gear": 8
+				}
+			],
+			"sixty_ft_s": 1.48885604031035,
+			"stall": 0.0,
+			"transmission": "auto10",
+			"transmission_c": 80.1536956366412,
+			"trap_mph": 156.062255860083,
+			"wear": 0.0,
+			"wheelspin_s": 1.52916666666666,
+			"zero_100_s": 4.09418726964363,
+			"zero_60_s": 2.09071690562665
+		},
+		{
+			"capacity_nm": 3995.0,
+			"effective_shift_loss_s": 0.0266666666666667,
+			"efficiency": 0.975,
+			"eighth_et_s": 5.87478725139306,
+			"eighth_mph": 127.221010184616,
+			"eighth_s": 6.07290428339011,
+			"engine_c": 97.3420384245608,
+			"final_drive": 3.85,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				2.1,
+				1.4,
+				1.0
+			],
+			"mass_kg": 1094.0,
+			"policy": "optimized",
+			"quarter_et_s": 9.10232030574818,
+			"quarter_s": 9.30043733774523,
+			"reaction_s": 0.198117031997042,
+			"rpm_max": 7608.53152344841,
+			"rpm_mean": 6474.60539775879,
+			"rpm_min": 3748.42278001898,
+			"safety_clamps": 0,
+			"setup": "built",
+			"shift_count": 2,
+			"shift_map": [
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.0666666666666667,
+			"shifts": [
+				{
+					"at_s": 2.47500000000002,
+					"cut_s": 0.035,
+					"from_rpm": 7507.97943105912,
+					"settled_rpm": 6615.08746114939,
+					"to_gear": 2
+				},
+				{
+					"at_s": 4.12083333333342,
+					"cut_s": 0.035,
+					"from_rpm": 7500.47831593824,
+					"settled_rpm": 6399.78613155769,
+					"to_gear": 3
+				}
+			],
+			"sixty_ft_s": 1.49063263518574,
+			"stall": 3600.0,
+			"transmission": "drag3",
+			"transmission_c": 80.5673072608461,
+			"trap_mph": 142.735491967086,
+			"wear": 0.0,
+			"wheelspin_s": 1.35,
+			"zero_100_s": 4.11014440801875,
+			"zero_60_s": 2.18221594967012
+		},
+		{
+			"capacity_nm": 2585.0,
+			"effective_shift_loss_s": 0.371874999999999,
+			"efficiency": 0.955,
+			"eighth_et_s": 5.85495400282134,
+			"eighth_mph": 126.273823075388,
+			"eighth_s": 6.05175272472344,
+			"engine_c": 100.369805502229,
+			"final_drive": 3.85,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				4.696,
+				2.985,
+				2.146,
+				1.769,
+				1.52,
+				1.275,
+				1.0,
+				0.854,
+				0.689,
+				0.636
+			],
+			"mass_kg": 1144.0,
+			"policy": "optimized",
+			"quarter_et_s": 9.01917449534044,
+			"quarter_s": 9.21597321724254,
+			"reaction_s": 0.196798721902097,
+			"rpm_max": 7619.79414595071,
+			"rpm_mean": 6718.4750921906,
+			"rpm_min": 3769.80365204292,
+			"safety_clamps": 0,
+			"setup": "built",
+			"shift_count": 7,
+			"shift_map": [
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.495833333333333,
+			"shifts": [
+				{
+					"at_s": 0.895833333333331,
+					"cut_s": 0.0731,
+					"from_rpm": 7517.7610702883,
+					"settled_rpm": 6925.02047635074,
+					"to_gear": 2
+				},
+				{
+					"at_s": 1.40833333333333,
+					"cut_s": 0.0731,
+					"from_rpm": 7551.81767485175,
+					"settled_rpm": 6616.41445161344,
+					"to_gear": 3
+				},
+				{
+					"at_s": 2.37083333333335,
+					"cut_s": 0.0731,
+					"from_rpm": 7510.04091705865,
+					"settled_rpm": 6620.49655383464,
+					"to_gear": 4
+				},
+				{
+					"at_s": 3.02916666666671,
+					"cut_s": 0.0731,
+					"from_rpm": 7506.05950858053,
+					"settled_rpm": 6796.40584944813,
+					"to_gear": 5
+				},
+				{
+					"at_s": 3.75833333333342,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.43112832066,
+					"settled_rpm": 6609.65281605131,
+					"to_gear": 6
+				},
+				{
+					"at_s": 4.95416666666671,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.39535112138,
+					"settled_rpm": 6179.46152687208,
+					"to_gear": 7
+				},
+				{
+					"at_s": 7.73749999999988,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.42382945743,
+					"settled_rpm": 6649.63162662212,
+					"to_gear": 8
+				}
+			],
+			"sixty_ft_s": 1.48885604031035,
+			"stall": 3600.0,
+			"transmission": "auto10",
+			"transmission_c": 80.1666881547952,
+			"trap_mph": 156.089496141302,
+			"wear": 0.0,
+			"wheelspin_s": 1.95833333333333,
+			"zero_100_s": 4.08603005914895,
+			"zero_60_s": 2.09071690562665
+		},
+		{
+			"capacity_nm": 3995.0,
+			"effective_shift_loss_s": 0.0266666666666667,
+			"efficiency": 0.975,
+			"eighth_et_s": 5.83125442582118,
+			"eighth_mph": 127.750916574641,
+			"eighth_s": 6.05533699768721,
+			"engine_c": 97.9357121303461,
+			"final_drive": 3.85,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				2.1,
+				1.4,
+				1.0
+			],
+			"mass_kg": 1094.0,
+			"policy": "optimized",
+			"quarter_et_s": 9.07117731884338,
+			"quarter_s": 9.29525989070942,
+			"reaction_s": 0.224082571866034,
+			"rpm_max": 7631.67738506428,
+			"rpm_mean": 7038.37895385799,
+			"rpm_min": 3858.50632912064,
+			"safety_clamps": 0,
+			"setup": "built",
+			"shift_count": 2,
+			"shift_map": [
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.0666666666666667,
+			"shifts": [
+				{
+					"at_s": 2.04166666666666,
+					"cut_s": 0.035,
+					"from_rpm": 7504.04089883266,
+					"settled_rpm": 7040.70709242988,
+					"to_gear": 2
+				},
+				{
+					"at_s": 3.90833333333342,
+					"cut_s": 0.035,
+					"from_rpm": 7502.32780152549,
+					"settled_rpm": 7051.42747214931,
+					"to_gear": 3
+				}
+			],
+			"sixty_ft_s": 1.49719978268855,
+			"stall": 4600.0,
+			"transmission": "drag3",
+			"transmission_c": 81.2856448373416,
+			"trap_mph": 141.992559252422,
+			"wear": 0.0,
+			"wheelspin_s": 1.98749999999999,
+			"zero_100_s": 4.0164913022368,
+			"zero_60_s": 2.12797210955012
+		},
+		{
+			"capacity_nm": 2585.0,
+			"effective_shift_loss_s": 0.371874999999999,
+			"efficiency": 0.955,
+			"eighth_et_s": 5.85300689632192,
+			"eighth_mph": 126.298521545432,
+			"eighth_s": 6.04980561822402,
+			"engine_c": 100.398028981489,
+			"final_drive": 3.85,
+			"fixed_rpm": 7000.0,
+			"gears": [
+				4.696,
+				2.985,
+				2.146,
+				1.769,
+				1.52,
+				1.275,
+				1.0,
+				0.854,
+				0.689,
+				0.636
+			],
+			"mass_kg": 1144.0,
+			"policy": "optimized",
+			"quarter_et_s": 9.01681646640088,
+			"quarter_s": 9.21361518830297,
+			"reaction_s": 0.196798721902097,
+			"rpm_max": 7614.88415309218,
+			"rpm_mean": 6788.14840741822,
+			"rpm_min": 3888.49256099395,
+			"safety_clamps": 0,
+			"setup": "built",
+			"shift_count": 7,
+			"shift_map": [
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0,
+				7500.0
+			],
+			"shift_time_s": 0.495833333333333,
+			"shifts": [
+				{
+					"at_s": 0.912499999999998,
+					"cut_s": 0.0731,
+					"from_rpm": 7519.08722284781,
+					"settled_rpm": 6948.16171676415,
+					"to_gear": 2
+				},
+				{
+					"at_s": 1.425,
+					"cut_s": 0.0731,
+					"from_rpm": 7509.67130511064,
+					"settled_rpm": 6618.04208520476,
+					"to_gear": 3
+				},
+				{
+					"at_s": 2.36666666666668,
+					"cut_s": 0.0731,
+					"from_rpm": 7507.34705357231,
+					"settled_rpm": 6618.6827152129,
+					"to_gear": 4
+				},
+				{
+					"at_s": 3.02500000000005,
+					"cut_s": 0.0731,
+					"from_rpm": 7505.60977904624,
+					"settled_rpm": 6796.0314305924,
+					"to_gear": 5
+				},
+				{
+					"at_s": 3.75416666666675,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.42403716861,
+					"settled_rpm": 6609.51526725696,
+					"to_gear": 6
+				},
+				{
+					"at_s": 4.95000000000004,
+					"cut_s": 0.0731,
+					"from_rpm": 7501.43003506262,
+					"settled_rpm": 6179.28475839782,
+					"to_gear": 7
+				},
+				{
+					"at_s": 7.73333333333321,
+					"cut_s": 0.0731,
+					"from_rpm": 7500.40516990221,
+					"settled_rpm": 6649.45642048404,
+					"to_gear": 8
+				}
+			],
+			"sixty_ft_s": 1.48885604031035,
+			"stall": 4600.0,
+			"transmission": "auto10",
+			"transmission_c": 80.2042056459538,
+			"trap_mph": 156.102686313437,
+			"wear": 0.0,
+			"wheelspin_s": 1.93749999999999,
+			"zero_100_s": 4.08188212973152,
+			"zero_60_s": 2.09071690562665
+		}
+	]
+}

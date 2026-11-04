@@ -1,0 +1,26 @@
+{
+	"aster": {
+		"peak_hp": 400,
+		"quarter_s": 12.1438826784278,
+		"safety_clamps": 0,
+		"trap_mph": 119.988659578249
+	},
+	"kaze": {
+		"peak_hp": 284,
+		"quarter_s": 13.21926575345,
+		"safety_clamps": 0,
+		"trap_mph": 109.852530180597
+	},
+	"nori": {
+		"peak_hp": 250,
+		"quarter_s": 13.982217391892,
+		"safety_clamps": 0,
+		"trap_mph": 110.359051127467
+	},
+	"vanta": {
+		"peak_hp": 549,
+		"quarter_s": 11.5651018097861,
+		"safety_clamps": 0,
+		"trap_mph": 130.214826327659
+	}
+}

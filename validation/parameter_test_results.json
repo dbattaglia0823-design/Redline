@@ -1,0 +1,15 @@
+{
+	"acceleration_upgrade_deltas_mps": {
+		"Engine": 4.59073471690065,
+		"Exhaust": 2.26258289073584,
+		"Turbo": 2.53422530232382,
+		"Weight": 1.74986461882254
+	},
+	"failures": 0,
+	"heavy_8s_mph": 69.2627963428067,
+	"nitrous_tier3_gain_mps": 0.480960528769209,
+	"power_upgraded_top_mph": 185.096256654011,
+	"stock_8s_mph": 84.1900713921422,
+	"stock_top_mph": 167.62664899969,
+	"tire_launch_gain_mps": 0.427671662754203
+}

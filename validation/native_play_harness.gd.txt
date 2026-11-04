@@ -1,0 +1,35 @@
+extends SceneTree
+
+var game: Node2D
+var wall := 0.0
+var saved := false
+
+func _initialize() -> void:
+	call_deferred("start")
+
+func start() -> void:
+	game = load("res://scenes/main.tscn").instantiate()
+	game.set_script(load("res://.reference_helpers/native_game.gd"))
+	root.add_child(game)
+	game.profile = DriverProfile.new()
+	game.profile.career_wins[0] = 2
+	game.selected_opponent = 2
+	game.wager = 0
+	game.start_race()
+	game.set_race_paused(true)
+	game.debug_physics = true
+	DisplayServer.window_set_title("REDLINE - Native paddle playtest")
+
+func _process(dt: float) -> bool:
+	wall += dt
+	if not is_instance_valid(game): return false
+	# Test-only foot assistance; all paddles/pause/guide are native UI input.
+	if game.screen == "race" and not game.paused_race and game.finish_hold_left == 0.0:
+		game.controls.hold("qa_foot","gas")
+	else: game.controls.release("qa_foot")
+	if game.screen == "results" and not saved:
+		saved = true
+		var f := FileAccess.open("res://validation/native_ui_play.json",FileAccess.WRITE)
+		f.store_string(JSON.stringify({"completed":true,"total_s":game.player_finish,"trap_mph":game.finish_speed,"shift_requests":game.car.shift_request_serial,"actual_shifts":game.car.shift_serial,"audio_underruns":game.sound.underruns,"method":"Native Windows UI paddle/pause/guide controls; test-only automatic gas pedal and disabled focus auto-pause so the automation surface can change foreground focus. Production focus behavior is covered separately. Does not establish subjective feel or timbre."},"\t"))
+	if wall > 120.0: quit()
+	return false

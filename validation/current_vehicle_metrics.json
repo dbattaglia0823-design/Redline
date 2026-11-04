@@ -1,0 +1,242 @@
+{
+	"brz": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 200,
+		"quarter_s": 14.750659762433,
+		"safety_clamps": 0,
+		"transmission": "oem_brz",
+		"trap_mph": 96.6715486969277
+	},
+	"camaro": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 455,
+		"quarter_s": 11.8315678374905,
+		"safety_clamps": 0,
+		"transmission": "oem_camaro",
+		"trap_mph": 123.345127131752
+	},
+	"chiron": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 1479,
+		"quarter_s": 9.52992811933265,
+		"safety_clamps": 0,
+		"transmission": "oem_chiron",
+		"trap_mph": 167.647046350672
+	},
+	"civic_si": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 160,
+		"quarter_s": 15.9243226523662,
+		"safety_clamps": 0,
+		"transmission": "oem_civic_si",
+		"trap_mph": 89.6214038008514
+	},
+	"demon": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 1025,
+		"quarter_s": 9.47877257896326,
+		"safety_clamps": 0,
+		"transmission": "oem_demon",
+		"trap_mph": 153.296013739859
+	},
+	"evo": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 271,
+		"quarter_s": 13.5580397674162,
+		"safety_clamps": 0,
+		"transmission": "oem_evo",
+		"trap_mph": 105.018324405287
+	},
+	"golf_r": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 288,
+		"quarter_s": 12.81149472134,
+		"safety_clamps": 0,
+		"transmission": "oem_golf_r",
+		"trap_mph": 109.49626642057
+	},
+	"gr86": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 228,
+		"quarter_s": 13.8231193750327,
+		"safety_clamps": 0,
+		"transmission": "oem_gr86",
+		"trap_mph": 102.426184903274
+	},
+	"gt500": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 760,
+		"quarter_s": 10.6080791167358,
+		"safety_clamps": 0,
+		"transmission": "oem_gt500",
+		"trap_mph": 141.284969873274
+	},
+	"gti": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 201,
+		"quarter_s": 14.7523199278181,
+		"safety_clamps": 0,
+		"transmission": "oem_gti",
+		"trap_mph": 97.58176804889
+	},
+	"gti_vr6": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 172,
+		"quarter_s": 15.1189191066969,
+		"safety_clamps": 0,
+		"transmission": "oem_gti_vr6",
+		"trap_mph": 94.28366486433
+	},
+	"gtr": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 600,
+		"quarter_s": 10.9995040292703,
+		"safety_clamps": 0,
+		"transmission": "oem_gtr",
+		"trap_mph": 132.498888841546
+	},
+	"integra": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 195,
+		"quarter_s": 14.70144316854,
+		"safety_clamps": 0,
+		"transmission": "oem_integra",
+		"trap_mph": 96.0866694671559
+	},
+	"m3": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 333,
+		"quarter_s": 12.9877085363313,
+		"safety_clamps": 0,
+		"transmission": "oem_m3",
+		"trap_mph": 109.30206011323
+	},
+	"mclaren": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 755,
+		"quarter_s": 10.0169290486294,
+		"safety_clamps": 0,
+		"transmission": "oem_mclaren",
+		"trap_mph": 154.952107882003
+	},
+	"miata": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 116,
+		"quarter_s": 16.0732055793117,
+		"safety_clamps": 0,
+		"transmission": "oem_miata",
+		"trap_mph": 87.0704167255817
+	},
+	"mustang": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 480,
+		"quarter_s": 11.7949133029819,
+		"safety_clamps": 0,
+		"transmission": "oem_mustang",
+		"trap_mph": 124.374956062568
+	},
+	"r8": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 611,
+		"quarter_s": 10.8139534925832,
+		"safety_clamps": 0,
+		"transmission": "oem_r8",
+		"trap_mph": 132.086635258762
+	},
+	"redeye": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 797,
+		"quarter_s": 10.7631356526219,
+		"safety_clamps": 0,
+		"transmission": "oem_redeye",
+		"trap_mph": 138.355130609019
+	},
+	"rsx": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 200,
+		"quarter_s": 14.7116112620751,
+		"safety_clamps": 0,
+		"transmission": "oem_rsx",
+		"trap_mph": 96.8808382895553
+	},
+	"s2000": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 240,
+		"quarter_s": 13.8275538175246,
+		"safety_clamps": 0,
+		"transmission": "oem_s2000",
+		"trap_mph": 103.121455344444
+	},
+	"sf90": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 769,
+		"quarter_s": 9.7813921692545,
+		"safety_clamps": 0,
+		"transmission": "oem_sf90",
+		"trap_mph": 158.561011868666
+	},
+	"sti": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 300,
+		"quarter_s": 13.1068339594332,
+		"safety_clamps": 0,
+		"transmission": "oem_sti",
+		"trap_mph": 107.016533997365
+	},
+	"supra": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 320,
+		"quarter_s": 13.0338107702901,
+		"safety_clamps": 0,
+		"transmission": "oem_supra",
+		"trap_mph": 109.563675901088
+	},
+	"supra_gr": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 338,
+		"quarter_s": 12.372319315058,
+		"safety_clamps": 0,
+		"transmission": "oem_supra_gr",
+		"trap_mph": 115.997311756987
+	},
+	"turbo_s": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 640,
+		"quarter_s": 10.4583053965945,
+		"safety_clamps": 0,
+		"transmission": "oem_turbo_s",
+		"trap_mph": 140.532866117269
+	},
+	"type_r": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 306,
+		"quarter_s": 13.7261766008217,
+		"safety_clamps": 0,
+		"transmission": "oem_type_r",
+		"trap_mph": 110.810979375223
+	},
+	"z06": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 670,
+		"quarter_s": 10.6835050580078,
+		"safety_clamps": 0,
+		"transmission": "oem_z06",
+		"trap_mph": 138.791633082545
+	},
+	"z350": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 287,
+		"quarter_s": 13.1698950931017,
+		"safety_clamps": 0,
+		"transmission": "oem_z350",
+		"trap_mph": 108.206199590532
+	},
+	"z400": {
+		"driver": "VehicleBench factory hardware",
+		"peak_hp": 400,
+		"quarter_s": 12.1938486385291,
+		"safety_clamps": 0,
+		"transmission": "oem_z400",
+		"trap_mph": 117.887875559415
+	}
+}

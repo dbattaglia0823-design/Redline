@@ -1,0 +1,31 @@
+{
+  "source": "reference/LCXM2683.MP4",
+  "method": "Manual readings from frames requested every 0.1 recording seconds around the two observed changes. These show a human-operated manual shift, not an automatic paddle controller.",
+  "columns": ["clock_s", "gear", "rpm", "mph"],
+  "reading_uncertainty": {"clock_s": 0.02, "rpm": 10, "mph": 0.5},
+  "first_shift": [
+    [4.717, 1, 6390, 30],
+    [4.817, 1, 6460, 30],
+    [4.917, 1, 6460, 31],
+    [5.017, 1, 5640, 31],
+    [5.117, 2, 4510, 31],
+    [5.217, 2, 3860, 31],
+    [5.317, 2, 3320, 31],
+    [5.417, 2, 3440, 31],
+    [5.517, 2, 3530, 32]
+  ],
+  "second_shift": [
+    [10.517, 2, 6640, 58],
+    [10.617, 2, 6170, 58],
+    [10.717, 2, 4900, 58],
+    [10.817, 3, 4170, 58],
+    [10.917, 3, 3570, 58],
+    [11.017, 3, 3070, 58],
+    [11.117, 3, 3040, 58],
+    [11.217, 3, 3790, 58],
+    [11.317, 3, 4200, 58],
+    [11.417, 3, 4390, 59],
+    [11.517, 3, 4490, 59]
+  ],
+  "interpretation": "First visible gear changes are near clocks 5.117 and 10.817 s. RPM falls for about 0.4 and 0.6 s from the preceding sampled high value to undershoot. Exact clutch travel, command onset, and analog pedal levels are not observable. Manual undershoot must not be mistaken for the ratio-consistent settled RPM."
+}

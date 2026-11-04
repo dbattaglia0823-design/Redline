@@ -1,0 +1,351 @@
+class_name DriverProfile
+extends RefCounted
+
+const SAVE_PATH := "user://driver_v1.json"
+var credits := 2400
+var xp := 0
+var wins := 0
+var races := 0
+var best := 0.0
+var paint := 0
+var wheels := 0
+var appearance: Dictionary = VehicleAppearance.normalize({})
+var owned_appearance: Array = VehicleAppearance.owned_defaults(appearance)
+var stages: Array = GameCatalog.blank_stages()
+var muted := false
+var effects_quality := 2
+var reduced_motion := false
+var save_error := ""
+var vehicle_id := "miata"
+var garage: Dictionary = {"miata":{"paint":0,"wheels":0,"stages":[0,0,0,0,0,0,0,0],"hardware":{"transmission":"oem_miata","owned_transmissions":["oem_miata"]}}}
+var career_wins: Array = [0,0,0]
+var pending_wager: Dictionary = {}
+var hardware := GameCatalog.factory_build("miata")
+var retired_garage: Dictionary = {}
+
+func level() -> int:
+	return 1 + int(sqrt(float(xp) / 150.0))
+
+func next_level_xp() -> int:
+	return level() * level() * 150
+
+func snapshot_vehicle() -> void:
+	hardware.performance_stages[hardware.transmission] = int(stages[4])
+	var entry: Dictionary = garage.get(vehicle_id,{}).duplicate(true)
+	appearance.paint = paint; appearance.rim = wheels
+	entry.merge({"paint":paint,"wheels":wheels,"appearance":appearance.duplicate(true),"owned_appearance":owned_appearance.duplicate(),"stages":GameCatalog.normalize_stages(stages),"hardware":hardware.duplicate(true)},true)
+	garage[vehicle_id] = entry
+
+func load_profile() -> void:
+	if not FileAccess.file_exists(SAVE_PATH): return
+	var data = JSON.parse_string(FileAccess.get_file_as_string(SAVE_PATH))
+	if not data is Dictionary: return
+	if int(data.get("roster_version",0))<2 and not FileAccess.file_exists(SAVE_PATH+".pre_roster_v2"):
+		DirAccess.copy_absolute(ProjectSettings.globalize_path(SAVE_PATH),ProjectSettings.globalize_path(SAVE_PATH+".pre_roster_v2"))
+	data = migrate_roster(data)
+	retired_garage = data.get("retired_garage",{}).duplicate(true)
+	credits = maxi(0, int(data.get("credits", 2400)))
+	xp = maxi(0, int(data.get("xp", 0)))
+	wins = maxi(0, int(data.get("wins", 0)))
+	races = maxi(wins, int(data.get("races", 0)))
+	best = maxf(0.0, float(data.get("best", 0.0)))
+	paint = clampi(int(data.get("paint", 0)), 0, 5)
+	wheels = clampi(int(data.get("wheels", 0)), 0, 2)
+	stages = GameCatalog.normalize_stages(data.get("stages", []))
+	muted = bool(data.get("muted", false))
+	effects_quality = clampi(int(data.get("effects_quality",2)),0,2)
+	reduced_motion = bool(data.get("reduced_motion",false))
+	# Migrate original saves without removing their car, paint, money, or upgrades.
+	garage = {"miata":{"paint":paint,"wheels":wheels,"stages":stages.duplicate(),"hardware":GameCatalog.factory_build("miata")}}
+	var saved_garage = data.get("garage", {})
+	if saved_garage is Dictionary:
+		for id in GameCatalog.CAR_IDS:
+			var entry = saved_garage.get(id)
+			if entry is Dictionary:
+				garage[id] = {"paint":clampi(int(entry.get("paint",0)),0,5),"wheels":clampi(int(entry.get("wheels",0)),0,2),"stages":GameCatalog.normalize_stages(entry.get("stages",[])),"hardware":VehicleParts.normalize(entry.get("hardware",{}),id)}
+				garage[id].appearance = VehicleAppearance.normalize(entry.get("appearance",{}),int(garage[id].paint),int(garage[id].wheels))
+				garage[id].owned_appearance = normalize_cosmetic_ownership(entry.get("owned_appearance",[]),garage[id].appearance)
+	vehicle_id = str(data.get("vehicle_id", "miata"))
+	if not garage.has(vehicle_id): vehicle_id = "miata"
+	apply_vehicle(vehicle_id)
+	var progress = data.get("career_wins", [0,0,0])
+	if progress is Array and progress.size() == 3:
+		for i in 3: career_wins[i] = clampi(int(progress[i]),0,5)
+	# Interrupted runs forfeit the already-charged stake, never refund it on reload.
+	pending_wager = {}
+
+static func migrate_roster(raw: Dictionary) -> Dictionary:
+	var data:=raw.duplicate(true)
+	if int(data.get("roster_version",0))>=2: return data
+	var entries: Dictionary=data.get("garage",{}).duplicate(true)
+	var archive: Dictionary=data.get("retired_garage",{}).duplicate(true)
+	var active:=str(data.get("vehicle_id","kaze"))
+	if entries.is_empty(): entries[active]={"paint":data.get("paint",0),"wheels":data.get("wheels",0),"stages":data.get("stages",[]),"hardware":data.get("hardware",{})}
+	for old in entries.keys():
+		if RosterData.IDS.has(old): continue
+		archive[old]=entries[old].duplicate(true)
+		var replacement:=str(RosterData.RETIRED.get(old,"miata"))
+		if not entries.has(replacement): entries[replacement]=entries[old].duplicate(true)
+		else:
+			var levels:=GameCatalog.normalize_stages(entries[old].get("stages",[])); var refund:=int(GameCatalog.CARS.get(old,{}).get("price",0))
+			for i in levels.size(): refund+=GameCatalog.PART_COSTS[i]*int(levels[i])*(int(levels[i])+1)/2
+			var build: Dictionary=entries[old].get("hardware",{})
+			for part in build.get("owned_parts",[]): refund+=int(VehicleParts.PARTS.get(part,{}).get("cost",0))
+			for trans in build.get("owned_transmissions",[]): refund+=int(TransmissionCatalog.spec(str(trans)).cost) if trans!="legacy6" else 0
+			data.credits=int(data.get("credits",0))+refund
+		entries.erase(old)
+	data.garage=entries; data.vehicle_id=RosterData.RETIRED.get(active,active if RosterData.IDS.has(active) else "miata")
+	data.retired_garage=archive; data.roster_version=2
+	return data
+
+func apply_vehicle(id: String) -> void:
+	vehicle_id = id
+	var entry: Dictionary = garage[id]
+	paint = int(entry.paint)
+	wheels = int(entry.wheels)
+	appearance = VehicleAppearance.normalize(entry.get("appearance",{}),paint,wheels)
+	paint = int(appearance.paint); wheels = int(appearance.rim)
+	owned_appearance = normalize_cosmetic_ownership(entry.get("owned_appearance",[]),appearance)
+	stages = GameCatalog.normalize_stages(entry.stages)
+	hardware = VehicleParts.normalize(entry.get("hardware",{}),id,int(stages[4]))
+
+func select_vehicle(id: String) -> bool:
+	if not garage.has(id) or not pending_wager.is_empty(): return false
+	snapshot_vehicle()
+	apply_vehicle(id)
+	save()
+	return true
+
+static func normalize_cosmetic_ownership(raw: Variant, look: Dictionary) -> Array:
+	var clean := VehicleAppearance.owned_defaults(look)
+	if raw is Array:
+		for item in raw:
+			if not item is String: continue
+			var parts := str(item).split(":")
+			if parts.size() == 2 and VehicleAppearance.OPTIONS.has(parts[0]) and parts[1].is_valid_int():
+				var index := int(parts[1])
+				if index >= 0 and index < VehicleAppearance.OPTIONS[parts[0]].size() and not clean.has(item): clean.append(item)
+	return clean
+
+func install_appearance(key: String,index: int) -> String:
+	if not pending_wager.is_empty(): return "Finish your race first"
+	if not VehicleAppearance.compatible(vehicle_id,key,index): return "Unavailable for this car"
+	var part := key+":"+str(index)
+	var cost := 0 if owned_appearance.has(part) else int(VehicleAppearance.PRICES[key][index])
+	if credits < cost: return "Not enough credits"
+	credits -= cost
+	if not owned_appearance.has(part): owned_appearance.append(part)
+	appearance[key] = index; paint = int(appearance.paint); wheels = int(appearance.rim)
+	save()
+	return "Installed "+str(VehicleAppearance.OPTIONS[key][index])
+
+func restore_appearance() -> void:
+	if not pending_wager.is_empty(): return
+	appearance = VehicleAppearance.normalize({}); paint = 0; wheels = 0
+	save()
+
+func appearance_for(id: String) -> Dictionary:
+	if id == vehicle_id:
+		var look := appearance.duplicate(true); look.paint = paint; look.rim = wheels
+		return look
+	var entry: Dictionary = garage.get(id,{})
+	return VehicleAppearance.normalize(entry.get("appearance",{}),int(entry.get("paint",0)),int(entry.get("wheels",0)))
+
+func buy_vehicle(id: String, equip: bool = true) -> bool:
+	if not GameCatalog.CAR_IDS.has(id) or garage.has(id) or not pending_wager.is_empty(): return false
+	if level() < int(GameCatalog.spec(id).get("unlock_level",1)): return false
+	var cost := int(GameCatalog.spec(id).price)
+	if credits < cost: return false
+	snapshot_vehicle()
+	credits -= cost
+	garage[id] = {"paint":0,"wheels":0,"stages":GameCatalog.blank_stages(),"hardware":GameCatalog.factory_build(id)}
+	if equip: apply_vehicle(id)
+	save()
+	return true
+
+func save() -> void:
+	snapshot_vehicle()
+	var file := FileAccess.open(SAVE_PATH+".tmp", FileAccess.WRITE)
+	if file == null:
+		save_error = "Could not save progress"
+		return
+	file.store_string(JSON.stringify({"roster_version":2,"retired_garage":retired_garage,"credits":credits,"xp":xp,"wins":wins,"races":races,"best":best,"paint":paint,"wheels":wheels,"stages":stages,"muted":muted,"effects_quality":effects_quality,"reduced_motion":reduced_motion,"vehicle_id":vehicle_id,"garage":garage,"career_wins":career_wins,"pending_wager":pending_wager}))
+	file.flush()
+	file.close()
+	if DirAccess.rename_absolute(ProjectSettings.globalize_path(SAVE_PATH+".tmp"),ProjectSettings.globalize_path(SAVE_PATH)) != OK:
+		save_error = "Could not commit progress"
+		return
+	save_error = ""
+
+func upgrade_cost(index: int, target: int = -1) -> int:
+	if index < 0 or index >= GameCatalog.PART_NAMES.size(): return 0
+	var current := int(stages[index])
+	if target < 0: target = current + 1
+	var cost := 0
+	for tier in range(current + 1, mini(target, GameCatalog.max_stage(index)) + 1): cost += GameCatalog.PART_COSTS[index] * tier
+	return cost
+
+func upgrade_reason(index: int) -> String:
+	if index==1 and float(GameCatalog.spec(vehicle_id).get("factory_super",0))>0 and str(hardware.parts.get("induction","")) not in ["turbo_hybrid","turbo_race"]: return "Fit a turbo assembly before buying turbo packages"
+	return ""
+
+func upgrade(index: int, target: int = -1) -> bool:
+	if index < 0 or index >= stages.size() or not pending_wager.is_empty(): return false
+	if upgrade_reason(index)!="": return false
+	var current := int(stages[index])
+	if target < 0: target = current + 1
+	if target <= current or target > GameCatalog.max_stage(index): return false
+	var cost := upgrade_cost(index, target)
+	if credits < cost: return false
+	credits -= cost
+	stages[index] = target
+	save()
+	return true
+
+func begin_wager(amount: int) -> bool:
+	if amount < 0 or amount > credits or not pending_wager.is_empty(): return false
+	credits -= amount
+	pending_wager = {"amount":amount}
+	save()
+	return true
+
+func settle_wager(won: bool) -> int:
+	if pending_wager.is_empty(): return 0
+	var returned := int(pending_wager.amount) * 2 if won else 0
+	credits += returned
+	pending_wager.clear()
+	return returned
+
+func forfeit_wager() -> void:
+	if pending_wager.is_empty(): return
+	settle_wager(false)
+	save()
+
+func install_transmission(id: String) -> String:
+	if not pending_wager.is_empty(): return "Finish your race first"
+	if not TransmissionCatalog.compatible(id,vehicle_id): return "Not compatible with this drivetrain"
+	var spec := TransmissionCatalog.spec(id)
+	if transmission_unlock_stage() < int(spec.stage): return TransmissionCatalog.STAGES[int(spec.stage)]+" build required"
+	var cost := 0 if hardware.owned_transmissions.has(id) else int(spec.cost)
+	if credits < cost: return "Not enough credits"
+	var candidate := hardware.duplicate(true)
+	candidate.performance_stages[candidate.transmission] = int(stages[4])
+	candidate.transmission = id
+	# Different gearbox families cannot retain physically incompatible internals.
+	if id != str(hardware.transmission):
+		for slot in VehicleParts.TRANSMISSION_SLOTS: candidate.parts.erase(slot)
+		for key in ["ratios","shift_rpms","stall","firmness"]: candidate.tune.erase(key)
+	credits -= cost
+	if not candidate.owned_transmissions.has(id): candidate.owned_transmissions.append(id)
+	stages[4] = int(candidate.performance_stages.get(id,0))
+	hardware = candidate
+	save()
+	return "Installed "+str(spec.name)
+
+func install_hardware(id: String) -> String:
+	if not pending_wager.is_empty(): return "Finish your race first"
+	if not VehicleParts.PARTS.has(id): return "Unknown part"
+	var candidate := hardware.duplicate(true)
+	var part: Dictionary = VehicleParts.PARTS[id]
+	candidate.parts[part.slot] = id
+	if id=="boost_control":
+		var reason:=VehicleParts.boost_control_reason(candidate,float(GameCatalog.spec(vehicle_id).get("base_boost",.45)),int(stages[1]))
+		if reason!="": return reason
+	for installed in candidate.parts.values():
+		var reason := VehicleParts.compatible(str(installed),candidate,int(stages[4]))
+		if reason != "": return reason
+	var cost := 0 if VehicleParts.is_owned(hardware,id) else int(part.cost)
+	if credits < cost: return "Not enough credits"
+	credits -= cost
+	if not candidate.owned_parts.has(id): candidate.owned_parts.append(id)
+	if not candidate.fitments.has(id): candidate.fitments[id] = []
+	if not candidate.fitments[id].has(candidate.transmission): candidate.fitments[id].append(candidate.transmission)
+	hardware = candidate
+	save()
+	return "Installed "+str(part.name)
+
+func transmission_unlock_stage() -> int:
+	var highest := int(stages[4])
+	for rank in hardware.performance_stages.values(): highest = maxi(highest,int(rank))
+	return highest
+
+func remove_hardware(slot: String) -> String:
+	if not pending_wager.is_empty(): return "Finish your race first"
+	var candidate := hardware.duplicate(true)
+	candidate.parts.erase(slot)
+	for installed in candidate.parts.values():
+		var reason := VehicleParts.compatible(str(installed),candidate,int(stages[4]))
+		if reason != "": return reason
+	hardware = candidate
+	save()
+	return "Factory hardware installed"
+
+func tune_hardware(key: String, value: Variant, persist: bool = true) -> bool:
+	if not pending_wager.is_empty(): return false
+	if key not in ["ratios","shift_rpms"] and not (value is float or value is int): return false
+	var fitted: Array = hardware.parts.values()
+	var number := float(value) if value is float or value is int else 0.0
+	if not is_finite(number): return false
+	match key:
+		"stall":
+			var id := str(hardware.parts.get("converter",""))
+			if not VehicleParts.PARTS.has(id): return false
+			var part: Dictionary = VehicleParts.PARTS[id]
+			hardware.tune[key] = clampf(number,float(part.stall_min),float(part.stall_max))
+		"launch_rpm":
+			if not fitted.has("ecu"): return false
+			hardware.tune[key] = clampf(number,2200.0,6000.0)
+		"redline":
+			if not fitted.has("ecu"): return false
+			var factory_limit := float(GameCatalog.spec(vehicle_id).get("redline",7600.0))
+			var headroom:=0.0
+			for id in fitted: headroom+=float(VehicleParts.PARTS[id].get("redline",0))
+			var mechanical_limit:=factory_limit+headroom
+			hardware.tune[key] = clampf(number,minf(6500.0,mechanical_limit-500.0),mechanical_limit)
+		"boost":
+			if not fitted.has("boost_control"): return false
+			var base:=float(GameCatalog.spec(vehicle_id).get("base_boost",.45))
+			if VehicleParts.boost_control_reason(hardware,base,int(stages[1]))!="": return false
+			hardware.tune[key] = clampf(number,0.0,VehicleParts.boost_control_limit(hardware,base,int(stages[1])))
+		"final_drive":
+			if not fitted.has("final_kit") or number not in VehicleParts.FINAL_DRIVES: return false
+			hardware.tune[key] = number
+		"firmness":
+			if str(TransmissionCatalog.spec(str(hardware.transmission)).kind) not in ["drag","automatic","dct"]: return false
+			hardware.tune[key] = clampf(number,0.5,1.0+int(stages[4])*0.1)
+		"nitrous_ramp":
+			if not fitted.has("progressive"): return false
+			hardware.tune[key] = clampf(number,0.15,1.0)
+		"shift_rpms":
+			if not fitted.has("race_controller") or not value is Array: return false
+			var count: int = TransmissionCatalog.spec(str(hardware.transmission)).ratios.size()-1
+			if value.size() != count: return false
+			var clean: Array = []
+			for rpm in value:
+				if not (rpm is int or rpm is float) or not is_finite(float(rpm)): return false
+				clean.append(clampf(float(rpm),3500.0,8200.0))
+			hardware.tune[key] = clean
+		"ratios":
+			if not fitted.has("gearset") or not value is Array: return false
+			var original: Array = TransmissionCatalog.spec(str(hardware.transmission)).ratios
+			if value.size() != original.size(): return false
+			for i in value.size():
+				if not (value[i] is int or value[i] is float) or not is_finite(float(value[i])): return false
+				if float(value[i]) < float(original[i])*0.88 or float(value[i]) > float(original[i])*1.12: return false
+				if i > 0 and float(value[i-1]) <= float(value[i])*1.025: return false
+			hardware.tune[key] = value.duplicate()
+		_: return false
+	if persist: save()
+	return true
+
+func apply_tuning_preset(name: String, keys: Array = []) -> void:
+	if not pending_wager.is_empty(): return
+	var presets := {
+		"street":{"launch_rpm":3000.0,"stall":2800.0,"redline":7400.0,"boost":0.65,"firmness":0.85,"final_drive":3.55,"nitrous_ramp":0.7},
+		"drag":{"launch_rpm":4200.0,"stall":4400.0,"redline":8000.0,"boost":1.5,"firmness":1.35,"final_drive":4.10,"nitrous_ramp":0.35},
+		"safe":{"launch_rpm":2800.0,"stall":2600.0,"redline":7000.0,"boost":0.45,"firmness":0.75,"final_drive":3.85,"nitrous_ramp":1.0}}
+	if not presets.has(name): return
+	for key in presets[name]:
+		if keys.is_empty() or keys.has(key): tune_hardware(key,presets[name][key],false)
+	if keys.is_empty() or keys.has("shift"): hardware.tune.erase("shift_rpms")
+	save()

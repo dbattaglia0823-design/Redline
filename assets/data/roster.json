@@ -1,0 +1,2661 @@
+{
+  "miata": {
+    "id": "miata",
+    "name": "Mazda MX-5 Miata",
+    "display_name": "Mazda MX-5 Miata",
+    "brand": "Mazda",
+    "model": "MX-5 Miata",
+    "year": "1990",
+    "requested_class": "E",
+    "performance_class": "E",
+    "factory_hp": 116,
+    "ice_hp": 116,
+    "peak_rpm": 6500,
+    "peak_torque_nm": 136,
+    "torque_rpm": 5500,
+    "torque": 136.0,
+    "mass": 1002,
+    "drive": "RWD",
+    "engine": "1.6L NA I4",
+    "cylinders": 4,
+    "redline": 7200,
+    "idle": 850,
+    "base_boost": 0,
+    "factory_super": 0,
+    "factory_trans": "oem_miata",
+    "gearbox_kind": "manual5",
+    "gear_ratios": [
+      3.136,
+      1.888,
+      1.33,
+      1,
+      0.814
+    ],
+    "final_drive": 4.3,
+    "tire_radius": 0.289,
+    "grip": 0.68,
+    "drag_area": 0.68,
+    "inertia": 0.18,
+    "price": 0,
+    "unlock_level": 1,
+    "torque_curve": [
+      [
+        0.0,
+        0.34
+      ],
+      [
+        0.102362,
+        0.56
+      ],
+      [
+        0.732283,
+        1.0
+      ],
+      [
+        0.889764,
+        0.935217
+      ],
+      [
+        1.0,
+        0.78
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      223,
+      777
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 76,
+    "source": "https://www.miata.net/faq/First%2025%20Years/Pricing%20%26%20Specs%20-%20Model%20Year/Specifications/1990%20MX-5%20Miata%20Specifications.pdf",
+    "reference_quarter_s": 16.8,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "US where available"
+  },
+  "civic_si": {
+    "id": "civic_si",
+    "name": "Honda Civic Si",
+    "display_name": "Honda Civic Si",
+    "brand": "Honda",
+    "model": "Civic Si",
+    "year": "1999",
+    "requested_class": "E",
+    "performance_class": "E",
+    "factory_hp": 160,
+    "ice_hp": 160,
+    "peak_rpm": 7600,
+    "peak_torque_nm": 150,
+    "torque_rpm": 7000,
+    "torque": 150.0,
+    "mass": 1180,
+    "drive": "FWD",
+    "engine": "1.6L NA I4",
+    "cylinders": 4,
+    "redline": 8000,
+    "idle": 850,
+    "base_boost": 0,
+    "factory_super": 0,
+    "factory_trans": "oem_civic_si",
+    "gearbox_kind": "manual5",
+    "gear_ratios": [
+      3.23,
+      2.105,
+      1.458,
+      1.107,
+      0.848
+    ],
+    "final_drive": 4.4,
+    "tire_radius": 0.291,
+    "grip": 0.68,
+    "drag_area": 0.68,
+    "inertia": 0.18,
+    "price": 5200,
+    "unlock_level": 1,
+    "torque_curve": [
+      [
+        0.0,
+        0.34
+      ],
+      [
+        0.090909,
+        0.56
+      ],
+      [
+        0.86014,
+        1.0
+      ],
+      [
+        0.944056,
+        1.000281
+      ],
+      [
+        1.0,
+        0.78
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      226,
+      787
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 74,
+    "source": "https://hondanews.com/en-US/releases/honda-civic-si-history",
+    "reference_quarter_s": 15.7,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "US where available"
+  },
+  "gti_vr6": {
+    "id": "gti_vr6",
+    "name": "Volkswagen Golf GTI VR6",
+    "display_name": "Volkswagen Golf GTI VR6",
+    "brand": "Volkswagen",
+    "model": "Golf GTI VR6",
+    "year": "1997",
+    "requested_class": "E",
+    "performance_class": "E",
+    "factory_hp": 172,
+    "ice_hp": 172,
+    "peak_rpm": 5800,
+    "peak_torque_nm": 235,
+    "torque_rpm": 4200,
+    "torque": 235.0,
+    "mass": 1280,
+    "drive": "FWD",
+    "engine": "2.8L NA VR6",
+    "cylinders": 6,
+    "redline": 6500,
+    "idle": 850,
+    "base_boost": 0,
+    "factory_super": 0,
+    "factory_trans": "oem_gti_vr6",
+    "gearbox_kind": "manual5",
+    "gear_ratios": [
+      3.3,
+      1.944,
+      1.308,
+      1.034,
+      0.838
+    ],
+    "final_drive": 3.389,
+    "tire_radius": 0.298,
+    "grip": 0.68,
+    "drag_area": 0.68,
+    "inertia": 0.18,
+    "price": 6000,
+    "unlock_level": 1,
+    "torque_curve": [
+      [
+        0.0,
+        0.34
+      ],
+      [
+        0.115044,
+        0.56
+      ],
+      [
+        0.59292,
+        1.0
+      ],
+      [
+        0.876106,
+        0.899372
+      ],
+      [
+        1.0,
+        0.754366
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      197,
+      713
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 61,
+    "source": "https://www.edmunds.com/volkswagen/gti/1997/features-specs/",
+    "reference_quarter_s": 15.5,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "US where available"
+  },
+  "rsx": {
+    "id": "rsx",
+    "name": "Acura RSX Type-S",
+    "display_name": "Acura RSX Type-S",
+    "brand": "Acura",
+    "model": "RSX Type-S",
+    "year": "2003",
+    "requested_class": "E",
+    "performance_class": "E",
+    "factory_hp": 200,
+    "ice_hp": 200,
+    "peak_rpm": 7400,
+    "peak_torque_nm": 193,
+    "torque_rpm": 6000,
+    "torque": 193.0,
+    "mass": 1260,
+    "drive": "FWD",
+    "engine": "2.0L NA I4",
+    "cylinders": 4,
+    "redline": 7900,
+    "idle": 850,
+    "base_boost": 0,
+    "factory_super": 0,
+    "factory_trans": "oem_rsx",
+    "gearbox_kind": "manual6",
+    "gear_ratios": [
+      3.267,
+      2.13,
+      1.517,
+      1.147,
+      0.921,
+      0.738
+    ],
+    "final_drive": 4.389,
+    "tire_radius": 0.31595,
+    "grip": 0.68,
+    "drag_area": 0.68,
+    "inertia": 0.18,
+    "price": 8500,
+    "unlock_level": 1,
+    "torque_curve": [
+      [
+        0.0,
+        0.34
+      ],
+      [
+        0.092199,
+        0.56
+      ],
+      [
+        0.730496,
+        1.0
+      ],
+      [
+        0.929078,
+        0.998039
+      ],
+      [
+        1.0,
+        0.78
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      228,
+      774
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 67,
+    "source": "https://acuranews.com/en-US/releases/release-213ecdccccb00457c01e65004c34c6a5-2003-acura-rsx-specifications",
+    "reference_quarter_s": 15.1,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim",
+      "gearing": "2003 Acura Type-S table",
+      "mass": "2003 Acura Type-S: 1260 kg",
+      "tires": "2003 Acura table; nominal unloaded radius calculated"
+    },
+    "market": "US where available",
+    "tires": "205/55 R16"
+  },
+  "brz": {
+    "id": "brz",
+    "name": "Subaru BRZ",
+    "display_name": "Subaru BRZ",
+    "brand": "Subaru",
+    "model": "BRZ",
+    "year": "2013",
+    "requested_class": "E",
+    "performance_class": "E",
+    "factory_hp": 200,
+    "ice_hp": 200,
+    "peak_rpm": 7000,
+    "peak_torque_nm": 205,
+    "torque_rpm": 6400,
+    "torque": 205.0,
+    "mass": 1253,
+    "drive": "RWD",
+    "engine": "2.0L NA H4",
+    "cylinders": 4,
+    "redline": 7400,
+    "idle": 850,
+    "base_boost": 0,
+    "factory_super": 0,
+    "factory_trans": "oem_brz",
+    "gearbox_kind": "manual6",
+    "gear_ratios": [
+      3.626,
+      2.188,
+      1.541,
+      1.213,
+      1,
+      0.767
+    ],
+    "final_drive": 4.1,
+    "tire_radius": 0.313,
+    "grip": 0.68,
+    "drag_area": 0.68,
+    "inertia": 0.18,
+    "price": 10500,
+    "unlock_level": 1,
+    "torque_curve": [
+      [
+        0.0,
+        0.34
+      ],
+      [
+        0.099237,
+        0.56
+      ],
+      [
+        0.847328,
+        1.0
+      ],
+      [
+        0.938931,
+        0.99331
+      ],
+      [
+        1.0,
+        0.78
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      200,
+      774
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 70,
+    "source": "https://subarumedia.iconicweb.com/mediasite/specs/2013_SubaruBRZspecs.pdf",
+    "reference_quarter_s": 15.3,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "US where available",
+    "layout": "H4"
+  },
+  "integra": {
+    "id": "integra",
+    "name": "Acura Integra Type R",
+    "display_name": "Acura Integra Type R",
+    "brand": "Acura",
+    "model": "Integra Type R",
+    "year": "1997",
+    "requested_class": "D",
+    "performance_class": "D",
+    "factory_hp": 195,
+    "ice_hp": 195,
+    "peak_rpm": 8000,
+    "peak_torque_nm": 176,
+    "torque_rpm": 7300,
+    "torque": 176.0,
+    "mass": 1160,
+    "drive": "FWD",
+    "engine": "1.8L NA I4",
+    "cylinders": 4,
+    "redline": 8400,
+    "idle": 850,
+    "base_boost": 0,
+    "factory_super": 0,
+    "factory_trans": "oem_integra",
+    "gearbox_kind": "manual5",
+    "gear_ratios": [
+      3.23,
+      2.105,
+      1.458,
+      1.034,
+      0.787
+    ],
+    "final_drive": 4.4,
+    "tire_radius": 0.294,
+    "grip": 0.68,
+    "drag_area": 0.68,
+    "inertia": 0.18,
+    "price": 15000,
+    "unlock_level": 1,
+    "torque_curve": [
+      [
+        0.0,
+        0.34
+      ],
+      [
+        0.086093,
+        0.56
+      ],
+      [
+        0.854305,
+        1.0
+      ],
+      [
+        0.94702,
+        0.987049
+      ],
+      [
+        1.0,
+        0.78
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      223,
+      766
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 67,
+    "source": "https://hondanews.com/en-US/releases/release-398aa72722c1c76a6c1681004c34c9a9-1997-acura-integra-type-r-powertrain",
+    "reference_quarter_s": 14.9,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "US where available"
+  },
+  "gti": {
+    "id": "gti",
+    "name": "Volkswagen Golf GTI",
+    "display_name": "Volkswagen Golf GTI",
+    "brand": "Volkswagen",
+    "model": "Golf GTI",
+    "year": "2012",
+    "requested_class": "D",
+    "performance_class": "D",
+    "factory_hp": 200,
+    "ice_hp": 200,
+    "peak_rpm": 5100,
+    "peak_torque_nm": 281,
+    "torque_rpm": 1800,
+    "torque": 171.34146341463412,
+    "mass": 1375,
+    "drive": "FWD",
+    "engine": "2.0L turbo I4",
+    "cylinders": 4,
+    "redline": 6800,
+    "idle": 850,
+    "base_boost": 0.8,
+    "factory_super": 0,
+    "factory_trans": "oem_gti",
+    "gearbox_kind": "manual6",
+    "gear_ratios": [
+      3.36,
+      2.09,
+      1.48,
+      1.09,
+      0.861853,
+      0.712987
+    ],
+    "final_drive": 3.94,
+    "tire_radius": 0.318,
+    "grip": 0.68,
+    "drag_area": 0.68,
+    "inertia": 0.18,
+    "price": 12000,
+    "unlock_level": 1,
+    "torque_curve": [
+      [
+        0.0,
+        0.5576
+      ],
+      [
+        0.109244,
+        0.995228
+      ],
+      [
+        0.159664,
+        1.435798
+      ],
+      [
+        0.613445,
+        1.0
+      ],
+      [
+        0.714286,
+        0.994627
+      ],
+      [
+        1.0,
+        0.701212
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      183,
+      685
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 69,
+    "source": "https://di-uploads-pod16.s3.us-east-1.amazonaws.com/emichvw/uploads/2018/09/2012GTI.pdf",
+    "reference_quarter_s": 14.8,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim",
+      "gearing": "Effective common-final ratios; secondary final estimated at 3.087, pending trim-specific verification"
+    },
+    "market": "US where available",
+    "raw_gear_ratios": [
+      3.36,
+      2.09,
+      1.48,
+      1.09,
+      1.1,
+      0.91
+    ]
+  },
+  "s2000": {
+    "id": "s2000",
+    "name": "Honda S2000",
+    "display_name": "Honda S2000",
+    "brand": "Honda",
+    "model": "S2000",
+    "year": "2004",
+    "requested_class": "D",
+    "performance_class": "D",
+    "factory_hp": 240,
+    "ice_hp": 240,
+    "peak_rpm": 7800,
+    "peak_torque_nm": 220,
+    "torque_rpm": 6500,
+    "torque": 220.0,
+    "mass": 1285.9,
+    "drive": "RWD",
+    "engine": "2.2L NA I4",
+    "cylinders": 4,
+    "redline": 8200,
+    "idle": 850,
+    "base_boost": 0,
+    "factory_super": 0,
+    "factory_trans": "oem_s2000",
+    "gearbox_kind": "manual6",
+    "gear_ratios": [
+      3.784664,
+      2.47036,
+      1.789048,
+      1.402488,
+      1.137936,
+      0.921704
+    ],
+    "final_drive": 4.1,
+    "tire_radius": 0.31389999999999996,
+    "grip": 0.68,
+    "drag_area": 0.68,
+    "inertia": 0.18,
+    "price": 19000,
+    "unlock_level": 1,
+    "torque_curve": [
+      [
+        0.0,
+        0.34
+      ],
+      [
+        0.088435,
+        0.56
+      ],
+      [
+        0.768707,
+        1.0
+      ],
+      [
+        0.945578,
+        0.996783
+      ],
+      [
+        1.0,
+        0.78
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      237,
+      783
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 76,
+    "source": "https://hondanews.com/en-US/releases/release-edd28b30f52d7f29f285b3004c34c4b3-2004-honda-s2000-specifications",
+    "reference_quarter_s": 14.1,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim",
+      "gearing": "Honda 2004 specifications: six gear pairs, 1.208 primary and 4.100 final; primary folded into simulation gear pairs"
+    },
+    "market": "US where available",
+    "raw_gear_ratios": [
+      3.133,
+      2.045,
+      1.481,
+      1.161,
+      0.942,
+      0.763
+    ],
+    "primary_reduction": 1.208,
+    "tires": "Front 215/45 R17; rear 245/40 R17"
+  },
+  "gr86": {
+    "id": "gr86",
+    "name": "Toyota GR86",
+    "display_name": "Toyota GR86",
+    "brand": "Toyota",
+    "model": "GR86",
+    "year": "2022",
+    "requested_class": "D",
+    "performance_class": "D",
+    "factory_hp": 228,
+    "ice_hp": 228,
+    "peak_rpm": 7000,
+    "peak_torque_nm": 249,
+    "torque_rpm": 3700,
+    "torque": 249.0,
+    "mass": 1276,
+    "drive": "RWD",
+    "engine": "2.4L NA H4",
+    "cylinders": 4,
+    "redline": 7500,
+    "idle": 850,
+    "base_boost": 0,
+    "factory_super": 0,
+    "factory_trans": "oem_gr86",
+    "gearbox_kind": "manual6",
+    "gear_ratios": [
+      3.626,
+      2.188,
+      1.541,
+      1.213,
+      1,
+      0.767
+    ],
+    "final_drive": 4.1,
+    "tire_radius": 0.318,
+    "grip": 0.68,
+    "drag_area": 0.68,
+    "inertia": 0.18,
+    "price": 18000,
+    "unlock_level": 1,
+    "torque_curve": [
+      [
+        0.0,
+        0.34
+      ],
+      [
+        0.097744,
+        0.56
+      ],
+      [
+        0.428571,
+        1.0
+      ],
+      [
+        0.924812,
+        0.932275
+      ],
+      [
+        1.0,
+        0.78
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      215,
+      778
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 68,
+    "source": "https://pressroom.toyota.com/toyota-announces-pricing-on-all-new-2022-gr86/",
+    "reference_quarter_s": 14.0,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "US where available",
+    "layout": "H4"
+  },
+  "z350": {
+    "id": "z350",
+    "name": "Nissan 350Z",
+    "display_name": "Nissan 350Z",
+    "brand": "Nissan",
+    "model": "350Z",
+    "year": "2003",
+    "requested_class": "D",
+    "performance_class": "D",
+    "factory_hp": 287,
+    "ice_hp": 287,
+    "peak_rpm": 6200,
+    "peak_torque_nm": 371,
+    "torque_rpm": 4800,
+    "torque": 371.0,
+    "mass": 1463,
+    "drive": "RWD",
+    "engine": "3.5L NA V6",
+    "cylinders": 6,
+    "redline": 6600,
+    "idle": 850,
+    "base_boost": 0,
+    "factory_super": 0,
+    "factory_trans": "oem_z350",
+    "gearbox_kind": "manual6",
+    "gear_ratios": [
+      3.794,
+      2.324,
+      1.624,
+      1.271,
+      1,
+      0.794
+    ],
+    "final_drive": 3.538,
+    "tire_radius": 0.326,
+    "grip": 0.68,
+    "drag_area": 0.68,
+    "inertia": 0.26,
+    "price": 15000,
+    "unlock_level": 1,
+    "torque_curve": [
+      [
+        0.0,
+        0.34
+      ],
+      [
+        0.113043,
+        0.56
+      ],
+      [
+        0.686957,
+        1.0
+      ],
+      [
+        0.930435,
+        0.889248
+      ],
+      [
+        1.0,
+        0.78
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      223,
+      796
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 72,
+    "source": "https://usa.nissannews.com/en-US/releases/2003-350z-press-kit",
+    "reference_quarter_s": 14.1,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "US where available"
+  },
+  "supra": {
+    "id": "supra",
+    "name": "Toyota Supra Turbo",
+    "display_name": "Toyota Supra Turbo",
+    "brand": "Toyota",
+    "model": "Supra Turbo",
+    "year": "1998",
+    "requested_class": "C",
+    "performance_class": "C",
+    "factory_hp": 320,
+    "ice_hp": 320,
+    "peak_rpm": 5600,
+    "peak_torque_nm": 427,
+    "torque_rpm": 4000,
+    "torque": 260.3658536585366,
+    "mass": 1565,
+    "drive": "RWD",
+    "engine": "3.0L twin-turbo I6",
+    "cylinders": 6,
+    "redline": 6800,
+    "idle": 850,
+    "base_boost": 0.8,
+    "factory_super": 0,
+    "factory_trans": "oem_supra",
+    "gearbox_kind": "manual6",
+    "gear_ratios": [
+      3.827,
+      2.36,
+      1.685,
+      1.312,
+      1,
+      0.793
+    ],
+    "final_drive": 3.133,
+    "tire_radius": 0.326,
+    "grip": 0.68,
+    "drag_area": 0.68,
+    "inertia": 0.26,
+    "price": 33000,
+    "unlock_level": 2,
+    "torque_curve": [
+      [
+        0.0,
+        0.5576
+      ],
+      [
+        0.109244,
+        0.995228
+      ],
+      [
+        0.529412,
+        1.0
+      ],
+      [
+        0.798319,
+        0.953764
+      ],
+      [
+        1.0,
+        0.738325
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      243,
+      773
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 75,
+    "source": "https://pressroom.toyota.com/supra-chronology/",
+    "reference_quarter_s": 13.1,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "US where available"
+  },
+  "m3": {
+    "id": "m3",
+    "name": "BMW M3 E46",
+    "display_name": "BMW M3 E46",
+    "brand": "BMW",
+    "model": "M3 E46",
+    "year": "2001",
+    "requested_class": "C",
+    "performance_class": "C",
+    "factory_hp": 333,
+    "ice_hp": 333,
+    "peak_rpm": 7900,
+    "peak_torque_nm": 355,
+    "torque_rpm": 4900,
+    "torque": 355.0,
+    "mass": 1549,
+    "drive": "RWD",
+    "engine": "3.2L NA I6",
+    "cylinders": 6,
+    "redline": 8000,
+    "idle": 850,
+    "base_boost": 0,
+    "factory_super": 0,
+    "factory_trans": "oem_m3",
+    "gearbox_kind": "manual6",
+    "gear_ratios": [
+      4.227,
+      2.528,
+      1.669,
+      1.226,
+      1,
+      0.828
+    ],
+    "final_drive": 3.62,
+    "tire_radius": 0.333,
+    "grip": 0.68,
+    "drag_area": 0.68,
+    "inertia": 0.26,
+    "price": 26000,
+    "unlock_level": 2,
+    "torque_curve": [
+      [
+        0.0,
+        0.34
+      ],
+      [
+        0.090909,
+        0.56
+      ],
+      [
+        0.566434,
+        1.0
+      ],
+      [
+        0.986014,
+        0.846244
+      ],
+      [
+        1.0,
+        0.78
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      238,
+      805
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 70,
+    "source": "https://www.edmunds.com/bmw/m3/2001/features-specs/",
+    "reference_quarter_s": 13.3,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "US where available"
+  },
+  "sti": {
+    "id": "sti",
+    "name": "Subaru WRX STI",
+    "display_name": "Subaru WRX STI",
+    "brand": "Subaru",
+    "model": "WRX STI",
+    "year": "2004",
+    "requested_class": "C",
+    "performance_class": "C",
+    "factory_hp": 300,
+    "ice_hp": 300,
+    "peak_rpm": 6000,
+    "peak_torque_nm": 407,
+    "torque_rpm": 4000,
+    "torque": 248.17073170731706,
+    "mass": 1480,
+    "drive": "AWD",
+    "engine": "2.5L turbo H4",
+    "cylinders": 4,
+    "redline": 7000,
+    "idle": 850,
+    "base_boost": 0.8,
+    "factory_super": 0,
+    "factory_trans": "oem_sti",
+    "gearbox_kind": "manual6",
+    "gear_ratios": [
+      3.636,
+      2.375,
+      1.761,
+      1.346,
+      0.971,
+      0.756
+    ],
+    "final_drive": 3.9,
+    "tire_radius": 0.317,
+    "grip": 1.0,
+    "drag_area": 0.68,
+    "inertia": 0.26,
+    "price": 25000,
+    "unlock_level": 2,
+    "torque_curve": [
+      [
+        0.0,
+        0.5576
+      ],
+      [
+        0.105691,
+        0.995228
+      ],
+      [
+        0.512195,
+        1.0
+      ],
+      [
+        0.837398,
+        0.875553
+      ],
+      [
+        1.0,
+        0.705445
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      228,
+      748
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 65,
+    "source": "https://www.subaru.ca/WebPage.aspx?ArticleID=598&WebPageId=5013&WebSiteID=284",
+    "reference_quarter_s": 13.3,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "US where available",
+    "layout": "H4"
+  },
+  "evo": {
+    "id": "evo",
+    "name": "Mitsubishi Lancer Evolution VIII",
+    "display_name": "Mitsubishi Lancer Evolution VIII",
+    "brand": "Mitsubishi",
+    "model": "Lancer Evolution VIII",
+    "year": "2003",
+    "requested_class": "C",
+    "performance_class": "C",
+    "factory_hp": 271,
+    "ice_hp": 271,
+    "peak_rpm": 6500,
+    "peak_torque_nm": 370,
+    "torque_rpm": 3500,
+    "torque": 225.60975609756096,
+    "mass": 1470,
+    "drive": "AWD",
+    "engine": "2.0L turbo I4",
+    "cylinders": 4,
+    "redline": 7000,
+    "idle": 850,
+    "base_boost": 0.8,
+    "factory_super": 0,
+    "factory_trans": "oem_evo",
+    "gearbox_kind": "manual5",
+    "gear_ratios": [
+      2.928,
+      1.95,
+      1.407,
+      1.031,
+      0.72
+    ],
+    "final_drive": 4.529,
+    "tire_radius": 0.317,
+    "grip": 1.0,
+    "drag_area": 0.68,
+    "inertia": 0.26,
+    "price": 24000,
+    "unlock_level": 2,
+    "torque_curve": [
+      [
+        0.0,
+        0.5576
+      ],
+      [
+        0.105691,
+        0.995228
+      ],
+      [
+        0.430894,
+        1.061361
+      ],
+      [
+        0.918699,
+        0.803084
+      ],
+      [
+        1.0,
+        0.700978
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      229,
+      755
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 62,
+    "source": "https://www.cars.com/research/mitsubishi-lancer_evolution-2003/",
+    "reference_quarter_s": 13.6,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "US where available"
+  },
+  "type_r": {
+    "id": "type_r",
+    "name": "Honda Civic Type R",
+    "display_name": "Honda Civic Type R",
+    "brand": "Honda",
+    "model": "Civic Type R",
+    "year": "2019",
+    "requested_class": "C",
+    "performance_class": "C",
+    "factory_hp": 306,
+    "ice_hp": 306,
+    "peak_rpm": 6500,
+    "peak_torque_nm": 400,
+    "torque_rpm": 2500,
+    "torque": 243.90243902439022,
+    "mass": 1417,
+    "drive": "FWD",
+    "engine": "2.0L turbo I4",
+    "cylinders": 4,
+    "redline": 7000,
+    "idle": 850,
+    "base_boost": 0.8,
+    "factory_super": 0,
+    "factory_trans": "oem_type_r",
+    "gearbox_kind": "manual6",
+    "gear_ratios": [
+      3.625,
+      2.115,
+      1.529,
+      1.125,
+      0.911,
+      0.735
+    ],
+    "final_drive": 4.111,
+    "tire_radius": 0.322,
+    "grip": 0.68,
+    "drag_area": 0.68,
+    "inertia": 0.26,
+    "price": 28000,
+    "unlock_level": 2,
+    "torque_curve": [
+      [
+        0.0,
+        0.5576
+      ],
+      [
+        0.105691,
+        0.995228
+      ],
+      [
+        0.268293,
+        1.253681
+      ],
+      [
+        0.918699,
+        0.838793
+      ],
+      [
+        1.0,
+        0.732147
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      214,
+      749
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 58,
+    "source": "https://hondanews.com/en-US/honda-automobiles/releases/release-52ba9fce70874c8e990bb539b044d09a-2019-honda-civic-type-r-specifications-features",
+    "reference_quarter_s": 13.5,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "US where available"
+  },
+  "mustang": {
+    "id": "mustang",
+    "name": "Ford Mustang GT",
+    "display_name": "Ford Mustang GT",
+    "brand": "Ford",
+    "model": "Mustang GT",
+    "year": "2024",
+    "requested_class": "B",
+    "performance_class": "B",
+    "factory_hp": 480,
+    "ice_hp": 480,
+    "peak_rpm": 7150,
+    "peak_torque_nm": 563,
+    "torque_rpm": 4900,
+    "torque": 563.0,
+    "mass": 1741,
+    "drive": "RWD",
+    "engine": "5.0L NA V8",
+    "cylinders": 8,
+    "redline": 7500,
+    "idle": 850,
+    "base_boost": 0,
+    "factory_super": 0,
+    "factory_trans": "oem_mustang",
+    "gearbox_kind": "auto10",
+    "gear_ratios": [
+      4.696,
+      2.985,
+      2.146,
+      1.769,
+      1.52,
+      1.275,
+      1,
+      0.854,
+      0.689,
+      0.636
+    ],
+    "final_drive": 3.55,
+    "tire_radius": 0.343,
+    "grip": 0.68,
+    "drag_area": 0.68,
+    "inertia": 0.26,
+    "price": 35000,
+    "unlock_level": 3,
+    "torque_curve": [
+      [
+        0.0,
+        0.34
+      ],
+      [
+        0.097744,
+        0.56
+      ],
+      [
+        0.609023,
+        1.0
+      ],
+      [
+        0.947368,
+        0.849833
+      ],
+      [
+        1.0,
+        0.761564
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      247,
+      783
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 77,
+    "source": "https://media.ford.com/content/dam/fordmedia/North%20America/US/2022/09/14/2024-mustang-technical-specifications.pdf",
+    "reference_quarter_s": 12.2,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "US where available"
+  },
+  "supra_gr": {
+    "id": "supra_gr",
+    "name": "Toyota GR Supra 3.0",
+    "display_name": "Toyota GR Supra 3.0",
+    "brand": "Toyota",
+    "model": "GR Supra 3.0",
+    "year": "2020",
+    "requested_class": "B",
+    "performance_class": "B",
+    "factory_hp": 335,
+    "ice_hp": 335,
+    "peak_rpm": 5000,
+    "peak_torque_nm": 495,
+    "torque_rpm": 1600,
+    "torque": 301.8292682926829,
+    "mass": 1539,
+    "drive": "RWD",
+    "engine": "3.0L turbo I6",
+    "cylinders": 6,
+    "redline": 7000,
+    "idle": 850,
+    "base_boost": 0.8,
+    "factory_super": 0,
+    "factory_trans": "oem_supra_gr",
+    "gearbox_kind": "auto8",
+    "gear_ratios": [
+      5.25,
+      3.36,
+      2.172,
+      1.72,
+      1.316,
+      1,
+      0.822,
+      0.64
+    ],
+    "final_drive": 3.15,
+    "tire_radius": 0.33,
+    "grip": 0.68,
+    "drag_area": 0.68,
+    "inertia": 0.26,
+    "price": 36000,
+    "unlock_level": 3,
+    "torque_curve": [
+      [
+        0.0,
+        0.5576
+      ],
+      [
+        0.105691,
+        0.995228
+      ],
+      [
+        0.121951,
+        1.49797
+      ],
+      [
+        0.593496,
+        1.0
+      ],
+      [
+        0.674797,
+        0.964665
+      ],
+      [
+        1.0,
+        0.647703
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      249,
+      770
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 66,
+    "source": "https://pressroom.toyota.com/2020-supra-product-supra/",
+    "reference_quarter_s": 12.3,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "US where available"
+  },
+  "camaro": {
+    "id": "camaro",
+    "name": "Chevrolet Camaro SS",
+    "display_name": "Chevrolet Camaro SS",
+    "brand": "Chevrolet",
+    "model": "Camaro SS",
+    "year": "2016",
+    "requested_class": "B",
+    "performance_class": "B",
+    "factory_hp": 455,
+    "ice_hp": 455,
+    "peak_rpm": 6000,
+    "peak_torque_nm": 617,
+    "torque_rpm": 4400,
+    "torque": 617.0,
+    "mass": 1671,
+    "drive": "RWD",
+    "engine": "6.2L NA V8",
+    "cylinders": 8,
+    "redline": 6500,
+    "idle": 850,
+    "base_boost": 0,
+    "factory_super": 0,
+    "factory_trans": "oem_camaro",
+    "gearbox_kind": "auto8",
+    "gear_ratios": [
+      4.56,
+      2.97,
+      2.08,
+      1.69,
+      1.27,
+      1,
+      0.85,
+      0.65
+    ],
+    "final_drive": 2.77,
+    "tire_radius": 0.335,
+    "grip": 0.68,
+    "drag_area": 0.68,
+    "inertia": 0.26,
+    "price": 32000,
+    "unlock_level": 3,
+    "torque_curve": [
+      [
+        0.0,
+        0.34
+      ],
+      [
+        0.115044,
+        0.56
+      ],
+      [
+        0.628319,
+        1.0
+      ],
+      [
+        0.911504,
+        0.875955
+      ],
+      [
+        1.0,
+        0.760059
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      239,
+      783
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 65,
+    "source": "https://static.nhtsa.gov/odi/tsbs/2015/MC-10137252-9999.pdf",
+    "reference_quarter_s": 12.3,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "US where available"
+  },
+  "golf_r": {
+    "id": "golf_r",
+    "name": "Volkswagen Golf R",
+    "display_name": "Volkswagen Golf R",
+    "brand": "Volkswagen",
+    "model": "Golf R",
+    "year": "2019",
+    "requested_class": "B",
+    "performance_class": "B",
+    "factory_hp": 288,
+    "ice_hp": 288,
+    "peak_rpm": 5400,
+    "peak_torque_nm": 380,
+    "torque_rpm": 1800,
+    "torque": 231.7073170731707,
+    "mass": 1530,
+    "drive": "AWD",
+    "engine": "2.0L turbo I4",
+    "cylinders": 4,
+    "redline": 6800,
+    "idle": 850,
+    "base_boost": 0.8,
+    "factory_super": 0,
+    "factory_trans": "oem_golf_r",
+    "gearbox_kind": "dct7",
+    "gear_ratios": [
+      3.19,
+      2.030201,
+      1.402685,
+      1.04,
+      0.79,
+      0.634899,
+      0.487248
+    ],
+    "final_drive": 4.47,
+    "tire_radius": 0.32355,
+    "grip": 1.0,
+    "drag_area": 0.68,
+    "inertia": 0.26,
+    "price": 30000,
+    "unlock_level": 3,
+    "torque_curve": [
+      [
+        0.0,
+        0.5576
+      ],
+      [
+        0.109244,
+        0.995228
+      ],
+      [
+        0.159664,
+        1.435798
+      ],
+      [
+        0.613445,
+        1.0
+      ],
+      [
+        0.764706,
+        1.000281
+      ],
+      [
+        1.0,
+        0.74668
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      191,
+      715
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 62,
+    "source": "https://newspress-vwusamedia.s3.amazonaws.com/documents%2Foriginal%2F8730-2019GolfRTechnicalSpecifications.pdf",
+    "reference_quarter_s": 12.9,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim",
+      "gearing": "VW 2019 published gear pairs and finals I=4.47, II=3.30; common-final branch mapping is an explicit approximation",
+      "mass": "VW 2019 DSG curb mass: 1530 kg",
+      "tires": "VW 19-inch option; nominal unloaded radius calculated"
+    },
+    "market": "US where available",
+    "raw_gear_ratios": [
+      3.19,
+      2.75,
+      1.9,
+      1.04,
+      0.79,
+      0.86,
+      0.66
+    ],
+    "tires": "235/35 R19 option"
+  },
+  "z400": {
+    "id": "z400",
+    "name": "Nissan Z Performance",
+    "display_name": "Nissan Z Performance",
+    "brand": "Nissan",
+    "model": "Z Performance",
+    "year": "2023",
+    "requested_class": "B",
+    "performance_class": "B",
+    "factory_hp": 400,
+    "ice_hp": 400,
+    "peak_rpm": 6400,
+    "peak_torque_nm": 475,
+    "torque_rpm": 1600,
+    "torque": 289.6341463414634,
+    "mass": 1604,
+    "drive": "RWD",
+    "engine": "3.0L twin-turbo V6",
+    "cylinders": 6,
+    "redline": 6800,
+    "idle": 850,
+    "base_boost": 0.8,
+    "factory_super": 0,
+    "factory_trans": "oem_z400",
+    "gearbox_kind": "auto9",
+    "gear_ratios": [
+      5.425,
+      3.263,
+      2.249,
+      1.649,
+      1.221,
+      1,
+      0.862,
+      0.713,
+      0.597
+    ],
+    "final_drive": 3.133,
+    "tire_radius": 0.334,
+    "grip": 0.68,
+    "drag_area": 0.68,
+    "inertia": 0.26,
+    "price": 37000,
+    "unlock_level": 3,
+    "torque_curve": [
+      [
+        0.0,
+        0.5576
+      ],
+      [
+        0.109244,
+        0.995228
+      ],
+      [
+        0.12605,
+        1.49797
+      ],
+      [
+        0.613445,
+        1.0
+      ],
+      [
+        0.932773,
+        0.937763
+      ],
+      [
+        1.0,
+        0.78
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      239,
+      747
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 72,
+    "source": "https://usa.nissannews.com/en-US/releases/2023-nissan-z-press-kit",
+    "reference_quarter_s": 12.3,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "US where available"
+  },
+  "z06": {
+    "id": "z06",
+    "name": "Chevrolet Corvette Z06",
+    "display_name": "Chevrolet Corvette Z06",
+    "brand": "Chevrolet",
+    "model": "Corvette Z06",
+    "year": "2023",
+    "requested_class": "A",
+    "performance_class": "A",
+    "factory_hp": 670,
+    "ice_hp": 670,
+    "peak_rpm": 8400,
+    "peak_torque_nm": 623,
+    "torque_rpm": 6300,
+    "torque": 623.0,
+    "mass": 1661,
+    "drive": "RWD",
+    "engine": "5.5L NA V8",
+    "cylinders": 8,
+    "redline": 8600,
+    "idle": 850,
+    "base_boost": 0,
+    "factory_super": 0,
+    "factory_trans": "oem_z06",
+    "gearbox_kind": "dct8",
+    "gear_ratios": [
+      2.905,
+      1.759,
+      1.22,
+      0.878,
+      0.653,
+      0.508,
+      0.397,
+      0.329
+    ],
+    "final_drive": 4.9,
+    "tire_radius": 0.355,
+    "grip": 0.8,
+    "drag_area": 0.62,
+    "inertia": 0.35,
+    "price": 85000,
+    "unlock_level": 4,
+    "torque_curve": [
+      [
+        0.0,
+        0.34
+      ],
+      [
+        0.083871,
+        0.56
+      ],
+      [
+        0.703226,
+        1.0
+      ],
+      [
+        0.974194,
+        0.912461
+      ],
+      [
+        1.0,
+        0.78
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      214,
+      756
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 62,
+    "source": "https://news.chevrolet.com/newsroom.detail.html/Pages/news/us/en/2021/oct/1026-corvette-z06.html",
+    "reference_quarter_s": 10.5,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "US where available"
+  },
+  "gtr": {
+    "id": "gtr",
+    "name": "Nissan GT-R NISMO",
+    "display_name": "Nissan GT-R NISMO",
+    "brand": "Nissan",
+    "model": "GT-R NISMO",
+    "year": "2020",
+    "requested_class": "A",
+    "performance_class": "A",
+    "factory_hp": 600,
+    "ice_hp": 600,
+    "peak_rpm": 6800,
+    "peak_torque_nm": 652,
+    "torque_rpm": 3600,
+    "torque": 397.56097560975604,
+    "mass": 1752,
+    "drive": "AWD",
+    "engine": "3.8L twin-turbo V6",
+    "cylinders": 6,
+    "redline": 7100,
+    "idle": 850,
+    "base_boost": 0.8,
+    "factory_super": 0,
+    "factory_trans": "oem_gtr",
+    "gearbox_kind": "dct6",
+    "gear_ratios": [
+      4.056,
+      2.301,
+      1.595,
+      1.248,
+      1.001,
+      0.796
+    ],
+    "final_drive": 3.7,
+    "tire_radius": 0.354,
+    "grip": 1.0,
+    "drag_area": 0.62,
+    "inertia": 0.35,
+    "price": 100000,
+    "unlock_level": 4,
+    "torque_curve": [
+      [
+        0.0,
+        0.5576
+      ],
+      [
+        0.104,
+        0.995228
+      ],
+      [
+        0.44,
+        1.045326
+      ],
+      [
+        0.952,
+        0.964498
+      ],
+      [
+        1.0,
+        0.78
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      233,
+      780
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 66,
+    "source": "https://usa.nissannews.com/en-US/releases/2020-nissan-gt-r-press-kit",
+    "reference_quarter_s": 10.8,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "US where available"
+  },
+  "r8": {
+    "id": "r8",
+    "name": "Audi R8 V10 Performance",
+    "display_name": "Audi R8 V10 Performance",
+    "brand": "Audi",
+    "model": "R8 V10 Performance",
+    "year": "2020",
+    "requested_class": "A",
+    "performance_class": "A",
+    "factory_hp": 611,
+    "ice_hp": 611,
+    "peak_rpm": 8000,
+    "peak_torque_nm": 580,
+    "torque_rpm": 6500,
+    "torque": 580.0,
+    "mass": 1670,
+    "drive": "AWD",
+    "engine": "5.2L NA V10",
+    "cylinders": 10,
+    "redline": 8700,
+    "idle": 850,
+    "base_boost": 0,
+    "factory_super": 0,
+    "factory_trans": "oem_r8",
+    "gearbox_kind": "dct7",
+    "gear_ratios": [
+      3.133,
+      2.588,
+      1.88,
+      1.14,
+      0.898,
+      0.884,
+      0.653
+    ],
+    "final_drive": 3.59,
+    "tire_radius": 0.345,
+    "grip": 1.0,
+    "drag_area": 0.62,
+    "inertia": 0.35,
+    "price": 105000,
+    "unlock_level": 4,
+    "torque_curve": [
+      [
+        0.0,
+        0.34
+      ],
+      [
+        0.082803,
+        0.56
+      ],
+      [
+        0.719745,
+        1.0
+      ],
+      [
+        0.910828,
+        0.938491
+      ],
+      [
+        1.0,
+        0.78
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      207,
+      761
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 66,
+    "source": "https://www.audi.com/en/the-audi-r8-until-2024-updated-dynamics-for-the-high-performance-sports-car-11734/engine-11738",
+    "reference_quarter_s": 10.8,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "EU 620 PS"
+  },
+  "gt500": {
+    "id": "gt500",
+    "name": "Ford Mustang Shelby GT500",
+    "display_name": "Ford Mustang Shelby GT500",
+    "brand": "Ford",
+    "model": "Mustang Shelby GT500",
+    "year": "2020",
+    "requested_class": "A",
+    "performance_class": "A",
+    "factory_hp": 760,
+    "ice_hp": 760,
+    "peak_rpm": 7300,
+    "peak_torque_nm": 847,
+    "torque_rpm": 5000,
+    "torque": 504.16666666666663,
+    "mass": 1892,
+    "drive": "RWD",
+    "engine": "5.2L supercharged V8",
+    "cylinders": 8,
+    "redline": 7500,
+    "idle": 850,
+    "base_boost": 0,
+    "factory_super": 1.0,
+    "factory_trans": "oem_gt500",
+    "gearbox_kind": "dct7",
+    "gear_ratios": [
+      3.14,
+      2.05,
+      1.43,
+      1.1,
+      0.86,
+      0.68,
+      0.56
+    ],
+    "final_drive": 3.73,
+    "tire_radius": 0.355,
+    "grip": 0.8,
+    "drag_area": 0.62,
+    "inertia": 0.35,
+    "price": 75000,
+    "unlock_level": 4,
+    "torque_curve": [
+      [
+        0.0,
+        0.34
+      ],
+      [
+        0.097744,
+        0.65
+      ],
+      [
+        0.62406,
+        1.0
+      ],
+      [
+        0.969925,
+        0.87602
+      ],
+      [
+        1.0,
+        0.78
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      255,
+      771
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 65,
+    "source": "https://www.motortrend.com/reviews/2020-ford-mustang-shelby-gt500-first-drive-review-photos-specs",
+    "reference_quarter_s": 11.0,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "US where available"
+  },
+  "redeye": {
+    "id": "redeye",
+    "name": "Dodge Challenger SRT Hellcat Redeye",
+    "display_name": "Dodge Challenger SRT Hellcat Redeye",
+    "brand": "Dodge",
+    "model": "Challenger SRT Hellcat Redeye",
+    "year": "2019",
+    "requested_class": "A",
+    "performance_class": "A",
+    "factory_hp": 797,
+    "ice_hp": 797,
+    "peak_rpm": 6300,
+    "peak_torque_nm": 959,
+    "torque_rpm": 4500,
+    "torque": 570.8333333333333,
+    "mass": 2050,
+    "drive": "RWD",
+    "engine": "6.2L supercharged V8",
+    "cylinders": 8,
+    "redline": 6500,
+    "idle": 850,
+    "base_boost": 0,
+    "factory_super": 1.0,
+    "factory_trans": "oem_redeye",
+    "gearbox_kind": "auto8",
+    "gear_ratios": [
+      4.714,
+      3.143,
+      2.106,
+      1.667,
+      1.285,
+      1,
+      0.839,
+      0.667
+    ],
+    "final_drive": 2.62,
+    "tire_radius": 0.358,
+    "grip": 0.8,
+    "drag_area": 0.62,
+    "inertia": 0.35,
+    "price": 68000,
+    "unlock_level": 4,
+    "torque_curve": [
+      [
+        0.0,
+        0.34
+      ],
+      [
+        0.115044,
+        0.65
+      ],
+      [
+        0.646018,
+        1.0
+      ],
+      [
+        0.964602,
+        0.940169
+      ],
+      [
+        1.0,
+        0.78
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      241,
+      786
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 77,
+    "source": "https://stellcmsdev.iconinteract.com/newsrelease/22163/newsroom.do?id=567",
+    "reference_quarter_s": 11.1,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "US where available"
+  },
+  "turbo_s": {
+    "id": "turbo_s",
+    "name": "Porsche 911 Turbo S",
+    "display_name": "Porsche 911 Turbo S",
+    "brand": "Porsche",
+    "model": "911 Turbo S",
+    "year": "2021",
+    "requested_class": "S",
+    "performance_class": "S",
+    "factory_hp": 640,
+    "ice_hp": 640,
+    "peak_rpm": 6750,
+    "peak_torque_nm": 800,
+    "torque_rpm": 2500,
+    "torque": 487.80487804878044,
+    "mass": 1640,
+    "drive": "AWD",
+    "engine": "3.8L twin-turbo H6",
+    "cylinders": 6,
+    "redline": 7200,
+    "idle": 850,
+    "base_boost": 0.8,
+    "factory_super": 0,
+    "factory_trans": "oem_turbo_s",
+    "gearbox_kind": "dct8",
+    "gear_ratios": [
+      4.89,
+      3.17,
+      2.15,
+      1.56,
+      1.18,
+      0.94,
+      0.76,
+      0.61
+    ],
+    "final_drive": 3.02,
+    "tire_radius": 0.354,
+    "grip": 1.0,
+    "drag_area": 0.62,
+    "inertia": 0.35,
+    "price": 145000,
+    "unlock_level": 5,
+    "torque_curve": [
+      [
+        0.0,
+        0.5576
+      ],
+      [
+        0.102362,
+        0.995228
+      ],
+      [
+        0.259843,
+        1.253681
+      ],
+      [
+        0.929134,
+        0.844681
+      ],
+      [
+        1.0,
+        0.744376
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      258,
+      755
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 65,
+    "source": "https://newsroom.porsche.com/en_US/products/porsche-new-911-turbo-s-coupe-cabriolet-top-of-the-range-premiere-20122.html",
+    "reference_quarter_s": 10.1,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "US where available",
+    "layout": "H6"
+  },
+  "mclaren": {
+    "id": "mclaren",
+    "name": "McLaren 765LT",
+    "display_name": "McLaren 765LT",
+    "brand": "McLaren",
+    "model": "765LT",
+    "year": "2021",
+    "requested_class": "S",
+    "performance_class": "S",
+    "factory_hp": 755,
+    "ice_hp": 755,
+    "peak_rpm": 7500,
+    "peak_torque_nm": 800,
+    "torque_rpm": 5500,
+    "torque": 487.80487804878044,
+    "mass": 1388,
+    "drive": "RWD",
+    "engine": "4.0L twin-turbo V8",
+    "cylinders": 8,
+    "redline": 8500,
+    "idle": 850,
+    "base_boost": 0.8,
+    "factory_super": 0,
+    "factory_trans": "oem_mclaren",
+    "gearbox_kind": "dct7",
+    "gear_ratios": [
+      3.98,
+      2.61,
+      1.91,
+      1.48,
+      1.16,
+      0.91,
+      0.69
+    ],
+    "final_drive": 3.31,
+    "tire_radius": 0.344,
+    "grip": 0.8,
+    "drag_area": 0.62,
+    "inertia": 0.35,
+    "price": 190000,
+    "unlock_level": 5,
+    "torque_curve": [
+      [
+        0.0,
+        0.5576
+      ],
+      [
+        0.084967,
+        0.995228
+      ],
+      [
+        0.607843,
+        1.0
+      ],
+      [
+        0.869281,
+        0.896814
+      ],
+      [
+        1.0,
+        0.743828
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      202,
+      743
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 62,
+    "source": "https://investors.mclaren.com/~/media/Files/M/McLaren-Services/results-centre/2021/mclaren-h1-2021-results-presentation_vf.pdf",
+    "reference_quarter_s": 9.9,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "US where available"
+  },
+  "sf90": {
+    "id": "sf90",
+    "name": "Ferrari SF90 Stradale",
+    "display_name": "Ferrari SF90 Stradale",
+    "brand": "Ferrari",
+    "model": "SF90 Stradale",
+    "year": "2020",
+    "requested_class": "S",
+    "performance_class": "S",
+    "factory_hp": 986,
+    "ice_hp": 769,
+    "peak_rpm": 7500,
+    "peak_torque_nm": 800,
+    "torque_rpm": 6000,
+    "torque": 487.80487804878044,
+    "mass": 1770,
+    "drive": "AWD",
+    "engine": "4.0L hybrid twin-turbo V8",
+    "cylinders": 8,
+    "redline": 8000,
+    "idle": 850,
+    "base_boost": 0.8,
+    "factory_super": 0,
+    "factory_trans": "oem_sf90",
+    "gearbox_kind": "dct8",
+    "gear_ratios": [
+      3.08,
+      2.19,
+      1.63,
+      1.29,
+      1.03,
+      0.84,
+      0.69,
+      0.58
+    ],
+    "final_drive": 3.55,
+    "tire_radius": 0.351,
+    "grip": 1.0,
+    "drag_area": 0.62,
+    "inertia": 0.35,
+    "price": 240000,
+    "unlock_level": 5,
+    "torque_curve": [
+      [
+        0.0,
+        0.5576
+      ],
+      [
+        0.090909,
+        0.995228
+      ],
+      [
+        0.72028,
+        1.0
+      ],
+      [
+        0.93007,
+        0.913444
+      ],
+      [
+        1.0,
+        0.78
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 162,
+    "hybrid_kwh": 7.9,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      197,
+      740
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 65,
+    "source": "https://cdn.ferrari.com/cms/network/media/pdf/pr_ferrari_sf90_stradale_gbr.pdf",
+    "reference_quarter_s": 9.5,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "US where available"
+  },
+  "demon": {
+    "id": "demon",
+    "name": "Dodge Challenger SRT Demon 170",
+    "display_name": "Dodge Challenger SRT Demon 170",
+    "brand": "Dodge",
+    "model": "Challenger SRT Demon 170",
+    "year": "2023",
+    "requested_class": "S",
+    "performance_class": "S",
+    "factory_hp": 1025,
+    "ice_hp": 1025,
+    "peak_rpm": 6500,
+    "peak_torque_nm": 1281,
+    "torque_rpm": 4200,
+    "torque": 762.4999999999999,
+    "mass": 1941,
+    "drive": "RWD",
+    "engine": "6.2L supercharged V8 / E85",
+    "cylinders": 8,
+    "redline": 6500,
+    "idle": 850,
+    "base_boost": 0,
+    "factory_super": 1.0,
+    "factory_trans": "oem_demon",
+    "gearbox_kind": "auto8",
+    "gear_ratios": [
+      4.714,
+      3.143,
+      2.106,
+      1.667,
+      1.285,
+      1,
+      0.839,
+      0.667
+    ],
+    "final_drive": 3.09,
+    "tire_radius": 0.373,
+    "grip": 1.25,
+    "drag_area": 0.62,
+    "inertia": 0.35,
+    "price": 115000,
+    "unlock_level": 5,
+    "torque_curve": [
+      [
+        0.0,
+        0.34
+      ],
+      [
+        0.115044,
+        0.65
+      ],
+      [
+        0.59292,
+        1.0
+      ],
+      [
+        1.0,
+        0.87734
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      251,
+      781
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 77,
+    "source": "https://www.dodge.com/news/challenger-srt-demon-170-edition.html",
+    "reference_quarter_s": 8.91,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "US; selected factory gearbox; Demon E85 full-power / prepared surface reference"
+  },
+  "chiron": {
+    "id": "chiron",
+    "name": "Bugatti Chiron",
+    "display_name": "Bugatti Chiron",
+    "brand": "Bugatti",
+    "model": "Chiron",
+    "year": "2018",
+    "requested_class": "S",
+    "performance_class": "S",
+    "factory_hp": 1479,
+    "ice_hp": 1479,
+    "peak_rpm": 6700,
+    "peak_torque_nm": 1600,
+    "torque_rpm": 2000,
+    "torque": 975.6097560975609,
+    "mass": 1995,
+    "drive": "AWD",
+    "engine": "8.0L quad-turbo W16",
+    "cylinders": 16,
+    "redline": 7100,
+    "idle": 850,
+    "base_boost": 0.8,
+    "factory_super": 0,
+    "factory_trans": "oem_chiron",
+    "gearbox_kind": "dct7",
+    "gear_ratios": [
+      3.18,
+      2.25,
+      1.73,
+      1.4,
+      1.17,
+      0.99,
+      0.84
+    ],
+    "final_drive": 2.73,
+    "tire_radius": 0.363,
+    "grip": 1.0,
+    "drag_area": 0.62,
+    "inertia": 0.35,
+    "price": 500000,
+    "unlock_level": 5,
+    "torque_curve": [
+      [
+        0.0,
+        0.5576
+      ],
+      [
+        0.104,
+        0.995228
+      ],
+      [
+        0.184,
+        1.37858
+      ],
+      [
+        0.584,
+        1.0
+      ],
+      [
+        0.936,
+        0.983287
+      ],
+      [
+        1.0,
+        0.78
+      ],
+      [
+        1.15,
+        0.15
+      ]
+    ],
+    "hybrid_kw": 0,
+    "hybrid_kwh": 0,
+    "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
+    "wheelbase": [
+      204,
+      770
+    ],
+    "wheel_y": 274,
+    "wheel_radius": 83,
+    "source": "https://newsroom.bugatti.com/en/about/technical-specifications",
+    "reference_quarter_s": 9.4,
+    "evidence": {
+      "rated_output": "published source; market/trim noted in report",
+      "mass_gearing_tires": "working figures; individual field verification pending",
+      "curve": "reconstructed from output peaks, not measured",
+      "grip_drag_inertia_efficiency": "simulation estimates",
+      "quarter_reference": "comparison target; provenance review pending except Demon manufacturer claim"
+    },
+    "market": "US where available",
+    "layout": "W16"
+  }
+}

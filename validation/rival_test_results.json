@@ -1,0 +1,170 @@
+{
+	"failures": 0,
+	"runs": [
+		{
+			"early_motion": false,
+			"event": 0,
+			"finish_s": 19.2579640967858,
+			"hp": 116,
+			"opponent": 0,
+			"quarter_mph": 77.5482831637843,
+			"quarter_s": 19.254717887358,
+			"safety_clamps": 0,
+			"transmission": "oem_miata"
+		},
+		{
+			"early_motion": false,
+			"event": 0,
+			"finish_s": 17.6330966169182,
+			"hp": 132,
+			"opponent": 1,
+			"quarter_mph": 83.8335947148996,
+			"quarter_s": 17.6331217748949,
+			"safety_clamps": 0,
+			"transmission": "oem_miata"
+		},
+		{
+			"early_motion": false,
+			"event": 0,
+			"finish_s": 16.6081861136743,
+			"hp": 193,
+			"opponent": 2,
+			"quarter_mph": 90.2295732135131,
+			"quarter_s": 16.6076419011148,
+			"safety_clamps": 0,
+			"transmission": "oem_civic_si"
+		},
+		{
+			"early_motion": false,
+			"event": 0,
+			"finish_s": 15.0436475989175,
+			"hp": 208,
+			"opponent": 3,
+			"quarter_mph": 97.438024264359,
+			"quarter_s": 15.0384384322802,
+			"safety_clamps": 0,
+			"transmission": "oem_gti_vr6"
+		},
+		{
+			"early_motion": false,
+			"event": 0,
+			"finish_s": 14.3283715837567,
+			"hp": 242,
+			"opponent": 4,
+			"quarter_mph": 103.953519655234,
+			"quarter_s": 14.314874919819,
+			"safety_clamps": 0,
+			"transmission": "oem_rsx"
+		},
+		{
+			"early_motion": false,
+			"event": 1,
+			"finish_s": 13.5388822193676,
+			"hp": 271,
+			"opponent": 0,
+			"quarter_mph": 107.893423241483,
+			"quarter_s": 13.5313760635983,
+			"safety_clamps": 0,
+			"transmission": "oem_brz"
+		},
+		{
+			"early_motion": false,
+			"event": 1,
+			"finish_s": 13.5062885875658,
+			"hp": 296,
+			"opponent": 1,
+			"quarter_mph": 110.686522586342,
+			"quarter_s": 13.4953690631986,
+			"safety_clamps": 0,
+			"transmission": "oem_gti"
+		},
+		{
+			"early_motion": false,
+			"event": 1,
+			"finish_s": 12.1636871811915,
+			"hp": 421,
+			"opponent": 2,
+			"quarter_mph": 120.799658832656,
+			"quarter_s": 12.1545727170274,
+			"safety_clamps": 0,
+			"transmission": "oem_supra"
+		},
+		{
+			"early_motion": false,
+			"event": 1,
+			"finish_s": 11.8309775571785,
+			"hp": 400,
+			"opponent": 3,
+			"quarter_mph": 120.132306133358,
+			"quarter_s": 11.8265385888916,
+			"safety_clamps": 0,
+			"transmission": "oem_evo"
+		},
+		{
+			"early_motion": false,
+			"event": 1,
+			"finish_s": 11.15551415546,
+			"hp": 472,
+			"opponent": 4,
+			"quarter_mph": 132.213439534827,
+			"quarter_s": 11.1477762492817,
+			"safety_clamps": 0,
+			"transmission": "seq6"
+		},
+		{
+			"early_motion": false,
+			"event": 2,
+			"finish_s": 11.1456148275074,
+			"hp": 580,
+			"opponent": 0,
+			"quarter_mph": 132.783333295128,
+			"quarter_s": 11.1455688985794,
+			"safety_clamps": 0,
+			"transmission": "oem_mustang"
+		},
+		{
+			"early_motion": false,
+			"event": 2,
+			"finish_s": 10.5500571330056,
+			"hp": 652,
+			"opponent": 1,
+			"quarter_mph": 140.971324437215,
+			"quarter_s": 10.5453165131587,
+			"safety_clamps": 0,
+			"transmission": "drag3"
+		},
+		{
+			"early_motion": false,
+			"event": 2,
+			"finish_s": 9.82089255644091,
+			"hp": 886,
+			"opponent": 2,
+			"quarter_mph": 152.73921936958,
+			"quarter_s": 9.81950075666099,
+			"safety_clamps": 0,
+			"transmission": "oem_gtr"
+		},
+		{
+			"early_motion": false,
+			"event": 2,
+			"finish_s": 9.2352865743785,
+			"hp": 992,
+			"opponent": 3,
+			"quarter_mph": 172.535535697449,
+			"quarter_s": 9.22974601674983,
+			"safety_clamps": 0,
+			"transmission": "oem_mclaren"
+		},
+		{
+			"early_motion": false,
+			"event": 2,
+			"finish_s": 8.40859989855064,
+			"hp": 2306,
+			"opponent": 4,
+			"quarter_mph": 194.772184134575,
+			"quarter_s": 8.40886592106677,
+			"safety_clamps": 0,
+			"transmission": "oem_chiron"
+		}
+	]
+}

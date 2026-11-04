@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "checks": {
+    "import": true,
+    "test_qol_ui": true,
+    "test_upgrade_model": true,
+    "test_upgrade_studio_ui": true,
+    "test_physics": true,
+    "test_transmissions": true,
+    "test_glass_ui": true,
+    "test_quality_ui": true,
+    "test_dealership": true,
+    "test_customization_ui": true,
+    "test_garage_hub": true,
+    "test_upgrades_ui": true,
+    "test_menus": true,
+    "test_flow": true,
+    "test_shutdown": true
+  },
+  "source_sha256": "8f020d561fa412b00513e9f186678457ea27e02a0fbac28b75a42943f3e32932",
+  "note": "Upgrade Studio groups, all parts/packages, preview/install parity, saved selection, compatibility, physics, transmissions, ownership, purchases and native gameplay checked from an unused clean extraction with isolated saves."
+}

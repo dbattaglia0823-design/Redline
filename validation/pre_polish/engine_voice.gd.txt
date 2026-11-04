@@ -1,0 +1,104 @@
+class_name EngineVoice
+extends RefCounted
+
+const RATE := 22050.0
+var target_rpm := 950.0
+var target_throttle := 0.0
+var target_load := 0.0
+var target_clutch := 0.0
+var target_boost := 0.0
+var target_slip := 0.0
+var target_gain := 1.0
+var target_cut := false
+var target_nitrous := false
+var cylinders := 4
+var rpm := 950.0
+var throttle := 0.0
+var load_value := 0.0
+var clutch_value := 0.0
+var boost := 0.0
+var gain := 0.0
+var cut_gain := 1.0
+var phase := 0.0
+var crank_phase := 0.0
+var turbo_phase := 0.0
+var tire_phase := 0.0
+var filtered := 0.0
+var filtered_noise := 0.0
+var pop := 0.0
+var blowoff := 0.0
+var noise_seed := 17743
+var last_sample := 0.0
+var peak_jump := 0.0
+var samples_generated := 0
+var last_shift_serial := -1
+var _blowoff_armed := false
+
+func set_from_vehicle(car: Drivetrain, audible: bool = true) -> void:
+	target_rpm = car.rpm
+	target_throttle = car.throttle
+	target_load = car.engine_load
+	target_clutch = car.clutch_engagement
+	target_boost = car.boost
+	target_slip = car.wheelspin
+	target_cut = car.fuel_cut
+	target_nitrous = car.nitrous_active
+	target_gain = 1.0 if audible else 0.0
+	cylinders = car.cylinders
+	if last_shift_serial < 0: last_shift_serial = car.shift_serial
+	elif car.shift_serial != last_shift_serial:
+		pop = maxf(pop,0.45)
+		last_shift_serial = car.shift_serial
+	# Hysteresis survives the simulation's gradual throttle response.
+	if car.throttle > 0.6 and car.boost > 0.1: _blowoff_armed = true
+	if _blowoff_armed and car.throttle < 0.3:
+		blowoff = 0.5
+		_blowoff_armed = false
+
+func next_sample() -> float:
+	# All time constants are in seconds, independent of renderer frequency or chunk size.
+	rpm += (target_rpm-rpm)*0.00565 # 8 ms pitch settling at 22,050 Hz
+	throttle += (target_throttle-throttle)*0.003
+	# Clutch inertia can exceed rated engine torque; combustion loudness cannot.
+	load_value += (clampf(target_load,0.0,1.0)-load_value)*0.003
+	clutch_value += (target_clutch-clutch_value)*0.004
+	boost += (target_boost-boost)*0.002
+	gain += (target_gain-gain)*0.0032
+	cut_gain += ((0.18 if target_cut else 1.0)-cut_gain)*0.006
+	var firing_hz := rpm/60.0*float(cylinders)*0.5
+	phase = fposmod(phase+firing_hz/RATE,1.0)
+	crank_phase = fposmod(crank_phase+rpm/60.0/RATE,1.0)
+	var p := phase*TAU
+	var exhaust := sin(p)*0.46+sin(p*2.0+0.28)*0.22+sin(p*3.0+0.12)*0.11
+	for harmonic in range(4,9):
+		if firing_hz*harmonic < RATE*0.43:
+			exhaust += sin(p*harmonic+0.1*harmonic)*(0.11/pow(harmonic/3.0,1.5))
+	var block := sin(crank_phase*TAU)*0.09+sin(crank_phase*TAU*0.5)*0.04
+	noise_seed = (noise_seed*1664525+1013904223)&0xffffffff
+	var noise := float(noise_seed)/2147483648.0-1.0
+	filtered_noise += (noise-filtered_noise)*0.28
+	var body := tanh((exhaust+block)*(1.2+load_value*1.4))
+	var cutoff := 700.0+rpm*0.18+load_value*1900.0
+	var filter_alpha := 1.0-exp(-TAU*cutoff/RATE)
+	filtered += (body-filtered)*filter_alpha
+	var amplitude := (0.22+throttle*0.25+load_value*0.25)*(0.9+0.1*clutch_value)*cut_gain
+	turbo_phase = fposmod(turbo_phase+(1000.0+boost*1900.0+rpm*0.035)/RATE,1.0)
+	tire_phase = fposmod(tire_phase+(1150.0+target_slip*550.0)/RATE,1.0)
+	var induction := (filtered_noise*0.055+sin(turbo_phase*TAU)*0.018)*boost
+	var tire := (sin(tire_phase*TAU)*0.022+filtered_noise*0.08)*target_slip
+	var transient := filtered_noise*(pop*0.18+blowoff*0.2)
+	var nitro := filtered_noise*0.06 if target_nitrous else 0.0
+	pop *= 0.99899
+	blowoff *= 0.99955
+	var sample := tanh((filtered*amplitude+induction+tire+transient+nitro)*gain)
+	peak_jump = maxf(peak_jump,absf(sample-last_sample))
+	last_sample = sample
+	samples_generated += 1
+	return sample
+
+func render(count: int) -> PackedFloat32Array:
+	var result := PackedFloat32Array()
+	result.resize(count)
+	for i in count: result[i] = next_sample()
+	return result
+

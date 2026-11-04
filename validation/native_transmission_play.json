@@ -1,0 +1,59 @@
+{
+	"audio_underruns": 0,
+	"completed": true,
+	"method": "Native Windows pause/B/W/paddle/overlay events with test-only held gas and disabled automation focus-out auto-pause. Production focus release is covered in control tests; subjective feel, timbre and phone ergonomics are not measured.",
+	"native_events": [
+		{
+			"gas": 0.0,
+			"gear": 1,
+			"logical": 66,
+			"paused": true,
+			"physical": 4194313,
+			"transbrake": false
+		},
+		{
+			"gas": 0.0,
+			"gear": 1,
+			"logical": 87,
+			"paused": true,
+			"physical": 4194313,
+			"transbrake": false
+		},
+		{
+			"gas": 0.0,
+			"gear": 1,
+			"logical": 80,
+			"paused": false,
+			"physical": 4194313,
+			"transbrake": false
+		},
+		{
+			"gas": 1.0,
+			"gear": 1,
+			"logical": 66,
+			"paused": false,
+			"physical": 4194313,
+			"transbrake": true
+		},
+		{
+			"gas": 1.0,
+			"gear": 1,
+			"logical": 87,
+			"paused": false,
+			"physical": 4194313,
+			"transbrake": false
+		},
+		{
+			"gas": 1.0,
+			"gear": 1,
+			"logical": 69,
+			"paused": false,
+			"physical": 4194313,
+			"transbrake": false
+		}
+	],
+	"safety_clamps": 0,
+	"shifts": 2,
+	"time_s": 12.8171621194385,
+	"trap_mph": 114.005555285106
+}

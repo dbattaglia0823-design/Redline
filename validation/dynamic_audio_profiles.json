@@ -1,0 +1,246 @@
+{
+  "checks": 25273,
+  "passed": true,
+  "profiles": [
+    {
+      "brightness": 0.95,
+      "family": "i4_na",
+      "id": "miata",
+      "intake": 0.85,
+      "mechanical": 0.8,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 1.16,
+      "family": "i4_vtec",
+      "id": "civic_si",
+      "intake": 1.14,
+      "mechanical": 0.88,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 0.82,
+      "family": "vr6_na",
+      "id": "gti_vr6",
+      "intake": 0.98,
+      "mechanical": 1.02,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 1.12,
+      "family": "i4_vtec",
+      "id": "rsx",
+      "intake": 1.12,
+      "mechanical": 0.9,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 1.01,
+      "family": "h4_na",
+      "id": "brz",
+      "intake": 1.03,
+      "mechanical": 0.92,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 1.2,
+      "family": "i4_vtec",
+      "id": "integra",
+      "intake": 1.18,
+      "mechanical": 0.96,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 0.88,
+      "family": "i4_turbo",
+      "id": "gti",
+      "intake": 0.94,
+      "mechanical": 0.83,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 1.26,
+      "family": "i4_vtec",
+      "id": "s2000",
+      "intake": 1.2,
+      "mechanical": 1.03,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 0.96,
+      "family": "h4_na",
+      "id": "gr86",
+      "intake": 1.06,
+      "mechanical": 0.97,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 1.02,
+      "family": "v6_na",
+      "id": "z350",
+      "intake": 1.02,
+      "mechanical": 1.1,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 0.86,
+      "family": "i6_turbo",
+      "id": "supra",
+      "intake": 1.06,
+      "mechanical": 0.98,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 1.2,
+      "family": "i6_na",
+      "id": "m3",
+      "intake": 1.13,
+      "mechanical": 1.05,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 0.82,
+      "family": "h4_turbo",
+      "id": "sti",
+      "intake": 1.04,
+      "mechanical": 1.12,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 1.01,
+      "family": "i4_turbo",
+      "id": "evo",
+      "intake": 1.14,
+      "mechanical": 1.08,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 1.15,
+      "family": "i4_turbo",
+      "id": "type_r",
+      "intake": 1.14,
+      "mechanical": 0.98,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 1.1,
+      "family": "v8_cross",
+      "id": "mustang",
+      "intake": 1.06,
+      "mechanical": 1.08,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 0.88,
+      "family": "i6_turbo",
+      "id": "supra_gr",
+      "intake": 0.94,
+      "mechanical": 0.86,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 0.82,
+      "family": "v8_cross",
+      "id": "camaro",
+      "intake": 0.9,
+      "mechanical": 1.12,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 0.94,
+      "family": "i4_turbo",
+      "id": "golf_r",
+      "intake": 0.99,
+      "mechanical": 0.87,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 0.91,
+      "family": "v6_tt",
+      "id": "z400",
+      "intake": 1.1,
+      "mechanical": 0.95,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 1.28,
+      "family": "v8_flat",
+      "id": "z06",
+      "intake": 1.2,
+      "mechanical": 1.08,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 0.95,
+      "family": "v6_tt",
+      "id": "gtr",
+      "intake": 1.15,
+      "mechanical": 1.05,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 1.22,
+      "family": "v10_na",
+      "id": "r8",
+      "intake": 1.15,
+      "mechanical": 0.96,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 1.02,
+      "family": "v8_super",
+      "id": "gt500",
+      "intake": 1.06,
+      "mechanical": 1.1,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 0.8,
+      "family": "v8_super",
+      "id": "redeye",
+      "intake": 0.92,
+      "mechanical": 1.16,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 0.89,
+      "family": "h6_turbo",
+      "id": "turbo_s",
+      "intake": 0.98,
+      "mechanical": 0.91,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 1.18,
+      "family": "v8_flat_tt",
+      "id": "mclaren",
+      "intake": 1.17,
+      "mechanical": 0.98,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 1.13,
+      "family": "v8_flat_tt",
+      "id": "sf90",
+      "intake": 1.06,
+      "mechanical": 0.9,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 0.88,
+      "family": "v8_super",
+      "id": "demon",
+      "intake": 1.12,
+      "mechanical": 1.22,
+      "origin": "original offline synthesis"
+    },
+    {
+      "brightness": 0.76,
+      "family": "w16_tt",
+      "id": "chiron",
+      "intake": 0.92,
+      "mechanical": 1.02,
+      "origin": "original offline synthesis"
+    }
+  ]
+}

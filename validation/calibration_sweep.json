@@ -1,0 +1,482 @@
+[
+	{
+		"et_s": 19.955926663577,
+		"first_throttle": 0.75,
+		"grip": 0.42,
+		"inertia": 0.14,
+		"loaded_rpm_rmse": 656.582992659353,
+		"score": 9.09446787406708,
+		"speed_rmse_mph": 6.012614546913,
+		"torque": 105.0
+	},
+	{
+		"et_s": 19.2603299060507,
+		"first_throttle": 1.0,
+		"grip": 0.42,
+		"inertia": 0.14,
+		"loaded_rpm_rmse": 539.844480478183,
+		"score": 5.14240843715131,
+		"speed_rmse_mph": 3.45174862504998,
+		"torque": 105.0
+	},
+	{
+		"et_s": 20.0429159010891,
+		"first_throttle": 0.75,
+		"grip": 0.42,
+		"inertia": 0.22,
+		"loaded_rpm_rmse": 722.776743908052,
+		"score": 9.57334714440158,
+		"speed_rmse_mph": 6.31751534222332,
+		"torque": 105.0
+	},
+	{
+		"et_s": 19.1682991599047,
+		"first_throttle": 1.0,
+		"grip": 0.42,
+		"inertia": 0.22,
+		"loaded_rpm_rmse": 662.718919749432,
+		"score": 4.63501373255968,
+		"speed_rmse_mph": 3.1284154127503,
+		"torque": 105.0
+	},
+	{
+		"et_s": 19.7566063398979,
+		"first_throttle": 0.75,
+		"grip": 0.52,
+		"inertia": 0.14,
+		"loaded_rpm_rmse": 618.646860976261,
+		"score": 8.20429638444949,
+		"speed_rmse_mph": 5.5210837046536,
+		"torque": 105.0
+	},
+	{
+		"et_s": 18.7158841462759,
+		"first_throttle": 1.0,
+		"grip": 0.52,
+		"inertia": 0.14,
+		"loaded_rpm_rmse": 442.265150632893,
+		"score": 3.07705209911903,
+		"speed_rmse_mph": 2.47528380656719,
+		"torque": 105.0
+	},
+	{
+		"et_s": 19.8895387193897,
+		"first_throttle": 0.75,
+		"grip": 0.52,
+		"inertia": 0.22,
+		"loaded_rpm_rmse": 704.630448679967,
+		"score": 8.95814983603333,
+		"speed_rmse_mph": 6.00907239725387,
+		"torque": 105.0
+	},
+	{
+		"et_s": 18.7090031422005,
+		"first_throttle": 1.0,
+		"grip": 0.52,
+		"inertia": 0.22,
+		"loaded_rpm_rmse": 597.947888424825,
+		"score": 2.97940911956881,
+		"speed_rmse_mph": 2.39140283516778,
+		"torque": 105.0
+	},
+	{
+		"et_s": 19.6971603217373,
+		"first_throttle": 0.75,
+		"grip": 0.62,
+		"inertia": 0.14,
+		"loaded_rpm_rmse": 611.321679370486,
+		"score": 8.00412834693706,
+		"speed_rmse_mph": 5.43980770346256,
+		"torque": 105.0
+	},
+	{
+		"et_s": 18.6785767251552,
+		"first_throttle": 1.0,
+		"grip": 0.62,
+		"inertia": 0.14,
+		"loaded_rpm_rmse": 452.270535593942,
+		"score": 3.421969044201,
+		"speed_rmse_mph": 2.89481559389052,
+		"torque": 105.0
+	},
+	{
+		"et_s": 19.8376030648405,
+		"first_throttle": 0.75,
+		"grip": 0.62,
+		"inertia": 0.22,
+		"loaded_rpm_rmse": 701.578015813037,
+		"score": 8.82248006334201,
+		"speed_rmse_mph": 5.977273933661,
+		"torque": 105.0
+	},
+	{
+		"et_s": 18.6496113468341,
+		"first_throttle": 1.0,
+		"grip": 0.62,
+		"inertia": 0.22,
+		"loaded_rpm_rmse": 605.041929401639,
+		"score": 3.15713806091182,
+		"speed_rmse_mph": 2.68791536724353,
+		"torque": 105.0
+	},
+	{
+		"et_s": 19.1248871707549,
+		"first_throttle": 0.75,
+		"grip": 0.42,
+		"inertia": 0.14,
+		"loaded_rpm_rmse": 384.653256733229,
+		"score": 4.21220999702437,
+		"speed_rmse_mph": 2.79243565551464,
+		"torque": 115.0
+	},
+	{
+		"et_s": 18.7961333119991,
+		"first_throttle": 1.0,
+		"grip": 0.42,
+		"inertia": 0.14,
+		"loaded_rpm_rmse": 408.346489068236,
+		"score": 2.33137874883718,
+		"speed_rmse_mph": 1.56911212483906,
+		"torque": 115.0
+	},
+	{
+		"et_s": 19.184837963071,
+		"first_throttle": 0.75,
+		"grip": 0.42,
+		"inertia": 0.22,
+		"loaded_rpm_rmse": 490.682685484539,
+		"score": 4.55090356016036,
+		"speed_rmse_mph": 3.01122763401842,
+		"torque": 115.0
+	},
+	{
+		"et_s": 18.7330053086767,
+		"first_throttle": 1.0,
+		"grip": 0.42,
+		"inertia": 0.22,
+		"loaded_rpm_rmse": 572.606687609606,
+		"score": 2.02654890424878,
+		"speed_rmse_mph": 1.3905382868953,
+		"torque": 115.0
+	},
+	{
+		"et_s": 18.8477130063702,
+		"first_throttle": 0.75,
+		"grip": 0.52,
+		"inertia": 0.14,
+		"loaded_rpm_rmse": 358.050492365767,
+		"score": 2.89014731663454,
+		"speed_rmse_mph": 2.0247213038941,
+		"torque": 115.0
+	},
+	{
+		"et_s": 18.3340336482657,
+		"first_throttle": 1.0,
+		"grip": 0.52,
+		"inertia": 0.14,
+		"loaded_rpm_rmse": 377.263214255808,
+		"score": 1.59302718516782,
+		"speed_rmse_mph": 1.43109448169932,
+		"torque": 115.0
+	},
+	{
+		"et_s": 18.9829795869059,
+		"first_throttle": 0.75,
+		"grip": 0.52,
+		"inertia": 0.22,
+		"loaded_rpm_rmse": 484.231920289466,
+		"score": 3.67565388404044,
+		"speed_rmse_mph": 2.53969471022873,
+		"torque": 115.0
+	},
+	{
+		"et_s": 18.2271557219371,
+		"first_throttle": 1.0,
+		"grip": 0.52,
+		"inertia": 0.22,
+		"loaded_rpm_rmse": 557.749414497961,
+		"score": 1.97631572975766,
+		"speed_rmse_mph": 1.6006271736319,
+		"torque": 115.0
+	},
+	{
+		"et_s": 18.7450704208925,
+		"first_throttle": 0.75,
+		"grip": 0.62,
+		"inertia": 0.14,
+		"loaded_rpm_rmse": 353.956044839411,
+		"score": 2.60722286849008,
+		"speed_rmse_mph": 1.94708202670515,
+		"torque": 115.0
+	},
+	{
+		"et_s": 18.1840936127523,
+		"first_throttle": 1.0,
+		"grip": 0.62,
+		"inertia": 0.14,
+		"loaded_rpm_rmse": 375.692349481768,
+		"score": 2.66085993727813,
+		"speed_rmse_mph": 2.19904716278267,
+		"torque": 115.0
+	},
+	{
+		"et_s": 18.8997856597916,
+		"first_throttle": 0.75,
+		"grip": 0.62,
+		"inertia": 0.22,
+		"loaded_rpm_rmse": 483.398268812481,
+		"score": 3.49451487614351,
+		"speed_rmse_mph": 2.52494355656028,
+		"torque": 115.0
+	},
+	{
+		"et_s": 18.169169045775,
+		"first_throttle": 1.0,
+		"grip": 0.62,
+		"inertia": 0.22,
+		"loaded_rpm_rmse": 554.00968651971,
+		"score": 2.56074597011224,
+		"speed_rmse_mph": 2.06908406166231,
+		"torque": 115.0
+	},
+	{
+		"et_s": 18.485655483763,
+		"first_throttle": 0.75,
+		"grip": 0.42,
+		"inertia": 0.14,
+		"loaded_rpm_rmse": 293.706873334869,
+		"score": 1.61784351150204,
+		"speed_rmse_mph": 1.476532543976,
+		"torque": 125.0
+	},
+	{
+		"et_s": 18.3756616477897,
+		"first_throttle": 1.0,
+		"grip": 0.42,
+		"inertia": 0.14,
+		"loaded_rpm_rmse": 379.019619752201,
+		"score": 1.68263253644109,
+		"speed_rmse_mph": 1.60395583202057,
+		"torque": 125.0
+	},
+	{
+		"et_s": 18.5220709070297,
+		"first_throttle": 0.75,
+		"grip": 0.42,
+		"inertia": 0.22,
+		"loaded_rpm_rmse": 437.783956742581,
+		"score": 1.63388119908397,
+		"speed_rmse_mph": 1.41973938502449,
+		"torque": 125.0
+	},
+	{
+		"et_s": 18.3327664960026,
+		"first_throttle": 1.0,
+		"grip": 0.42,
+		"inertia": 0.22,
+		"loaded_rpm_rmse": 590.305726688202,
+		"score": 1.84025297741246,
+		"speed_rmse_mph": 1.67578596941772,
+		"torque": 125.0
+	},
+	{
+		"et_s": 18.1208132554867,
+		"first_throttle": 0.75,
+		"grip": 0.52,
+		"inertia": 0.14,
+		"loaded_rpm_rmse": 360.736090012844,
+		"score": 2.44735357635983,
+		"speed_rmse_mph": 1.85898008733325,
+		"torque": 125.0
+	},
+	{
+		"et_s": 17.9488591588237,
+		"first_throttle": 1.0,
+		"grip": 0.52,
+		"inertia": 0.14,
+		"loaded_rpm_rmse": 404.28920940012,
+		"score": 3.43541218154266,
+		"speed_rmse_mph": 2.50313049919015,
+		"torque": 125.0
+	},
+	{
+		"et_s": 18.2421645102724,
+		"first_throttle": 0.75,
+		"grip": 0.52,
+		"inertia": 0.22,
+		"loaded_rpm_rmse": 477.9867088583,
+		"score": 1.86046614891546,
+		"speed_rmse_mph": 1.51479516946016,
+		"torque": 125.0
+	},
+	{
+		"et_s": 17.8774524656007,
+		"first_throttle": 1.0,
+		"grip": 0.52,
+		"inertia": 0.22,
+		"loaded_rpm_rmse": 579.106730155301,
+		"score": 3.82061195160197,
+		"speed_rmse_mph": 2.74551688280347,
+		"torque": 125.0
+	},
+	{
+		"et_s": 17.9806505029095,
+		"first_throttle": 0.75,
+		"grip": 0.62,
+		"inertia": 0.14,
+		"loaded_rpm_rmse": 390.952235008163,
+		"score": 3.17028364863811,
+		"speed_rmse_mph": 2.30158465445706,
+		"torque": 125.0
+	},
+	{
+		"et_s": 17.861004523919,
+		"first_throttle": 1.0,
+		"grip": 0.62,
+		"inertia": 0.14,
+		"loaded_rpm_rmse": 418.665087672303,
+		"score": 4.10758917272214,
+		"speed_rmse_mph": 2.99959822056013,
+		"torque": 125.0
+	},
+	{
+		"et_s": 18.1297659633611,
+		"first_throttle": 0.75,
+		"grip": 0.62,
+		"inertia": 0.22,
+		"loaded_rpm_rmse": 494.674429710102,
+		"score": 2.41209910271728,
+		"speed_rmse_mph": 1.84163102943952,
+		"torque": 125.0
+	},
+	{
+		"et_s": 17.7384020071784,
+		"first_throttle": 1.0,
+		"grip": 0.62,
+		"inertia": 0.22,
+		"loaded_rpm_rmse": 585.226548108823,
+		"score": 4.69552108073518,
+		"speed_rmse_mph": 3.342325095092,
+		"torque": 125.0
+	},
+	{
+		"et_s": 18.0290969779722,
+		"first_throttle": 0.75,
+		"grip": 0.42,
+		"inertia": 0.14,
+		"loaded_rpm_rmse": 415.983712619271,
+		"score": 4.03850271374269,
+		"speed_rmse_mph": 3.26669666968707,
+		"torque": 135.0
+	},
+	{
+		"et_s": 18.0136811500886,
+		"first_throttle": 1.0,
+		"grip": 0.42,
+		"inertia": 0.14,
+		"loaded_rpm_rmse": 442.48592388529,
+		"score": 4.1229630546646,
+		"speed_rmse_mph": 3.32032535484177,
+		"torque": 135.0
+	},
+	{
+		"et_s": 18.020539326052,
+		"first_throttle": 0.75,
+		"grip": 0.42,
+		"inertia": 0.22,
+		"loaded_rpm_rmse": 570.699540014813,
+		"score": 4.04635885426834,
+		"speed_rmse_mph": 3.25743750637232,
+		"torque": 135.0
+	},
+	{
+		"et_s": 17.9906889284921,
+		"first_throttle": 1.0,
+		"grip": 0.42,
+		"inertia": 0.22,
+		"loaded_rpm_rmse": 640.865661717169,
+		"score": 4.22701799467082,
+		"speed_rmse_mph": 3.37839585165506,
+		"torque": 135.0
+	},
+	{
+		"et_s": 17.623012771958,
+		"first_throttle": 0.75,
+		"grip": 0.52,
+		"inertia": 0.14,
+		"loaded_rpm_rmse": 490.679083746883,
+		"score": 5.71862224261182,
+		"speed_rmse_mph": 4.13464778652791,
+		"torque": 135.0
+	},
+	{
+		"et_s": 17.6100047527909,
+		"first_throttle": 1.0,
+		"grip": 0.52,
+		"inertia": 0.14,
+		"loaded_rpm_rmse": 500.180193780371,
+		"score": 5.83832812167339,
+		"speed_rmse_mph": 4.22833762725513,
+		"torque": 135.0
+	},
+	{
+		"et_s": 17.6549593950787,
+		"first_throttle": 0.75,
+		"grip": 0.52,
+		"inertia": 0.22,
+		"loaded_rpm_rmse": 636.004550714825,
+		"score": 5.56950345414109,
+		"speed_rmse_mph": 4.04942224429844,
+		"torque": 135.0
+	},
+	{
+		"et_s": 17.5478312407845,
+		"first_throttle": 1.0,
+		"grip": 0.52,
+		"inertia": 0.22,
+		"loaded_rpm_rmse": 657.481333884926,
+		"score": 6.1807217150583,
+		"speed_rmse_mph": 4.44638419662721,
+		"torque": 135.0
+	},
+	{
+		"et_s": 17.5677766356985,
+		"first_throttle": 0.75,
+		"grip": 0.62,
+		"inertia": 0.14,
+		"loaded_rpm_rmse": 488.611610526502,
+		"score": 5.97361027555093,
+		"speed_rmse_mph": 4.27916354694792,
+		"torque": 135.0
+	},
+	{
+		"et_s": 17.4883409636037,
+		"first_throttle": 1.0,
+		"grip": 0.62,
+		"inertia": 0.14,
+		"loaded_rpm_rmse": 497.646904795084,
+		"score": 6.43447092337453,
+		"speed_rmse_mph": 4.58115285058193,
+		"torque": 135.0
+	},
+	{
+		"et_s": 17.5187857477105,
+		"first_throttle": 0.75,
+		"grip": 0.62,
+		"inertia": 0.22,
+		"loaded_rpm_rmse": 668.670296757035,
+		"score": 6.20873514636642,
+		"speed_rmse_mph": 4.41630664178747,
+		"torque": 135.0
+	},
+	{
+		"et_s": 17.471356503441,
+		"first_throttle": 1.0,
+		"grip": 0.62,
+		"inertia": 0.22,
+		"loaded_rpm_rmse": 651.089755183455,
+		"score": 6.53192285188923,
+		"speed_rmse_mph": 4.64463585877125,
+		"torque": 135.0
+	}
+]

@@ -1,0 +1,22 @@
+{
+  "source": "reference/HODY6554.MP4",
+  "video_duration_s": 32.1466666,
+  "video_fps": 59.9754100818664,
+  "audio_rate": 48000,
+  "audio_channels": 2,
+  "audio_duration_s": 32.2060625,
+  "audio_peak": 0.999969482421875,
+  "audio_rms": 0.24289387854962335,
+  "observed_slip": {
+    "reaction_s": 1.046,
+    "sixty_ft_s": 1.415,
+    "three_thirty_ft_s": 3.839,
+    "eighth_et_s": 5.754,
+    "eighth_mph": 138,
+    "thousand_ft_s": 7.27,
+    "quarter_et_s": 8.579,
+    "quarter_mph": 177,
+    "green_total_s": 9.625
+  },
+  "limitations": "HUD values were read from decoded frames. Samples are approximately 1.005 seconds apart, so exact shift duration and clutch slip cannot be recovered. Audio windows contain the entire mixed soundtrack: spectral centroid is not engine firing frequency, isolated RPM, or an audible timbre assessment. Vehicle configuration after the preceding tuning previews is unconfirmed. No protected audio or visual asset is reused in the game."
+}

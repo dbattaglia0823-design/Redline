@@ -1,0 +1,50 @@
+{
+  "tests": [
+    {
+      "test": "test_audio_profiles",
+      "passed": true
+    },
+    {
+      "test": "test_dynamic_audio",
+      "passed": true
+    },
+    {
+      "test": "test_audio_lab_ui",
+      "passed": true
+    },
+    {
+      "test": "test_audio",
+      "passed": true
+    },
+    {
+      "test": "test_polish",
+      "passed": true
+    },
+    {
+      "test": "test_runtime",
+      "passed": true
+    },
+    {
+      "test": "test_controls",
+      "passed": true
+    },
+    {
+      "test": "test_physics",
+      "passed": true
+    },
+    {
+      "test": "test_upgrade_studio_ui",
+      "passed": true
+    },
+    {
+      "test": "test_quality_ui",
+      "passed": true
+    },
+    {
+      "test": "test_shutdown",
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "scope": "Targeted audio overhaul regression runs; not the entire project suite"
+}

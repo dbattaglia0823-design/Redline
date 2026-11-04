@@ -1,0 +1,391 @@
+class_name Drivetrain
+extends RefCounted
+
+# SI units internally. Keep the existing public interface and default vehicle values.
+const RATIOS: Array[float] = [3.10,2.12,1.53,1.17,0.94,0.78]
+const FINAL_DRIVE := 3.85
+const TIRE_RADIUS := 0.315
+const IDLE := 950.0
+const REDLINE := 7600.0
+const NITROUS_CAPACITY := 6.0
+const FIXED_DT := 1.0/240.0
+const MPH_PER_MPS := 2.2369362921
+const RPM_PER_RAD := 60.0/TAU
+
+var speed := 0.0
+var distance := 0.0
+var elapsed := 0.0
+var rpm := IDLE
+var gear := 1 # 0 = neutral; paddles remain sequential.
+var throttle := 0.0
+var boost := 0.0
+var wheelspin := 0.0
+var shift_left := 0.0
+var shift_duration := 0.16
+var limiter := false
+var clutch_engagement := 0.0
+var nitrous_remaining := NITROUS_CAPACITY
+var nitrous_active := false
+var running := false
+var engine_stage := 0
+var turbo_stage := 0
+var tire_stage := 0
+var weight_stage := 0
+var gearbox_stage := 0
+var exhaust_stage := 0
+var brake_stage := 0
+var nitrous_stage := 0
+var base_torque := 238.0
+var base_mass := 1280.0
+var grip_coefficient := 0.57
+var shift_message := ""
+var shift_serial := 0
+var rejected_serial := 0
+
+var gear_ratios: Array[float] = RATIOS.duplicate()
+var final_drive := FINAL_DRIVE
+var tire_radius := TIRE_RADIUS
+var idle_rpm := IDLE
+var redline_rpm := REDLINE
+var engine_inertia := 0.22
+var wheel_inertia := 2.8
+var drag_area := 0.68
+var rolling_coefficient := 0.014
+var base_boost := 0.45
+var drivetrain := "RWD"
+var cylinders := 4
+var engine_layout := "I4"
+var engine_label := "2.0L turbo I4"
+var throttle_response := 0.055
+var queued_shift := 0
+var queued_shift_expires := 0.0
+var shift_request_serial := 0
+var shift_request_status := ""
+var last_shift_rpm := 0.0
+var last_shift_load := 0.0
+var wheel_omega := 0.0
+var wheel_angle := 0.0
+var engine_torque := 0.0
+var clutch_torque := 0.0
+var engine_load := 0.0
+var clutch_slip_rpm := 0.0
+var slip_ratio := 0.0
+var traction_force := 0.0
+var available_traction := 0.0
+var braking_force := 0.0
+var drag_force := 0.0
+var acceleration := 0.0
+var sync_torque := 0.0
+var fuel_cut := false
+var invalid_inputs := 0
+var safety_clamps := 0
+var substeps := 0
+var _accumulator := 0.0
+var _sim_time := 0.0
+var _auto_clutch := 0.0
+
+func configure(stages: Array) -> void:
+	var normalized := GameCatalog.normalize_stages(stages)
+	engine_stage = int(normalized[0])
+	turbo_stage = int(normalized[1])
+	tire_stage = int(normalized[2])
+	weight_stage = int(normalized[3])
+	gearbox_stage = int(normalized[4])
+	exhaust_stage = int(normalized[5])
+	brake_stage = int(normalized[6])
+	nitrous_stage = int(normalized[7])
+	shift_duration = 0.16-gearbox_stage*0.035
+	nitrous_remaining = minf(nitrous_remaining,nitrous_capacity())
+
+func configure_vehicle(spec: Dictionary) -> void:
+	base_torque = clampf(float(spec.get("torque",238.0)),10.0,2000.0)
+	base_mass = clampf(float(spec.get("mass",1280.0)),350.0,5000.0)
+	grip_coefficient = clampf(float(spec.get("grip",0.57)),0.05,2.0)
+	drivetrain = str(spec.get("drive","RWD"))
+	engine_label = str(spec.get("engine","2.0L turbo I4"))
+	engine_layout = "V6" if engine_label.contains("V6") else ("I6" if engine_label.contains("I6") else "I4")
+	throttle_response = clampf(float(spec.get("throttle_response",0.055)),0.015,0.15)
+	cylinders = int(spec.get("cylinders",6 if str(spec.get("engine","")).contains("6") else 4))
+	engine_inertia = clampf(float(spec.get("inertia",0.28 if cylinders == 6 else 0.22)),0.08,0.8)
+	wheel_inertia = float(spec.get("wheel_inertia",5.6 if drivetrain == "AWD" else 2.8))
+	tire_radius = clampf(float(spec.get("tire_radius",TIRE_RADIUS)),0.15,0.6)
+	final_drive = clampf(float(spec.get("final_drive",FINAL_DRIVE)),1.0,7.0)
+	idle_rpm = clampf(float(spec.get("idle",IDLE)),600.0,1500.0)
+	redline_rpm = clampf(float(spec.get("redline",REDLINE)),4500.0,12000.0)
+	drag_area = clampf(float(spec.get("drag_area",0.68)),0.2,1.5)
+	rolling_coefficient = clampf(float(spec.get("rolling",0.014)),0.005,0.05)
+	base_boost = clampf(float(spec.get("base_boost",0.45)),0.0,2.0)
+	gear_ratios = RATIOS.duplicate()
+	var supplied = spec.get("ratios",[])
+	if supplied is Array and supplied.size() >= 3 and supplied.size() <= 8:
+		gear_ratios.clear()
+		for ratio in supplied: gear_ratios.append(clampf(float(ratio),0.3,6.0))
+
+func mass() -> float:
+	return maxf(350.0,base_mass-weight_stage*65.0)
+
+func nitrous_capacity() -> float:
+	return NITROUS_CAPACITY+nitrous_stage*1.5
+
+func clutch_capacity() -> float:
+	return base_torque*2.0*(1.0+engine_stage*0.14)*(1.0+exhaust_stage*0.06)*(1.0+gearbox_stage*0.15)
+
+func good_shift_min() -> float:
+	return redline_rpm-850.0
+
+func good_shift_max() -> float:
+	return redline_rpm-250.0
+
+func upshift_ready() -> bool:
+	return running and gear > 0 and gear < gear_ratios.size() and shift_left <= 0.0 and rpm >= good_shift_min() and wheelspin < 0.10 and absf(clutch_slip_rpm) < 250.0 and clutch_engagement > 0.9
+
+func shift_recommended() -> bool:
+	return upshift_ready() and rpm <= good_shift_max()
+
+func ratio_for(for_gear: int) -> float:
+	return gear_ratios[for_gear-1]*final_drive if for_gear >= 1 and for_gear <= gear_ratios.size() else 0.0
+
+func wheel_rpm(for_gear: int) -> float:
+	# Ideal locked-clutch / no-wheelspin engine RPM at the current road speed.
+	return speed/tire_radius*ratio_for(for_gear)*RPM_PER_RAD
+
+func set_road_state(mps: float, for_gear: int, at_rpm: float = -1.0) -> void:
+	speed = maxf(0.0,mps)
+	gear = clampi(for_gear,0,gear_ratios.size())
+	wheel_omega = speed/tire_radius
+	rpm = maxf(idle_rpm,wheel_rpm(gear)) if at_rpm < 0.0 else maxf(0.0,at_rpm)
+	_accumulator = 0.0
+
+func reset() -> void:
+	speed = 0.0
+	distance = 0.0
+	elapsed = 0.0
+	rpm = idle_rpm
+	gear = 1
+	throttle = 0.0
+	boost = 0.0
+	wheelspin = 0.0
+	shift_left = 0.0
+	running = false
+	limiter = false
+	fuel_cut = false
+	clutch_engagement = 0.0
+	nitrous_remaining = nitrous_capacity()
+	nitrous_active = false
+	shift_message = ""
+	cancel_shift_request()
+	shift_request_status = ""
+	last_shift_rpm = 0.0
+	last_shift_load = 0.0
+	wheel_omega = 0.0
+	wheel_angle = 0.0
+	engine_torque = 0.0
+	clutch_torque = 0.0
+	engine_load = 0.0
+	clutch_slip_rpm = 0.0
+	slip_ratio = 0.0
+	traction_force = 0.0
+	available_traction = 0.0
+	braking_force = 0.0
+	acceleration = 0.0
+	sync_torque = 0.0
+	_accumulator = 0.0
+	_sim_time = 0.0
+	_auto_clutch = 0.0
+	substeps = 0
+	invalid_inputs = 0
+	safety_clamps = 0
+
+func shift(direction: int) -> bool:
+	if shift_left > 0.000001 or direction == 0: return false
+	var next := clampi(gear+signi(direction),0,gear_ratios.size())
+	if next == gear: return false
+	# Include driven-wheel speed: spinning tires can overrev a downshift too.
+	var proposed := maxf(wheel_rpm(next),wheel_omega*ratio_for(next)*RPM_PER_RAD)
+	if next > 0 and proposed > redline_rpm+180.0:
+		shift_message = "DOWNSHIFT PROTECTED"
+		rejected_serial += 1
+		return false
+	if next == 0: shift_message = "NEUTRAL"
+	elif gear == 0: shift_message = "DRIVE"
+	elif direction > 0:
+		if wheelspin >= 0.10: shift_message = "TRACTION SHIFT"
+		elif rpm < good_shift_min(): shift_message = "EARLY SHIFT"
+		elif rpm > good_shift_max(): shift_message = "LATE SHIFT"
+		else: shift_message = "PERFECT SHIFT" if shift_recommended() else "CLUTCH SHIFT"
+	else: shift_message = "REV MATCH"
+	last_shift_rpm = rpm
+	last_shift_load = engine_load
+	gear = next
+	shift_left = shift_duration
+	shift_serial += 1
+	return true
+
+func cancel_shift_request() -> void:
+	queued_shift = 0
+	queued_shift_expires = 0.0
+
+func request_shift(direction: int) -> String:
+	# Only explicit player taps use this one-intent latch. AI keeps shift().
+	shift_request_serial += 1
+	var intent := signi(direction)
+	if intent == 0: return "INVALID"
+	if queued_shift != 0 and intent != queued_shift:
+		cancel_shift_request()
+		shift_request_status = "SHIFT CANCELED"
+	elif shift_left > 0.000001:
+		if gear+intent < 0 or gear+intent > gear_ratios.size():
+			shift_request_status = "GEAR LIMIT"
+		else:
+			queued_shift = intent
+			queued_shift_expires = _sim_time+shift_left+0.1
+			shift_request_status = "SHIFT QUEUED"
+	else:
+		cancel_shift_request()
+		if gear+intent < 0 or gear+intent > gear_ratios.size(): shift_request_status = "GEAR LIMIT"
+		else: shift_request_status = "SHIFT ACCEPTED" if shift(intent) else "DOWNSHIFT PROTECTED"
+	return shift_request_status
+
+func torque_at(at_rpm: float) -> float:
+	# Net full-throttle naturally-aspirated torque. Boost is applied separately.
+	var x := clampf((at_rpm-idle_rpm)/(redline_rpm-idle_rpm),0.0,1.15)
+	var points: Array[Vector2] = [Vector2(0,0.60),Vector2(0.15,0.80),Vector2(0.35,0.95),Vector2(0.55,1.0),Vector2(0.75,0.96),Vector2(0.90,0.90),Vector2(1.0,0.82),Vector2(1.15,0.25)]
+	var factor := 0.25
+	for i in range(1,points.size()):
+		if x <= points[i].x:
+			factor = lerpf(points[i-1].y,points[i].y,inverse_lerp(points[i-1].x,points[i].x,x))
+			break
+	return base_torque*factor*(1.0+engine_stage*0.14)*(1.0+exhaust_stage*0.06)
+
+func turbo_onset() -> float:
+	return [2400.0,1700.0,2400.0,3200.0][turbo_stage]
+
+func boost_target(at_rpm: float, opening: float) -> float:
+	return clampf((at_rpm-turbo_onset())/2700.0,0.0,1.0)*opening*(base_boost+turbo_stage*0.18)
+
+func peak_horsepower() -> int:
+	var peak := 0.0
+	for sample_rpm in range(int(idle_rpm),int(redline_rpm)+1,50):
+		peak = maxf(peak,torque_at(sample_rpm)*(1.0+boost_target(sample_rpm,1.0)*0.8)*sample_rpm/7127.0)
+	return roundi(peak)
+
+func losses(at_omega: float, opening: float) -> float:
+	return 8.0+0.02*at_omega+0.000015*at_omega*at_omega+(1.0-opening)*(8.0+0.025*at_omega)
+
+func step(dt: float, pedal: float, brake: float = 0.0, clutch: float = 0.0, nitrous: bool = false) -> void:
+	if not is_finite(dt) or dt <= 0.0 or dt > 1.0 or not is_finite(pedal) or not is_finite(brake) or not is_finite(clutch):
+		invalid_inputs += 1
+		return
+	_accumulator += dt
+	# A single fixed solver is shared by gameplay, AI, calibration, and tests.
+	while _accumulator+0.000000001 >= FIXED_DT:
+		_substep(FIXED_DT,clampf(pedal,0,1),clampf(brake,0,1),clampf(clutch,0,1),nitrous)
+		_accumulator -= FIXED_DT
+	_accumulator = maxf(0.0,_accumulator)
+
+func _substep(dt: float, pedal: float, brake: float, clutch: float, nitrous: bool) -> void:
+	substeps += 1
+	_sim_time += dt
+	if running: elapsed += dt
+	var response := throttle_response/(1.0+engine_stage*0.08)
+	throttle = lerpf(throttle,pedal,1.0-exp(-dt/response))
+	shift_left = maxf(0.0,shift_left-dt)
+	if queued_shift != 0 and shift_left <= 0.000001:
+		var intent := queued_shift
+		var expired := _sim_time > queued_shift_expires
+		cancel_shift_request()
+		if not expired:
+			shift_request_status = "SHIFT ACCEPTED" if shift(intent) else "SHIFT PROTECTED"
+			shift_request_serial += 1
+	var shifting := shift_left > 0.0
+	var total_ratio := ratio_for(gear)
+	var old_speed := speed
+	var omega := maxf(0.0,rpm/RPM_PER_RAD)
+	var idle_omega := idle_rpm/RPM_PER_RAD
+	if limiter and rpm < redline_rpm-160.0: limiter = false
+	if rpm >= redline_rpm: limiter = true
+	fuel_cut = limiter or shifting
+	var target_boost := boost_target(rpm,throttle)
+	var boost_tau: float = [0.32,0.24,0.38,0.55][turbo_stage] if target_boost > boost else 0.09
+	boost = lerpf(boost,target_boost,1.0-exp(-dt/boost_tau))
+	# Automatic launch/anti-stall assistance operates a finite-capacity clutch.
+	var target_clutch := 1.0-clutch
+	if not running or gear == 0 or shifting:
+		target_clutch = 0.0
+	elif speed < 8.0:
+		target_clutch *= clampf(maxf((rpm-idle_rpm)/4200.0,wheel_rpm(gear)/3000.0),0.0,1.0)
+	elif wheel_rpm(gear) < idle_rpm:
+		target_clutch *= clampf((wheel_rpm(gear)-idle_rpm*0.5)/(idle_rpm*0.5),0,1)
+	clutch_engagement = 0.0 if clutch > 0.99 or target_clutch == 0.0 else move_toward(clutch_engagement,target_clutch,dt*(8.0+gearbox_stage*2.0))
+	var full_torque := torque_at(rpm)*(1.0+boost*0.8)
+	var friction := losses(omega,throttle)
+	var combustion := (full_torque+losses(omega,1.0))*throttle if not fuel_cut else 0.0
+	var governor := maxf(0.0,losses(idle_omega,0.0)+(idle_omega-omega)*1.8)*clampf(1.0-throttle*4.0,0,1)
+	if omega > idle_omega*1.1: governor = 0.0
+	engine_torque = combustion+governor-friction
+	sync_torque = 0.0
+	if shifting and clutch < 0.5 and total_ratio > 0.0 and running:
+		var sync_target := maxf(idle_omega,wheel_omega*total_ratio)
+		# Bounded paddle controller: compression/synchronizer drag and throttle blip.
+		sync_torque = clampf((sync_target-omega)*engine_inertia/0.045,-240.0,full_torque)
+		engine_torque += sync_torque
+	nitrous_active = nitrous and nitrous_remaining > 0.0 and throttle > 0.85 and clutch_engagement > 0.9 and speed > 5.0 and not fuel_cut and gear > 0 and running and brake < 0.1
+	if nitrous_active:
+		var used := minf(dt,nitrous_remaining)
+		nitrous_remaining = maxf(0.0,nitrous_remaining-used)
+		engine_torque += full_torque*(0.55+nitrous_stage*0.06)*(used/dt)
+	# Lump gearbox/bearing efficiency into a power loss, without altering kinematic ratios.
+	if engine_torque > 0.0 and clutch_engagement > 0.0: engine_torque *= 1.0-0.10*clutch_engagement
+	omega += engine_torque/engine_inertia*dt
+	clutch_torque = 0.0
+	traction_force = 0.0
+	braking_force = 0.0
+	if not running:
+		# Staging holds the chassis; engine dynamics continue in neutral/open clutch.
+		speed = 0.0
+		wheel_omega = 0.0
+	else:
+		var m := mass()
+		drag_force = 0.5*1.225*drag_area*speed*speed
+		var rolling := m*9.81*rolling_coefficient if speed > 0.001 else 0.0
+		braking_force = minf(brake*m*8.0*(1.0+brake_stage*0.18),m*9.81*(1.05+tire_stage*0.06))
+		var free_v := maxf(0.0,speed-(drag_force+rolling+braking_force)/m*dt)
+		var grip_transfer := 0.18*clampf(acceleration,-8.0,8.0)/9.81
+		if drivetrain == "FWD": grip_transfer = -grip_transfer
+		elif drivetrain == "AWD": grip_transfer = 0.0
+		available_traction = m*9.81*maxf(0.05,grip_coefficient+tire_stage*0.095+grip_transfer)
+		var tire_limit := available_traction*dt
+		var clutch_limit := clutch_capacity()*clutch_engagement*dt
+		# Two coupled impulses solve engine-clutch-wheel and tire-road constraints.
+		# Saturation produces real clutch slip and driven-wheel spin.
+		var a11 := 1.0/engine_inertia+total_ratio*total_ratio/wheel_inertia
+		var a12 := -total_ratio*tire_radius/wheel_inertia
+		var a22 := tire_radius*tire_radius/wheel_inertia+1.0/m
+		var c1 := omega-total_ratio*wheel_omega
+		var c2 := wheel_omega*tire_radius-free_v
+		var determinant := maxf(0.0000001,a11*a22-a12*a12)
+		var jc := (a22*c1-a12*c2)/determinant
+		var jt := (a11*c2-a12*c1)/determinant
+		for solve in 4:
+			jc = clampf(jc,-clutch_limit,clutch_limit)
+			jt = clampf((c2-a12*jc)/a22,-tire_limit,tire_limit)
+			jc = clampf((c1-a12*jt)/a11,-clutch_limit,clutch_limit)
+		omega -= jc/engine_inertia
+		wheel_omega += (total_ratio*jc-tire_radius*jt)/wheel_inertia
+		speed = maxf(0.0,free_v+jt/m)
+		clutch_torque = jc/dt
+		traction_force = jt/dt
+		acceleration = (speed-old_speed)/dt
+		distance += (old_speed+speed)*0.5*dt
+	var safe_omega := clampf(omega,0.0,redline_rpm*1.25/RPM_PER_RAD)
+	if not is_equal_approx(safe_omega,omega): safety_clamps += 1
+	rpm = safe_omega*RPM_PER_RAD
+	wheel_omega = maxf(0.0,wheel_omega)
+	wheel_angle = fposmod(wheel_angle+wheel_omega*dt,TAU)
+	clutch_slip_rpm = rpm-wheel_omega*total_ratio*RPM_PER_RAD
+	slip_ratio = (wheel_omega*tire_radius-speed)/maxf(3.0,speed)
+	wheelspin = clampf(maxf(0.0,slip_ratio),0.0,1.0)
+	engine_load = clampf(maxf(0.0,clutch_torque)/maxf(1.0,full_torque),0.0,1.5)
+
+func telemetry() -> Dictionary:
+	return {"time":elapsed,"rpm":rpm,"gear":gear,"mph":speed*MPH_PER_MPS,"distance_m":distance,"engine_nm":engine_torque,"clutch_nm":clutch_torque,"load":engine_load,"clutch":clutch_engagement,"clutch_slip_rpm":clutch_slip_rpm,"wheel_rad_s":wheel_omega,"slip_ratio":slip_ratio,"tire_force_n":traction_force,"traction_limit_n":available_traction,"acceleration_mps2":acceleration,"boost_bar":boost,"nitrous_s":nitrous_remaining,"fuel_cut":fuel_cut,"limiter":limiter,"shift_s":shift_left,"sync_nm":sync_torque}

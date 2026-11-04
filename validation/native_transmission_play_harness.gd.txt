@@ -1,0 +1,28 @@
+extends SceneTree
+var game: Node2D
+var wall := 0.0
+var was_paused := true
+var saved := false
+func _initialize() -> void: call_deferred("start")
+func start() -> void:
+	game = load("res://scenes/main.tscn").instantiate()
+	game.set_script(load("res://.reference_helpers/native_transmission_game.gd")); root.add_child(game)
+	game.profile = DriverProfile.new(); game.profile.credits = 1000000; game.profile.upgrade(4,5)
+	game.profile.install_transmission("drag3"); game.profile.upgrade(4,5); game.profile.install_hardware("transbrake"); game.profile.install_hardware("converter_race")
+	game.profile.career_wins[0] = 2
+	game.selected_opponent = 2; game.wager = 0; game.start_race(); game.active_distance = 402.336
+	game.set_race_paused(true); game.debug_physics = true
+	DisplayServer.window_set_title("REDLINE - Native transmission playtest")
+func _process(dt: float) -> bool:
+	wall += dt
+	if not is_instance_valid(game): return false
+	if game.screen == "race" and not game.paused_race and game.finish_hold_left == 0.0:
+		# Test-only gas assistance: native UI operates pause, B, telemetry, paddles.
+		game.controls.hold("qa_foot","gas")
+	else: game.controls.release("qa_foot")
+	if game.screen == "results" and not saved:
+		saved = true
+		var f := FileAccess.open("res://validation/native_transmission_play.json",FileAccess.WRITE)
+		f.store_string(JSON.stringify({"completed":true,"time_s":game.player_finish,"trap_mph":game.finish_speed,"shifts":game.car.shift_serial,"safety_clamps":game.car.safety_clamps,"audio_underruns":game.sound.underruns,"native_events":game.native_events,"method":"Native Windows pause/B/W/paddle/overlay events with test-only held gas and disabled automation focus-out auto-pause. Production focus release is covered in control tests; subjective feel, timbre and phone ergonomics are not measured."},"\t")); f.close()
+	if wall > 180.0: quit()
+	return false

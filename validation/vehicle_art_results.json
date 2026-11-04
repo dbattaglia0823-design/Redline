@@ -1,0 +1,88 @@
+{
+  "passed": true,
+  "registered_checks_run": [
+    {
+      "test": "test_vehicle_presentation",
+      "passed": true
+    },
+    {
+      "test": "test_rim_rendering",
+      "passed": true
+    },
+    {
+      "test": "test_visual_rendering",
+      "passed": true
+    },
+    {
+      "test": "test_customization",
+      "passed": true
+    },
+    {
+      "test": "test_customization_ui",
+      "passed": true
+    },
+    {
+      "test": "test_roster",
+      "passed": true
+    },
+    {
+      "test": "test_roster_ui",
+      "passed": true
+    },
+    {
+      "test": "test_controls",
+      "passed": true
+    },
+    {
+      "test": "test_quality_ui",
+      "passed": true
+    },
+    {
+      "test": "test_race_hud",
+      "passed": true
+    },
+    {
+      "test": "test_runtime",
+      "passed": true
+    }
+  ],
+  "asset_integrity_vehicles": 30,
+  "mechanical_fields_changed": [],
+  "native_screenshots": 237,
+  "new_original_body_sources": [
+    "miata",
+    "supra",
+    "mustang"
+  ],
+  "retained_bodies_with_rebuilt_layers": [
+    "civic_si",
+    "gti_vr6",
+    "rsx",
+    "brz",
+    "integra",
+    "gti",
+    "s2000",
+    "gr86",
+    "z350",
+    "m3",
+    "sti",
+    "evo",
+    "type_r",
+    "supra_gr",
+    "camaro",
+    "golf_r",
+    "z400",
+    "z06",
+    "gtr",
+    "r8",
+    "gt500",
+    "redeye",
+    "turbo_s",
+    "mclaren",
+    "sf90",
+    "demon",
+    "chiron"
+  ],
+  "physical_iphone_tested": false,
+  "factory_likeness_certified": false
+}

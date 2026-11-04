@@ -1,0 +1,22 @@
+{
+	"failures": 0,
+	"method": "Continuous real physics from idle through staged launch, assisted paddles, quarter-mile and coast. Same input strategy for stock/all-tier3, no nitrous. Raw original DSP before -7 dB game output gain. Different launch staging from the canonical 3900 RPM benchmark; times are not directly interchangeable.",
+	"runs": [
+		{
+			"actual_shifts": 3,
+			"build": "stock",
+			"duration_s": 16.4708333333333,
+			"peak_pcm": 0.397107034921646,
+			"peak_sample_jump": 0.179531826430281,
+			"quarter_total_s": 13.2140230108347
+		},
+		{
+			"actual_shifts": 5,
+			"build": "built",
+			"duration_s": 13.2583333333333,
+			"peak_pcm": 0.509817540645599,
+			"peak_sample_jump": 0.367217355156621,
+			"quarter_total_s": 10.0011920428596
+		}
+	]
+}

@@ -1,0 +1,14 @@
+.godot/
+.local_appdata/
+.qa_appdata/
+.controls_appdata/
+.economy_appdata/
+.menus_appdata/
+.physics_appdata/
+.validation_appdata/
+.calibration_baseline/
+.qa/
+.reference_helpers/
+reference/
+*.zip
+*.log

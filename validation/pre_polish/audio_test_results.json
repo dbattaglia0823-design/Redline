@@ -1,0 +1,13 @@
+{
+	"chunk_invariant": true,
+	"failures": 0,
+	"max_adjacent_sample_jump": 0.272844649391605,
+	"max_pcm_amplitude": 0.623782217502594,
+	"max_pitch_ramp_tracking_error_rpm": 509.996960394649,
+	"max_real_pitch_tracking_error_rpm": 82.0055144915204,
+	"note": "Ramp tracking error includes sudden test-fixture road-state changes; steady-state frequency is tested separately. Hardware output latency is not measured.",
+	"queued_buffer_ms": 55.0,
+	"sample_rate": 22050,
+	"samples_generated": 264600,
+	"targets_equal_telemetry": true
+}

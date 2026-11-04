@@ -1,0 +1,153 @@
+class_name Drivetrain
+extends RefCounted
+
+const RATIOS: Array[float] = [3.10, 2.12, 1.53, 1.17, 0.94, 0.78]
+const FINAL_DRIVE := 3.85
+const TIRE_RADIUS := 0.315
+const IDLE := 950.0
+const REDLINE := 7600.0
+const NITROUS_CAPACITY := 6.0 # Seconds of usable spray, refilled for each race.
+var speed := 0.0 # metres / second
+var distance := 0.0
+var elapsed := 0.0
+var rpm := IDLE
+var gear := 1
+var throttle := 0.0
+var boost := 0.0
+var wheelspin := 0.0
+var shift_left := 0.0
+var shift_duration := 0.16
+var limiter := false
+var clutch_engagement := 1.0
+var nitrous_remaining := NITROUS_CAPACITY
+var nitrous_active := false
+var running := false
+var engine_stage := 0
+var turbo_stage := 0
+var tire_stage := 0
+var weight_stage := 0
+var gearbox_stage := 0
+var exhaust_stage := 0
+var brake_stage := 0
+var nitrous_stage := 0
+var base_torque := 238.0
+var base_mass := 1280.0
+var grip_coefficient := 0.57
+var shift_message := ""
+var shift_serial := 0
+var rejected_serial := 0
+
+func configure(stages: Array) -> void:
+	engine_stage = int(stages[0])
+	turbo_stage = int(stages[1])
+	tire_stage = int(stages[2])
+	weight_stage = int(stages[3])
+	gearbox_stage = int(stages[4])
+	exhaust_stage = int(stages[5]) if stages.size() > 5 else 0
+	brake_stage = int(stages[6]) if stages.size() > 6 else 0
+	nitrous_stage = int(stages[7]) if stages.size() > 7 else 0
+	shift_duration = 0.16 - gearbox_stage * 0.035
+	nitrous_remaining = minf(nitrous_remaining, nitrous_capacity())
+
+func configure_vehicle(spec: Dictionary) -> void:
+	base_torque = float(spec.get("torque",238.0))
+	base_mass = float(spec.get("mass",1280.0))
+	grip_coefficient = float(spec.get("grip",0.57))
+
+func nitrous_capacity() -> float:
+	return NITROUS_CAPACITY + nitrous_stage * 1.5
+
+func reset() -> void:
+	speed = 0.0
+	distance = 0.0
+	elapsed = 0.0
+	rpm = IDLE
+	gear = 1
+	throttle = 0.0
+	boost = 0.0
+	wheelspin = 0.0
+	shift_left = 0.0
+	running = false
+	limiter = false
+	clutch_engagement = 1.0
+	nitrous_remaining = nitrous_capacity()
+	nitrous_active = false
+	shift_message = ""
+
+func wheel_rpm(for_gear: int) -> float:
+	return speed / (TAU * TIRE_RADIUS) * 60.0 * RATIOS[for_gear - 1] * FINAL_DRIVE
+
+func shift(direction: int) -> bool:
+	if shift_left > 0.0 or not running:
+		return false
+	var next := clampi(gear + direction, 1, 6)
+	if next == gear:
+		return false
+	if wheel_rpm(next) > REDLINE + 180.0:
+		shift_message = "DOWNSHIFT PROTECTED"
+		rejected_serial += 1
+		return false
+	if direction > 0:
+		shift_message = "PERFECT SHIFT" if rpm >= 6750.0 and rpm <= 7350.0 else ("EARLY SHIFT" if rpm < 6750.0 else "LATE SHIFT")
+	else:
+		shift_message = "REV MATCH"
+	gear = next
+	shift_left = shift_duration
+	shift_serial += 1
+	return true
+
+func torque_at(at_rpm: float) -> float:
+	var normalized := clampf((at_rpm - IDLE) / (REDLINE - IDLE), 0.0, 1.0)
+	var curve := 0.58 + 0.48 * sin(normalized * PI * 0.87)
+	if normalized > 0.86:
+		curve -= (normalized - 0.86) * 1.5
+	return base_torque * curve * (1.0 + engine_stage * 0.14) * (1.0 + exhaust_stage * 0.06)
+
+func peak_horsepower() -> int:
+	var peak := 0.0
+	for sample_rpm in range(1000, 7601, 100):
+		var full_boost := clampf((sample_rpm - 2400.0) / 3100.0, 0.0, 1.0) * (0.45 + turbo_stage * 0.18)
+		peak = maxf(peak, torque_at(float(sample_rpm)) * (1.0 + full_boost * 0.8) * sample_rpm / 7127.0)
+	return roundi(peak)
+
+func step(dt: float, pedal: float, brake: float = 0.0, clutch: float = 0.0, nitrous: bool = false) -> void:
+	throttle = move_toward(throttle, pedal, dt * 7.0)
+	clutch_engagement = 0.0 if clutch > 0.5 else move_toward(clutch_engagement, 1.0, dt * 8.0)
+	nitrous_active = false
+	shift_left = maxf(0.0, shift_left - dt)
+	var spool := clampf((rpm - 2400.0) / 3100.0, 0.0, 1.0) * throttle
+	boost = move_toward(boost, spool * (0.45 + turbo_stage * 0.18), dt * (1.4 if spool > boost else 3.8))
+	if not running:
+		rpm = move_toward(rpm, IDLE + throttle * (REDLINE - IDLE + 140.0), dt * (9800.0 if throttle > 0.1 else 7000.0))
+		limiter = rpm >= REDLINE
+		return
+	elapsed += dt
+	var mass := base_mass - weight_stage * 65.0
+	var coupled := wheel_rpm(gear)
+	# Automatic launch clutch slips below lock-up speed; later gears remain coupled.
+	var launch_rpm := 3000.0 * throttle + IDLE
+	var target_rpm := maxf(coupled, launch_rpm if gear == 1 and speed < 11.0 else IDLE)
+	var free_rpm := IDLE + throttle * (REDLINE - IDLE + 140.0)
+	target_rpm = lerpf(free_rpm, target_rpm, clutch_engagement)
+	rpm = move_toward(rpm, target_rpm, dt * (21000.0 if shift_left > 0.0 else 13500.0))
+	limiter = rpm >= REDLINE
+	var cut := 0.0 if shift_left > 0.0 else 1.0
+	if limiter:
+		cut *= 0.22 if fmod(elapsed, 0.075) < 0.045 else 0.65
+		rpm = minf(rpm, REDLINE + 140.0)
+	var spray_fraction := 0.0
+	if nitrous and nitrous_remaining > 0.0 and throttle > 0.85 and clutch_engagement > 0.95 and shift_left <= 0.0 and speed > 5.0 and not limiter and brake < 0.1:
+		var used := minf(dt, nitrous_remaining)
+		nitrous_remaining = maxf(0.0, nitrous_remaining - used)
+		spray_fraction = used / dt
+		nitrous_active = true
+	var force := torque_at(rpm) * (1.0 + boost * 0.8) * throttle * RATIOS[gear - 1] * FINAL_DRIVE * 0.88 / TIRE_RADIUS * cut * clutch_engagement * (1.0 + spray_fraction * (0.55 + nitrous_stage * 0.06))
+	var grip := mass * 9.81 * (grip_coefficient + tire_stage * 0.095)
+	wheelspin = clampf((force - grip) / grip, 0.0, 1.0)
+	force = minf(force, grip) * (1.0 - wheelspin * 0.13)
+	var drag := 0.5 * 1.225 * 0.68 * speed * speed
+	var rolling := mass * 9.81 * 0.014 if speed > 0.01 else 0.0
+	var engine_braking := speed * 9.0 * (1.0 - throttle) * clutch_engagement
+	speed = maxf(0.0, speed + (force - drag - rolling - engine_braking - brake * mass * 8.0 * (1.0 + brake_stage * 0.18)) / mass * dt)
+	distance += speed * dt
+	rpm += wheelspin * 600.0 * dt

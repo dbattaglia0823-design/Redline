@@ -1,0 +1,26 @@
+{
+  "miata": {
+    "source": "assets/vehicles/source_premium/miata_na.png",
+    "rear": [449, 541], "front": [1724, 541], "radius": 175,
+    "resolution": 2,
+    "glass_luminance_max": 256,
+    "glass": [[[1074, 122], [1194, 214], [1092, 232]], [[1142, 68], [1347, 221], [1252, 226], [1106, 102]]],
+    "trim": [[[190, 70], [510, 70], [510, 137], [190, 137]]]
+  },
+  "supra": {
+    "source": "assets/vehicles/source_premium/reference_trio.png",
+    "crop": [0, 440, 1199, 855],
+    "rear": [287, 302], "front": [933, 302], "radius": 91,
+    "resolution": 2,
+    "glass": [[[355, 95], [480, 49], [593, 60], [708, 140], [354, 132]]],
+    "lamps": [[[914, 187], [933, 194], [957, 218], [915, 212]]]
+  },
+  "mustang": {
+    "source": "assets/vehicles/source_premium/reference_trio.png",
+    "crop": [0, 875, 1199, 1312],
+    "rear": [284, 303], "front": [950, 303], "radius": 96,
+    "resolution": 2,
+    "glass": [[[345, 82], [477, 45], [588, 54], [714, 137], [348, 132]]],
+    "lamps": [[[899, 193], [958, 203], [948, 215], [905, 211]]]
+  }
+}

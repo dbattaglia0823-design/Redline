@@ -1,0 +1,302 @@
+[
+  {
+    "class": "E",
+    "distance": 402.336,
+    "id": "class_E_0",
+    "model": "miata",
+    "potential_s": 16.0732055793117,
+    "quarter_ai_s": 18.7000063127329,
+    "race_s": 18.7000063127329,
+    "trap_mph": 79.270025186411
+  },
+  {
+    "class": "E",
+    "distance": 201.168,
+    "id": "class_E_1",
+    "model": "civic_si",
+    "potential_s": 15.9243226523662,
+    "quarter_ai_s": 17.8952024510533,
+    "race_s": 11.9292360514508,
+    "trap_mph": 66.2322887403058
+  },
+  {
+    "class": "E",
+    "distance": 402.336,
+    "id": "class_E_2",
+    "model": "gti_vr6",
+    "potential_s": 15.1189191066969,
+    "quarter_ai_s": 16.1917392934676,
+    "race_s": 16.1917392934676,
+    "trap_mph": 89.7337771227823
+  },
+  {
+    "class": "E",
+    "distance": 201.168,
+    "id": "class_E_3",
+    "model": "gti_vr6",
+    "potential_s": 15.1189191066969,
+    "quarter_ai_s": 15.8528831754936,
+    "race_s": 10.4037895740328,
+    "trap_mph": 73.099183331869
+  },
+  {
+    "class": "E",
+    "distance": 402.336,
+    "id": "class_E_4",
+    "model": "civic_si",
+    "potential_s": 15.0581470714824,
+    "quarter_ai_s": 15.5276352744064,
+    "race_s": 15.5276352744064,
+    "trap_mph": 92.8750162032533
+  },
+  {
+    "class": "D",
+    "distance": 402.336,
+    "id": "class_D_0",
+    "model": "gti",
+    "potential_s": 14.7523199278181,
+    "quarter_ai_s": 16.6394259672163,
+    "race_s": 16.6394259672163,
+    "trap_mph": 87.2414767472098
+  },
+  {
+    "class": "D",
+    "distance": 201.168,
+    "id": "class_D_1",
+    "model": "rsx",
+    "potential_s": 14.7116112620751,
+    "quarter_ai_s": 16.3651702148209,
+    "race_s": 10.8959705771978,
+    "trap_mph": 72.3592844740711
+  },
+  {
+    "class": "D",
+    "distance": 402.336,
+    "id": "class_D_2",
+    "model": "gti_vr6",
+    "potential_s": 14.3158792764415,
+    "quarter_ai_s": 15.316737875061,
+    "race_s": 15.316737875061,
+    "trap_mph": 94.7582738111612
+  },
+  {
+    "class": "D",
+    "distance": 201.168,
+    "id": "class_D_3",
+    "model": "miata",
+    "potential_s": 14.1871425416315,
+    "quarter_ai_s": 14.9664370358458,
+    "race_s": 9.77214046074703,
+    "trap_mph": 77.3173832899642
+  },
+  {
+    "class": "D",
+    "distance": 402.336,
+    "id": "class_D_4",
+    "model": "civic_si",
+    "potential_s": 14.0088960615696,
+    "quarter_ai_s": 14.4325428722007,
+    "race_s": 14.4325428722007,
+    "trap_mph": 99.7539326009193
+  },
+  {
+    "class": "C",
+    "distance": 402.336,
+    "id": "class_C_0",
+    "model": "gti",
+    "potential_s": 13.9769837744206,
+    "quarter_ai_s": 15.7910943732717,
+    "race_s": 15.7910943732717,
+    "trap_mph": 92.1701223429285
+  },
+  {
+    "class": "C",
+    "distance": 201.168,
+    "id": "class_C_1",
+    "model": "gr86",
+    "potential_s": 13.8231193750327,
+    "quarter_ai_s": 15.2626934454693,
+    "race_s": 10.0888456285665,
+    "trap_mph": 76.8865536575901
+  },
+  {
+    "class": "C",
+    "distance": 402.336,
+    "id": "class_C_2",
+    "model": "z350",
+    "potential_s": 13.1698950931017,
+    "quarter_ai_s": 14.1097223322476,
+    "race_s": 14.1097223322476,
+    "trap_mph": 103.516896508019
+  },
+  {
+    "class": "C",
+    "distance": 201.168,
+    "id": "class_C_3",
+    "model": "sti",
+    "potential_s": 13.1068339594332,
+    "quarter_ai_s": 13.8098387513127,
+    "race_s": 9.03556201416973,
+    "trap_mph": 82.821485664051
+  },
+  {
+    "class": "C",
+    "distance": 402.336,
+    "id": "class_C_4",
+    "model": "supra",
+    "potential_s": 13.0338107702901,
+    "quarter_ai_s": 13.4336604778449,
+    "race_s": 13.4336604778449,
+    "trap_mph": 107.659834943244
+  },
+  {
+    "class": "B",
+    "distance": 402.336,
+    "id": "class_B_0",
+    "model": "brz",
+    "potential_s": 12.9914623010289,
+    "quarter_ai_s": 14.8397659257759,
+    "race_s": 14.8397659257759,
+    "trap_mph": 100.303632851612
+  },
+  {
+    "class": "B",
+    "distance": 201.168,
+    "id": "class_B_1",
+    "model": "golf_r",
+    "potential_s": 12.81149472134,
+    "quarter_ai_s": 14.3471464309568,
+    "race_s": 9.44945407730886,
+    "trap_mph": 81.3558835470708
+  },
+  {
+    "class": "B",
+    "distance": 402.336,
+    "id": "class_B_2",
+    "model": "m3",
+    "potential_s": 12.3264801605824,
+    "quarter_ai_s": 13.2250903429941,
+    "race_s": 13.2250903429941,
+    "trap_mph": 110.25957395387
+  },
+  {
+    "class": "B",
+    "distance": 201.168,
+    "id": "class_B_3",
+    "model": "type_r",
+    "potential_s": 12.2120265652496,
+    "quarter_ai_s": 12.6776486957047,
+    "race_s": 8.5059926181367,
+    "trap_mph": 94.6307161110109
+  },
+  {
+    "class": "B",
+    "distance": 402.336,
+    "id": "class_B_4",
+    "model": "evo",
+    "potential_s": 12.0728690810885,
+    "quarter_ai_s": 12.398600587639,
+    "race_s": 12.398600587639,
+    "trap_mph": 114.18657169077
+  },
+  {
+    "class": "A",
+    "distance": 402.336,
+    "id": "class_A_0",
+    "model": "camaro",
+    "potential_s": 11.8315678374905,
+    "quarter_ai_s": 13.3567826522539,
+    "race_s": 13.3567826522539,
+    "trap_mph": 114.876800544099
+  },
+  {
+    "class": "A",
+    "distance": 201.168,
+    "id": "class_A_1",
+    "model": "supra",
+    "potential_s": 11.6546340726114,
+    "quarter_ai_s": 12.8928799182203,
+    "race_s": 8.52082013195461,
+    "trap_mph": 91.7370233172074
+  },
+  {
+    "class": "A",
+    "distance": 402.336,
+    "id": "class_A_2",
+    "model": "mustang",
+    "potential_s": 11.1986360009432,
+    "quarter_ai_s": 11.89481597289,
+    "race_s": 11.89481597289,
+    "trap_mph": 125.636986485882
+  },
+  {
+    "class": "A",
+    "distance": 201.168,
+    "id": "class_A_3",
+    "model": "r8",
+    "potential_s": 10.8139534925832,
+    "quarter_ai_s": 11.3896302981933,
+    "race_s": 7.55423398723913,
+    "trap_mph": 105.370826547068
+  },
+  {
+    "class": "A",
+    "distance": 402.336,
+    "id": "class_A_4",
+    "model": "camaro",
+    "potential_s": 10.5930316071985,
+    "quarter_ai_s": 10.8586347022024,
+    "race_s": 10.8586347022024,
+    "trap_mph": 136.730768201913
+  },
+  {
+    "class": "S",
+    "distance": 402.336,
+    "id": "class_S_0",
+    "model": "gtr",
+    "potential_s": 10.4625197367286,
+    "quarter_ai_s": 11.8849595004871,
+    "race_s": 11.8849595004871,
+    "trap_mph": 126.525721126658
+  },
+  {
+    "class": "S",
+    "distance": 201.168,
+    "id": "class_S_1",
+    "model": "sf90",
+    "potential_s": 9.7813921692545,
+    "quarter_ai_s": 10.5377708114255,
+    "race_s": 7.19670277102237,
+    "trap_mph": 118.527015994491
+  },
+  {
+    "class": "S",
+    "distance": 402.336,
+    "id": "class_S_2",
+    "model": "mclaren",
+    "potential_s": 9.53063039494758,
+    "quarter_ai_s": 10.33742136147,
+    "race_s": 10.33742136147,
+    "trap_mph": 153.739795986749
+  },
+  {
+    "class": "S",
+    "distance": 201.168,
+    "id": "class_S_3",
+    "model": "demon",
+    "potential_s": 9.089541199926,
+    "quarter_ai_s": 9.49149687925306,
+    "race_s": 6.31032584150314,
+    "trap_mph": 124.669323946904
+  },
+  {
+    "class": "S",
+    "distance": 402.336,
+    "id": "class_S_4",
+    "model": "demon",
+    "potential_s": 8.60473114118718,
+    "quarter_ai_s": 8.84785349890044,
+    "race_s": 8.84785349890044,
+    "trap_mph": 167.920080716391
+  }
+]

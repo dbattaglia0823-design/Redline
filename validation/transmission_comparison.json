@@ -1,0 +1,344 @@
+{
+  "passed": true,
+  "main_runs": 168,
+  "paired_runs": 36,
+  "worst_optimized_deficit_s": 9.724576568004295e-05,
+  "comparisons": [
+    {
+      "setup": "street",
+      "transmission": "legacy6",
+      "optimized_s": 13.8443599195051,
+      "best_fixed_s": 13.8633986241917,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.019038704686598962
+    },
+    {
+      "setup": "street",
+      "transmission": "manual3",
+      "optimized_s": 14.1066252952517,
+      "best_fixed_s": 14.1394405762086,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.032815280956899784
+    },
+    {
+      "setup": "street",
+      "transmission": "manual4",
+      "optimized_s": 14.711033874403,
+      "best_fixed_s": 14.7206815275815,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.009647653178499027
+    },
+    {
+      "setup": "street",
+      "transmission": "manual5",
+      "optimized_s": 14.0420655613431,
+      "best_fixed_s": 14.0622007815336,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.02013522019050029
+    },
+    {
+      "setup": "street",
+      "transmission": "manual6",
+      "optimized_s": 14.5210777221268,
+      "best_fixed_s": 14.5376735011501,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.01659577902330156
+    },
+    {
+      "setup": "street",
+      "transmission": "auto3",
+      "optimized_s": 14.8911538455156,
+      "best_fixed_s": 14.9073829299809,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.016229084465299692
+    },
+    {
+      "setup": "street",
+      "transmission": "auto4",
+      "optimized_s": 14.8713423849039,
+      "best_fixed_s": 14.8876750024743,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.016332617570400387
+    },
+    {
+      "setup": "street",
+      "transmission": "seq5",
+      "optimized_s": 14.163000388842,
+      "best_fixed_s": 14.1776456462097,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.014645257367698505
+    },
+    {
+      "setup": "street",
+      "transmission": "seq6",
+      "optimized_s": 13.9395306986119,
+      "best_fixed_s": 13.9536373848954,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.014106686283499315
+    },
+    {
+      "setup": "street",
+      "transmission": "seq7",
+      "optimized_s": 13.6360241571687,
+      "best_fixed_s": 13.6506169955519,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.014592838383199691
+    },
+    {
+      "setup": "street",
+      "transmission": "dct6",
+      "optimized_s": 13.2253805255368,
+      "best_fixed_s": 13.2507445372854,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.025364011748600035
+    },
+    {
+      "setup": "street",
+      "transmission": "dct7",
+      "optimized_s": 12.695833580651,
+      "best_fixed_s": 12.7200224106508,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.024188829999800987
+    },
+    {
+      "setup": "street",
+      "transmission": "dct8",
+      "optimized_s": 12.646065747083,
+      "best_fixed_s": 12.6589006162648,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.012834869181800102
+    },
+    {
+      "setup": "street",
+      "transmission": "auto6",
+      "optimized_s": 13.2107267378985,
+      "best_fixed_s": 13.2281174869154,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.017390749016898965
+    },
+    {
+      "setup": "street",
+      "transmission": "auto7",
+      "optimized_s": 13.0274533722183,
+      "best_fixed_s": 13.0424418488124,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.014988476594099964
+    },
+    {
+      "setup": "street",
+      "transmission": "auto8",
+      "optimized_s": 12.7365053522519,
+      "best_fixed_s": 12.7479883181298,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.011482965877899431
+    },
+    {
+      "setup": "street",
+      "transmission": "auto9",
+      "optimized_s": 12.7250255638607,
+      "best_fixed_s": 12.7409906566447,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.015965092783998713
+    },
+    {
+      "setup": "street",
+      "transmission": "auto10",
+      "optimized_s": 12.7646443752681,
+      "best_fixed_s": 12.7721756385971,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.007531263328999671
+    },
+    {
+      "setup": "street",
+      "transmission": "drag2",
+      "optimized_s": 13.4138544409401,
+      "best_fixed_s": 13.4264401484441,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.012585707503999899
+    },
+    {
+      "setup": "street",
+      "transmission": "drag3",
+      "optimized_s": 13.0949891569076,
+      "best_fixed_s": 13.1038834632682,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.008894306360600623
+    },
+    {
+      "setup": "street",
+      "transmission": "drag4",
+      "optimized_s": 13.0276991693179,
+      "best_fixed_s": 13.040517576202,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.012818406884099076
+    },
+    {
+      "setup": "drag",
+      "transmission": "legacy6",
+      "optimized_s": 7.94993071362581,
+      "best_fixed_s": 7.9690386330511,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.019107919425289666
+    },
+    {
+      "setup": "drag",
+      "transmission": "manual3",
+      "optimized_s": 9.23976032955272,
+      "best_fixed_s": 9.26191328697024,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.02215295741751966
+    },
+    {
+      "setup": "drag",
+      "transmission": "manual4",
+      "optimized_s": 8.63404739371845,
+      "best_fixed_s": 8.64896688654787,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.014919492829418957
+    },
+    {
+      "setup": "drag",
+      "transmission": "manual5",
+      "optimized_s": 8.41254715162368,
+      "best_fixed_s": 8.43016014258376,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.017612990960079955
+    },
+    {
+      "setup": "drag",
+      "transmission": "manual6",
+      "optimized_s": 8.22520480458651,
+      "best_fixed_s": 8.23497055282811,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.009765748241600036
+    },
+    {
+      "setup": "drag",
+      "transmission": "auto3",
+      "optimized_s": 8.29016691207405,
+      "best_fixed_s": 8.29852427354496,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.008357361470910263
+    },
+    {
+      "setup": "drag",
+      "transmission": "auto4",
+      "optimized_s": 8.10916352538946,
+      "best_fixed_s": 8.11770246679376,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.008538941404300004
+    },
+    {
+      "setup": "drag",
+      "transmission": "seq5",
+      "optimized_s": 8.19449536581285,
+      "best_fixed_s": 8.21157574513996,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.01708037932711015
+    },
+    {
+      "setup": "drag",
+      "transmission": "seq6",
+      "optimized_s": 8.10807501007449,
+      "best_fixed_s": 8.1347781899046,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.02670317983010939
+    },
+    {
+      "setup": "drag",
+      "transmission": "seq7",
+      "optimized_s": 8.06464959277587,
+      "best_fixed_s": 8.09348313871253,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.028833545936659988
+    },
+    {
+      "setup": "drag",
+      "transmission": "dct6",
+      "optimized_s": 8.11827812962871,
+      "best_fixed_s": 8.1567363926795,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.038458263050790364
+    },
+    {
+      "setup": "drag",
+      "transmission": "dct7",
+      "optimized_s": 7.86283752528807,
+      "best_fixed_s": 7.90864175511458,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.04580422982651022
+    },
+    {
+      "setup": "drag",
+      "transmission": "dct8",
+      "optimized_s": 7.84909046072796,
+      "best_fixed_s": 7.85291838749157,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.003827926763610101
+    },
+    {
+      "setup": "drag",
+      "transmission": "auto6",
+      "optimized_s": 7.97624439365831,
+      "best_fixed_s": 7.98044281861218,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.004198424953870017
+    },
+    {
+      "setup": "drag",
+      "transmission": "auto7",
+      "optimized_s": 7.98536692259569,
+      "best_fixed_s": 8.04169364281325,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.05632672021756058
+    },
+    {
+      "setup": "drag",
+      "transmission": "auto8",
+      "optimized_s": 7.88842365464619,
+      "best_fixed_s": 7.89703536765038,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.008611713004190058
+    },
+    {
+      "setup": "drag",
+      "transmission": "auto9",
+      "optimized_s": 7.90310623594425,
+      "best_fixed_s": 7.90820235918252,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.005096123238270245
+    },
+    {
+      "setup": "drag",
+      "transmission": "auto10",
+      "optimized_s": 7.88751307667122,
+      "best_fixed_s": 7.90469879312156,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.017185716450340394
+    },
+    {
+      "setup": "drag",
+      "transmission": "drag2",
+      "optimized_s": 8.02735591825829,
+      "best_fixed_s": 8.02725867249261,
+      "fixed_rpm": 6500.0,
+      "deficit_s": 9.724576568004295e-05
+    },
+    {
+      "setup": "drag",
+      "transmission": "drag3",
+      "optimized_s": 8.02998173525114,
+      "best_fixed_s": 8.03034487632812,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.0003631410769813215
+    },
+    {
+      "setup": "drag",
+      "transmission": "drag4",
+      "optimized_s": 7.89547742225742,
+      "best_fixed_s": 7.8994207642828,
+      "fixed_rpm": 7400.0,
+      "deficit_s": -0.003943342025380048
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="360" viewBox="0 0 1000 360"><defs>
+ <linearGradient id="paint" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ff8c61"/><stop offset=".30" stop-color="#eb704e"/><stop offset=".52" stop-color="#ca6043"/><stop offset=".65" stop-color="#ff7b55"/><stop offset="1" stop-color="#673122"/></linearGradient>
+ <linearGradient id="glass" x1="0" y1="0" x2=".7" y2="1"><stop stop-color="#617e91"/><stop offset=".22" stop-color="#304a59"/><stop offset=".65" stop-color="#162a36"/><stop offset="1" stop-color="#0b1721"/></linearGradient>
+ <linearGradient id="chrome" x2="0" y2="1"><stop stop-color="#bac5c9"/><stop offset=".4" stop-color="#23333e"/><stop offset=".7" stop-color="#9aaab5"/><stop offset="1" stop-color="#192630"/></linearGradient>
+ <clipPath id="body"><path d="M28 250 L42 170 L245 150 L340 90 L560 90 L680 150 L925 155 L972 190 L963 280 L35 280 Z"/></clipPath>
+ <clipPath id="windows"><path d="M288 145 L355 104 L450 104 L450 146 Z M468 104 L550 104 L630 146 L468 146 Z"/></clipPath>
+</defs><g clip-path="url(#body)"><path d="M305 194 H680 V207 H305 Z M305 214 H650 V218 H305 Z" fill="#edf3ed"/></g></svg>

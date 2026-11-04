@@ -1,0 +1,130 @@
+class_name DriverProfile
+extends RefCounted
+
+const SAVE_PATH := "user://driver_v1.json"
+var credits := 2400
+var xp := 0
+var wins := 0
+var races := 0
+var best := 0.0
+var paint := 0
+var wheels := 0
+var stages: Array = GameCatalog.blank_stages()
+var muted := false
+var save_error := ""
+var vehicle_id := "kaze"
+var garage: Dictionary = {"kaze":{"paint":0,"wheels":0,"stages":[0,0,0,0,0,0,0,0]}}
+var career_wins: Array = [0,0,0]
+var pending_wager: Dictionary = {}
+
+func level() -> int:
+	return 1 + int(sqrt(float(xp) / 150.0))
+
+func next_level_xp() -> int:
+	return level() * level() * 150
+
+func snapshot_vehicle() -> void:
+	garage[vehicle_id] = {"paint":paint,"wheels":wheels,"stages":GameCatalog.normalize_stages(stages)}
+
+func load_profile() -> void:
+	if not FileAccess.file_exists(SAVE_PATH): return
+	var data = JSON.parse_string(FileAccess.get_file_as_string(SAVE_PATH))
+	if not data is Dictionary: return
+	credits = maxi(0, int(data.get("credits", 2400)))
+	xp = maxi(0, int(data.get("xp", 0)))
+	wins = maxi(0, int(data.get("wins", 0)))
+	races = maxi(wins, int(data.get("races", 0)))
+	best = maxf(0.0, float(data.get("best", 0.0)))
+	paint = clampi(int(data.get("paint", 0)), 0, 5)
+	wheels = clampi(int(data.get("wheels", 0)), 0, 2)
+	stages = GameCatalog.normalize_stages(data.get("stages", []))
+	muted = bool(data.get("muted", false))
+	# Migrate original saves without removing their car, paint, money, or upgrades.
+	garage = {"kaze":{"paint":paint,"wheels":wheels,"stages":stages.duplicate()}}
+	var saved_garage = data.get("garage", {})
+	if saved_garage is Dictionary:
+		for id in GameCatalog.CAR_IDS:
+			var entry = saved_garage.get(id)
+			if entry is Dictionary:
+				garage[id] = {"paint":clampi(int(entry.get("paint",0)),0,5),"wheels":clampi(int(entry.get("wheels",0)),0,2),"stages":GameCatalog.normalize_stages(entry.get("stages",[]))}
+	vehicle_id = str(data.get("vehicle_id", "kaze"))
+	if not garage.has(vehicle_id): vehicle_id = "kaze"
+	apply_vehicle(vehicle_id)
+	var progress = data.get("career_wins", [0,0,0])
+	if progress is Array and progress.size() == 3:
+		for i in 3: career_wins[i] = clampi(int(progress[i]),0,5)
+	# Interrupted runs forfeit the already-charged stake, never refund it on reload.
+	pending_wager = {}
+
+func apply_vehicle(id: String) -> void:
+	vehicle_id = id
+	var entry: Dictionary = garage[id]
+	paint = int(entry.paint)
+	wheels = int(entry.wheels)
+	stages = GameCatalog.normalize_stages(entry.stages)
+
+func select_vehicle(id: String) -> bool:
+	if not garage.has(id) or not pending_wager.is_empty(): return false
+	snapshot_vehicle()
+	apply_vehicle(id)
+	save()
+	return true
+
+func buy_vehicle(id: String) -> bool:
+	if not GameCatalog.CARS.has(id) or garage.has(id) or not pending_wager.is_empty(): return false
+	var cost := int(GameCatalog.spec(id).price)
+	if credits < cost: return false
+	snapshot_vehicle()
+	credits -= cost
+	garage[id] = {"paint":0,"wheels":0,"stages":GameCatalog.blank_stages()}
+	apply_vehicle(id)
+	save()
+	return true
+
+func save() -> void:
+	snapshot_vehicle()
+	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+	if file == null:
+		save_error = "Could not save progress"
+		return
+	file.store_string(JSON.stringify({"credits":credits,"xp":xp,"wins":wins,"races":races,"best":best,"paint":paint,"wheels":wheels,"stages":stages,"muted":muted,"vehicle_id":vehicle_id,"garage":garage,"career_wins":career_wins,"pending_wager":pending_wager}))
+	save_error = ""
+
+func upgrade_cost(index: int, target: int = -1) -> int:
+	if index < 0 or index >= GameCatalog.PART_NAMES.size(): return 0
+	var current := int(stages[index])
+	if target < 0: target = current + 1
+	var cost := 0
+	for tier in range(current + 1, mini(target, 3) + 1): cost += GameCatalog.PART_COSTS[index] * tier
+	return cost
+
+func upgrade(index: int, target: int = -1) -> bool:
+	if index < 0 or index >= stages.size() or not pending_wager.is_empty(): return false
+	var current := int(stages[index])
+	if target < 0: target = current + 1
+	if target <= current or target > 3: return false
+	var cost := upgrade_cost(index, target)
+	if credits < cost: return false
+	credits -= cost
+	stages[index] = target
+	save()
+	return true
+
+func begin_wager(amount: int) -> bool:
+	if amount < 0 or amount > credits or not pending_wager.is_empty(): return false
+	credits -= amount
+	pending_wager = {"amount":amount}
+	save()
+	return true
+
+func settle_wager(won: bool) -> int:
+	if pending_wager.is_empty(): return 0
+	var returned := int(pending_wager.amount) * 2 if won else 0
+	credits += returned
+	pending_wager.clear()
+	return returned
+
+func forfeit_wager() -> void:
+	if pending_wager.is_empty(): return
+	settle_wager(false)
+	save()

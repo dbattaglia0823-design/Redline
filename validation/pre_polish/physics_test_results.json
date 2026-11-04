@@ -1,0 +1,49 @@
+{
+	"checks": 19501,
+	"failures": 0,
+	"frame_rate_max_distance_error_m": 0.0,
+	"idle_rpm": 950.000000000002,
+	"limiter_band": [
+		7434.10502837759,
+		7634.44452133318
+	],
+	"paddle_transitions": [
+		{
+			"down_locked_error_rpm": 0.000000000000909494701772928,
+			"from_gear": 1,
+			"up_locked_error_rpm": 0.0
+		},
+		{
+			"down_locked_error_rpm": -0.00000000000181898940354586,
+			"from_gear": 2,
+			"up_locked_error_rpm": 0.0
+		},
+		{
+			"down_locked_error_rpm": 0.0,
+			"from_gear": 3,
+			"up_locked_error_rpm": -0.000000000000454747350886464
+		},
+		{
+			"down_locked_error_rpm": 0.0,
+			"from_gear": 4,
+			"up_locked_error_rpm": 0.0
+		},
+		{
+			"down_locked_error_rpm": 0.00000000000181898940354586,
+			"from_gear": 5,
+			"up_locked_error_rpm": -0.000000000000909494701772928
+		}
+	],
+	"stock_quarter": {
+		"clamps": 0,
+		"distance": 402.336,
+		"et": 13.3420015833805,
+		"mph": 109.684790094162
+	},
+	"upgraded_quarter": {
+		"clamps": 0,
+		"distance": 402.336,
+		"et": 10.0245805694772,
+		"mph": 151.525656859213
+	}
+}

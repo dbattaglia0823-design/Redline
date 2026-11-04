@@ -1,0 +1,107 @@
+extends SceneTree
+var game: Node2D
+var checks:=0
+var failures:=0
+func check(ok: bool,message: String) -> void:
+	checks+=1
+	if not ok: failures+=1; push_error(message)
+func _initialize() -> void: call_deferred("run")
+func frame() -> void:
+	RosterTest.ready(game); game._process(0); game.sync_menu_size(); game.queue_redraw()
+	await process_frame; await process_frame; await RenderingServer.frame_post_draw
+func click(id: String) -> void:
+	var point:=Vector2(-1,-1)
+	for item in game.buttons:
+		if item.id==id: point=game.to_global(item.rect.get_center())
+	check(point.x>=0,"Missing career action: "+id)
+	var e:=InputEventScreenTouch.new(); e.index=6; e.pressed=true; e.position=point
+	game._input(e); e.pressed=false; game._input(e); await frame()
+func key(code: Key,down: bool=true) -> void:
+	var e:=InputEventKey.new(); e.physical_keycode=code; e.pressed=down; game._input(e)
+func bounds(label: String) -> void:
+	var region:=Rect2(0,0,600,1300) if game.is_portrait() else Rect2(0,0,1200,760)
+	for i in game.buttons.size():
+		check(region.encloses(game.buttons[i].rect),"Offscreen "+label+" / "+str(game.buttons[i].id))
+		for j in range(i+1,game.buttons.size()): check(not game.buttons[i].rect.intersects(game.buttons[j].rect),"Overlapping "+label+" / "+str(game.buttons[i].id)+" / "+str(game.buttons[j].id))
+func race_player() -> void:
+	for i in 384: game._physics_process(1.0/120)
+	key(KEY_W)
+	for i in 10000:
+		if game.car.upshift_ready():
+			if game.car.control_mode=="hpattern": key(KEY_SHIFT); key(KEY_0+game.car.gear+1); key(KEY_SHIFT,false)
+			elif game.car.control_mode!="automatic": key(KEY_E); key(KEY_E,false)
+		game._physics_process(1.0/120)
+		if game.screen in ["results","practice_results"]: break
+	key(KEY_W,false); await frame()
+func run() -> void:
+	game=load("res://scenes/main.tscn").instantiate(); root.add_child(game)
+	game.set_process(false); game.set_physics_process(false); game.profile=DriverProfile.new(); game.refresh_car()
+	DirAccess.make_dir_recursive_absolute("res://validation/class_career")
+	for phone in [false,true]:
+		root.size=Vector2i(390,844) if phone else Vector2i(1200,760)
+		game.go_garage(); game.tab="races"; game.career_board.active=false; await frame(); await click("open_championships")
+		bounds("class picker")
+		root.get_texture().get_image().save_png("res://validation/class_career/classes_"+("phone" if phone else "desktop")+".png")
+		for letter in Championships.CLASSES:
+			await click("cb_class_"+letter); bounds("rival "+letter)
+			if letter=="S": check(not game.action_enabled("race"),"Locked class can enter")
+			await click("cb_back")
+		await click("cb_open"); bounds("open events"); await click("cb_back")
+		await click("cb_class_E"); bounds("E rival")
+		for step in 40: RaceAI.advance_estimates(1200)
+		await frame()
+		root.get_texture().get_image().save_png("res://validation/class_career/rival_"+("phone" if phone else "desktop")+".png")
+		await click("cb_back"); await click("cb_back")
+		check(not game.career_board.active,"Back failed to restore original street series")
+	# A brand-new stock starter must be able to beat the first class rival.
+	root.size=Vector2i(1200,760); game.profile=DriverProfile.new(); game.refresh_car(); game.career_board.open(); game.career_board.select_series("E")
+	RosterTest.ready(game); await frame(); await click("race")
+	check(game.screen=="race" and not game.profile.pending_wager.is_empty(),"Class race failed to start")
+	await race_player()
+	check(game.screen=="results" and game.result_win and game.profile.championship_wins.get("E",0)==1,"Stock starter cannot beat first class racer")
+	var money: int=game.profile.credits; game.complete_race(); check(game.profile.credits==money,"Results granted duplicate class reward")
+	root.get_texture().get_image().save_png("res://validation/class_career/first_victory.png")
+	await click("next_rival"); await click("race")
+	check(game.active_distance==201.168,"Championship eighth-mile heat was forced to a quarter mile")
+	await race_player(); check(game.screen=="results" and game.player_finish>0 and game.profile.championship_wins.E==(2 if game.result_win else 1),"Short championship timing or progression failed")
+	game.go_garage(); game.tab="races"; game.career_board.select_series("OPEN"); game.career_board.selected="open_3"
+	await frame(); await click("race"); check(game.active_distance==804.672,"Open half-mile distance not honored")
+	await race_player(); check(game.screen=="results" and game.player_finish>0,"Long open race did not finish")
+	check(not game.profile.career_claims.has("open_3"),"Losing long race claimed a first-win bonus")
+	# Full mechanical upgrade -> tune -> save -> practice -> championship loop.
+	game.go_garage(); game.profile.credits=80000; game.profile.xp=20000; game.profile.career_wins=[5,5,5]; await frame()
+	await click("tab_performance"); await click("hub_category_0"); await click("install_0_1"); await click("hub_back")
+	game.menu.hub.studio.system=0; game.menu.hub.open_upgrade(4); await frame()
+	await click("hw_pick_ecu"); await click("hw_buy"); await click("upgrade_section_tune"); await click("open_tuning")
+	check(game.tab=="tuning","Upgrades did not connect to tuning")
+	await click("tt_plus_launch_rpm"); var launch: float=game.car.launch_rpm
+	await click("tt_page_presets"); await click("tt_save")
+	check(game.profile.tuning_presets().has("street"),"Tuning preset not saved")
+	await click("tt_drive"); await race_player()
+	check(game.screen=="practice_results" and not game.tuning.last.is_empty(),"Upgraded practice failed")
+	await click("tt_details"); bounds("practice telemetry"); await click("tt_return"); await click("tt_back")
+	game.go_garage(); game.tab="races"; game.career_board.open(); RosterTest.ready(game)
+	var measured:=PerformanceClasses.request(game.profile.vehicle_id,game.profile.stages,game.profile.hardware)
+	game.career_board.select_series(str(measured["class"])); await frame(); await click("race"); await race_player()
+	check(game.screen=="results" and game.result_win,"Tuned build could not compete in its class")
+	game.go_garage(); check(game.profile.buy_vehicle("brz"),"Earned vehicle purchase failed"); game.refresh_car()
+	RosterTest.ready(game); game.tab="races"; game.career_board.open()
+	var next_class: String=PerformanceClasses.factory_class("brz")
+	game.career_board.select_series(next_class); await frame(); await click("race"); await race_player()
+	check(game.screen=="results" and game.result_win,"Second car could not compete in another class")
+	game.go_garage(); game.profile.select_vehicle("miata"); game.refresh_car()
+	check(game.car.launch_rpm==launch and game.profile.tuning_presets().has("street"),"Car switching lost tuning or presets")
+	var restored:=DriverProfile.new(); restored.load_profile()
+	check(restored.garage.has("brz") and restored.career_wins==[5,5,5] and not restored.event_records.is_empty(),"Integrated save lost ownership, legacy career or race records")
+	game.go_garage(); game.tab="races"; game.career_board.open()
+	for window in [Vector2i(844,390),Vector2i(667,375)]:
+		root.size=window; game.career_board.picker=true; await frame(); bounds("landscape classes")
+		for b in game.buttons:
+			if str(b.id).begins_with("cb_"): check(minf(b.rect.size.x,b.rect.size.y)*float(window.y)/760>=44,"Small landscape class target")
+		await click("cb_class_E"); bounds("landscape rival")
+		for b in game.buttons:
+			if str(b.id).begins_with("cb_") or b.id in ["race","bet_more","bet_less","bet_clear"]: check(minf(b.rect.size.x,b.rect.size.y)*float(window.y)/760>=44,"Small landscape race target")
+		root.get_texture().get_image().save_png("res://validation/class_career/rival_landscape_%d.png"%window.x)
+	game.stop_presentation_audio(); await create_timer(.12).timeout; game.queue_free(); await process_frame
+	print("CLASS CAREER UI / PHONE / STARTER WIN / UPGRADE-TUNE-TEST-RACE / SECOND VEHICLE / SAVE: ",checks," / ","PASS" if failures==0 else "FAIL")
+	quit(0 if failures==0 else 1)

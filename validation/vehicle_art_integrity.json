@@ -1,0 +1,336 @@
+{
+  "passed": true,
+  "vehicles": [
+    {
+      "id": "miata",
+      "errors": [],
+      "texture_size": [
+        2000,
+        720
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "civic_si",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "gti_vr6",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "rsx",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "brz",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "integra",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "gti",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "s2000",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "gr86",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "z350",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "supra",
+      "errors": [],
+      "texture_size": [
+        2000,
+        720
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "m3",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "sti",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "evo",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "type_r",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "mustang",
+      "errors": [],
+      "texture_size": [
+        2000,
+        720
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "supra_gr",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "camaro",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "golf_r",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "z400",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "z06",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "gtr",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "r8",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "gt500",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "redeye",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "turbo_s",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "mclaren",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "sf90",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "demon",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    },
+    {
+      "id": "chiron",
+      "errors": [],
+      "texture_size": [
+        1000,
+        360
+      ],
+      "distinct_source": true,
+      "opaque_paint": true,
+      "artistic_approval": false
+    }
+  ],
+  "scope": "Numerical layer integrity only; likeness, trim fidelity and artistic finish require screenshot/reference review."
+}

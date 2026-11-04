@@ -1,0 +1,16 @@
+# Adding vehicle presentation assets
+
+For the active 30-car PNG roster, follow `ROSTER_ASSET_PIPELINE.md`. The SVG workflow below describes the retained legacy asset pipeline and must not overwrite the current roster manifest.
+
+Use original or properly licensed side-view art. Runtime artwork is deliberately 2D; do not introduce vehicle-specific drawing branches.
+
+1. Add the mechanical configuration to `GameCatalog` and the original six-color SVG art using the existing `generate_art.py` / `vehicle_shapes.json` source workflow.
+2. Add its authored rear wheel center/radius/deck position to `generate_vehicle_layers.py`. Front/rear anchors must agree with the mechanical catalog's artwork anchors. These are drawing coordinates, not wheelbase measurements in meters.
+3. Run `python tools/generate_vehicle_layers.py` after regenerating the source art. It preserves the original assets and creates derivatives under `assets/vehicles/<id>/` plus `manifest.json`. For independently authored art, provide the same manifest contract directly instead of using the source SVG splitter.
+4. A manifest entry defines the 1000 x 360 coordinate space, rear/front wheel centers, radius, body pivot, exhaust and spoiler anchors, head/tail lamp segments, six-color/finish body path template, glass/lamps/factory-spoiler/tint/paint-mask/livery layer paths, and supported cosmetic categories. Full-canvas transparent layers share the same origin and size. Include only categories whose components fit the artwork. An optional `options` dictionary restricts individual choices, for example `"spoiler":[0,1]` hides the track wing while retaining factory/clean-deck options. Hatchbacks can use roof anchors while coupes use deck anchors with the same component.
+5. Keep the tire ground line around y=347 and the body wheel cutouts centered near y=274 for existing art; configure different dimensions consistently in the catalog and manifest if authoring a different silhouette. Spoiler and lamp placements are vehicle data; the renderer never branches on model names.
+6. Open/import with Godot, then run `godot --headless --path . --script tests/test_customization.gd` and the graphical `tests/test_customization_ui.gd`. `VehicleAppearance.validate(id)` checks required textures, anchor bounds, tire radius, supported categories and wheel/effects agreement. Visually inspect extreme tire packages, finishes, accessories and lowered body presentation in garage and race views. A numeric validator cannot prove that an accessory is artistically fitted.
+
+Cosmetic option indices are stable save IDs. Append choices; never reorder or reuse IDs. Add an option's price, name and rendered component together in `VehicleAppearance`, then include the category in compatible vehicles. Keep engine, transmission, wheel dimensions, traction and suspension tuning in the existing mechanical parts system. The UI reads the catalog and compatibility data rather than maintaining per-car menus.
+
+Paint masks use white pixels on the body with transparent window cutouts. Currently paint/finish selection uses original baked SVG variants; the masks are available for future tooling without requiring runtime paint shaders. Metallic flecks are baked once by the generator. Procedural wheels and brake/sidewall options reuse the same phase and angular-speed values for every design.

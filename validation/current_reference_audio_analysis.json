@@ -1,0 +1,88 @@
+{
+  "source": "LCXM2683.MP4 / locally decoded audio",
+  "sample_rate": 22050,
+  "duration_s": 31.49043083900227,
+  "windows": [
+    {
+      "label": "idle",
+      "video_start_s": 1.3,
+      "video_end_s": 1.7,
+      "mix_rms_dbfs": -31.299775481171434,
+      "mix_power_centroid_hz": 373.03101971382256,
+      "mix_dominant_hz": 425.0
+    },
+    {
+      "label": "launch",
+      "video_start_s": 6.8,
+      "video_end_s": 7.2,
+      "mix_rms_dbfs": -10.568516125353135,
+      "mix_power_centroid_hz": 273.60313008274966,
+      "mix_dominant_hz": 177.5
+    },
+    {
+      "label": "before_shift1",
+      "video_start_s": 8.2,
+      "video_end_s": 8.4,
+      "mix_rms_dbfs": -3.710767076483208,
+      "mix_power_centroid_hz": 438.48625299382127,
+      "mix_dominant_hz": 430.0
+    },
+    {
+      "label": "shift1",
+      "video_start_s": 8.5,
+      "video_end_s": 8.9,
+      "mix_rms_dbfs": -23.782076506644746,
+      "mix_power_centroid_hz": 390.8639702195428,
+      "mix_dominant_hz": 407.5
+    },
+    {
+      "label": "after_shift1",
+      "video_start_s": 9.1,
+      "video_end_s": 9.5,
+      "mix_rms_dbfs": -13.87536928410978,
+      "mix_power_centroid_hz": 389.3264999815035,
+      "mix_dominant_hz": 125.0
+    },
+    {
+      "label": "before_shift2",
+      "video_start_s": 13.8,
+      "video_end_s": 14.0,
+      "mix_rms_dbfs": -5.292060468585671,
+      "mix_power_centroid_hz": 449.4504534310124,
+      "mix_dominant_hz": 440.0
+    },
+    {
+      "label": "shift2",
+      "video_start_s": 14.1,
+      "video_end_s": 14.6,
+      "mix_rms_dbfs": -25.01954700520163,
+      "mix_power_centroid_hz": 409.0469432202511,
+      "mix_dominant_hz": 416.0
+    },
+    {
+      "label": "after_shift2",
+      "video_start_s": 15.0,
+      "video_end_s": 15.4,
+      "mix_rms_dbfs": -10.808605589658804,
+      "mix_power_centroid_hz": 374.57785932429596,
+      "mix_dominant_hz": 152.5
+    },
+    {
+      "label": "clutch_coast",
+      "video_start_s": 18.8,
+      "video_end_s": 19.2,
+      "mix_rms_dbfs": -25.986545678195153,
+      "mix_power_centroid_hz": 385.8091195697832,
+      "mix_dominant_hz": 430.0
+    },
+    {
+      "label": "loaded_third",
+      "video_start_s": 20.8,
+      "video_end_s": 21.2,
+      "mix_rms_dbfs": -10.382301310306573,
+      "mix_power_centroid_hz": 260.5437434039628,
+      "mix_dominant_hz": 182.5
+    }
+  ],
+  "limitations": "These are measurements of mixed game audio including music. Dominant peaks are not asserted to be engine firing frequency, nor are RMS changes isolated engine load. RPM/shift timing is grounded in the separately transcribed HUD. JLTI6246.MP4 has a silent decoded track. No samples are copied into the game."
+}

@@ -1,0 +1,26 @@
+{
+	"aster": {
+		"peak_hp": 393,
+		"quarter_seconds": 12.7666666666663,
+		"trap_mph": 120.514922834573
+	},
+	"kaze": {
+		"peak_hp": 279,
+		"quarter_seconds": 13.7416666666662,
+		"trap_mph": 111.233319598129
+	},
+	"neutral_requested": {
+		"rpm": 950.0,
+		"speed_mps": 1.47902267122815
+	},
+	"nori": {
+		"peak_hp": 246,
+		"quarter_seconds": 13.3833333333329,
+		"trap_mph": 113.204083276701
+	},
+	"vanta": {
+		"peak_hp": 539,
+		"quarter_seconds": 11.6124999999997,
+		"trap_mph": 132.424758720743
+	}
+}

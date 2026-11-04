@@ -1,0 +1,58 @@
+[
+  {
+    "audio": "WASAPI",
+    "test": "test_garage_hub",
+    "exit": 0,
+    "script_error": false,
+    "assertions_pass": true
+  },
+  {
+    "audio": "WASAPI",
+    "test": "test_upgrades_ui",
+    "exit": 3221225477,
+    "script_error": false,
+    "assertions_pass": true
+  },
+  {
+    "audio": "WASAPI",
+    "test": "test_garage_hub",
+    "exit": 0,
+    "script_error": false,
+    "assertions_pass": true
+  },
+  {
+    "audio": "WASAPI",
+    "test": "test_controls",
+    "exit": 0,
+    "script_error": false,
+    "assertions_pass": true
+  },
+  {
+    "audio": "Dummy",
+    "test": "test_garage_hub",
+    "exit": 0,
+    "script_error": false,
+    "assertions_pass": true
+  },
+  {
+    "audio": "Dummy",
+    "test": "test_upgrades_ui",
+    "exit": 0,
+    "script_error": false,
+    "assertions_pass": true
+  },
+  {
+    "audio": "Dummy",
+    "test": "test_garage_hub",
+    "exit": 0,
+    "script_error": false,
+    "assertions_pass": true
+  },
+  {
+    "audio": "Dummy",
+    "test": "test_controls",
+    "exit": 0,
+    "script_error": false,
+    "assertions_pass": true
+  }
+]

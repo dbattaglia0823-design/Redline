@@ -1,0 +1,178 @@
+{
+  "rows": [
+    {
+      "start_clock_s": 0.517,
+      "end_clock_s": 1.517,
+      "gear_start": 1.0,
+      "gear_end": 1.0,
+      "observed_mean_mps2": 3.1292800000000005,
+      "previous_mean_mps2": 0.6535497956067654,
+      "corrected_mean_mps2": 2.4907444460769956
+    },
+    {
+      "start_clock_s": 1.517,
+      "end_clock_s": 2.517,
+      "gear_start": 1.0,
+      "gear_end": 1.0,
+      "observed_mean_mps2": 3.12928,
+      "previous_mean_mps2": 4.708645518683743,
+      "corrected_mean_mps2": 4.198877250402177
+    },
+    {
+      "start_clock_s": 2.517,
+      "end_clock_s": 3.517,
+      "gear_start": 1.0,
+      "gear_end": 1.0,
+      "observed_mean_mps2": 3.12928,
+      "previous_mean_mps2": 4.784327408696188,
+      "corrected_mean_mps2": 3.1620164970684295
+    },
+    {
+      "start_clock_s": 3.517,
+      "end_clock_s": 4.517,
+      "gear_start": 1.0,
+      "gear_end": 1.0,
+      "observed_mean_mps2": 3.1292799999999983,
+      "previous_mean_mps2": 4.082218120756662,
+      "corrected_mean_mps2": 2.9614636140364365
+    },
+    {
+      "start_clock_s": 4.517,
+      "end_clock_s": 5.517,
+      "gear_start": 1.0,
+      "gear_end": 2.0,
+      "observed_mean_mps2": 1.78816,
+      "previous_mean_mps2": 0.6138342686161326,
+      "corrected_mean_mps2": 1.641008140159061
+    },
+    {
+      "start_clock_s": 5.517,
+      "end_clock_s": 6.517,
+      "gear_start": 2.0,
+      "gear_end": 2.0,
+      "observed_mean_mps2": 2.68224,
+      "previous_mean_mps2": 2.86879679900389,
+      "corrected_mean_mps2": 2.41483795666078
+    },
+    {
+      "start_clock_s": 6.517,
+      "end_clock_s": 7.517,
+      "gear_start": 2.0,
+      "gear_end": 2.0,
+      "observed_mean_mps2": 2.68224,
+      "previous_mean_mps2": 2.8076901106128402,
+      "corrected_mean_mps2": 2.401256093392521
+    },
+    {
+      "start_clock_s": 7.517,
+      "end_clock_s": 8.517,
+      "gear_start": 2.0,
+      "gear_end": 2.0,
+      "observed_mean_mps2": 2.235200000000002,
+      "previous_mean_mps2": 2.6115557465341213,
+      "corrected_mean_mps2": 2.3167996330542175
+    },
+    {
+      "start_clock_s": 8.517,
+      "end_clock_s": 9.517,
+      "gear_start": 2.0,
+      "gear_end": 2.0,
+      "observed_mean_mps2": 2.2352,
+      "previous_mean_mps2": 2.274443480074652,
+      "corrected_mean_mps2": 2.2080320578014843
+    },
+    {
+      "start_clock_s": 9.517,
+      "end_clock_s": 10.517,
+      "gear_start": 2.0,
+      "gear_end": 2.0,
+      "observed_mean_mps2": 1.78816,
+      "previous_mean_mps2": 1.675947261071406,
+      "corrected_mean_mps2": 2.0733979589057063
+    },
+    {
+      "start_clock_s": 10.517,
+      "end_clock_s": 11.517,
+      "gear_start": 2.0,
+      "gear_end": 3.0,
+      "observed_mean_mps2": 0.44704,
+      "previous_mean_mps2": 0.29502300770362966,
+      "corrected_mean_mps2": 0.5845418860078556
+    },
+    {
+      "start_clock_s": 11.517,
+      "end_clock_s": 12.517,
+      "gear_start": 3.0,
+      "gear_end": 3.0,
+      "observed_mean_mps2": 1.34112,
+      "previous_mean_mps2": 1.6484887373987471,
+      "corrected_mean_mps2": 1.4887751056512037
+    },
+    {
+      "start_clock_s": 12.517,
+      "end_clock_s": 13.517,
+      "gear_start": 3.0,
+      "gear_end": 3.0,
+      "observed_mean_mps2": 1.78816,
+      "previous_mean_mps2": 1.5730328799246052,
+      "corrected_mean_mps2": 1.4419741619048525
+    },
+    {
+      "start_clock_s": 13.517,
+      "end_clock_s": 14.517,
+      "gear_start": 3.0,
+      "gear_end": 3.0,
+      "observed_mean_mps2": 0.44704,
+      "previous_mean_mps2": 1.4524456911109827,
+      "corrected_mean_mps2": 1.3637140263822527
+    },
+    {
+      "start_clock_s": 14.517,
+      "end_clock_s": 15.517,
+      "gear_start": 3.0,
+      "gear_end": 3.0,
+      "observed_mean_mps2": -0.44704,
+      "previous_mean_mps2": -0.575044483385049,
+      "corrected_mean_mps2": -0.5010599792227498
+    },
+    {
+      "start_clock_s": 15.517,
+      "end_clock_s": 16.517,
+      "gear_start": 3.0,
+      "gear_end": 3.0,
+      "observed_mean_mps2": 0.44704,
+      "previous_mean_mps2": 0.198015110470401,
+      "corrected_mean_mps2": -0.5350267453968229
+    },
+    {
+      "start_clock_s": 16.517,
+      "end_clock_s": 17.517,
+      "gear_start": 3.0,
+      "gear_end": 3.0,
+      "observed_mean_mps2": 1.34112,
+      "previous_mean_mps2": 1.4188725012116739,
+      "corrected_mean_mps2": 1.3841336693152453
+    },
+    {
+      "start_clock_s": 17.517,
+      "end_clock_s": 18.517,
+      "gear_start": 3.0,
+      "gear_end": 3.0,
+      "observed_mean_mps2": 1.34112,
+      "previous_mean_mps2": 1.3208035881454798,
+      "corrected_mean_mps2": 1.3333386104849185
+    },
+    {
+      "start_clock_s": 18.517,
+      "end_clock_s": 19.517,
+      "gear_start": 3.0,
+      "gear_end": 3.0,
+      "observed_mean_mps2": 1.34112,
+      "previous_mean_mps2": 1.217295810907282,
+      "corrected_mean_mps2": 1.2734783955029683
+    }
+  ],
+  "previous_rmse_mps2": 0.8923994896471488,
+  "corrected_rmse_mps2": 0.4481876243129682,
+  "note": "Derived interval-average acceleration from 1 s HUD-speed differences, including launches/shifts/coasting. Not instantaneous acceleration or recovered wheel force. Integer speed quantization alone allows about +/-0.447 m/s^2 interval error; clock-reading uncertainty adds error."
+}

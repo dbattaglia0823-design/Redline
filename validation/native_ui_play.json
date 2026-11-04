@@ -1,0 +1,9 @@
+{
+	"actual_shifts": 2,
+	"audio_underruns": 0,
+	"completed": true,
+	"method": "Native Windows UI paddle/pause/guide controls; test-only automatic gas pedal and disabled focus auto-pause so the automation surface can change foreground focus. Production focus behavior is covered separately. Does not establish subjective feel or timbre.",
+	"shift_requests": 2,
+	"total_s": 16.714267060144,
+	"trap_mph": 76.0099729418021
+}

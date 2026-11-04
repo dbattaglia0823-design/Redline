@@ -1,0 +1,243 @@
+{
+  "source": "reference/LCXM2683.MP4",
+  "units": {
+    "video_s": "recording timestamp",
+    "clock_s": "visible game timer",
+    "rpm": "HUD rounded to 10 rpm",
+    "mph": "HUD rounded integer mph"
+  },
+  "observation_uncertainty": {
+    "rpm": 10,
+    "mph": 0.5,
+    "time_s": 0.02
+  },
+  "notes": [
+    "HUD samples are direct visual transcriptions from exact requested video timestamps.",
+    "Clock 0 starts near video 3.483 s. Use HUD time, not the end-of-race rollout, to compare times.",
+    "Input levels and clutch operation are estimates; pedal icons do not expose exact analog values.",
+    "The current Kaze is a different turbo car; the fitted reference profile is an explicit approximation with unmeasured mass, torque, inertia, radius, and drag."
+  ],
+  "samples": [
+    [
+      1,
+      0,
+      0,
+      850,
+      0
+    ],
+    [
+      2,
+      0,
+      0,
+      850,
+      0
+    ],
+    [
+      3,
+      0,
+      1,
+      2390,
+      0
+    ],
+    [
+      4,
+      0.517,
+      1,
+      5300,
+      0
+    ],
+    [
+      5,
+      1.517,
+      1,
+      2470,
+      7
+    ],
+    [
+      6,
+      2.517,
+      1,
+      3850,
+      14
+    ],
+    [
+      7,
+      3.517,
+      1,
+      5330,
+      21
+    ],
+    [
+      8,
+      4.517,
+      1,
+      6380,
+      28
+    ],
+    [
+      9,
+      5.517,
+      2,
+      3530,
+      32
+    ],
+    [
+      10,
+      6.517,
+      2,
+      4260,
+      38
+    ],
+    [
+      11,
+      7.517,
+      2,
+      4970,
+      44
+    ],
+    [
+      12,
+      8.517,
+      2,
+      5620,
+      49
+    ],
+    [
+      13,
+      9.517,
+      2,
+      6180,
+      54
+    ],
+    [
+      14,
+      10.517,
+      2,
+      6640,
+      58
+    ],
+    [
+      15,
+      11.517,
+      3,
+      4490,
+      59
+    ],
+    [
+      16,
+      12.517,
+      3,
+      4830,
+      62
+    ],
+    [
+      17,
+      13.517,
+      3,
+      5100,
+      66
+    ],
+    [
+      18,
+      14.517,
+      3,
+      5240,
+      67
+    ],
+    [
+      19,
+      15.517,
+      3,
+      3290,
+      66
+    ],
+    [
+      20,
+      16.517,
+      3,
+      5210,
+      67
+    ],
+    [
+      21,
+      17.517,
+      3,
+      5450,
+      70
+    ],
+    [
+      22,
+      18.517,
+      3,
+      5670,
+      73
+    ],
+    [
+      23,
+      19.517,
+      3,
+      5870,
+      76
+    ],
+    [
+      24,
+      20.517,
+      3,
+      6050,
+      78
+    ],
+    [
+      25,
+      21.517,
+      3,
+      6220,
+      80
+    ],
+    [
+      26,
+      22.517,
+      3,
+      6370,
+      82
+    ],
+    [
+      27,
+      22.95,
+      3,
+      6430,
+      83
+    ]
+  ],
+  "sample_columns": [
+    "video_s",
+    "clock_s",
+    "gear",
+    "rpm",
+    "mph"
+  ],
+  "slip": {
+    "reaction_s": 0.908,
+    "elapsed_s": 18.415,
+    "total_s": 19.323,
+    "quarter_mph": 75,
+    "sixty_ft_s": 3.028,
+    "eighth_s": 11.839,
+    "eighth_mph": 63,
+    "thousand_ft_s": 15.343,
+    "perfect_shifts": 1
+  },
+  "gear_ratio_observations": {
+    "gear2_rpm_per_mph": 113.5,
+    "gear3_rpm_per_mph": 77.6,
+    "first": "confounded by wheel/clutch slip"
+  },
+  "other_material": {
+    "first_clip": "JLTI6246.MP4: partial first run, 850 rpm neutral idle, 100 m slip 8.189 s + 6.577 s reaction; mistaken shift into fifth; silent audio",
+    "screenshots": [
+      "IMG_2279.PNG: 1.5L I4 FWD identification",
+      "IMG_2280.PNG: turbo onset/tier descriptions",
+      "IMG_2281.PNG: career/wager menu",
+      "IMG_2282.PNG: separate quarter-mile run 18.091 s @ 80 mph (not combined with video run)"
+    ]
+  }
+}

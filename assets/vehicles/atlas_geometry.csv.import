@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://bat6425ro4imh"
+
+[deps]
+
+files=["res://assets/vehicles/atlas_geometry.rear.translation", "res://assets/vehicles/atlas_geometry.front.translation", "res://assets/vehicles/atlas_geometry.wheel.translation", "res://assets/vehicles/atlas_geometry.radius.translation", "res://assets/vehicles/atlas_geometry.top.translation", "res://assets/vehicles/atlas_geometry.bottom.translation", "res://assets/vehicles/atlas_geometry.scale.translation"]
+
+source_file="res://assets/vehicles/atlas_geometry.csv"
+dest_files=["res://assets/vehicles/atlas_geometry.rear.translation", "res://assets/vehicles/atlas_geometry.front.translation", "res://assets/vehicles/atlas_geometry.wheel.translation", "res://assets/vehicles/atlas_geometry.radius.translation", "res://assets/vehicles/atlas_geometry.top.translation", "res://assets/vehicles/atlas_geometry.bottom.translation", "res://assets/vehicles/atlas_geometry.scale.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="360" viewBox="0 0 1000 360"><defs>
+ <linearGradient id="paint" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ff8c61"/><stop offset=".30" stop-color="#eb704e"/><stop offset=".52" stop-color="#ca6043"/><stop offset=".65" stop-color="#ff7b55"/><stop offset="1" stop-color="#673122"/></linearGradient>
+ <linearGradient id="glass" x1="0" y1="0" x2=".7" y2="1"><stop stop-color="#617e91"/><stop offset=".22" stop-color="#304a59"/><stop offset=".65" stop-color="#162a36"/><stop offset="1" stop-color="#0b1721"/></linearGradient>
+ <linearGradient id="chrome" x2="0" y2="1"><stop stop-color="#bac5c9"/><stop offset=".4" stop-color="#23333e"/><stop offset=".7" stop-color="#9aaab5"/><stop offset="1" stop-color="#192630"/></linearGradient>
+ <clipPath id="body"><path d="M30 211 L60 170 Q73 158 105 157 L251 139 L359 70 Q386 54 417 55 L600 57 Q627 59 649 81 L732 148 L886 160 Q939 167 964 209 L966 251 L946 282 L43 282 L23 254 Z"/></clipPath>
+ <clipPath id="windows"><path d="M285 142 L371 82 Q391 72 417 74 L478 74 L478 144 Z M492 74 L590 76 Q611 78 628 95 L683 145 L492 145 Z"/></clipPath>
+</defs><path d="M285 142 L371 82 Q391 72 417 74 L478 74 L478 144 Z M492 74 L590 76 Q611 78 628 95 L683 145 L492 145 Z" fill="#030812"/></svg>

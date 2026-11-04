@@ -1,0 +1,12 @@
+extends "res://scripts/main.gd"
+
+func _notification(what: int) -> void:
+	# The automation surface temporarily changes foreground focus between calls.
+	# Production focus/pause behavior is tested separately and remains enabled.
+	if what == NOTIFICATION_APPLICATION_FOCUS_OUT: return
+	super._notification(what)
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		print("NATIVE KEY physical=",event.physical_keycode," logical=",event.keycode," pressed=",event.pressed," echo=",event.echo)
+	super._input(event)

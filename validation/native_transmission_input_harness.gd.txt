@@ -1,0 +1,10 @@
+extends "res://scripts/main.gd"
+
+var native_events: Array = []
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_FOCUS_OUT: return
+	super._notification(what)
+func _input(event: InputEvent) -> void:
+	super._input(event)
+	if event is InputEventKey and event.pressed:
+		native_events.append({"physical":event.physical_keycode,"logical":event.keycode,"gas":gas_input(),"transbrake":transbrake_input(),"paused":paused_race,"gear":car.gear})

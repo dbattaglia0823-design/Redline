@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "reference_checks": {
+    "quarter_et_within_0.25_s": true,
+    "trap_within_2_mph": true,
+    "speed_rmse_below_2_mph": true,
+    "loaded_rpm_rmse_below_250": true,
+    "launch_rpm_max_error_below_1000": true,
+    "sixty_ft_within_0.25_s": true,
+    "eighth_within_0.25_s": true
+  },
+  "audio_firing_frequency": {
+    "4": {
+      "expected_hz": 100.0,
+      "measured_hz": 100.0,
+      "peak_pcm_amplitude": 0.295867919921875,
+      "passed": true
+    },
+    "6": {
+      "expected_hz": 150.0,
+      "measured_hz": 150.0,
+      "peak_pcm_amplitude": 0.29901123046875,
+      "passed": true
+    }
+  },
+  "interval_acceleration_rmse_mps2": 0.4481876243129682,
+  "note": "Acceptance is a regression check on a fitted replay with estimated inputs, not independent recovery of the reference physics. Hardware sound latency and exact timbre remain unverified."
+}

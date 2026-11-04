@@ -1,0 +1,3194 @@
+{
+  "kaze": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      215,
+      274
+    ],
+    "front": [
+      790,
+      274
+    ],
+    "radius": 73,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      27,
+      259
+    ],
+    "spoiler": [
+      95,
+      148
+    ],
+    "headlight": [
+      [
+        902,
+        191
+      ],
+      [
+        936,
+        200
+      ]
+    ],
+    "taillight": [
+      [
+        44,
+        213
+      ],
+      [
+        73,
+        208
+      ]
+    ],
+    "body": "res://assets/vehicles/kaze/body_%d_%s.svg",
+    "layers": {
+      "glass": "res://assets/vehicles/kaze/glass.svg",
+      "lamps": "res://assets/vehicles/kaze/lamps.svg",
+      "spoiler": "res://assets/vehicles/kaze/spoiler.svg",
+      "tint": "res://assets/vehicles/kaze/tint.svg",
+      "stripe": "res://assets/vehicles/kaze/stripe.svg",
+      "number": "res://assets/vehicles/kaze/number.svg",
+      "paint_mask": "res://assets/vehicles/kaze/paint_mask.svg"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "spoiler",
+      "headlight",
+      "taillight",
+      "decal"
+    ]
+  },
+  "nori": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      208,
+      274
+    ],
+    "front": [
+      786,
+      274
+    ],
+    "radius": 70,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      27,
+      259
+    ],
+    "spoiler": [
+      148,
+      30
+    ],
+    "headlight": [
+      [
+        902,
+        191
+      ],
+      [
+        936,
+        200
+      ]
+    ],
+    "taillight": [
+      [
+        44,
+        213
+      ],
+      [
+        73,
+        208
+      ]
+    ],
+    "body": "res://assets/vehicles/nori/body_%d_%s.svg",
+    "layers": {
+      "glass": "res://assets/vehicles/nori/glass.svg",
+      "lamps": "res://assets/vehicles/nori/lamps.svg",
+      "spoiler": "res://assets/vehicles/nori/spoiler.svg",
+      "tint": "res://assets/vehicles/nori/tint.svg",
+      "stripe": "res://assets/vehicles/nori/stripe.svg",
+      "number": "res://assets/vehicles/nori/number.svg",
+      "paint_mask": "res://assets/vehicles/nori/paint_mask.svg"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "spoiler",
+      "headlight",
+      "taillight",
+      "decal"
+    ]
+  },
+  "aster": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      212,
+      274
+    ],
+    "front": [
+      794,
+      274
+    ],
+    "radius": 76,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      27,
+      259
+    ],
+    "spoiler": [
+      95,
+      147
+    ],
+    "headlight": [
+      [
+        902,
+        191
+      ],
+      [
+        936,
+        200
+      ]
+    ],
+    "taillight": [
+      [
+        44,
+        213
+      ],
+      [
+        73,
+        208
+      ]
+    ],
+    "body": "res://assets/vehicles/aster/body_%d_%s.svg",
+    "layers": {
+      "glass": "res://assets/vehicles/aster/glass.svg",
+      "lamps": "res://assets/vehicles/aster/lamps.svg",
+      "spoiler": "res://assets/vehicles/aster/spoiler.svg",
+      "tint": "res://assets/vehicles/aster/tint.svg",
+      "stripe": "res://assets/vehicles/aster/stripe.svg",
+      "number": "res://assets/vehicles/aster/number.svg",
+      "paint_mask": "res://assets/vehicles/aster/paint_mask.svg"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "spoiler",
+      "headlight",
+      "taillight",
+      "decal"
+    ]
+  },
+  "vanta": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      209,
+      274
+    ],
+    "front": [
+      799,
+      274
+    ],
+    "radius": 78,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      27,
+      259
+    ],
+    "spoiler": [
+      95,
+      164
+    ],
+    "headlight": [
+      [
+        902,
+        191
+      ],
+      [
+        936,
+        200
+      ]
+    ],
+    "taillight": [
+      [
+        44,
+        213
+      ],
+      [
+        73,
+        208
+      ]
+    ],
+    "body": "res://assets/vehicles/vanta/body_%d_%s.svg",
+    "layers": {
+      "glass": "res://assets/vehicles/vanta/glass.svg",
+      "lamps": "res://assets/vehicles/vanta/lamps.svg",
+      "spoiler": "res://assets/vehicles/vanta/spoiler.svg",
+      "tint": "res://assets/vehicles/vanta/tint.svg",
+      "stripe": "res://assets/vehicles/vanta/stripe.svg",
+      "number": "res://assets/vehicles/vanta/number.svg",
+      "paint_mask": "res://assets/vehicles/vanta/paint_mask.svg"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "spoiler",
+      "headlight",
+      "taillight",
+      "decal"
+    ]
+  },
+  "mika": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      215,
+      274
+    ],
+    "front": [
+      790,
+      274
+    ],
+    "radius": 73,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      27,
+      259
+    ],
+    "spoiler": [
+      148,
+      47
+    ],
+    "headlight": [
+      [
+        902,
+        191
+      ],
+      [
+        936,
+        200
+      ]
+    ],
+    "taillight": [
+      [
+        44,
+        213
+      ],
+      [
+        73,
+        208
+      ]
+    ],
+    "body": "res://assets/vehicles/mika/body_%d_%s.svg",
+    "layers": {
+      "glass": "res://assets/vehicles/mika/glass.svg",
+      "lamps": "res://assets/vehicles/mika/lamps.svg",
+      "spoiler": "res://assets/vehicles/mika/spoiler.svg",
+      "tint": "res://assets/vehicles/mika/tint.svg",
+      "stripe": "res://assets/vehicles/mika/stripe.svg",
+      "number": "res://assets/vehicles/mika/number.svg",
+      "paint_mask": "res://assets/vehicles/mika/paint_mask.svg"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "spoiler",
+      "headlight",
+      "taillight",
+      "decal"
+    ]
+  },
+  "brindle": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      215,
+      274
+    ],
+    "front": [
+      790,
+      274
+    ],
+    "radius": 73,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      27,
+      259
+    ],
+    "spoiler": [
+      95,
+      160
+    ],
+    "headlight": [
+      [
+        902,
+        191
+      ],
+      [
+        936,
+        200
+      ]
+    ],
+    "taillight": [
+      [
+        44,
+        213
+      ],
+      [
+        73,
+        208
+      ]
+    ],
+    "body": "res://assets/vehicles/brindle/body_%d_%s.svg",
+    "layers": {
+      "glass": "res://assets/vehicles/brindle/glass.svg",
+      "lamps": "res://assets/vehicles/brindle/lamps.svg",
+      "spoiler": "res://assets/vehicles/brindle/spoiler.svg",
+      "tint": "res://assets/vehicles/brindle/tint.svg",
+      "stripe": "res://assets/vehicles/brindle/stripe.svg",
+      "number": "res://assets/vehicles/brindle/number.svg",
+      "paint_mask": "res://assets/vehicles/brindle/paint_mask.svg"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "spoiler",
+      "headlight",
+      "taillight",
+      "decal"
+    ]
+  },
+  "comet": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      215,
+      274
+    ],
+    "front": [
+      790,
+      274
+    ],
+    "radius": 73,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      27,
+      259
+    ],
+    "spoiler": [
+      95,
+      162
+    ],
+    "headlight": [
+      [
+        902,
+        191
+      ],
+      [
+        936,
+        200
+      ]
+    ],
+    "taillight": [
+      [
+        44,
+        213
+      ],
+      [
+        73,
+        208
+      ]
+    ],
+    "body": "res://assets/vehicles/comet/body_%d_%s.svg",
+    "layers": {
+      "glass": "res://assets/vehicles/comet/glass.svg",
+      "lamps": "res://assets/vehicles/comet/lamps.svg",
+      "spoiler": "res://assets/vehicles/comet/spoiler.svg",
+      "tint": "res://assets/vehicles/comet/tint.svg",
+      "stripe": "res://assets/vehicles/comet/stripe.svg",
+      "number": "res://assets/vehicles/comet/number.svg",
+      "paint_mask": "res://assets/vehicles/comet/paint_mask.svg"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "spoiler",
+      "headlight",
+      "taillight",
+      "decal"
+    ]
+  },
+  "rikka": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      215,
+      274
+    ],
+    "front": [
+      790,
+      274
+    ],
+    "radius": 73,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      27,
+      259
+    ],
+    "spoiler": [
+      95,
+      154
+    ],
+    "headlight": [
+      [
+        902,
+        191
+      ],
+      [
+        936,
+        200
+      ]
+    ],
+    "taillight": [
+      [
+        44,
+        213
+      ],
+      [
+        73,
+        208
+      ]
+    ],
+    "body": "res://assets/vehicles/rikka/body_%d_%s.svg",
+    "layers": {
+      "glass": "res://assets/vehicles/rikka/glass.svg",
+      "lamps": "res://assets/vehicles/rikka/lamps.svg",
+      "spoiler": "res://assets/vehicles/rikka/spoiler.svg",
+      "tint": "res://assets/vehicles/rikka/tint.svg",
+      "stripe": "res://assets/vehicles/rikka/stripe.svg",
+      "number": "res://assets/vehicles/rikka/number.svg",
+      "paint_mask": "res://assets/vehicles/rikka/paint_mask.svg"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "spoiler",
+      "headlight",
+      "taillight",
+      "decal"
+    ]
+  },
+  "velora": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      215,
+      274
+    ],
+    "front": [
+      790,
+      274
+    ],
+    "radius": 73,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      27,
+      259
+    ],
+    "spoiler": [
+      95,
+      161
+    ],
+    "headlight": [
+      [
+        902,
+        191
+      ],
+      [
+        936,
+        200
+      ]
+    ],
+    "taillight": [
+      [
+        44,
+        213
+      ],
+      [
+        73,
+        208
+      ]
+    ],
+    "body": "res://assets/vehicles/velora/body_%d_%s.svg",
+    "layers": {
+      "glass": "res://assets/vehicles/velora/glass.svg",
+      "lamps": "res://assets/vehicles/velora/lamps.svg",
+      "spoiler": "res://assets/vehicles/velora/spoiler.svg",
+      "tint": "res://assets/vehicles/velora/tint.svg",
+      "stripe": "res://assets/vehicles/velora/stripe.svg",
+      "number": "res://assets/vehicles/velora/number.svg",
+      "paint_mask": "res://assets/vehicles/velora/paint_mask.svg"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "spoiler",
+      "headlight",
+      "taillight",
+      "decal"
+    ]
+  },
+  "solenne": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      215,
+      274
+    ],
+    "front": [
+      790,
+      274
+    ],
+    "radius": 73,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      27,
+      259
+    ],
+    "spoiler": [
+      95,
+      184
+    ],
+    "headlight": [
+      [
+        902,
+        191
+      ],
+      [
+        936,
+        200
+      ]
+    ],
+    "taillight": [
+      [
+        44,
+        213
+      ],
+      [
+        73,
+        208
+      ]
+    ],
+    "body": "res://assets/vehicles/solenne/body_%d_%s.svg",
+    "layers": {
+      "glass": "res://assets/vehicles/solenne/glass.svg",
+      "lamps": "res://assets/vehicles/solenne/lamps.svg",
+      "spoiler": "res://assets/vehicles/solenne/spoiler.svg",
+      "tint": "res://assets/vehicles/solenne/tint.svg",
+      "stripe": "res://assets/vehicles/solenne/stripe.svg",
+      "number": "res://assets/vehicles/solenne/number.svg",
+      "paint_mask": "res://assets/vehicles/solenne/paint_mask.svg"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "spoiler",
+      "headlight",
+      "taillight",
+      "decal"
+    ]
+  },
+  "aurora": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      215,
+      274
+    ],
+    "front": [
+      790,
+      274
+    ],
+    "radius": 73,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      27,
+      259
+    ],
+    "spoiler": [
+      95,
+      191
+    ],
+    "headlight": [
+      [
+        902,
+        191
+      ],
+      [
+        936,
+        200
+      ]
+    ],
+    "taillight": [
+      [
+        44,
+        213
+      ],
+      [
+        73,
+        208
+      ]
+    ],
+    "body": "res://assets/vehicles/aurora/body_%d_%s.svg",
+    "layers": {
+      "glass": "res://assets/vehicles/aurora/glass.svg",
+      "lamps": "res://assets/vehicles/aurora/lamps.svg",
+      "spoiler": "res://assets/vehicles/aurora/spoiler.svg",
+      "tint": "res://assets/vehicles/aurora/tint.svg",
+      "stripe": "res://assets/vehicles/aurora/stripe.svg",
+      "number": "res://assets/vehicles/aurora/number.svg",
+      "paint_mask": "res://assets/vehicles/aurora/paint_mask.svg"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "spoiler",
+      "headlight",
+      "taillight",
+      "decal"
+    ]
+  },
+  "hammer": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      215,
+      274
+    ],
+    "front": [
+      790,
+      274
+    ],
+    "radius": 73,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      27,
+      259
+    ],
+    "spoiler": [
+      95,
+      160
+    ],
+    "headlight": [
+      [
+        902,
+        191
+      ],
+      [
+        936,
+        200
+      ]
+    ],
+    "taillight": [
+      [
+        44,
+        213
+      ],
+      [
+        73,
+        208
+      ]
+    ],
+    "body": "res://assets/vehicles/hammer/body_%d_%s.svg",
+    "layers": {
+      "glass": "res://assets/vehicles/hammer/glass.svg",
+      "lamps": "res://assets/vehicles/hammer/lamps.svg",
+      "spoiler": "res://assets/vehicles/hammer/spoiler.svg",
+      "tint": "res://assets/vehicles/hammer/tint.svg",
+      "stripe": "res://assets/vehicles/hammer/stripe.svg",
+      "number": "res://assets/vehicles/hammer/number.svg",
+      "paint_mask": "res://assets/vehicles/hammer/paint_mask.svg"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "spoiler",
+      "headlight",
+      "taillight",
+      "decal"
+    ]
+  },
+  "miata": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      237,
+      274
+    ],
+    "front": [
+      785,
+      274
+    ],
+    "radius": 78,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/miata/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/miata/glass.png",
+      "lamps": "res://assets/vehicles/miata/lamps.png",
+      "spoiler": "res://assets/vehicles/miata/spoiler.png",
+      "tint": "res://assets/vehicles/miata/tint.png",
+      "stripe": "res://assets/vehicles/miata/stripe.png",
+      "number": "res://assets/vehicles/miata/number.svg",
+      "paint_mask": "res://assets/vehicles/miata/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/miata/rear_wheel.png",
+      "res://assets/vehicles/miata/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/miata/race_body_%d_%s.png",
+    "rim_radius": [
+      56.16,
+      56.16
+    ]
+  },
+  "civic_si": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      226,
+      274
+    ],
+    "front": [
+      787,
+      274
+    ],
+    "radius": 74,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/civic_si/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/civic_si/glass.png",
+      "lamps": "res://assets/vehicles/civic_si/lamps.png",
+      "spoiler": "res://assets/vehicles/civic_si/spoiler.png",
+      "tint": "res://assets/vehicles/civic_si/tint.png",
+      "stripe": "res://assets/vehicles/civic_si/stripe.png",
+      "number": "res://assets/vehicles/civic_si/number.svg",
+      "paint_mask": "res://assets/vehicles/civic_si/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/civic_si/rear_wheel.png",
+      "res://assets/vehicles/civic_si/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/civic_si/race_body_%d_%s.png",
+    "rim_radius": [
+      53.28,
+      53.28
+    ]
+  },
+  "gti_vr6": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      197,
+      274
+    ],
+    "front": [
+      713,
+      274
+    ],
+    "radius": 61,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/gti_vr6/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/gti_vr6/glass.png",
+      "lamps": "res://assets/vehicles/gti_vr6/lamps.png",
+      "spoiler": "res://assets/vehicles/gti_vr6/spoiler.png",
+      "tint": "res://assets/vehicles/gti_vr6/tint.png",
+      "stripe": "res://assets/vehicles/gti_vr6/stripe.png",
+      "number": "res://assets/vehicles/gti_vr6/number.svg",
+      "paint_mask": "res://assets/vehicles/gti_vr6/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/gti_vr6/rear_wheel.png",
+      "res://assets/vehicles/gti_vr6/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/gti_vr6/race_body_%d_%s.png",
+    "rim_radius": [
+      43.92,
+      43.92
+    ]
+  },
+  "rsx": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      228,
+      274
+    ],
+    "front": [
+      774,
+      274
+    ],
+    "radius": 67,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/rsx/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/rsx/glass.png",
+      "lamps": "res://assets/vehicles/rsx/lamps.png",
+      "spoiler": "res://assets/vehicles/rsx/spoiler.png",
+      "tint": "res://assets/vehicles/rsx/tint.png",
+      "stripe": "res://assets/vehicles/rsx/stripe.png",
+      "number": "res://assets/vehicles/rsx/number.svg",
+      "paint_mask": "res://assets/vehicles/rsx/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/rsx/rear_wheel.png",
+      "res://assets/vehicles/rsx/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/rsx/race_body_%d_%s.png",
+    "rim_radius": [
+      48.24,
+      48.24
+    ]
+  },
+  "brz": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      200,
+      274
+    ],
+    "front": [
+      774,
+      274
+    ],
+    "radius": 70,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/brz/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/brz/glass.png",
+      "lamps": "res://assets/vehicles/brz/lamps.png",
+      "spoiler": "res://assets/vehicles/brz/spoiler.png",
+      "tint": "res://assets/vehicles/brz/tint.png",
+      "stripe": "res://assets/vehicles/brz/stripe.png",
+      "number": "res://assets/vehicles/brz/number.svg",
+      "paint_mask": "res://assets/vehicles/brz/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/brz/rear_wheel.png",
+      "res://assets/vehicles/brz/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/brz/race_body_%d_%s.png",
+    "rim_radius": [
+      50.4,
+      50.4
+    ]
+  },
+  "integra": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      223,
+      274
+    ],
+    "front": [
+      766,
+      274
+    ],
+    "radius": 67,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/integra/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/integra/glass.png",
+      "lamps": "res://assets/vehicles/integra/lamps.png",
+      "spoiler": "res://assets/vehicles/integra/spoiler.png",
+      "tint": "res://assets/vehicles/integra/tint.png",
+      "stripe": "res://assets/vehicles/integra/stripe.png",
+      "number": "res://assets/vehicles/integra/number.svg",
+      "paint_mask": "res://assets/vehicles/integra/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/integra/rear_wheel.png",
+      "res://assets/vehicles/integra/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/integra/race_body_%d_%s.png",
+    "rim_radius": [
+      48.24,
+      48.24
+    ]
+  },
+  "gti": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      183,
+      274
+    ],
+    "front": [
+      685,
+      274
+    ],
+    "radius": 69,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/gti/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/gti/glass.png",
+      "lamps": "res://assets/vehicles/gti/lamps.png",
+      "spoiler": "res://assets/vehicles/gti/spoiler.png",
+      "tint": "res://assets/vehicles/gti/tint.png",
+      "stripe": "res://assets/vehicles/gti/stripe.png",
+      "number": "res://assets/vehicles/gti/number.svg",
+      "paint_mask": "res://assets/vehicles/gti/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/gti/rear_wheel.png",
+      "res://assets/vehicles/gti/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/gti/race_body_%d_%s.png",
+    "rim_radius": [
+      49.68,
+      49.68
+    ]
+  },
+  "s2000": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      237,
+      274
+    ],
+    "front": [
+      783,
+      274
+    ],
+    "radius": 76,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/s2000/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/s2000/glass.png",
+      "lamps": "res://assets/vehicles/s2000/lamps.png",
+      "spoiler": "res://assets/vehicles/s2000/spoiler.png",
+      "tint": "res://assets/vehicles/s2000/tint.png",
+      "stripe": "res://assets/vehicles/s2000/stripe.png",
+      "number": "res://assets/vehicles/s2000/number.svg",
+      "paint_mask": "res://assets/vehicles/s2000/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/s2000/rear_wheel.png",
+      "res://assets/vehicles/s2000/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/s2000/race_body_%d_%s.png",
+    "rim_radius": [
+      54.72,
+      54.72
+    ]
+  },
+  "gr86": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      215,
+      274
+    ],
+    "front": [
+      778,
+      274
+    ],
+    "radius": 68,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/gr86/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/gr86/glass.png",
+      "lamps": "res://assets/vehicles/gr86/lamps.png",
+      "spoiler": "res://assets/vehicles/gr86/spoiler.png",
+      "tint": "res://assets/vehicles/gr86/tint.png",
+      "stripe": "res://assets/vehicles/gr86/stripe.png",
+      "number": "res://assets/vehicles/gr86/number.svg",
+      "paint_mask": "res://assets/vehicles/gr86/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/gr86/rear_wheel.png",
+      "res://assets/vehicles/gr86/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/gr86/race_body_%d_%s.png",
+    "rim_radius": [
+      48.96,
+      48.96
+    ]
+  },
+  "z350": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      223,
+      274
+    ],
+    "front": [
+      796,
+      274
+    ],
+    "radius": 72,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/z350/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/z350/glass.png",
+      "lamps": "res://assets/vehicles/z350/lamps.png",
+      "spoiler": "res://assets/vehicles/z350/spoiler.png",
+      "tint": "res://assets/vehicles/z350/tint.png",
+      "stripe": "res://assets/vehicles/z350/stripe.png",
+      "number": "res://assets/vehicles/z350/number.svg",
+      "paint_mask": "res://assets/vehicles/z350/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/z350/rear_wheel.png",
+      "res://assets/vehicles/z350/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/z350/race_body_%d_%s.png",
+    "rim_radius": [
+      51.84,
+      51.84
+    ]
+  },
+  "supra": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      238,
+      274
+    ],
+    "front": [
+      755,
+      274
+    ],
+    "radius": 67,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/supra/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/supra/glass.png",
+      "lamps": "res://assets/vehicles/supra/lamps.png",
+      "spoiler": "res://assets/vehicles/supra/spoiler.png",
+      "tint": "res://assets/vehicles/supra/tint.png",
+      "stripe": "res://assets/vehicles/supra/stripe.png",
+      "number": "res://assets/vehicles/supra/number.svg",
+      "paint_mask": "res://assets/vehicles/supra/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/supra/rear_wheel.png",
+      "res://assets/vehicles/supra/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/supra/race_body_%d_%s.png",
+    "rim_radius": [
+      48.24,
+      48.24
+    ]
+  },
+  "m3": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      238,
+      274
+    ],
+    "front": [
+      805,
+      274
+    ],
+    "radius": 70,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/m3/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/m3/glass.png",
+      "lamps": "res://assets/vehicles/m3/lamps.png",
+      "spoiler": "res://assets/vehicles/m3/spoiler.png",
+      "tint": "res://assets/vehicles/m3/tint.png",
+      "stripe": "res://assets/vehicles/m3/stripe.png",
+      "number": "res://assets/vehicles/m3/number.svg",
+      "paint_mask": "res://assets/vehicles/m3/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/m3/rear_wheel.png",
+      "res://assets/vehicles/m3/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/m3/race_body_%d_%s.png",
+    "rim_radius": [
+      50.4,
+      50.4
+    ]
+  },
+  "sti": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      228,
+      274
+    ],
+    "front": [
+      748,
+      274
+    ],
+    "radius": 65,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/sti/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/sti/glass.png",
+      "lamps": "res://assets/vehicles/sti/lamps.png",
+      "spoiler": "res://assets/vehicles/sti/spoiler.png",
+      "tint": "res://assets/vehicles/sti/tint.png",
+      "stripe": "res://assets/vehicles/sti/stripe.png",
+      "number": "res://assets/vehicles/sti/number.svg",
+      "paint_mask": "res://assets/vehicles/sti/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/sti/rear_wheel.png",
+      "res://assets/vehicles/sti/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/sti/race_body_%d_%s.png",
+    "rim_radius": [
+      46.8,
+      46.8
+    ]
+  },
+  "evo": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      229,
+      274
+    ],
+    "front": [
+      755,
+      274
+    ],
+    "radius": 62,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/evo/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/evo/glass.png",
+      "lamps": "res://assets/vehicles/evo/lamps.png",
+      "spoiler": "res://assets/vehicles/evo/spoiler.png",
+      "tint": "res://assets/vehicles/evo/tint.png",
+      "stripe": "res://assets/vehicles/evo/stripe.png",
+      "number": "res://assets/vehicles/evo/number.svg",
+      "paint_mask": "res://assets/vehicles/evo/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/evo/rear_wheel.png",
+      "res://assets/vehicles/evo/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/evo/race_body_%d_%s.png",
+    "rim_radius": [
+      44.64,
+      44.64
+    ]
+  },
+  "type_r": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      214,
+      274
+    ],
+    "front": [
+      749,
+      274
+    ],
+    "radius": 58,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/type_r/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/type_r/glass.png",
+      "lamps": "res://assets/vehicles/type_r/lamps.png",
+      "spoiler": "res://assets/vehicles/type_r/spoiler.png",
+      "tint": "res://assets/vehicles/type_r/tint.png",
+      "stripe": "res://assets/vehicles/type_r/stripe.png",
+      "number": "res://assets/vehicles/type_r/number.svg",
+      "paint_mask": "res://assets/vehicles/type_r/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/type_r/rear_wheel.png",
+      "res://assets/vehicles/type_r/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/type_r/race_body_%d_%s.png",
+    "rim_radius": [
+      41.76,
+      41.76
+    ]
+  },
+  "mustang": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      249,
+      274
+    ],
+    "front": [
+      778,
+      274
+    ],
+    "radius": 64,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/mustang/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/mustang/glass.png",
+      "lamps": "res://assets/vehicles/mustang/lamps.png",
+      "spoiler": "res://assets/vehicles/mustang/spoiler.png",
+      "tint": "res://assets/vehicles/mustang/tint.png",
+      "stripe": "res://assets/vehicles/mustang/stripe.png",
+      "number": "res://assets/vehicles/mustang/number.svg",
+      "paint_mask": "res://assets/vehicles/mustang/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/mustang/rear_wheel.png",
+      "res://assets/vehicles/mustang/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/mustang/race_body_%d_%s.png",
+    "rim_radius": [
+      46.08,
+      46.08
+    ]
+  },
+  "supra_gr": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      249,
+      274
+    ],
+    "front": [
+      770,
+      274
+    ],
+    "radius": 66,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/supra_gr/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/supra_gr/glass.png",
+      "lamps": "res://assets/vehicles/supra_gr/lamps.png",
+      "spoiler": "res://assets/vehicles/supra_gr/spoiler.png",
+      "tint": "res://assets/vehicles/supra_gr/tint.png",
+      "stripe": "res://assets/vehicles/supra_gr/stripe.png",
+      "number": "res://assets/vehicles/supra_gr/number.svg",
+      "paint_mask": "res://assets/vehicles/supra_gr/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/supra_gr/rear_wheel.png",
+      "res://assets/vehicles/supra_gr/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/supra_gr/race_body_%d_%s.png",
+    "rim_radius": [
+      47.52,
+      47.52
+    ]
+  },
+  "camaro": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      239,
+      274
+    ],
+    "front": [
+      783,
+      274
+    ],
+    "radius": 65,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/camaro/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/camaro/glass.png",
+      "lamps": "res://assets/vehicles/camaro/lamps.png",
+      "spoiler": "res://assets/vehicles/camaro/spoiler.png",
+      "tint": "res://assets/vehicles/camaro/tint.png",
+      "stripe": "res://assets/vehicles/camaro/stripe.png",
+      "number": "res://assets/vehicles/camaro/number.svg",
+      "paint_mask": "res://assets/vehicles/camaro/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/camaro/rear_wheel.png",
+      "res://assets/vehicles/camaro/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/camaro/race_body_%d_%s.png",
+    "rim_radius": [
+      46.8,
+      46.8
+    ]
+  },
+  "golf_r": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      191,
+      274
+    ],
+    "front": [
+      715,
+      274
+    ],
+    "radius": 62,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/golf_r/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/golf_r/glass.png",
+      "lamps": "res://assets/vehicles/golf_r/lamps.png",
+      "spoiler": "res://assets/vehicles/golf_r/spoiler.png",
+      "tint": "res://assets/vehicles/golf_r/tint.png",
+      "stripe": "res://assets/vehicles/golf_r/stripe.png",
+      "number": "res://assets/vehicles/golf_r/number.svg",
+      "paint_mask": "res://assets/vehicles/golf_r/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/golf_r/rear_wheel.png",
+      "res://assets/vehicles/golf_r/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/golf_r/race_body_%d_%s.png",
+    "rim_radius": [
+      44.64,
+      44.64
+    ]
+  },
+  "z400": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      239,
+      274
+    ],
+    "front": [
+      747,
+      274
+    ],
+    "radius": 72,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/z400/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/z400/glass.png",
+      "lamps": "res://assets/vehicles/z400/lamps.png",
+      "spoiler": "res://assets/vehicles/z400/spoiler.png",
+      "tint": "res://assets/vehicles/z400/tint.png",
+      "stripe": "res://assets/vehicles/z400/stripe.png",
+      "number": "res://assets/vehicles/z400/number.svg",
+      "paint_mask": "res://assets/vehicles/z400/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/z400/rear_wheel.png",
+      "res://assets/vehicles/z400/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/z400/race_body_%d_%s.png",
+    "rim_radius": [
+      51.84,
+      51.84
+    ]
+  },
+  "z06": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      214,
+      274
+    ],
+    "front": [
+      756,
+      274
+    ],
+    "radius": 62,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/z06/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/z06/glass.png",
+      "lamps": "res://assets/vehicles/z06/lamps.png",
+      "spoiler": "res://assets/vehicles/z06/spoiler.png",
+      "tint": "res://assets/vehicles/z06/tint.png",
+      "stripe": "res://assets/vehicles/z06/stripe.png",
+      "number": "res://assets/vehicles/z06/number.svg",
+      "paint_mask": "res://assets/vehicles/z06/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/z06/rear_wheel.png",
+      "res://assets/vehicles/z06/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/z06/race_body_%d_%s.png",
+    "rim_radius": [
+      44.64,
+      44.64
+    ]
+  },
+  "gtr": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      233,
+      274
+    ],
+    "front": [
+      780,
+      274
+    ],
+    "radius": 66,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/gtr/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/gtr/glass.png",
+      "lamps": "res://assets/vehicles/gtr/lamps.png",
+      "spoiler": "res://assets/vehicles/gtr/spoiler.png",
+      "tint": "res://assets/vehicles/gtr/tint.png",
+      "stripe": "res://assets/vehicles/gtr/stripe.png",
+      "number": "res://assets/vehicles/gtr/number.svg",
+      "paint_mask": "res://assets/vehicles/gtr/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/gtr/rear_wheel.png",
+      "res://assets/vehicles/gtr/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/gtr/race_body_%d_%s.png",
+    "rim_radius": [
+      47.52,
+      47.52
+    ]
+  },
+  "r8": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      207,
+      274
+    ],
+    "front": [
+      761,
+      274
+    ],
+    "radius": 66,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/r8/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/r8/glass.png",
+      "lamps": "res://assets/vehicles/r8/lamps.png",
+      "spoiler": "res://assets/vehicles/r8/spoiler.png",
+      "tint": "res://assets/vehicles/r8/tint.png",
+      "stripe": "res://assets/vehicles/r8/stripe.png",
+      "number": "res://assets/vehicles/r8/number.svg",
+      "paint_mask": "res://assets/vehicles/r8/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/r8/rear_wheel.png",
+      "res://assets/vehicles/r8/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/r8/race_body_%d_%s.png",
+    "rim_radius": [
+      47.52,
+      47.52
+    ]
+  },
+  "gt500": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      255,
+      274
+    ],
+    "front": [
+      771,
+      274
+    ],
+    "radius": 65,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/gt500/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/gt500/glass.png",
+      "lamps": "res://assets/vehicles/gt500/lamps.png",
+      "spoiler": "res://assets/vehicles/gt500/spoiler.png",
+      "tint": "res://assets/vehicles/gt500/tint.png",
+      "stripe": "res://assets/vehicles/gt500/stripe.png",
+      "number": "res://assets/vehicles/gt500/number.svg",
+      "paint_mask": "res://assets/vehicles/gt500/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/gt500/rear_wheel.png",
+      "res://assets/vehicles/gt500/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/gt500/race_body_%d_%s.png",
+    "rim_radius": [
+      46.8,
+      46.8
+    ]
+  },
+  "redeye": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      241,
+      274
+    ],
+    "front": [
+      786,
+      274
+    ],
+    "radius": 77,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/redeye/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/redeye/glass.png",
+      "lamps": "res://assets/vehicles/redeye/lamps.png",
+      "spoiler": "res://assets/vehicles/redeye/spoiler.png",
+      "tint": "res://assets/vehicles/redeye/tint.png",
+      "stripe": "res://assets/vehicles/redeye/stripe.png",
+      "number": "res://assets/vehicles/redeye/number.svg",
+      "paint_mask": "res://assets/vehicles/redeye/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/redeye/rear_wheel.png",
+      "res://assets/vehicles/redeye/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/redeye/race_body_%d_%s.png",
+    "rim_radius": [
+      55.44,
+      55.44
+    ]
+  },
+  "turbo_s": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      258,
+      274
+    ],
+    "front": [
+      755,
+      274
+    ],
+    "radius": 65,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/turbo_s/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/turbo_s/glass.png",
+      "lamps": "res://assets/vehicles/turbo_s/lamps.png",
+      "spoiler": "res://assets/vehicles/turbo_s/spoiler.png",
+      "tint": "res://assets/vehicles/turbo_s/tint.png",
+      "stripe": "res://assets/vehicles/turbo_s/stripe.png",
+      "number": "res://assets/vehicles/turbo_s/number.svg",
+      "paint_mask": "res://assets/vehicles/turbo_s/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/turbo_s/rear_wheel.png",
+      "res://assets/vehicles/turbo_s/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/turbo_s/race_body_%d_%s.png",
+    "rim_radius": [
+      46.8,
+      46.8
+    ]
+  },
+  "mclaren": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      202,
+      274
+    ],
+    "front": [
+      743,
+      274
+    ],
+    "radius": 62,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/mclaren/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/mclaren/glass.png",
+      "lamps": "res://assets/vehicles/mclaren/lamps.png",
+      "spoiler": "res://assets/vehicles/mclaren/spoiler.png",
+      "tint": "res://assets/vehicles/mclaren/tint.png",
+      "stripe": "res://assets/vehicles/mclaren/stripe.png",
+      "number": "res://assets/vehicles/mclaren/number.svg",
+      "paint_mask": "res://assets/vehicles/mclaren/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/mclaren/rear_wheel.png",
+      "res://assets/vehicles/mclaren/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/mclaren/race_body_%d_%s.png",
+    "rim_radius": [
+      44.64,
+      44.64
+    ]
+  },
+  "sf90": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      197,
+      274
+    ],
+    "front": [
+      740,
+      274
+    ],
+    "radius": 65,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/sf90/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/sf90/glass.png",
+      "lamps": "res://assets/vehicles/sf90/lamps.png",
+      "spoiler": "res://assets/vehicles/sf90/spoiler.png",
+      "tint": "res://assets/vehicles/sf90/tint.png",
+      "stripe": "res://assets/vehicles/sf90/stripe.png",
+      "number": "res://assets/vehicles/sf90/number.svg",
+      "paint_mask": "res://assets/vehicles/sf90/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/sf90/rear_wheel.png",
+      "res://assets/vehicles/sf90/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/sf90/race_body_%d_%s.png",
+    "rim_radius": [
+      46.8,
+      46.8
+    ]
+  },
+  "demon": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      251,
+      274
+    ],
+    "front": [
+      781,
+      274
+    ],
+    "radius": 77,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/demon/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/demon/glass.png",
+      "lamps": "res://assets/vehicles/demon/lamps.png",
+      "spoiler": "res://assets/vehicles/demon/spoiler.png",
+      "tint": "res://assets/vehicles/demon/tint.png",
+      "stripe": "res://assets/vehicles/demon/stripe.png",
+      "number": "res://assets/vehicles/demon/number.svg",
+      "paint_mask": "res://assets/vehicles/demon/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/demon/rear_wheel.png",
+      "res://assets/vehicles/demon/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/demon/race_body_%d_%s.png",
+    "rim_radius": [
+      55.44,
+      55.44
+    ]
+  },
+  "chiron": {
+    "size": [
+      1000,
+      360
+    ],
+    "rear": [
+      204,
+      274
+    ],
+    "front": [
+      770,
+      274
+    ],
+    "radius": 83,
+    "pivot": [
+      500,
+      274
+    ],
+    "exhaust": [
+      32,
+      269
+    ],
+    "spoiler": [
+      100,
+      150
+    ],
+    "headlight": [
+      [
+        916,
+        195
+      ],
+      [
+        959,
+        208
+      ]
+    ],
+    "taillight": [
+      [
+        35,
+        204
+      ],
+      [
+        70,
+        198
+      ]
+    ],
+    "body": "res://assets/vehicles/chiron/body_%d_%s.png",
+    "layers": {
+      "glass": "res://assets/vehicles/chiron/glass.png",
+      "lamps": "res://assets/vehicles/chiron/lamps.png",
+      "spoiler": "res://assets/vehicles/chiron/spoiler.png",
+      "tint": "res://assets/vehicles/chiron/tint.png",
+      "stripe": "res://assets/vehicles/chiron/stripe.png",
+      "number": "res://assets/vehicles/chiron/number.svg",
+      "paint_mask": "res://assets/vehicles/chiron/paint_mask.png"
+    },
+    "compatible": [
+      "paint",
+      "finish",
+      "design",
+      "rim",
+      "sidewall",
+      "caliper",
+      "tint",
+      "stance",
+      "decal"
+    ],
+    "art_status": "Original generated illustration with processed opaque body, independent runtime wheels, paint and window masks; likeness/edge QA required",
+    "stock_wheels": [
+      "res://assets/vehicles/chiron/rear_wheel.png",
+      "res://assets/vehicles/chiron/front_wheel.png"
+    ],
+    "race_body": "res://assets/vehicles/chiron/race_body_%d_%s.png",
+    "rim_radius": [
+      59.76,
+      59.76
+    ]
+  }
+}

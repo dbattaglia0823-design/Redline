@@ -1,0 +1,28 @@
+{
+	"base_boost": 0.0,
+	"cylinders": 4.0,
+	"drag_area": 0.64,
+	"drive": "FWD",
+	"engine": "estimated 1.5L I4",
+	"final_drive": 4.1,
+	"first_throttle": 0.85,
+	"grip": 0.52,
+	"idle": 850.0,
+	"inertia": 0.14,
+	"launch_pedal": 0.2,
+	"mass": 960.0,
+	"name": "Reference observation fit (not a dealer vehicle)",
+	"ratios": [
+		3.5,
+		1.84,
+		1.265,
+		1.05,
+		0.78,
+		0.67
+	],
+	"redline": 7000.0,
+	"rolling": 0.014,
+	"tire_radius": 0.285,
+	"torque": 122.0,
+	"wheel_inertia": 2.5
+}

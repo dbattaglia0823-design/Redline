@@ -1,0 +1,495 @@
+{
+	"chunk_invariant": true,
+	"failures": 0,
+	"max_adjacent_sample_jump": 0.199208204117457,
+	"max_pcm_amplitude": 0.422977060079575,
+	"max_pitch_ramp_tracking_error_rpm": 428.664301712997,
+	"max_real_pitch_tracking_error_rpm": 82.0129116353137,
+	"note": "Ramp tracking error includes sudden test-fixture road-state changes; steady-state frequency is tested separately. Hardware output latency is not measured.",
+	"profiles": [
+		{
+			"peak_sample_jump": 0.0532043515436936,
+			"profile": "I4 compact",
+			"rms": 0.181112992380494,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "miata"
+		},
+		{
+			"peak_sample_jump": 0.097285760763382,
+			"profile": "I4 compact",
+			"rms": 0.229666566686166,
+			"stock_difference_rms": 0.0537730495349606,
+			"tier": 3,
+			"vehicle": "miata"
+		},
+		{
+			"peak_sample_jump": 0.0462684519391987,
+			"profile": "I4 compact",
+			"rms": 0.183562764199009,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "civic_si"
+		},
+		{
+			"peak_sample_jump": 0.0804694874359637,
+			"profile": "I4 compact",
+			"rms": 0.23229363470166,
+			"stock_difference_rms": 0.0524207774180738,
+			"tier": 3,
+			"vehicle": "civic_si"
+		},
+		{
+			"peak_sample_jump": 0.0735514008643619,
+			"profile": "Narrow angle six",
+			"rms": 0.204281610104038,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "gti_vr6"
+		},
+		{
+			"peak_sample_jump": 0.13382058591334,
+			"profile": "Narrow angle six",
+			"rms": 0.256013697462159,
+			"stock_difference_rms": 0.0563821086684865,
+			"tier": 3,
+			"vehicle": "gti_vr6"
+		},
+		{
+			"peak_sample_jump": 0.0470812517689183,
+			"profile": "I4 compact",
+			"rms": 0.183273204584744,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "rsx"
+		},
+		{
+			"peak_sample_jump": 0.0824526943003593,
+			"profile": "I4 compact",
+			"rms": 0.232031021966529,
+			"stock_difference_rms": 0.052615762256999,
+			"tier": 3,
+			"vehicle": "rsx"
+		},
+		{
+			"peak_sample_jump": 0.0483105502284321,
+			"profile": "Boxer four",
+			"rms": 0.194546178282563,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "brz"
+		},
+		{
+			"peak_sample_jump": 0.0854652477947355,
+			"profile": "Boxer four",
+			"rms": 0.24502025309933,
+			"stock_difference_rms": 0.054381450158539,
+			"tier": 3,
+			"vehicle": "brz"
+		},
+		{
+			"peak_sample_jump": 0.0432351410337548,
+			"profile": "I4 compact",
+			"rms": 0.184650259428087,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "integra"
+		},
+		{
+			"peak_sample_jump": 0.0730418677010776,
+			"profile": "I4 compact",
+			"rms": 0.23317294998099,
+			"stock_difference_rms": 0.0516059438667126,
+			"tier": 3,
+			"vehicle": "integra"
+		},
+		{
+			"peak_sample_jump": 0.0567416137403782,
+			"profile": "I4 compact",
+			"rms": 0.179880779525443,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "gti"
+		},
+		{
+			"peak_sample_jump": 0.105760060084069,
+			"profile": "I4 compact",
+			"rms": 0.227989700501312,
+			"stock_difference_rms": 0.0542229908460081,
+			"tier": 3,
+			"vehicle": "gti"
+		},
+		{
+			"peak_sample_jump": 0.0447065769933833,
+			"profile": "I4 compact",
+			"rms": 0.184121316459395,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "s2000"
+		},
+		{
+			"peak_sample_jump": 0.0766500091868254,
+			"profile": "I4 compact",
+			"rms": 0.232765834727708,
+			"stock_difference_rms": 0.0520181179835702,
+			"tier": 3,
+			"vehicle": "s2000"
+		},
+		{
+			"peak_sample_jump": 0.0475598711206787,
+			"profile": "Boxer four",
+			"rms": 0.195002182525147,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "gr86"
+		},
+		{
+			"peak_sample_jump": 0.083630396407316,
+			"profile": "Boxer four",
+			"rms": 0.245465993798041,
+			"stock_difference_rms": 0.0542251959732616,
+			"tier": 3,
+			"vehicle": "gr86"
+		},
+		{
+			"peak_sample_jump": 0.0764290386197307,
+			"profile": "V6 twin turbo",
+			"rms": 0.213499563703099,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "z350"
+		},
+		{
+			"peak_sample_jump": 0.13877650954683,
+			"profile": "V6 twin turbo",
+			"rms": 0.266046976521417,
+			"stock_difference_rms": 0.0571030883399457,
+			"tier": 3,
+			"vehicle": "z350"
+		},
+		{
+			"peak_sample_jump": 0.0649555091924295,
+			"profile": "I6 smooth",
+			"rms": 0.198209119308283,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "supra"
+		},
+		{
+			"peak_sample_jump": 0.115592162540157,
+			"profile": "I6 smooth",
+			"rms": 0.248992707609479,
+			"stock_difference_rms": 0.054725186107309,
+			"tier": 3,
+			"vehicle": "supra"
+		},
+		{
+			"peak_sample_jump": 0.0557452286540086,
+			"profile": "I6 smooth",
+			"rms": 0.204823696965234,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "m3"
+		},
+		{
+			"peak_sample_jump": 0.0930836871954859,
+			"profile": "I6 smooth",
+			"rms": 0.255211931977081,
+			"stock_difference_rms": 0.053078991862254,
+			"tier": 3,
+			"vehicle": "m3"
+		},
+		{
+			"peak_sample_jump": 0.0513433357778224,
+			"profile": "Boxer four",
+			"rms": 0.192702575721608,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "sti"
+		},
+		{
+			"peak_sample_jump": 0.092847622351473,
+			"profile": "Boxer four",
+			"rms": 0.243111008556754,
+			"stock_difference_rms": 0.0549304263957468,
+			"tier": 3,
+			"vehicle": "sti"
+		},
+		{
+			"peak_sample_jump": 0.0520556059998109,
+			"profile": "I4 street",
+			"rms": 0.189367538425688,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "evo"
+		},
+		{
+			"peak_sample_jump": 0.0949924595471396,
+			"profile": "I4 street",
+			"rms": 0.239349022986022,
+			"stock_difference_rms": 0.0547980189923118,
+			"tier": 3,
+			"vehicle": "evo"
+		},
+		{
+			"peak_sample_jump": 0.0520556059998109,
+			"profile": "I4 street",
+			"rms": 0.189367538425688,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "type_r"
+		},
+		{
+			"peak_sample_jump": 0.0949924595471396,
+			"profile": "I4 street",
+			"rms": 0.239349022986022,
+			"stock_difference_rms": 0.0547980189923118,
+			"tier": 3,
+			"vehicle": "type_r"
+		},
+		{
+			"peak_sample_jump": 0.0840477075191068,
+			"profile": "V8 performance",
+			"rms": 0.224727064246577,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "mustang"
+		},
+		{
+			"peak_sample_jump": 0.144823661399621,
+			"profile": "V8 performance",
+			"rms": 0.277492391680954,
+			"stock_difference_rms": 0.0562523968420901,
+			"tier": 3,
+			"vehicle": "mustang"
+		},
+		{
+			"peak_sample_jump": 0.0634222071657555,
+			"profile": "I6 smooth",
+			"rms": 0.199318132131398,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "supra_gr"
+		},
+		{
+			"peak_sample_jump": 0.111897531597562,
+			"profile": "I6 smooth",
+			"rms": 0.250087944331416,
+			"stock_difference_rms": 0.0544907899823355,
+			"tier": 3,
+			"vehicle": "supra_gr"
+		},
+		{
+			"peak_sample_jump": 0.0945113408114788,
+			"profile": "V8 performance",
+			"rms": 0.218389556355312,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "camaro"
+		},
+		{
+			"peak_sample_jump": 0.170399276158143,
+			"profile": "V8 performance",
+			"rms": 0.271289811224046,
+			"stock_difference_rms": 0.0573618670598613,
+			"tier": 3,
+			"vehicle": "camaro"
+		},
+		{
+			"peak_sample_jump": 0.0536032627141693,
+			"profile": "I4 street",
+			"rms": 0.188543437963608,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "golf_r"
+		},
+		{
+			"peak_sample_jump": 0.0987266775678092,
+			"profile": "I4 street",
+			"rms": 0.238387984939715,
+			"stock_difference_rms": 0.0550108271012058,
+			"tier": 3,
+			"vehicle": "golf_r"
+		},
+		{
+			"peak_sample_jump": 0.0746917384562797,
+			"profile": "V6 twin turbo",
+			"rms": 0.214648503329822,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "z400"
+		},
+		{
+			"peak_sample_jump": 0.134557157966678,
+			"profile": "V6 twin turbo",
+			"rms": 0.267255752873375,
+			"stock_difference_rms": 0.0569343693833342,
+			"tier": 3,
+			"vehicle": "z400"
+		},
+		{
+			"peak_sample_jump": 0.0736998068371643,
+			"profile": "V8 performance",
+			"rms": 0.230659462990954,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "z06"
+		},
+		{
+			"peak_sample_jump": 0.118074921299814,
+			"profile": "V8 performance",
+			"rms": 0.282672463575187,
+			"stock_difference_rms": 0.054622289067503,
+			"tier": 3,
+			"vehicle": "z06"
+		},
+		{
+			"peak_sample_jump": 0.0718559965700026,
+			"profile": "V6 twin turbo",
+			"rms": 0.216491104906184,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "gtr"
+		},
+		{
+			"peak_sample_jump": 0.127613087985806,
+			"profile": "V6 twin turbo",
+			"rms": 0.269133247183162,
+			"stock_difference_rms": 0.0566141762700435,
+			"tier": 3,
+			"vehicle": "gtr"
+		},
+		{
+			"peak_sample_jump": 0.0878481602764642,
+			"profile": "V10 performance",
+			"rms": 0.202121831063252,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "r8"
+		},
+		{
+			"peak_sample_jump": 0.14266116518793,
+			"profile": "V10 performance",
+			"rms": 0.252947530870222,
+			"stock_difference_rms": 0.0537545535511638,
+			"tier": 3,
+			"vehicle": "r8"
+		},
+		{
+			"peak_sample_jump": 0.0840477075191068,
+			"profile": "V8 performance",
+			"rms": 0.224727064246577,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "gt500"
+		},
+		{
+			"peak_sample_jump": 0.144823661399621,
+			"profile": "V8 performance",
+			"rms": 0.277492391680954,
+			"stock_difference_rms": 0.0562523968420901,
+			"tier": 3,
+			"vehicle": "gt500"
+		},
+		{
+			"peak_sample_jump": 0.0945113408114788,
+			"profile": "V8 performance",
+			"rms": 0.218389556355312,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "redeye"
+		},
+		{
+			"peak_sample_jump": 0.170399276158143,
+			"profile": "V8 performance",
+			"rms": 0.271289811224046,
+			"stock_difference_rms": 0.0573618670598613,
+			"tier": 3,
+			"vehicle": "redeye"
+		},
+		{
+			"peak_sample_jump": 0.0657235943930372,
+			"profile": "Boxer six",
+			"rms": 0.199743764857752,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "turbo_s"
+		},
+		{
+			"peak_sample_jump": 0.11641924509135,
+			"profile": "Boxer six",
+			"rms": 0.250727805986531,
+			"stock_difference_rms": 0.0548545771294599,
+			"tier": 3,
+			"vehicle": "turbo_s"
+		},
+		{
+			"peak_sample_jump": 0.0744614290646719,
+			"profile": "V8 performance",
+			"rms": 0.230212036188647,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "mclaren"
+		},
+		{
+			"peak_sample_jump": 0.120167786723473,
+			"profile": "V8 performance",
+			"rms": 0.28230332919282,
+			"stock_difference_rms": 0.0547653525490909,
+			"tier": 3,
+			"vehicle": "mclaren"
+		},
+		{
+			"peak_sample_jump": 0.0788467227876675,
+			"profile": "V8 performance",
+			"rms": 0.22769313255602,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "sf90"
+		},
+		{
+			"peak_sample_jump": 0.131763494804161,
+			"profile": "V8 performance",
+			"rms": 0.280159792510447,
+			"stock_difference_rms": 0.0555112967876501,
+			"tier": 3,
+			"vehicle": "sf90"
+		},
+		{
+			"peak_sample_jump": 0.0945113408114788,
+			"profile": "V8 performance",
+			"rms": 0.218389556355312,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "demon"
+		},
+		{
+			"peak_sample_jump": 0.170399276158143,
+			"profile": "V8 performance",
+			"rms": 0.271289811224046,
+			"stock_difference_rms": 0.0573618670598613,
+			"tier": 3,
+			"vehicle": "demon"
+		},
+		{
+			"peak_sample_jump": 0.13798522548612,
+			"profile": "W16 quad turbo",
+			"rms": 0.219604022411929,
+			"stock_difference_rms": 0.0,
+			"tier": 0,
+			"vehicle": "chiron"
+		},
+		{
+			"peak_sample_jump": 0.232930129785674,
+			"profile": "W16 quad turbo",
+			"rms": 0.272783762449916,
+			"stock_difference_rms": 0.0574299970309499,
+			"tier": 3,
+			"vehicle": "chiron"
+		}
+	],
+	"queued_buffer_ms": 55.0,
+	"sample_rate": 22050,
+	"samples_generated": 264600,
+	"targets_equal_telemetry": true
+}
