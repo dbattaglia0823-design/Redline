@@ -35,7 +35,7 @@ try {
         $results += @{test=$entry;passed=$true}
     }
     if (-not $HeadlessOnly) {
-        foreach ($entry in @('test_audio_steady_loops','test_vehicle_presentation','test_championships_ui','test_tuning_lab_ui','test_race_hud','test_dealer_classes_ui','test_dynamic_audio','test_audio_lab_ui','test_race_distance_camera','test_rim_rendering','test_ai_start_ui','test_roster_ui','test_quality_pass','test_qol_ui','test_upgrade_studio_ui','test_glass_ui','test_controls','test_visual_rendering','test_strip_rendering','test_customization_ui','test_quality_ui','test_dealership','test_garage_hub','test_upgrades_ui','test_menus','test_flow','test_runtime','test_shutdown')) {
+        foreach ($entry in @('test_native_workshop','test_audio_steady_loops','test_vehicle_presentation','test_championships_ui','test_tuning_lab_ui','test_race_hud','test_dealer_classes_ui','test_dynamic_audio','test_audio_lab_ui','test_race_distance_camera','test_rim_rendering','test_ai_start_ui','test_roster_ui','test_quality_pass','test_qol_ui','test_upgrade_studio_ui','test_glass_ui','test_controls','test_visual_rendering','test_strip_rendering','test_customization_ui','test_quality_ui','test_dealership','test_garage_hub','test_upgrades_ui','test_menus','test_flow','test_runtime','test_shutdown')) {
             Invoke-GodotCheck $entry @('--script',"tests/$entry.gd")
             $results += @{test=$entry;passed=$true}
         }

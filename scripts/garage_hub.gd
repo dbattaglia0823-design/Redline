@@ -137,7 +137,6 @@ func preview() -> Drivetrain:
 	return g.car
 func open_upgrade(index: int) -> void:
 	if not categories: studio.remember(selected)
-	g.glass.capture_backdrop(g)
 	selected = clampi(index,0,CATEGORIES.size()-1)
 	categories = false
 	g.workshop.details = false
@@ -149,6 +148,10 @@ func open_upgrade(index: int) -> void:
 	g.workshop.selected_trans = str(g.profile.hardware.transmission)
 	g.workshop.selected_hardware = str(g.profile.hardware.parts.get(g.workshop.current_slot(),"")) if not g.workshop.category_slots.is_empty() else ""
 	studio.restore(selected)
+	if g.native_workshop!=null and g.native_workshop.supports():
+		# The native sheet uses a tint, not a screen-copy blur. Avoid GPU readback.
+		g.glass.backdrop=null; g.glass.sheet_age=1.0
+	else: g.glass.capture_backdrop(g)
 func draw_upgrade_window() -> void:
 	studio.detail()
 

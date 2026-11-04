@@ -1,198 +1,231 @@
 {
   "godot": "C:\\Godot\\godot.exe",
+  "passed": true,
   "headless_only": false,
   "tests": [
     {
-      "test": "test_audio_profiles",
-      "passed": true
+      "passed": true,
+      "test": "test_audio_realism"
     },
     {
-      "test": "test_ai_progression",
-      "passed": true
+      "passed": true,
+      "test": "test_career_save_migration"
     },
     {
-      "test": "benchmark_roster",
-      "passed": true
+      "passed": true,
+      "test": "test_career_economy_sim"
     },
     {
-      "test": "test_roster",
-      "passed": true
+      "passed": true,
+      "test": "test_championships"
     },
     {
-      "test": "test_physics",
-      "passed": true
+      "passed": true,
+      "test": "test_advanced_tuning"
     },
     {
-      "test": "test_transmissions",
-      "passed": true
+      "passed": true,
+      "test": "test_audio_profiles"
     },
     {
-      "test": "benchmark_transmissions",
-      "passed": true
+      "passed": true,
+      "test": "test_ai_progression"
     },
     {
-      "test": "benchmark_drag_tuning",
-      "passed": true
+      "passed": true,
+      "test": "benchmark_roster"
     },
     {
-      "test": "test_parameters",
-      "passed": true
+      "passed": true,
+      "test": "test_roster"
     },
     {
-      "test": "test_upgrade_model",
-      "passed": true
+      "passed": true,
+      "test": "test_physics"
     },
     {
-      "test": "test_visual_effects",
-      "passed": true
+      "passed": true,
+      "test": "test_transmissions"
     },
     {
-      "test": "test_customization",
-      "passed": true
+      "passed": true,
+      "test": "benchmark_transmissions"
     },
     {
-      "test": "test_quality_model",
-      "passed": true
+      "passed": true,
+      "test": "benchmark_drag_tuning"
     },
     {
-      "test": "test_staging",
-      "passed": true
+      "passed": true,
+      "test": "test_parameters"
     },
     {
-      "test": "test_polish",
-      "passed": true
+      "passed": true,
+      "test": "test_upgrade_model"
     },
     {
-      "test": "test_audio",
-      "passed": true
+      "passed": true,
+      "test": "test_visual_effects"
     },
     {
-      "test": "export_audio_demo",
-      "passed": true
+      "passed": true,
+      "test": "test_customization"
     },
     {
-      "test": "test_rival",
-      "passed": true
+      "passed": true,
+      "test": "test_quality_model"
     },
     {
-      "test": "test_career",
-      "passed": true
+      "passed": true,
+      "test": "test_staging"
     },
     {
-      "test": "test_economy",
-      "passed": true
+      "passed": true,
+      "test": "test_polish"
     },
     {
-      "test": "run_calibration",
-      "passed": true
+      "passed": true,
+      "test": "test_audio"
     },
     {
-      "test": "export_telemetry",
-      "passed": true
+      "passed": true,
+      "test": "export_audio_demo"
     },
     {
-      "test": "test_race_hud",
-      "passed": true
+      "passed": true,
+      "test": "test_rival"
     },
     {
-      "test": "test_dealer_classes_ui",
-      "passed": true
+      "passed": true,
+      "test": "test_career"
     },
     {
-      "test": "test_dynamic_audio",
-      "passed": true
+      "passed": true,
+      "test": "test_economy"
     },
     {
-      "test": "test_audio_lab_ui",
-      "passed": true
+      "passed": true,
+      "test": "run_calibration"
     },
     {
-      "test": "test_race_distance_camera",
-      "passed": true
+      "passed": true,
+      "test": "export_telemetry"
     },
     {
-      "test": "test_rim_rendering",
-      "passed": true
+      "passed": true,
+      "test": "test_native_workshop"
     },
     {
-      "test": "test_ai_start_ui",
-      "passed": true
+      "passed": true,
+      "test": "test_audio_steady_loops"
     },
     {
-      "test": "test_roster_ui",
-      "passed": true
+      "passed": true,
+      "test": "test_vehicle_presentation"
     },
     {
-      "test": "test_quality_pass",
-      "passed": true
+      "passed": true,
+      "test": "test_championships_ui"
     },
     {
-      "test": "test_qol_ui",
-      "passed": true
+      "passed": true,
+      "test": "test_tuning_lab_ui"
     },
     {
-      "test": "test_upgrade_studio_ui",
-      "passed": true
+      "passed": true,
+      "test": "test_race_hud"
     },
     {
-      "test": "test_glass_ui",
-      "passed": true
+      "passed": true,
+      "test": "test_dealer_classes_ui"
     },
     {
-      "test": "test_controls",
-      "passed": true
+      "passed": true,
+      "test": "test_dynamic_audio"
     },
     {
-      "test": "test_visual_rendering",
-      "passed": true
+      "passed": true,
+      "test": "test_audio_lab_ui"
     },
     {
-      "test": "test_strip_rendering",
-      "passed": true
+      "passed": true,
+      "test": "test_race_distance_camera"
     },
     {
-      "test": "test_customization_ui",
-      "passed": true
+      "passed": true,
+      "test": "test_rim_rendering"
     },
     {
-      "test": "test_quality_ui",
-      "passed": true
+      "passed": true,
+      "test": "test_ai_start_ui"
     },
     {
-      "test": "test_dealership",
-      "passed": true
+      "passed": true,
+      "test": "test_roster_ui"
     },
     {
-      "test": "test_garage_hub",
-      "passed": true
+      "passed": true,
+      "test": "test_quality_pass"
     },
     {
-      "test": "test_upgrades_ui",
-      "passed": true
+      "passed": true,
+      "test": "test_qol_ui"
     },
     {
-      "test": "test_menus",
-      "passed": true
+      "passed": true,
+      "test": "test_upgrade_studio_ui"
     },
     {
-      "test": "test_flow",
-      "passed": true
+      "passed": true,
+      "test": "test_glass_ui"
     },
     {
-      "test": "test_runtime",
-      "passed": true
+      "passed": true,
+      "test": "test_controls"
     },
     {
-      "test": "test_shutdown",
-      "passed": true
+      "passed": true,
+      "test": "test_visual_rendering"
+    },
+    {
+      "passed": true,
+      "test": "test_strip_rendering"
+    },
+    {
+      "passed": true,
+      "test": "test_customization_ui"
+    },
+    {
+      "passed": true,
+      "test": "test_quality_ui"
+    },
+    {
+      "passed": true,
+      "test": "test_dealership"
+    },
+    {
+      "passed": true,
+      "test": "test_garage_hub"
+    },
+    {
+      "passed": true,
+      "test": "test_upgrades_ui"
+    },
+    {
+      "passed": true,
+      "test": "test_menus"
+    },
+    {
+      "passed": true,
+      "test": "test_flow"
+    },
+    {
+      "passed": true,
+      "test": "test_runtime"
+    },
+    {
+      "passed": true,
+      "test": "test_shutdown"
     }
-  ],
-  "passed": true,
-  "continuation": "After the portrait telemetry access correction, reran test_race_hud and test_quality_ui, then completed the remaining registered tests. Earlier passing checks retained.",
-  "analyses": [
-    "analyze_validation",
-    "analyze_transmissions",
-    "analyze_career",
-    "analyze_dealership"
   ]
 }

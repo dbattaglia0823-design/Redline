@@ -37,7 +37,7 @@ func setup(owner_game: Node2D) -> void:
 	var dim:=ColorRect.new(); dim.color=Color(0,0,0,.84); dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT); root_control.add_child(dim)
 	panel=PanelContainer.new(); panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT); panel.offset_left=24; panel.offset_top=24; panel.offset_right=-24; panel.offset_bottom=-24; root_control.add_child(panel)
 	var style:=StyleBoxFlat.new(); style.bg_color=Color("0c1925"); style.border_color=Color("2c607b"); style.set_border_width_all(1); style.set_corner_radius_all(18); style.content_margin_left=22; style.content_margin_right=22; style.content_margin_top=18; style.content_margin_bottom=18; panel.add_theme_stylebox_override("panel",style)
-	var theme:=Theme.new(); theme.default_font_size=19
+	var theme:=Theme.new(); theme.default_font=AutomotiveUI.BODY; theme.default_font_size=19
 	for kind in ["Button","OptionButton","CheckButton"]:
 		var normal:=style.duplicate(); normal.bg_color=Color("132b3a"); normal.content_margin_top=8; normal.content_margin_bottom=8
 		theme.set_stylebox("normal",kind,normal); var hover:=normal.duplicate(); hover.border_color=Color("e47e42"); theme.set_stylebox("hover",kind,hover); theme.set_stylebox("pressed",kind,hover)

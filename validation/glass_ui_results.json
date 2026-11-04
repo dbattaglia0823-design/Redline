@@ -1,6 +1,6 @@
 {
   "categories": 15,
-  "checks": 24851,
+  "checks": 25296,
   "coverage": "unique nonoverlapping actions, native dock mapping, modal isolation, all parts/tuning families, mouse/touch purchase, preview isolation, actual dyno samples, mobile slider, keyboard focus, save migration, reduced motion, comparison toggle, safe area, low-cost fallback, bounded styles",
   "passed": true,
   "window_sizes": 5

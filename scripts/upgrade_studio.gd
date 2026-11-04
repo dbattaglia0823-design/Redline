@@ -265,7 +265,12 @@ func purchase(r: Rect2) -> void:
 	button(id,label,r,primary)
 
 static func engine_changed(a: Drivetrain,b: Drivetrain) -> bool:
-	return a.redline_rpm!=b.redline_rpm or absf(a.full_engine_torque(a.redline_rpm*.75)-b.full_engine_torque(a.redline_rpm*.75))>.01
+	if a.redline_rpm!=b.redline_rpm: return true
+	# A single high-RPM comparison misses low/mid-range changes from induction
+	# hardware. Use the same 50 RPM resolution as the expanded live dyno.
+	for rpm in range(int(minf(a.idle_rpm,b.idle_rpm)),int(a.redline_rpm)+1,50):
+		if absf(a.full_engine_torque(rpm)-b.full_engine_torque(rpm))>.01: return true
+	return false
 static func brake_limit(c: Drivetrain) -> float: return minf(8*(1+c.brake_stage*.18),9.81*(1.05+c.tire_stage*.06))
 static func boost_onset(c: Drivetrain) -> float: return c.idle_rpm if c._supercharger!="" else c.turbo_onset()
 static func spool(c: Drivetrain) -> float: return .045 if c._supercharger!="" else (c._spool_override if c._spool_override>0 else [.32,.24,.38,.55][c.turbo_stage])

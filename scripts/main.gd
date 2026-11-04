@@ -14,8 +14,8 @@ const EVENT_NAMES: Array[String] = ["DOCKSIDE RUN", "MIDNIGHT CLUB", "CITY FINAL
 const EVENT_LEVELS: Array[int] = [1, 3, 5]
 const FINISH := 402.336
 
-var font: SystemFont
-var mono: SystemFont
+var font: Font
+var mono: Font
 var profile := DriverProfile.new()
 var car := Drivetrain.new()
 var rival := Drivetrain.new()
@@ -89,12 +89,11 @@ var glass := LiquidGlass.new()
 var dock: GlassDock
 var showroom_texture: Texture2D
 var ui_offset := Vector2.ZERO
+var native_workshop: WorkshopScreen
 
 func _ready() -> void:
-	font = SystemFont.new()
-	font.font_names = PackedStringArray(["Segoe UI", "Arial"])
-	mono = SystemFont.new()
-	mono.font_names = PackedStringArray(["Consolas"])
+	font = AutomotiveUI.BODY
+	mono = AutomotiveUI.NUMBERS
 	profile.load_profile()
 	glass.reduced_motion = profile.reduced_motion
 	refresh_car()
@@ -113,6 +112,7 @@ func _ready() -> void:
 	sound.enabled = not profile.muted
 	audio_lab=AudioLab.new(); add_child(audio_lab); audio_lab.setup(self)
 	dock = GlassDock.new(); add_child(dock); dock.setup(self)
+	native_workshop=WorkshopScreen.new(); add_child(native_workshop); native_workshop.setup(self)
 	RenderingServer.set_default_clear_color(glass.PALETTE.background)
 	get_window().size_changed.connect(sync_menu_size)
 	get_tree().auto_accept_quit = false
@@ -557,6 +557,9 @@ func _input(event: InputEvent) -> void:
 	if input_override.x >= 0.0: return
 	if event is InputEventKey:
 		handle_key_input(event)
+		if native_workshop!=null and native_workshop.visible and event.pressed and (event.keycode in [KEY_TAB,KEY_ENTER,KEY_SPACE] or event.physical_keycode in [KEY_TAB,KEY_ENTER,KEY_SPACE]):
+			get_viewport().set_input_as_handled()
+			return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_XBUTTON1 and event.pressed:
 		var back := InputEventKey.new(); back.keycode = KEY_ESCAPE; back.pressed = true
 		handle_key_input(back); return
@@ -592,7 +595,10 @@ func activate_at(pos: Vector2, pointer: String, allow_menu: bool = true) -> void
 			if RaceControls.HOLD_ACTIONS.has(b.id) and screen == "race" and not paused_race:
 				controls.hold(pointer, b.id)
 			elif allow_menu or (screen == "race" and b.id in ["up", "down"]):
-				action(b.id)
+				if b.has("native_control"):
+					b.native_control.pressed.emit()
+					get_viewport().set_input_as_handled()
+				else: action(b.id)
 			return
 
 func action(id: String) -> void:
@@ -830,8 +836,11 @@ func _draw() -> void:
 	buttons.clear()
 	var compact := is_portrait()
 	dock.visible = false
+	if native_workshop!=null: native_workshop.visible=native_workshop.supports()
 	glass.background(self,Vector2(race_view_size()) if screen == "race" else (Vector2(600,1300) if compact else Vector2(1200,760)))
-	if screen=="garage" and tab=="races" and career_board.active:
+	if native_workshop!=null and native_workshop.supports():
+		native_workshop.sync()
+	elif screen=="garage" and tab=="races" and career_board.active:
 		career_board.draw()
 	elif screen=="practice_results" or (screen=="garage" and tab=="tuning"):
 		tuning.draw()
@@ -843,7 +852,7 @@ func _draw() -> void:
 		draw_results()
 	else:
 		draw_garage()
-	if toast_left > 0.0:
+	if toast_left > 0.0 and (native_workshop==null or not native_workshop.visible):
 		box(Rect2(16,8,358,54) if compact else Rect2(36,736,1130,24),Color("293b46"),GREEN)
 		var message := toast
 		var font_size := 18 if compact else 14
