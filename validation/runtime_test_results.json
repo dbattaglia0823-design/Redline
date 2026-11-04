@@ -19,7 +19,7 @@
 			"targets_equal_telemetry": true
 		},
 		{
-			"physics_substeps": 962,
+			"physics_substeps": 964,
 			"render_cap": 120,
 			"safety_clamps": 0,
 			"startup_or_prior_underruns": 0,
@@ -27,7 +27,7 @@
 			"targets_equal_telemetry": true
 		},
 		{
-			"physics_substeps": 962,
+			"physics_substeps": 960,
 			"render_cap": 144,
 			"safety_clamps": 0,
 			"startup_or_prior_underruns": 0,

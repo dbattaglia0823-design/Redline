@@ -1,8 +1,9 @@
 class_name EngineLoopPlayer
 extends Node
 
-const MAX_PLAYERS:=12
+const MAX_PLAYERS:=16
 static var bank: Dictionary={}
+static var vehicle_banks: Dictionary={}
 var slots: Array=[]
 var streams: Dictionary={}
 var target: Dictionary={}
@@ -22,6 +23,10 @@ var ready_bank:=false
 var debug_active:=0
 var simulated_rpm:=850.0
 var cycle_phase:=0.0
+var voice_id:=""
+var rows: Array=[]
+var equalizer: AudioEffectEQ6
+var debug_skipped:=0
 
 static func ensure_buses() -> void:
 	var master_protected:=false
@@ -36,33 +41,39 @@ static func ensure_buses() -> void:
 
 func _ready() -> void:
 	ensure_buses()
-	for i in MAX_PLAYERS:
+	for i in (8 if role=="Rival" else MAX_PLAYERS):
 		var p:=AudioStreamPlayer.new(); p.bus="REDLINE "+role; p.volume_db=-80; add_child(p)
 		slots.append({"player":p,"key":"","gain":0.0,"desired":0.0,"pitch":1.0})
 	filter=AudioEffectLowPassFilter.new(); filter.cutoff_hz=4500; filter.resonance=.45
 	# One dedicated bus per source, rather than one filter/material per loop.
 	AudioServer.add_bus_effect(AudioServer.get_bus_index("REDLINE "+role),filter,0)
+	equalizer=AudioEffectEQ6.new()
+	AudioServer.add_bus_effect(AudioServer.get_bus_index("REDLINE "+role),equalizer,1)
 
 func _exit_tree() -> void:
 	var i:=AudioServer.get_bus_index("REDLINE "+role)
 	if i>=0 and filter!=null:
 		for effect in range(AudioServer.get_bus_effect_count(i)-1,-1,-1):
-			if AudioServer.get_bus_effect(i,effect)==filter: AudioServer.remove_bus_effect(i,effect)
+			if AudioServer.get_bus_effect(i,effect)==filter or AudioServer.get_bus_effect(i,effect)==equalizer: AudioServer.remove_bus_effect(i,effect)
 
 func set_vehicle(car: Drivetrain, audible: bool=true, gain_value: float=1) -> void:
 	var p:=EngineAudioProfile.resolve(car)
 	if bank.is_empty() and FileAccess.file_exists("res://assets/audio/engines/bank.json"):
 		var raw=JSON.parse_string(FileAccess.get_file_as_string("res://assets/audio/engines/bank.json"))
-		if raw is Dictionary: bank=raw.get("families",{})
-	if family!=p.family:
-		family=p.family; streams.clear()
+		if raw is Dictionary: bank=raw.get("families",{}); vehicle_banks=raw.get("vehicles",{})
+	var selected_id: String=str(p.id) if not car._base_spec.has("audio_family_override") else ""
+	if family!=p.family or voice_id!=selected_id:
+		family=p.family; voice_id=selected_id; streams.clear()
 		ready_bank=bank.has(family)
+		rows=vehicle_banks[selected_id].rows if vehicle_banks.has(selected_id) else bank.get(family,[])
 		if ready_bank:
-			for row in bank[family]:
-				if not ResourceLoader.exists(str(row.files.exhaust_on)): ready_bank=false; break
+			for row in rows:
+				for path in row.files.values():
+					if not ResourceLoader.exists(str(path)): ready_bank=false; break
 	profile=p
 	target={"rpm":car.rpm,"throttle":car.throttle,"load":car.engine_load,"combustion":car.combustion_fraction,
-		"shift":car.shift_left,"clutch":car.clutch_engagement,"audible":audible,"gain":gain_value,"idle":car.idle_rpm,"redline":car.redline_rpm}
+		"shift":car.shift_left,"clutch":car.clutch_engagement,"audible":audible,"gain":gain_value,"idle":car.idle_rpm,"redline":car.redline_rpm,
+		"decel":clampf(-car.engine_torque/maxf(1,car.base_torque),0,1) if car.throttle<.2 and car.clutch_engagement>.4 else 0.0}
 	simulated_rpm=car.rpm
 
 func stream_for(path: String) -> AudioStreamWAV:
@@ -84,32 +95,42 @@ func advance(dt: float) -> void:
 	mix_gain=lerpf(mix_gain,(1.0 if target.audible and target.rpm>100 else 0.0)*float(target.gain)*output_gain,1-exp(-dt/.025))
 	for slot in slots: slot.desired=0.0
 	if ready_bank and mix_gain>.0001:
-		var rows: Array=bank[family]; var weights:=EngineAudioProfile.weights(rpm,rows)
-		var loaded:=clampf(opening*.60+load_value*.40,0,1)
+		var weights:=EngineAudioProfile.weights(rpm,rows)
+		var loaded:=clampf(opening*.20+load_value*.80,0,1)
 		var rpm_band:=clampf((rpm-float(target.idle))/maxf(1,float(target.redline)-float(target.idle)),0,1)
-		var cut:=.12+.88*float(target.combustion)
+		var cut:=.04+.96*float(target.combustion)
 		var exhaust: float=profile.exhaust
 		filter.cutoff_hz=clampf((1550+loaded*3000+exhaust*1250+float(profile.flow)*450)*float(profile.brightness),900,8500)
-		for i in rows.size():
-			if weights[i]<.0001: continue
-			for layer in EngineAudioProfile.LAYERS:
+		if profile.turbo: filter.cutoff_hz*=.87
+		equalizer.set_band_gain_db(1,-1.5+exhaust*.6)
+		equalizer.set_band_gain_db(2,-.5+exhaust*1.1)
+		equalizer.set_band_gain_db(3,exhaust*1.5)
+		equalizer.set_band_gain_db(4,-2.0+exhaust*2.0)
+		# Allocate the important exhaust regions first; auxiliary retiring layers
+		# must not consume slots needed by a quick shift's new RPM region.
+		debug_skipped=0
+		for layer in EngineAudioProfile.LAYERS:
+			for i in rows.size():
+				if weights[i]<.0001: continue
 				var group: String="exhaust" if layer.begins_with("exhaust") else ("intake" if layer.begins_with("intake") else "mechanical")
 				if not layers.get(group,true): continue
 				if role=="Rival" and group!="exhaust": continue
 				if quality==0 and (group=="mechanical" or layer=="intake_off"): continue
-				var gain_value: float=weights[i]*mix_gain
+				var gain_value: float=sqrt(weights[i])*mix_gain
 				match layer:
 					"exhaust_on": gain_value*=sqrt(loaded)*(.38+exhaust*.045)*cut
-					"exhaust_off": gain_value*=sqrt(1-loaded)*lerpf(.16,.32,rpm_band)*cut
-					"intake_on": gain_value*=loaded*.28*float(profile.intake)*cut
+					"exhaust_off": gain_value*=sqrt(1-loaded)*lerpf(.16,.32,rpm_band)*cut*(1+float(target.decel)*.25)
+					"intake_on": gain_value*=opening*(.35+.65*load_value)*.28*float(profile.intake)*cut
 					"intake_off": gain_value*=(1-loaded)*opening*.12*float(profile.intake)
 					"mechanical": gain_value*=.22*float(profile.mechanical)*clampf(rpm/3000,.25,1)
+				if layer=="intake_on" and float(profile.lift_rpm)>0:
+					gain_value*=1+.24*smoothstep(float(profile.lift_rpm)-300,float(profile.lift_rpm)+300,rpm)
 				if gain_value<.00005: continue
 				var path: String=rows[i].files[layer]
-				assign(path,gain_value,clampf(rpm/float(rows[i].rpm),.70,1.42),float(rows[i].rpm))
+				assign(path,gain_value,clampf(rpm/float(rows[i].rpm),.70,1.26),float(rows[i].rpm))
 	debug_active=0
 	for slot in slots:
-		slot.gain=lerpf(float(slot.gain),float(slot.desired),1-exp(-dt/.018))
+		slot.gain=lerpf(float(slot.gain),float(slot.desired),1-exp(-dt/.009))
 		var p: AudioStreamPlayer=slot.player
 		p.volume_db=linear_to_db(maxf(.00001,float(slot.gain)))
 		if slot.gain<.00006 and slot.desired==0:
@@ -124,7 +145,7 @@ func assign(path: String,gain_value: float,pitch_value: float,source_rpm: float)
 	if chosen.is_empty():
 		for slot in slots:
 			if slot.key=="": chosen=slot; break
-	if chosen.is_empty(): return # Bounded voices; old regions fade before new layers enter.
+	if chosen.is_empty(): debug_skipped+=1; return # Only low-priority tails can exhaust the bounded pool.
 	if chosen.key!=path:
 		var wav:=stream_for(path)
 		if wav==null: return

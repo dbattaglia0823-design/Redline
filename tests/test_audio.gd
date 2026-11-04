@@ -47,6 +47,7 @@ func _initialize() -> void:
 		check(absf(voice.rpm-3000) < 0.01,"Audible engine RPM does not settle to physics RPM")
 	var car := Drivetrain.new()
 	car.configure_vehicle(GameCatalog.spec("kaze"))
+	car.configure([0,0,0,0,0,3,0,0]) # Performance exhaust permits the tested shift transient.
 	car.reset()
 	car.running = true
 	car.gear = 0

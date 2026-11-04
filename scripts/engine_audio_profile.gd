@@ -2,7 +2,8 @@ class_name EngineAudioProfile
 extends RefCounted
 
 const LAYERS := ["exhaust_on","exhaust_off","intake_on","intake_off","mechanical"]
-const ANCHORS := [700.0,1000.0,1400.0,2000.0,2800.0,4000.0,5600.0,7800.0,10800.0]
+const ANCHORS := [650.0,800.0,1000.0,1250.0,1560.0,1950.0,2440.0,3050.0,3810.0,4760.0,5950.0,7440.0,9300.0,11625.0]
+static var acoustic_designs: Dictionary={}
 # Explicit acoustic tuning, never a horsepower or pitch multiplier.
 const CHARACTER := {
  "miata":[.95,.85,.80],"civic_si":[1.16,1.14,.88],"gti_vr6":[.82,.98,1.02],"rsx":[1.12,1.12,.90],"brz":[1.01,1.03,.92],
@@ -35,17 +36,19 @@ static func resolve(car: Drivetrain) -> Dictionary:
 	var intake:=.45 if parts.values().has("plenum") else 0.0
 	var resonance_scale:=.96 if parts.values().has("stroker") else 1.0
 	if parts.values().has("compression"): resonance_scale*=1.03
+	if acoustic_designs.is_empty(): acoustic_designs=JSON.parse_string(FileAccess.get_file_as_string("res://assets/audio/engine_designs.json")).vehicles
 	return {"id":id,"family":family,"brightness":float(c[0])*resonance_scale,"intake":float(c[1])*(1+intake),"mechanical":float(c[2]),
 		"exhaust":exhaust,"flow":car.engine_stage/3.0,"turbo":turbo,"supercharger":car._supercharger,
-		"hybrid":float(car._base_spec.get("hybrid_kw",0))>0,"origin":"original offline synthesis"}
+		"hybrid":float(car._base_spec.get("hybrid_kw",0))>0,"lift_rpm":float(acoustic_designs.get(id,{}).get("lift_rpm",0)),"origin":"original offline synthesis"}
 
 static func weights(at_rpm: float, rows: Array) -> Array:
-	var out: Array=[]; var sum:=0.0
-	for row in rows:
-		var ratio:=at_rpm/maxf(1,float(row.rpm))
-		var w:=maxf(0,1-absf(log(maxf(.001,ratio)))/log(1.42))
-		w=w*w; out.append(w); sum+=w
-	if sum>0:
-		for i in out.size(): out[i]/=sum
+	var out: Array=[]; out.resize(rows.size()); out.fill(0.0)
+	if rows.is_empty(): return out
+	if at_rpm<=float(rows[0].rpm): out[0]=1.0; return out
+	if at_rpm>=float(rows[-1].rpm): out[-1]=1.0; return out
+	for i in rows.size()-1:
+		if at_rpm>float(rows[i+1].rpm): continue
+		var blend:=clampf(log(at_rpm/float(rows[i].rpm))/log(float(rows[i+1].rpm)/float(rows[i].rpm)),0,1)
+		out[i]=1.0-blend; out[i+1]=blend; break
 	return out
 

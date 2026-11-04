@@ -1,0 +1,85 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "test": "test_audio_realism",
+      "passed": true
+    },
+    {
+      "test": "test_audio_profiles",
+      "passed": true
+    },
+    {
+      "test": "test_dynamic_audio",
+      "passed": true
+    },
+    {
+      "test": "test_audio_steady_loops",
+      "passed": true
+    },
+    {
+      "test": "test_audio_lab_ui",
+      "passed": true
+    },
+    {
+      "test": "test_audio",
+      "passed": true
+    },
+    {
+      "test": "test_polish",
+      "passed": true
+    },
+    {
+      "test": "test_runtime",
+      "passed": true
+    },
+    {
+      "test": "test_shutdown",
+      "passed": true
+    }
+  ],
+  "model_assertions": 15128,
+  "engine_families": 18,
+  "vehicle_banks": 30,
+  "active_wav_files": 3360,
+  "native_vehicle_captures": 30,
+  "steady_engine_captures": 10,
+  "physics_pull_captures": 8,
+  "runtime": [
+    {
+      "physics_substeps": 966,
+      "render_cap": 30,
+      "safety_clamps": 0,
+      "startup_or_prior_underruns": 0,
+      "steady_audio_underruns": 0,
+      "targets_equal_telemetry": true
+    },
+    {
+      "physics_substeps": 966,
+      "render_cap": 60,
+      "safety_clamps": 0,
+      "startup_or_prior_underruns": 0,
+      "steady_audio_underruns": 0,
+      "targets_equal_telemetry": true
+    },
+    {
+      "physics_substeps": 964,
+      "render_cap": 120,
+      "safety_clamps": 0,
+      "startup_or_prior_underruns": 0,
+      "steady_audio_underruns": 0,
+      "targets_equal_telemetry": true
+    },
+    {
+      "physics_substeps": 960,
+      "render_cap": 144,
+      "safety_clamps": 0,
+      "startup_or_prior_underruns": 0,
+      "steady_audio_underruns": 0,
+      "targets_equal_telemetry": true
+    }
+  ],
+  "external_recordings_imported": 0,
+  "subjective_realism_verified": false,
+  "physical_mobile_interruptions_tested": false
+}

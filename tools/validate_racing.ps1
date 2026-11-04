@@ -30,12 +30,12 @@ function Invoke-GodotCheck([string]$Name, [string[]]$Arguments) {
 }
 try {
     Invoke-GodotCheck 'import' @('--headless','--editor','--quit')
-    foreach ($entry in @('test_career_save_migration','test_career_economy_sim','test_championships','test_advanced_tuning','test_audio_profiles','test_ai_progression','benchmark_roster','test_roster','test_physics','test_transmissions','benchmark_transmissions','benchmark_drag_tuning','test_parameters','test_upgrade_model','test_visual_effects','test_customization','test_quality_model','test_staging','test_polish','test_audio','export_audio_demo','test_rival','test_career','test_economy','run_calibration','export_telemetry')) {
+    foreach ($entry in @('test_audio_realism','test_career_save_migration','test_career_economy_sim','test_championships','test_advanced_tuning','test_audio_profiles','test_ai_progression','benchmark_roster','test_roster','test_physics','test_transmissions','benchmark_transmissions','benchmark_drag_tuning','test_parameters','test_upgrade_model','test_visual_effects','test_customization','test_quality_model','test_staging','test_polish','test_audio','export_audio_demo','test_rival','test_career','test_economy','run_calibration','export_telemetry')) {
         Invoke-GodotCheck $entry @('--headless','--script',"tests/$entry.gd")
         $results += @{test=$entry;passed=$true}
     }
     if (-not $HeadlessOnly) {
-        foreach ($entry in @('test_vehicle_presentation','test_championships_ui','test_tuning_lab_ui','test_race_hud','test_dealer_classes_ui','test_dynamic_audio','test_audio_lab_ui','test_race_distance_camera','test_rim_rendering','test_ai_start_ui','test_roster_ui','test_quality_pass','test_qol_ui','test_upgrade_studio_ui','test_glass_ui','test_controls','test_visual_rendering','test_strip_rendering','test_customization_ui','test_quality_ui','test_dealership','test_garage_hub','test_upgrades_ui','test_menus','test_flow','test_runtime','test_shutdown')) {
+        foreach ($entry in @('test_audio_steady_loops','test_vehicle_presentation','test_championships_ui','test_tuning_lab_ui','test_race_hud','test_dealer_classes_ui','test_dynamic_audio','test_audio_lab_ui','test_race_distance_camera','test_rim_rendering','test_ai_start_ui','test_roster_ui','test_quality_pass','test_qol_ui','test_upgrade_studio_ui','test_glass_ui','test_controls','test_visual_rendering','test_strip_rendering','test_customization_ui','test_quality_ui','test_dealership','test_garage_hub','test_upgrades_ui','test_menus','test_flow','test_runtime','test_shutdown')) {
             Invoke-GodotCheck $entry @('--script',"tests/$entry.gd")
             $results += @{test=$entry;passed=$true}
         }

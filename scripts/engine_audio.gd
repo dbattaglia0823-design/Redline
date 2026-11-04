@@ -14,6 +14,8 @@ var environment_playback: AudioStreamGeneratorPlayback
 var preview_car: Drivetrain
 var preview_active:=false
 var _last_vehicle:=""
+var _last_source_id:=0
+var _closed:=false
 var layers: Dictionary={"exhaust":true,"intake":true,"mechanical":true,"induction":true,"tires":true,"nitrous":true,"environment":true}
 const RATE:=22050.0
 const BUFFER_SECONDS:=0.055
@@ -24,17 +26,27 @@ func _ready() -> void:
 	EngineLoopPlayer.ensure_buses()
 	loops=EngineLoopPlayer.new(); loops.role="Player"; add_child(loops)
 	opponent=EngineLoopPlayer.new(); opponent.role="Rival"; add_child(opponent)
-	bus="REDLINE Mechanical"; stream=generator(); volume_db=-7; play(); playback=get_stream_playback()
-	environment=AudioStreamPlayer.new(); environment.bus="REDLINE Environment"; environment.stream=generator(); environment.volume_db=-10; add_child(environment); environment.play(); environment_playback=environment.get_stream_playback()
+	bus="REDLINE Mechanical"; stream=generator(); volume_db=-7
+	environment=AudioStreamPlayer.new(); environment.bus="REDLINE Environment"; environment.stream=generator(); environment.volume_db=-10; add_child(environment)
+
+func start_output() -> void:
+	if _closed or playback!=null or not is_inside_tree(): return
+	# Prime from a configured vehicle, after synchronous scene/bank setup. Do not
+	# run an empty generator or queue the default I4 during initial asset loading.
+	play(); playback=get_stream_playback()
+	environment.play(); environment_playback=environment.get_stream_playback()
 	pump()
 
 func update_vehicle(car: Drivetrain,paused: bool=false) -> void:
+	if _closed: return
 	var source:=preview_car if preview_active and preview_car!=null else car
 	var id:=str(source._base_spec.get("id",source.engine_layout))
-	if id!=_last_vehicle:
+	if id!=_last_vehicle or source.get_instance_id()!=_last_source_id:
 		voice.last_shift_serial=source.shift_serial
 		voice._blowoff_armed=false; voice._overrun_armed=false
+		voice.pop=0; voice.blowoff=0; voice.shift_tick=0
 		_last_vehicle=id
+		_last_source_id=source.get_instance_id()
 	voice.set_from_vehicle(source,enabled and not paused)
 	if loops!=null:
 		loops.layers=layers; loops.set_vehicle(source,enabled and not paused)
@@ -44,9 +56,10 @@ func update_vehicle(car: Drivetrain,paused: bool=false) -> void:
 	voice.mechanical_mix=1 if layers.mechanical else 0
 	voice.exhaust_fx_mix=1 if layers.exhaust else 0
 	voice.nitro_mix=1 if layers.nitrous else 0
+	start_output()
 
 func update_opponent(car: Drivetrain,distance_gap: float,active: bool,paused: bool=false,quality: int=2) -> void:
-	if opponent==null: return
+	if opponent==null or _closed: return
 	opponent.quality=quality
 	var distance:=absf(distance_gap)
 	var attenuation:=.28/(1+pow(distance/16,2))
@@ -66,6 +79,7 @@ func pump() -> void:
 	ambient_underruns=environment_playback.get_skips()
 
 func shutdown() -> void:
+	_closed=true
 	preview_active=false; preview_car=null
 	if loops!=null: loops.shutdown()
 	if opponent!=null: opponent.shutdown()

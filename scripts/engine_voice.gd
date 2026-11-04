@@ -79,6 +79,7 @@ var _hybrid_phase := 0.0
 var _compressor_scale := 1.0
 var _gear_whine_level := .0015
 var _super_ratio := 18.0
+var target_motor_hz:=0.0
 
 static func band_weights(at_rpm: float, idle: float = 950.0, redline: float = 7600.0) -> Vector4:
 	var x := clampf((at_rpm-idle)/maxf(1.0,redline-idle),0.0,1.0)
@@ -101,11 +102,14 @@ func set_from_vehicle(car: Drivetrain, audible: bool = true) -> void:
 	target_supercharger = 1.0 if car._supercharger != "" else 0.0
 	_induction_type = car._supercharger
 	_gearbox_kind = car.transmission_kind
-	_gear_whine_level = .012 if car.transmission_kind in ["sequential","drag"] else .0015
+	_gear_whine_level = {"sequential":.012,"drag":.007,"dct":.0027,"automatic":.0018}.get(car.transmission_kind,.0015)
 	_super_ratio = 36.0 if car._supercharger=="centrifugal" else 18.0
 	_intake_gain = 1.45 if car.hardware.parts.values().has("plenum") else 1.0
 	_compressor_scale = .80 if car.hardware.parts.values().has("turbo_race") else (1.12 if car.hardware.parts.values().has("turbo_hybrid") else 1.0)
 	hybrid_power = car.hybrid_power_w
+	# Aggregate motor acoustic order estimate (9:1 reduction x 6 pole pairs).
+	# Road motion, rather than ICE RPM, determines the electric tone's frequency.
+	target_motor_hz=clampf(absf(car.speed)/maxf(.1,car.tire_radius)/TAU*54,0,8000)
 	target_decel = clampf(-car.engine_torque/maxf(1.0,car.base_torque),0.0,1.0) if car.throttle < 0.25 and car.clutch_engagement > 0.4 else 0.0
 	target_engine = car.engine_stage/3.0
 	target_exhaust = car.exhaust_stage/3.0
@@ -141,9 +145,9 @@ func set_from_vehicle(car: Drivetrain, audible: bool = true) -> void:
 	if last_shift_serial < 0: last_shift_serial = car.shift_serial
 	elif car.shift_serial != last_shift_serial:
 		# A real loaded shift can ignite a small exhaust transient; a neutral tap cannot.
-		if car.last_shift_rpm > 2800.0 and car.last_shift_load > 0.25:
+		if car.last_shift_rpm > 2800.0 and car.last_shift_load > 0.25 and car.exhaust_stage>0:
 			pop = maxf(pop,0.20+target_exhaust*0.35+target_engine*0.10)
-		shift_tick = 0.18+target_transmission*0.18
+		shift_tick = float({"manual":.11,"sequential":.20,"dct":.08,"automatic":.12,"drag":.19}.get(car.transmission_kind,.12))*(.5+clampf(car.last_shift_load,0,1))
 		last_shift_serial = car.shift_serial
 	if car.throttle > 0.6 and car.boost > 0.1 and car._supercharger == "": _blowoff_armed = true
 	if _blowoff_armed and car.throttle < 0.3:
@@ -237,12 +241,14 @@ func next_effect_sample() -> float:
 	turbo_phase=fposmod(turbo_phase+hz/RATE,1)
 	tire_phase=fposmod(tire_phase+(1050+slip*600)/RATE,1)
 	gear_phase=fposmod(gear_phase+clampf(wheel_hz*5,0,4500)/RATE,1)
-	_hybrid_phase=fposmod(_hybrid_phase+(300+rpm*.08)/RATE,1)
+	_hybrid_phase=fposmod(_hybrid_phase+target_motor_hz/RATE,1)
 	pop_gain+=(pop-pop_gain)*.018; blowoff_gain+=(blowoff-blowoff_gain)*.008; shift_tick_gain+=(shift_tick-shift_tick_gain)*.025
 	var pressure:=maxf(boost,throttle*.20*supercharger_blend)
-	var induction: float=(sin(turbo_phase*TAU)*(.010+target_turbo*.006)+intake_filter*.025*_intake_gain)*pressure*induction_mix if pressure*induction_mix>.00001 else 0.0
+	var whine_level:=lerpf(.010+target_turbo*.006,.055,supercharger_blend)
+	var harmonic:=.20*(1-smoothstep(8000,10000,hz*2))
+	var induction: float=((sin(turbo_phase*TAU)+sin(turbo_phase*TAU*2)*harmonic)*whine_level+intake_filter*.025*_intake_gain)*pressure*induction_mix if pressure*induction_mix>.00001 else 0.0
 	var tire: float=(sin(tire_phase*TAU)*.014+filtered_noise*.07)*slip*tire_mix if slip*tire_mix>.00001 else 0.0
-	var whine:=sin(gear_phase*TAU)*_gear_whine_level*target_clutch*load_value if target_clutch*load_value>.00001 else 0.0
+	var whine:=sin(gear_phase*TAU)*_gear_whine_level*target_clutch*load_value if target_clutch*load_value*mechanical_mix>.00001 else 0.0
 	var transients:=filtered_noise*(pop_gain*.21*exhaust_fx_mix+blowoff_gain*.24*induction_mix)+noise*shift_tick_gain*.025*mechanical_mix
 	var electric:=sin(_hybrid_phase*TAU)*clampf(hybrid_power/162000,0,1)*.009*mechanical_mix if hybrid_power>1 else 0.0
 	pop*=.9990; blowoff*=.9996; shift_tick*=.9965

@@ -30,6 +30,10 @@ func run() -> void:
 		game.get_viewport().get_texture().get_image().save_png("res://validation/audio_preview_"+("phone" if phone else "desktop")+".png")
 		game.audio_lab.hide_lab(); check(not game.sound.preview_active,"Close left preview playing")
 	game.audio_lab.open_lab(); await frame(); check(game.audio_lab.advanced.visible,"Development controls missing")
+	for size in [Vector2i(1200,760),Vector2i(390,844)]:
+		game.get_window().size=size; await frame()
+		check(game.audio_lab.panel.size.x<=game.get_viewport().get_visible_rect().size.x,"Full audio lab expanded beyond phone width")
+		root.get_texture().get_image().save_png("res://validation/audio_lab_%dx%d.png"%[size.x,size.y])
 	for i in RosterData.IDS.size():
 		game.audio_lab.vehicle_picker.selected=i; game.audio_lab.build_picker.selected=0; game.audio_lab.rebuild()
 		check(game.audio_lab.preview._base_spec.id==RosterData.IDS[i],"Audio lab vehicle selection mismatch")
@@ -38,6 +42,28 @@ func run() -> void:
 	game.audio_lab.mode_picker.selected=2; game.audio_lab.rebuild()
 	for i in 240: game.audio_lab._process(1.0/120)
 	check(game.audio_lab.preview.elapsed>1.9 and game.profile.races==0,"Physical audio pull bypassed test simulation or changed progression")
+	game.audio_lab.set_process(false)
+	game.audio_lab.playing=false; game.audio_lab.utilities.get_child(0).emit_signal("pressed")
+	check(game.audio_lab.playing and game.audio_lab.time==0,"Restart did not restart a paused audition")
+	game.audio_lab.mode_picker.selected=2; game.audio_lab.preview.distance=403; game.audio_lab.set_playing(true)
+	check(game.audio_lab.preview.distance==0,"Completed acceleration audition cannot replay")
+	var runs: Array=[]
+	for fps in [30,60,120]:
+		game.audio_lab.mode_picker.selected=3; game.audio_lab.rebuild()
+		for i in fps*4: game.audio_lab._process(1.0/fps)
+		runs.append([game.audio_lab.preview.rpm,game.audio_lab.preview.elapsed])
+		check(game.audio_lab.preview.speed==0,"Neutral audio lab test accelerated car")
+	check(absf(runs[0][0]-runs[1][0])<.001 and absf(runs[1][0]-runs[2][0])<.001,"Audio lab physics depends on render frame rate")
+	game.audio_lab.set_process(true)
+	game.audio_lab.toggle_recording(); await create_timer(.25).timeout; game.audio_lab.finish_recording()
+	check(FileAccess.file_exists(game.audio_lab.last_recording),"Development WAV record/save failed")
+	check(game.audio_lab.recorder==null,"Recording effect leaked after save")
+	game.audio_lab.flags.Nitrous.button_pressed=true; game.audio_lab.flags.Shifting.button_pressed=true
+	var transmission_preview:=AudioLab.copy_car(game.car); transmission_preview.configure([0,0,0,0,3,0,0,0])
+	transmission_preview.configure_build(game.car.hardware,game.profile.vehicle_id,false)
+	game.audio_lab.open_lab(transmission_preview,true)
+	check(not game.audio_lab.flags.Nitrous.button_pressed and not game.audio_lab.flags.Shifting.button_pressed,"Hidden developer flags leaked into upgrade audition")
+	check(game.audio_lab.mode_picker.selected==2,"Transmission preview did not use real launch/shift simulation")
 	game.audio_lab.hide_lab(); game.stop_presentation_audio(); await create_timer(.12).timeout; game.queue_free(); await process_frame; await process_frame
 	print("AUDIO LAB / STOCK-PREVIEW / MODAL INPUT / PHONE / ALL VEHICLES: ","PASS" if failures==0 else "FAIL")
 	quit(0 if failures==0 else 1)

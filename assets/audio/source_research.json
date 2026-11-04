@@ -1,18 +1,78 @@
 {
-  "review_date": "2026-11-02",
+  "review_date": "2026-11-04",
   "imported_recordings": [],
   "candidates": [
-    {"source_url":"https://freesound.org/people/overmedium/sounds/651534/","author":"overmedium","license":"CC0 1.0","attribution_required":false,"intended_use":"Possible V8 exhaust texture/reference audition","status":"Not downloaded: original download requires authenticated access; exact engine unknown and no stable loaded RPM regions established"},
-    {"source_url":"https://freesound.org/people/marcelweiss/sounds/505321/","author":"marcelweiss","license":"CC0 1.0","attribution_required":false,"intended_use":"Possible turbo V8 neutral-rev reference","status":"Not downloaded or incorporated: original download requires authentication; not a loaded multi-RPM recording set"},
-    {"source_url":"https://freesound.org/people/EwanPenman11/sounds/659544/","author":"EwanPenman11","license":"CC0 1.0","attribution_required":false,"intended_use":"Possible turbo/BOV reference","status":"Not downloaded or incorporated: pass-by/Doppler rather than clean isolated compressor layers"},
-    {"source_url":"https://opengameart.org/content/racing-car-engine-sound-loops","author":"Not verified; primary page retrieval was restricted","license":"CC0 as listed on source","attribution_required":false,"intended_use":"Potential generic fallback","status":"Not downloaded: source retrieval was restricted; existing pitch-derived generic loops would not establish engine-specific realism"},
-    {"source_url":"https://gdc.sonniss.com/","author":"Sonniss and individual library contributors","license":"Sonniss GDC Bundle EULA v2 effective 2026-08-27; see https://sonniss.com/gdc-bundle-license/","attribution_required":false,"intended_use":"Evaluate licensed sound effects","status":"Research only; no files downloaded, no bulk bundle ingested. No external sounds used for AI training/development"},
-    {"source_url":"https://rdoerfler.github.io/procedural-engine-sounds-page/","author":"See dataset authors on source page","license":"CC BY-NC 4.0","attribution_required":true,"intended_use":"Research candidate only","status":"Rejected: noncommercial restriction; not downloaded"}
+    {
+      "source_url": "https://freesound.org/people/overmedium/sounds/651534/",
+      "author": "overmedium",
+      "license": "CC0 1.0",
+      "attribution_required": false,
+      "intended_use": "Possible V8 exhaust texture/reference audition",
+      "status": "Not downloaded: original download requires authenticated access; exact engine unknown and no stable loaded RPM regions established"
+    },
+    {
+      "source_url": "https://freesound.org/people/marcelweiss/sounds/505321/",
+      "author": "marcelweiss",
+      "license": "CC0 1.0",
+      "attribution_required": false,
+      "intended_use": "Possible turbo V8 neutral-rev reference",
+      "status": "Not downloaded or incorporated: original download requires authentication; not a loaded multi-RPM recording set"
+    },
+    {
+      "source_url": "https://freesound.org/people/EwanPenman11/sounds/659544/",
+      "author": "EwanPenman11",
+      "license": "CC0 1.0",
+      "attribution_required": false,
+      "intended_use": "Possible turbo/BOV reference",
+      "status": "Not downloaded or incorporated: pass-by/Doppler rather than clean isolated compressor layers"
+    },
+    {
+      "source_url": "https://opengameart.org/content/racing-car-engine-sound-loops",
+      "author": "Not verified; primary page retrieval was restricted",
+      "license": "CC0 as listed on source",
+      "attribution_required": false,
+      "intended_use": "Potential generic fallback",
+      "status": "Not downloaded: source retrieval was restricted; existing pitch-derived generic loops would not establish engine-specific realism"
+    },
+    {
+      "source_url": "https://gdc.sonniss.com/",
+      "author": "Sonniss and individual library contributors",
+      "license": "Sonniss GDC Bundle EULA v2 effective 2026-08-27; see https://sonniss.com/gdc-bundle-license/",
+      "attribution_required": false,
+      "intended_use": "Evaluate licensed sound effects",
+      "status": "Research only; no files downloaded, no bulk bundle ingested. No external sounds used for AI training/development"
+    },
+    {
+      "source_url": "https://rdoerfler.github.io/procedural-engine-sounds-page/",
+      "author": "See dataset authors on source page",
+      "license": "CC BY-NC 4.0",
+      "attribution_required": true,
+      "intended_use": "Research candidate only",
+      "status": "Rejected: noncommercial restriction; not downloaded"
+    },
+    {
+      "source_url": "https://freesound.org/people/Lumamorph/sounds/636066/",
+      "author": "Lumamorph",
+      "license": "CC BY 4.0 (verified on source page)",
+      "attribution_required": true,
+      "intended_use": "Candidate American V8 idle texture",
+      "status": "Not downloaded: original requires login, exact engine model/RPM unknown, no matching loaded/off-load RPM set verified. No preview-download bypass attempted."
+    }
   ],
   "references": [
-    {"url":"https://github.com/ange-yaghi/engine-sim","license":"MIT for referenced repository code","use":"Evaluated offline engine simulation option; no code/assets copied and no claim this project audio was rendered by engine-sim"},
-    {"url":"https://docs.godotengine.org/en/stable/classes/class_audiostreamgenerator.html","use":"Generator latency/performance tradeoff; native loops reduce per-sample GDScript work"},
-    {"url":"https://docs.godotengine.org/en/stable/tutorials/audio/audio_buses.html","use":"Separate mix buses and headroom"}
-  ]
+    {
+      "url": "https://github.com/ange-yaghi/engine-sim",
+      "license": "MIT for referenced repository code",
+      "use": "Evaluated offline engine simulation option; no code/assets copied and no claim this project audio was rendered by engine-sim"
+    },
+    {
+      "url": "https://docs.godotengine.org/en/stable/classes/class_audiostreamgenerator.html",
+      "use": "Generator latency/performance tradeoff; native loops reduce per-sample GDScript work"
+    },
+    {
+      "url": "https://docs.godotengine.org/en/stable/tutorials/audio/audio_buses.html",
+      "use": "Separate mix buses and headroom"
+    }
+  ],
+  "current_pass": "Rechecked this V8 candidate, Sonniss terms, engine-sim and Godot primary documentation. No external recording imported. Earlier candidate notes retained as historical research."
 }
-

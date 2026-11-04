@@ -5,7 +5,8 @@ from pathlib import Path
 import argparse, hashlib, json, math, wave
 import numpy as np
 ROOT=Path(__file__).resolve().parents[1]; OUT=ROOT/'assets/audio/engines'; OUT.mkdir(parents=True,exist_ok=True)
-RATE=22050; ANCHORS=[700,1000,1400,2000,2800,4000,5600,7800,10800]
+RATE=22050; ANCHORS=[650,800,1000,1250,1560,1950,2440,3050,3810,4760,5950,7440,9300,11625]
+DESIGNS=json.loads((ROOT/'assets/audio/engine_designs.json').read_text())['vehicles']
 # cylinders, exhaust-bank imbalance, exhaust resonances, air resonance, smoothness
 FAMILIES={
 'i4_na':(4,.04,[110,240,630,1550],1350,.06),'i4_vtec':(4,.02,[135,310,840,2250],1900,.04),
@@ -25,8 +26,10 @@ def shaped(signal, freqs, resonances, cutoff):
  eq*=1/(1+(f/cutoff)**4); eq*=1-np.exp(-(f/28)**2)
  return np.fft.irfft(np.fft.rfft(signal)*eq,len(signal))
 
-def synth(family,rpm,layer):
+def synth(family,rpm,layer,design=None,identity=None):
  cyl,imb,res,air,irregular=FAMILIES[family]; cycles=max(6,round(rpm/120*1.15)); n=round(cycles*120/rpm*RATE)
+ if design:
+  res=design['resonances'];air=design['intake_hz'];irregular=design['roughness']
  actual=cycles*120*RATE/n; t=np.arange(n)/RATE; cycle=np.arange(n)/n*cycles
  # Per-bank unequal exhaust arrival reproduces bank-pulse structure, not arbitrary RPM offsets.
  left=np.zeros(n); right=np.zeros(n)
@@ -35,19 +38,23 @@ def synth(family,rpm,layer):
   if family in ('v8_cross','v8_super'): bank=[0,1,0,0,1,0,1,1][event%8]
   elif family=='h4_turbo': bank=[0,0,1,1][event%4]
   phase=event/cyl/cycles
-  jitter=irregular*.00010*math.sin(event*2.399)
+  # Runner arrival differences are acoustic delays, not changes to firing RPM.
+  runner=(design['runner_ms'][event%cyl]/1000) if design else 0
+  jitter=irregular*.00010*math.sin(event*2.399)+runner
   index=int(round((phase*n+jitter*RATE)))%n
   (left if bank==0 else right)[index]+=1+irregular*math.sin(event*1.19)
  f=np.fft.rfftfreq(n,1/RATE)
  # Damped pressure pulse; circular filtering makes all seams periodic.
- kernel=np.exp(-np.arange(n)/RATE/(.0014 if layer.endswith('on') else .0024))
- train=np.fft.irfft((np.fft.rfft(left)+np.fft.rfft(right)*np.exp(-2j*np.pi*f*(.00025+imb*.006)))*np.fft.rfft(kernel),n)
- rng=np.random.default_rng(int(hashlib.sha256((family+layer+str(rpm)).encode()).hexdigest()[:8],16))
+ decay=(design['pulse_ms']/1000 if design else .0014)*(1 if layer.endswith('on') else 1.7)
+ kernel=np.exp(-np.arange(n)/RATE/decay)-.64*np.exp(-np.arange(n)/RATE/(decay*3))
+ bank_delay=0 if design else .00025+imb*.006
+ train=np.fft.irfft((np.fft.rfft(left)+np.fft.rfft(right)*np.exp(-2j*np.pi*f*bank_delay))*np.fft.rfft(kernel),n)
+ rng=np.random.default_rng(int(hashlib.sha256(((identity or family)+layer+str(rpm)).encode()).hexdigest()[:8],16))
  noise=rng.normal(0,1,n); engine_hz=actual*cyl/120
  if layer.startswith('exhaust'):
   on=layer.endswith('on'); y=shaped(train,None,res,3900 if on else 1650)
   y/=max(1e-8,np.sqrt(np.mean(y*y))); y=np.tanh(y*(1.2 if on else .65))
-  y+=shaped(noise,None,[650,1450,2800],4400)*(.16 if on else .045)
+  y+=shaped(noise,None,[650,1450,2800],4400)*(.065 if on else .025)
   y*=1+np.sin(2*np.pi*cycle)*irregular*.22
   target=.18 if on else .13
  elif layer.startswith('intake'):
@@ -60,10 +67,11 @@ def synth(family,rpm,layer):
  y=np.tanh(y); pcm=np.round(y*32767).astype('<i2')
  return pcm,actual
 
-def build(names):
- manifest={"format_version":1,"sample_rate":RATE,"origin":"Original offline cylinder-pulse and resonator synthesis; not recorded vehicles and not engine-sim output","families":{}}
+def build(names,vehicles=False,vehicle_ids=None):
+ manifest={"format_version":2,"sample_rate":RATE,"origin":"Original offline cylinder-pulse and resonator synthesis; not recorded vehicles and not engine-sim output","families":{},"vehicles":{}}
  prior=OUT/'bank.json'
  if prior.exists(): manifest=json.loads(prior.read_text())
+ manifest['format_version']=2
  for family in names:
   folder=OUT/family; folder.mkdir(exist_ok=True); rows=[]
   for rpm in ANCHORS:
@@ -74,10 +82,27 @@ def build(names):
     files[layer]='res://'+str(path.relative_to(ROOT)).replace('\\','/')
    rows.append({"rpm":actual,"nominal_rpm":rpm,"files":files})
   manifest['families'][family]=rows; print(family,flush=True)
+ if vehicles:
+  manifest.setdefault('vehicles',{})
+  for identity,design in DESIGNS.items():
+   if vehicle_ids and identity not in vehicle_ids: continue
+   family=design['family'];folder=OUT/('vehicle_'+identity);folder.mkdir(exist_ok=True);rows=[]
+   for rpm in ANCHORS:
+    files={}
+    for layer in ['exhaust_on','exhaust_off','intake_on','intake_off','mechanical']:
+     pcm,actual=synth(family,rpm,layer,design,identity);path=folder/f'{rpm}_{layer}.wav'
+     with wave.open(str(path),'wb') as w: w.setnchannels(1);w.setsampwidth(2);w.setframerate(RATE);w.writeframes(pcm.tobytes())
+     files[layer]='res://'+str(path.relative_to(ROOT)).replace('\\','/')
+    rows.append({'rpm':actual,'nominal_rpm':rpm,'files':files})
+   manifest['vehicles'][identity]={'family':family,'rows':rows,'design':design,'origin':'Original synthesized acoustic approximation, not an OEM recording'}
+   print(identity,flush=True)
  prior.write_text(json.dumps(manifest,indent=2)+'\n')
  files=[]
  for p in sorted(OUT.glob('*/*.wav')):
   files.append({"path":str(p.relative_to(ROOT)).replace('\\','/'),"sha256":hashlib.sha256(p.read_bytes()).hexdigest(),"author":"REDLINE project procedural audio generator","source":"tools/generate_engine_audio.py","license":"Original project-generated audio; no external recording incorporated","attribution_required":False,"intended_use":"RPM and load engine bank"})
  (ROOT/'assets/audio/asset_manifest.json').write_text(json.dumps({"assets":files,"external_recordings":[],"note":"Do not describe these synthetic engine loops as authentic recordings."},indent=2)+'\n')
 if __name__=='__main__':
- p=argparse.ArgumentParser(); p.add_argument('--families',default=','.join(FAMILIES)); a=p.parse_args(); build(a.families.split(','))
+ p=argparse.ArgumentParser(); p.add_argument('--families',default=','.join(FAMILIES));p.add_argument('--vehicles',action='store_true');p.add_argument('--vehicle-ids',default=''); a=p.parse_args()
+ selected=[x for x in a.vehicle_ids.split(',') if x]
+ if set(selected)-set(DESIGNS): p.error('Unknown vehicle IDs')
+ build([x for x in a.families.split(',') if x],a.vehicles or bool(selected),selected)

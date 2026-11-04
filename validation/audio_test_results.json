@@ -1,10 +1,10 @@
 {
 	"chunk_invariant": true,
 	"failures": 0,
-	"max_adjacent_sample_jump": 0.199208204117457,
-	"max_pcm_amplitude": 0.422977060079575,
-	"max_pitch_ramp_tracking_error_rpm": 428.664301712997,
-	"max_real_pitch_tracking_error_rpm": 82.0129116353137,
+	"max_adjacent_sample_jump": 0.342362760377031,
+	"max_pcm_amplitude": 0.507463693618774,
+	"max_pitch_ramp_tracking_error_rpm": 434.485832344802,
+	"max_real_pitch_tracking_error_rpm": 95.5689657746598,
 	"note": "Ramp tracking error includes sudden test-fixture road-state changes; steady-state frequency is tested separately. Hardware output latency is not measured.",
 	"profiles": [
 		{
