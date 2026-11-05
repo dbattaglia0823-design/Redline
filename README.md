@@ -162,3 +162,9 @@ Staging Assist preserves the previous held start. During countdown, Stage switch
 
 Ctrl+Tab / Ctrl+Shift+Tab switches main sections. Tab / Shift+Tab moves focus; Enter activates it. Mouse Back follows Escape. In Change Car, Left/Right previews owned cars without equipping; in the dealership, Home/End jumps to the first/last filtered car. Clear filters, Discard preview and No wager provide direct undo/reset actions without extra confirmation. See validation/QOL_REPORT.md for all ten improvements.
 
+
+## Distinct drag-strip environments
+
+Dockside Dragway now races through a detailed sunlit industrial port, Midnight Motorplex uses floodlit grandstands and a cool city skyline, and Redline Park is a warm daylight professional facility with sculpted grandstands and glass VIP suites. Original location artwork, layered distance-driven scrolling, rubbered asphalt, safety walls, drainage, softer smoke/contact shadows and detailed tree lamps bring the cars into the venue. Low effects limits decorative work, and Reduced Motion disables camera shake and speed streaks.
+
+See [the environment overhaul and screenshot review](validation/TRACK_ENVIRONMENT_OVERHAUL.md) for all three tracks at staging, acceleration and high speed, plus finish, Low and portrait views. Run `tests/test_track_environments.gd` in graphical Godot to regenerate the 18 review images; the fixtures deliberately hold speeds/distances for matched visual comparisons. Surface artwork can be regenerated with `python3 tools/generate_track_surfaces.py`; the original PNG panoramas are committed source assets. Physical-phone performance remains to be tested.

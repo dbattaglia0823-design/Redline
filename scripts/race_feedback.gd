@@ -42,7 +42,7 @@ func reset(car: Drivetrain) -> void:
 	_shock = 0.0
 	_last_shift = car.shift_serial
 
-func update(dt: float, car: Drivetrain, paused: bool, spec: Dictionary, origin: Vector2 = Vector2(210,410)) -> void:
+func update(dt: float, car: Drivetrain, paused: bool, spec: Dictionary, origin: Vector2 = Vector2(210,410), reduced_motion: bool = false) -> void:
 	if paused: return
 	dt = clampf(dt,0.0,0.1)
 	visual_rpm = lerpf(visual_rpm,car.rpm,1.0-exp(-dt/0.022))
@@ -63,7 +63,7 @@ func update(dt: float, car: Drivetrain, paused: bool, spec: Dictionary, origin: 
 	var magnitude := minf(2.5,_shock*2.0+launch*0.65)
 	var shake := Vector2(sin(car.elapsed*137.0)*0.5,sin(car.elapsed*173.0))*magnitude
 	var follow := Vector2(clampf(-car.acceleration*0.32,-2.5,2.5),0.0)
-	camera_offset = camera_offset.lerp((follow+shake)*([.25,.65,1.0][clampi(quality,0,2)]),1-exp(-dt/.045))
+	camera_offset = Vector2.ZERO if reduced_motion else camera_offset.lerp((follow+shake)*([.25,.65,1.0][clampi(quality,0,2)]),1-exp(-dt/.045))
 	body_pitch = lerpf(body_pitch,clampf(-car.acceleration*0.0008,-0.006,0.006),1.0-exp(-dt/0.08))
 	_vibration_phase = fposmod(_vibration_phase+dt*car.rpm/60.0*TAU,TAU)
 	var idle_vibration := sin(_vibration_phase)*.16*clampf(1.0-car.speed/8.0,0,1)*clampf((2200-car.rpm)/1200,0,1) if quality > 0 else 0.0

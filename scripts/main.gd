@@ -263,8 +263,8 @@ func _process(dt: float) -> void:
 		shift_notice_left = maxf(0.0,shift_notice_left-dt)
 		if screen == "race":
 			feedback.set_quality(profile.effects_quality); rival_feedback.set_quality(profile.effects_quality)
-			feedback.update(dt,car,false,GameCatalog.spec(profile.vehicle_id),race_origins()[0])
-			rival_feedback.update(dt,rival,false,GameCatalog.spec(str(active_contract.get("model","kaze"))),race_origins()[1])
+			feedback.update(dt,car,false,GameCatalog.spec(profile.vehicle_id),race_origins()[0],profile.reduced_motion)
+			rival_feedback.update(dt,rival,false,GameCatalog.spec(str(active_contract.get("model","kaze"))),race_origins()[1],profile.reduced_motion)
 	if is_instance_valid(sound):
 		sound.pump()
 	if tuning!=null and ((screen=="garage" and tab=="tuning") or screen=="practice_results"): tuning.update()
@@ -939,7 +939,10 @@ func draw_race() -> void:
 func draw_tire_smoke(cloud: RaceFeedback) -> void:
 	for particle in cloud.smoke:
 		var age: float = particle.age/particle.life
-		draw_circle(particle.position+feedback.camera_offset,3.0+age*13.0,Color(.63,.67,.71,(1-age)*.15*particle.strength))
+		var radius: float = 8.0+age*25.0
+		var center: Vector2 = particle.position+feedback.camera_offset
+		var night: bool = TrackPresentation.spec(race_track_index()).night
+		TrackPresentation.glow(self,Rect2(center-Vector2.ONE*radius,Vector2.ONE*radius*2),Color(.53,.65,.77,(1-age)*.5*particle.strength) if night else Color(.76,.74,.7,(1-age)*.48*particle.strength))
 
 func draw_results() -> void:
 	menu.draw_results()
