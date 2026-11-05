@@ -7,6 +7,7 @@ const DIM := GlassPalette.MUTED
 const WHITE := GlassPalette.INK
 const ORANGE := GlassPalette.ORANGE
 const GREEN := GlassPalette.GREEN
+const SPLITS := {402.336:"1/4 MI",304.8:"1000 FT",201.168:"1/8 MI",100.0:"100 M",18.288:"60 FT"}
 var g: Node2D
 var styles: Dictionary = {}
 var readings: Dictionary = {}
@@ -118,9 +119,24 @@ func draw(portrait: bool = false) -> void:
 	g.draw_race_world()
 	top(w,portrait)
 	stage(w,portrait)
+	if portrait: lane_summary(w)
 	dashboard(w,portrait)
 	if g.debug_physics and OS.is_debug_build(): g.draw_telemetry()
 	if g.paused_race: pause(w,portrait)
+
+func lane_summary(w: float) -> void:
+	var x := w-20
+	var staged: bool = g.countdown>0
+	var last_split := "—"
+	for marker in SPLITS:
+		if g.split_times.has(marker):
+			last_split = "%s   %.3f s"%[SPLITS[marker],g.staging.elapsed(g.split_times[marker])]
+			break
+	text("LANE 01  /  "+("STAGING" if staged else g.distance_label(g.active_distance)),Vector2(20,624),16,BLUE,true)
+	var detail := "LAST SPLIT  "+last_split if not staged else ("ASSISTED" if g.staging.assisted else "MANUAL")
+	var width := AutomotiveUI.NUMBERS.get_string_size(detail,HORIZONTAL_ALIGNMENT_LEFT,-1,16).x
+	text(detail,Vector2(x-width,624),16,DIM,true)
+	g.draw_line(Vector2(20,646),Vector2(x,646),Color(BLUE,.16),1,true)
 
 func top(w: float,p: bool) -> void:
 	var touch: bool = g.race_touch_layout() and not p
@@ -138,18 +154,19 @@ func top(w: float,p: bool) -> void:
 	var layout := 2 if touch else (1 if p else 0)
 	if layout!=status_layout:
 		status_layout=layout
-		event_text.get_parent().size_flags_stretch_ratio=1.55 if p else 1.0
-		gap_text.size_flags_stretch_ratio=.8 if p else 1.0
-		event_text.add_theme_font_size_override("font_size",23 if touch else 19)
+		event_text.get_parent().size_flags_stretch_ratio=1.38 if p else 1.0
+		gap_text.size_flags_stretch_ratio=.76 if p else 1.0
+		elapsed_text.size_flags_stretch_ratio=1.12 if p else 1.0
+		event_text.add_theme_font_size_override("font_size",23 if touch else (16 if p else 19))
 		distance_text.add_theme_font_size_override("font_size",19 if touch else 15)
-		elapsed_text.add_theme_font_size_override("font_size",41 if touch else (29 if p else 35))
+		elapsed_text.add_theme_font_size_override("font_size",41 if touch else (27 if p else 35))
 		gap_text.add_theme_font_size_override("font_size",24 if touch else 20)
 	var track := "TEST TRACK" if g.practice_mode else str(TrackPresentation.spec(g.race_track_index()).name).to_upper()
 	if not g.practice_mode and g.active_contract.has("id"):
 		track = str(g.active_contract.event_name).to_upper()
 	event_text.text = track
 	var meters := clampf(g.car.distance,0.0,g.active_distance)
-	distance_text.text = "%s  ·  %d/%d m"%[g.distance_label(g.active_distance),floori(meters),roundi(g.active_distance)]
+	distance_text.text = "%d / %d m"%[floori(meters),roundi(g.active_distance)] if p else "%s  ·  %d/%d m"%[g.distance_label(g.active_distance),floori(meters),roundi(g.active_distance)]
 	var total: float = g.player_finish if g.player_finish>0 else g.car.elapsed
 	elapsed_text.text = "%.3f s"%g.staging.elapsed(total) if g.staging.released[0] else "0.000 s"
 	var gap: float = g.car.distance-g.rival.distance
@@ -168,11 +185,17 @@ func stage(w: float,p: bool) -> void:
 	var tint := GREEN
 	if g.staging.red_light: message="RED LIGHT"; tint=ORANGE
 	elif g.finish_hold_left>0: message="FINISH"
+	elif g.staging.released[0] and g.player_reaction>=0 and g.player_reaction<=.30 and g.car.elapsed-g.player_reaction<.85:
+		message="PERFECT LAUNCH"
 	elif g.countdown<=0 and g.car.elapsed<.45: message="GO"
 	if message!="":
-		var chip := Rect2(w*.5-90,y,180,36)
-		surface(chip)
-		centered(message,chip.get_center()+Vector2(0,7),22,tint,true)
+		var chip := Rect2(w*.5-124,y,248,42)
+		surface(chip,false,g.staging.red_light)
+		var flash: float = maxf(g.feedback.start_flash,g.feedback.finish_flash)
+		if message=="PERFECT LAUNCH": flash = 1-clampf((g.car.elapsed-g.player_reaction)/.85,0,1)
+		if not g.profile.reduced_motion and g.profile.effects_quality>0:
+			AutomotiveUI.glow(g,chip,Color(tint,flash*.28))
+		centered(message,chip.get_center()+Vector2(0,7),21,tint,true)
 	if g.countdown<=0: return
 	var assist := Rect2(18,y,132,76 if p else (90 if touch else 44))
 	control("staging_assist","ASSIST" if g.staging.assisted else "MANUAL",assist,"",false,g.staging.assisted)
@@ -190,6 +213,15 @@ func stage(w: float,p: bool) -> void:
 	elif g.staging.assisted: hint="Launch on green"
 	else: hint="Release brake on green"
 	text(hint,base+Vector2(0,25),15,WHITE)
+	var lamp := RaceStaging.lamp(g.countdown)
+	var lamps := Rect2(panel.end.x+12,y,124,51)
+	surface(lamps)
+	for i in 3:
+		var center := lamps.position+Vector2(30+i*32,25)
+		var lit := i == lamp
+		if lit and g.profile.effects_quality>0:
+			AutomotiveUI.glow(g,Rect2(center-Vector2.ONE*18,Vector2.ONE*36),Color(ORANGE,.48))
+		g.draw_circle(center,6,ORANGE if lit else Color("304050"),true,-1,true)
 
 func tach(center: Vector2,width: float,p: bool) -> void:
 	var c: Drivetrain = g.car
@@ -226,6 +258,8 @@ func tach(center: Vector2,width: float,p: bool) -> void:
 		hint=c.shift_message; tint=GREEN if hint=="PERFECT SHIFT" else BLUE
 	elif c.wheelspin>.15 and c.throttle>.1: hint="WHEELSPIN"; tint=ORANGE
 	elif capable and c.shift_recommended() and g.show_shift_guide: hint="SHIFT WINDOW"; tint=GREEN
+	if hint=="PERFECT SHIFT" and not g.profile.reduced_motion and g.profile.effects_quality>0:
+		AutomotiveUI.glow(g,Rect2(center+Vector2(-112,43),Vector2(224,31)),Color(GREEN,g.feedback.shift_pulse*.36))
 	centered(hint.left(29),center+Vector2(0,61),14,tint,true)
 
 func dashboard(w: float,p: bool) -> void:

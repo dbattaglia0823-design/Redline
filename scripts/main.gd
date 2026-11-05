@@ -32,6 +32,7 @@ var player_finish := 0.0
 var rival_trap_speed := 0.0
 var rival_finish := 0.0
 var result_win := false
+var result_record := false
 var result_bonus := 0
 var result_reward := 0
 var result_xp := 0
@@ -39,6 +40,7 @@ var previous_level := 1
 var event_index := 0
 var toast := ""
 var toast_left := 0.0
+var toast_confirmed := false
 var shift_flash := 0.0
 var audio_shift_serial := 0
 var paused_race := false
@@ -90,6 +92,8 @@ var dock: GlassDock
 var showroom_texture: Texture2D
 var ui_offset := Vector2.ZERO
 var native_workshop: WorkshopScreen
+var display_font := AutomotiveUI.DISPLAY
+var preview_states: Dictionary = {}
 
 func _ready() -> void:
 	font = AutomotiveUI.BODY
@@ -245,8 +249,13 @@ func _process(dt: float) -> void:
 	if menu != null: menu.dealer.age = 1.0 if profile.reduced_motion else minf(1.0,menu.dealer.age+dt*6.0)
 	var had_toast := toast_left > 0
 	toast_left = maxf(0.0, toast_left - dt)
-	var key := screen+":"+tab+":"+str(menu.hub.categories)+":"+workshop.mode+":"+str(menu.hub.dyno_open)
-	if key != navigation_key: navigation_key = key; navigation_age = 0; menu_dirty = true
+	var key := str([screen,tab,menu.hub.categories,workshop.mode,menu.hub.dyno_open,
+		menu.dealer.class_picker,menu.dealer.details,menu.customize.category,career_board.active,career_board.picker])
+	if key != navigation_key:
+		navigation_key = key
+		navigation_age = 0
+		preview_states.clear()
+		menu_dirty = true
 	navigation_age = 1.0 if glass.reduced_motion else minf(1,navigation_age+dt/maxf(.01,glass.PALETTE.motion_seconds))
 	if screen == "garage":
 		normalize_wager()
@@ -358,10 +367,15 @@ func sync_race_audio() -> void:
 	sound.update_opponent(rival,rival.distance-car.distance,screen=="race" and not practice_mode,paused_race,profile.effects_quality)
 	sound.atmosphere.set_state(staging,countdown,screen == "race",paused_race,sound.enabled,car.speed,finish_hold_left > 0,not staging.red_light and (rival_finish<=0 or player_finish<=rival_finish))
 
-func show_toast(message: String) -> void:
+func show_toast(message: String,confirmed: bool = false) -> void:
 	toast = message
+	toast_confirmed = confirmed
 	toast_left = 1.7
 	menu_dirty = true
+
+func toast_reveal() -> float:
+	if profile.reduced_motion: return 1.0
+	return minf(1-pow(clampf((toast_left-1.48)/.22,0,1),3),clampf(toast_left/.18,0,1))
 
 func start_race() -> void:
 	if screen=="practice_results": screen="garage"
@@ -447,7 +461,12 @@ func complete_race() -> void:
 		finish_rival_simulation()
 	result_win = not staging.red_light and (rival_finish == 0.0 or player_finish <= rival_finish)
 	previous_level = profile.level()
-	if not staging.red_light and active_distance>400 and active_distance<500 and (profile.best==0 or player_finish<profile.best): profile.best=player_finish
+	var event_id := str(active_contract.get("id",""))
+	var elapsed := staging.elapsed(player_finish)
+	var quarter_record := active_distance>400 and active_distance<500 and (profile.best==0 or player_finish<profile.best)
+	var event_record: Dictionary = profile.event_records.get(event_id,{})
+	result_record = not staging.red_light and (quarter_record or (event_id!="" and elapsed<float(event_record.get("best_et",INF))))
+	if not staging.red_light and quarter_record: profile.best=player_finish
 	var payout:=profile.award_race(active_contract,result_win,staging.red_light,staging.elapsed(player_finish),player_reaction,finish_speed,int(active_contract.get("legacy_career",event_index)),int(active_contract.get("legacy_rival",selected_opponent)))
 	if payout.is_empty(): return
 	result_bonus=int(payout.bonus); result_base_pay=int(payout.base); result_bet_return=int(payout.bet_return); result_reward=int(payout.reward); result_xp=int(payout.xp)
@@ -713,7 +732,7 @@ func action(id: String) -> void:
 				var id_to_buy: String = GameCatalog.CAR_IDS[dealer_index]
 				if profile.buy_vehicle(id_to_buy):
 					refresh_car()
-					show_toast(GameCatalog.spec(id_to_buy).name+" / added to garage")
+					show_toast(GameCatalog.spec(id_to_buy).name+" / added to garage",true)
 				else: show_toast("Not enough credits, or vehicle already owned")
 			"drive_car":
 				if profile.select_vehicle(GameCatalog.CAR_IDS[dealer_index]):
@@ -741,7 +760,7 @@ func text_at(value: String, x: float, y: float, size: int = 18, color: Color = I
 	elif color == MUTED: color = glass.PALETTE.muted
 	elif color == ORANGE: color = glass.PALETTE.orange
 	elif color == GREEN: color = glass.PALETTE.green
-	draw_string(mono if use_mono else font, Vector2(x, y), value, HORIZONTAL_ALIGNMENT_LEFT, -1, size, color)
+	draw_string(mono if use_mono else (display_font if size >= 26 else font), Vector2(x, y), value, HORIZONTAL_ALIGNMENT_LEFT, -1, size, color)
 
 func box(rect: Rect2, fill: Color = PANEL, border: Color = EDGE) -> void:
 	glass.surface(self,rect,fill,border,mini(22,roundi(rect.size.y*.38)))
@@ -869,14 +888,15 @@ func _draw() -> void:
 	else:
 		draw_garage()
 	if toast_left > 0.0 and (native_workshop==null or not native_workshop.visible):
-		box(Rect2(16,8,358,54) if compact else Rect2(36,736,1130,24),Color("293b46"),GREEN)
-		var message := toast
-		var font_size := 18 if compact else 14
-		while message.length() > 3 and font.get_string_size(message+"...",HORIZONTAL_ALIGNMENT_LEFT,-1,font_size).x > (330 if compact else 1090): message = message.left(message.length()-1)
-		if message != toast: message += "..."
-		text_at(message,28 if compact else 52,42 if compact else 753,font_size,INK)
+		var reveal := toast_reveal()
+		var accent := GREEN if toast_confirmed else GlassPalette.BLUE
+		var r := Rect2(24,52,552,48) if compact else Rect2(348,68,504,45)
+		r.position.y -= 9*(1-reveal)
+		glass.surface(self,r,Color(.06,.13,.18,.95*reveal),Color(accent,.52*reveal),14)
+		draw_circle(r.position+Vector2(21,r.size.y*.5),3,Color(accent,reveal),true,-1,true)
+		fit_text(toast,r.position.x+36,r.position.y+r.size.y*.5+6,r.size.x-52,18,Color(INK,reveal))
 	if screen != "race" and navigation_age < 1 and not glass.reduced_motion:
-		draw_rect(Rect2(0,0,600 if compact else 1200,1300 if compact else 760),Color(BG, pow(1-navigation_age,2)*.16))
+		draw_rect(Rect2(Vector2.ZERO,Vector2(get_window().content_scale_size)),Color(BG,pow(1-navigation_age,3)*.23))
 	if profile.save_error != "":
 		text_at(profile.save_error, 36, 744, 14, ORANGE)
 
@@ -921,15 +941,16 @@ func draw_driver() -> void:
 	for i in badges.size(): text_at(str(badges[i][0]),66+i*345,624,16,GREEN if badges[i][1] else MUTED,true)
 
 func draw_race_world() -> void:
-	draw_set_transform(feedback.camera_offset)
+	var camera := Vector2.ZERO if profile.reduced_motion else feedback.camera_offset
+	draw_set_transform(camera)
 	TrackPresentation.draw(self)
 	draw_set_transform(Vector2.ZERO)
 	var origins := race_origins()
 	if not practice_mode:
-		draw_car(origins[1]+feedback.camera_offset,1.65,PAINTS[rival_paint_index()],rival.distance,2,rival_feedback.exhaust_glow > .18,str(active_contract.get("model","kaze")),rival.wheel_angle,rival.tire_radius,rival,rival_feedback.body_offset,rival_feedback.body_pitch,rival_appearance())
+		draw_car(origins[1]+camera,1.65,PAINTS[rival_paint_index()],rival.distance,2,rival_feedback.exhaust_glow > .18,str(active_contract.get("model","kaze")),rival.wheel_angle,rival.tire_radius,rival,rival_feedback.body_offset,rival_feedback.body_pitch,rival_appearance())
 		if origins[1].x > 0 and origins[1].x < (370 if is_portrait() else 940): text_at("RIVAL",origins[1].x+70,origins[1].y+3,12,MUTED,true)
 		draw_tire_smoke(rival_feedback)
-	draw_car(origins[0]+feedback.camera_offset,1.65,PAINTS[profile.paint],car.distance,profile.wheels,feedback.exhaust_glow > .18 or car.nitrous_active,profile.vehicle_id,car.wheel_angle,car.tire_radius,car,feedback.body_offset,feedback.body_pitch)
+	draw_car(origins[0]+camera,1.65,PAINTS[profile.paint],car.distance,profile.wheels,feedback.exhaust_glow > .18 or car.nitrous_active,profile.vehicle_id,car.wheel_angle,car.tire_radius,car,feedback.body_offset,feedback.body_pitch)
 	draw_tire_smoke(feedback)
 
 
@@ -939,7 +960,10 @@ func draw_race() -> void:
 func draw_tire_smoke(cloud: RaceFeedback) -> void:
 	for particle in cloud.smoke:
 		var age: float = particle.age/particle.life
-		draw_circle(particle.position+feedback.camera_offset,3.0+age*13.0,Color(.63,.67,.71,(1-age)*.15*particle.strength))
+		var extent := Vector2(18,12).lerp(Vector2(86,52),age)
+		var center: Vector2 = particle.position+(Vector2.ZERO if profile.reduced_motion else feedback.camera_offset)
+		var opacity: float = pow(1-age,1.4)*particle.strength*.33
+		AutomotiveUI.glow(self,Rect2(center-extent*.5,extent),Color(.67,.74,.80,opacity))
 
 func draw_results() -> void:
 	menu.draw_results()
@@ -962,8 +986,19 @@ func draw_car(origin: Vector2, scale_value: float, paint: Color, _travel: float,
 	var look := profile.appearance_for(model) if use_profile else VehicleAppearance.normalize({},paint_index,rim)
 	if not appearance_override.is_empty(): look = VehicleAppearance.normalize(appearance_override)
 	var night: bool = screen == "race" and driven_angle >= 0 and TrackPresentation.spec(race_track_index()).night
-	var braking: bool = brake_input() > .05 if vehicle == car else (vehicle != null and vehicle.braking_force > 50)
-	VehicleRenderer.draw(self,origin,scale_value,model,look,vehicle,driven_angle >= 0,body_offset,pitch,flame,profile.effects_quality,night,braking)
+	var reveal := 1.0
+	if screen != "race" and scale_value >= 1.6 and not profile.reduced_motion:
+		var key := str(origin)
+		var choice := model+str(look)
+		var state: Dictionary = preview_states.get(key,{"choice":"","start":-1.0})
+		if state.choice != choice:
+			state = {"choice":choice,"start":clock}
+			preview_states[key] = state
+		var remaining := pow(1-clampf((clock-float(state.start))/.24,0,1),3)
+		origin += Vector2(13,3)*remaining
+		reveal -= .25*remaining
+		menu_dirty = menu_dirty or remaining > 0
+	VehicleRenderer.draw(self,origin,scale_value,model,look,vehicle,driven_angle >= 0,body_offset,pitch,flame,profile.effects_quality,night,reveal)
 
 func refresh_car() -> void:
 	menu_dirty = true
@@ -975,7 +1010,7 @@ func refresh_car() -> void:
 func install_part(index: int, tier: int = -1) -> void:
 	if profile.upgrade(index,tier):
 		refresh_car()
-		show_toast("%s / tier %d installed" % [PART_NAMES[index],profile.stages[index]])
+		show_toast("%s / tier %d installed" % [PART_NAMES[index],profile.stages[index]],true)
 	else: show_toast("Already owned, or not enough credits")
 
 func distance_label(value: float) -> String:
@@ -985,7 +1020,7 @@ func distance_label(value: float) -> String:
 	return "1/4 MILE"
 
 func draw_workshop(rect: Rect2) -> void:
-	if not glass.legacy and showroom_texture: draw_texture_rect(showroom_texture,rect,false)
+	if not glass.legacy and showroom_texture: LiquidGlass.draw_cover(self,showroom_texture,rect,Color(.83,.87,.93))
 	elif workshop_texture: draw_texture_rect(workshop_texture,rect,false)
 	else: draw_rect(rect,PANEL)
 	if not glass.legacy:
@@ -995,6 +1030,7 @@ func draw_workshop(rect: Rect2) -> void:
 			draw_rect(Rect2(rect.position+Vector2(0,band*6),Vector2(rect.size.x,6)),Color(.01,.025,.04,.50*(1.0-band/8.0)))
 		var platform := Rect2(rect.position+Vector2(rect.size.x*.13,rect.size.y*.78),Vector2(rect.size.x*.74,rect.size.y*.14))
 		draw_ellipse_platform(platform)
+		VehicleRenderer.showroom_light(self,rect,profile.effects_quality)
 	if glass.legacy: draw_rect(rect,EDGE,false,1)
 
 func draw_ellipse_platform(rect: Rect2) -> void:

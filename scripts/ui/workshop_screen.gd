@@ -5,10 +5,13 @@ extends Control
 # Complex gearbox/tuning tools keep their existing implementation for now.
 var game: Node2D
 var signature: String=""
+var scene_key := ""
+var scene_fade: Tween
 var targets: Dictionary={}
 var portrait:=false
 var notice: PanelContainer
 var notice_label: Label
+var notice_skin: StyleBoxFlat
 var search: LineEdit
 var empty_catalog: Label
 var query: String=""
@@ -88,6 +91,19 @@ func sync() -> void:
 			if child is CanvasItem: child.hide()
 			child.queue_free()
 		targets.clear(); build()
+	var next_scene := str([game.screen,game.tab,game.menu.hub.categories,game.menu.dealer.class_picker,
+		game.menu.dealer.details,game.career_board.active,game.career_board.picker])
+	if next_scene != scene_key:
+		scene_key = next_scene
+		if scene_fade: scene_fade.kill()
+		modulate.a = 1.0
+		if not game.profile.reduced_motion:
+			modulate.a = .74
+			scene_fade = create_tween()
+			scene_fade.tween_property(self,"modulate:a",1.0,.22).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	elif game.profile.reduced_motion and scene_fade:
+		scene_fade.kill()
+		modulate.a = 1.0
 	publish_targets()
 	if game.screen=="garage" and (game.tab!="performance" or game.menu.hub.categories): game.draw_navigation()
 
@@ -174,7 +190,8 @@ func catalog_action(id: String) -> bool:
 			confirm_quote=key
 			return true
 		var slot: String=w.current_slot() if w.mode=="hardware" else ""
-		game.show_toast(game.profile.commit_upgrade_quote(game.selected_part,w.preview_stage,slot,w.selected_hardware,key))
+		var message: String = game.profile.commit_upgrade_quote(game.selected_part,w.preview_stage,slot,w.selected_hardware,key)
+		game.show_toast(message,message.begins_with("Installed ") or message=="Build updated")
 		game.refresh_car()
 		confirm_quote=""
 		return true
@@ -194,7 +211,10 @@ func _process(_delta: float) -> void:
 	publish_targets()
 	if is_instance_valid(notice):
 		notice.visible=game.toast_left>0
-		notice_label.text=game.toast
+		notice_label.text=("✓   " if game.toast_confirmed else "")+game.toast
+		notice.modulate.a=game.toast_reveal()
+		var accent := GlassPalette.GREEN if game.toast_confirmed else AutomotiveUI.BLUE
+		notice_skin.border_color=Color(accent,.64)
 
 func publish_targets() -> void:
 	# Container layout is deferred by Godot. Refresh after layout as well as draw,
@@ -229,7 +249,7 @@ func build() -> void:
 		else: overview(body)
 	if modal:
 		targets.clear()
-		var dim:=ColorRect.new(); dim.color=Color(0,.015,.025,.33); dim.mouse_filter=Control.MOUSE_FILTER_STOP
+		var dim:=ColorRect.new(); dim.color=Color(0,.015,.025,.49); dim.mouse_filter=Control.MOUSE_FILTER_STOP
 		add_child(dim); dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		modal_content()
 	build_notice()
@@ -253,8 +273,9 @@ func build_notice() -> void:
 	notice=PanelContainer.new(); add_child(notice); notice.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	notice.position=Vector2(24,74) if portrait else Vector2(350,66)
 	notice.size=Vector2(552,62) if portrait else Vector2(500,48)
-	notice.add_theme_stylebox_override("panel",AutomotiveUI.surface(Color("152b2b"),Color("91c9ad"),12))
-	notice_label=AutomotiveUI.label(game.toast,18,Color("d0e8dc")); notice.add_child(notice_label)
+	notice_skin=AutomotiveUI.surface(Color("15252c"),Color(AutomotiveUI.BLUE,.64),12)
+	notice.add_theme_stylebox_override("panel",notice_skin)
+	notice_label=AutomotiveUI.label(("✓   " if game.toast_confirmed else "")+game.toast,18,AutomotiveUI.INK); notice.add_child(notice_label)
 	notice.visible=game.toast_left>0
 
 func preview(parent: Node,height: float) -> void:

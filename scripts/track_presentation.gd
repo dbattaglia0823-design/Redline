@@ -20,16 +20,15 @@ static func draw(g: Node2D) -> void:
 	var road := 300.0 if portrait else 347.0
 	var bottom := 580.0 if portrait else (546.0 if g.race_touch_layout() else 580.0)
 	var ppm := 6.0 if portrait else 12.0
-	var scroll: float = g.feedback.visual_distance*ppm
+	var distance: float = g.car.distance if g.profile.reduced_motion else g.feedback.visual_distance
+	var scroll := distance*ppm
 	var night: bool = spec(g.race_track_index()).night
 	var accent := Color(str(spec(g.race_track_index()).accent))
 	var sky := VehicleAppearance.texture("res://assets/strip/sky_"+("night" if night else "day")+".svg")
 	if sky: g.draw_texture_rect(sky,Rect2(0,top,width,road-top),false)
-	# Horizon and distant industrial silhouettes sit behind the grandstands.
-	for i in (8 if g.profile.effects_quality == 0 else 15):
-		var x := fposmod(i*112-scroll*.055,width+150)-100
-		var h: float = 14+(i*17)%41
-		g.draw_rect(Rect2(x,road-60-h,81,h+15),Color("1b2b3c") if night else Color("70818a"))
+	if g.profile.effects_quality>0:
+		AutomotiveUI.glow(g,Rect2(-width*.16,road-214,width*1.30,236),Color(accent,.22 if night else .15))
+	draw_skyline(g,width,road,scroll,accent)
 	tile(g,"stands",Rect2(0,road-131,width,104),624,scroll*.24,Color(.4,.5,.65) if night else Color(.83,.86,.87))
 	# Finite floodlight fixtures, simple translucent cones rather than real-time lights.
 	for i in range(-1,ceili(width/360)+1):
@@ -41,8 +40,15 @@ static func draw(g: Node2D) -> void:
 			g.draw_colored_polygon(PackedVector2Array([Vector2(x-17,road-190),Vector2(x-85,bottom),Vector2(x+90,bottom),Vector2(x+17,road-190)]),Color(.65,.80,1,.035))
 	tile(g,"barrier",Rect2(0,road-25,width,25),384,scroll*.6,Color(.55,.65,.76) if night else Color.WHITE)
 	tile(g,"asphalt",Rect2(0,road,width,bottom-road),384,scroll,Color(.64,.71,.81) if night else Color(.91,.92,.91))
-	var middle := road+(bottom-road)*.5
-	for y in [road+2,middle,bottom-3]: g.draw_line(Vector2(0,y),Vector2(width,y),Color("bac1b9") if not night else Color("7e919d"),2)
+	var middle := 382.0 if portrait else 475.0
+	var lane_ink := Color("7e919d") if night else Color("bac1b9")
+	g.draw_line(Vector2(0,road+2),Vector2(width,road+2),lane_ink,2)
+	g.draw_line(Vector2(0,bottom-3),Vector2(width,bottom-3),lane_ink,2)
+	for i in range(-1,ceili(width/140)+1):
+		var x := i*140-fposmod(scroll,140)
+		g.draw_line(Vector2(x,middle),Vector2(x+88,middle),Color(lane_ink,.66),2)
+	if g.profile.effects_quality>0:
+		AutomotiveUI.glow(g,Rect2(-width*.22,road-34,width*1.45,132),Color(accent,.14))
 	# Rubber tracks and repaired seams are world-anchored, not arbitrary animated streaks.
 	for lane in 2:
 		for i in (6 if g.profile.effects_quality == 0 else 16):
@@ -54,8 +60,8 @@ static func draw(g: Node2D) -> void:
 				var x := fposmod(i*191-scroll,width+150)-100
 				g.draw_line(Vector2(x,road+25+lane*90+i%30),Vector2(x+clampf(g.car.speed*.45,12,42),road+25+lane*90+i%30),Color(.7,.76,.8,.045),1)
 	var origin: Vector2 = g.race_origins()[0]
-	var start_x: float = origin.x+382.8-g.car.distance*ppm
-	var finish_x: float = origin.x+382.8+(g.active_distance-g.car.distance)*ppm
+	var start_x := origin.x+354.0-scroll
+	var finish_x: float = origin.x+354.0+g.active_distance*ppm-scroll
 	if start_x > -1400 and start_x < width+100:
 		g.draw_rect(Rect2(start_x-95,road+4,95,bottom-road-8),Color(0,0,0,.15))
 		g.draw_rect(Rect2(start_x,road,4,bottom-road),Color("e4e5d5"))
@@ -66,8 +72,33 @@ static func draw(g: Node2D) -> void:
 			for col in 2: g.draw_rect(Rect2(finish_x+col*10,road+row*(bottom-road)/14,10,(bottom-road)/14),Color("f0eee0") if (row+col)%2==0 else Color("111c27"))
 		g.draw_line(Vector2(finish_x,road-80),Vector2(finish_x,road),accent,3)
 		g.text_at("FINISH",finish_x+8,road-60,15,accent)
-		board(g,Vector2(clampf(finish_x+35,16,width-240),road-173),night)
+		board(g,Vector2(clampf(finish_x+35,16,width-240),road-(138 if portrait else 173)),night)
 	g.draw_rect(Rect2(0,bottom-2,width,3),accent)
+	if g.feedback.finish_flash>.02 and g.profile.effects_quality>0 and not g.profile.reduced_motion:
+		AutomotiveUI.glow(g,Rect2(finish_x-100,road-42,200,bottom-road+75),Color(accent,g.feedback.finish_flash*.40))
+
+static func draw_skyline(g: Node2D,width: float,road: float,scroll: float,accent: Color) -> void:
+	var track: int = g.race_track_index()
+	var city := track == 2
+	var step := 82.0 if city else 164.0
+	var count := ceili(width/step)+2
+	for i in count:
+		var x := fposmod(i*step-scroll*.055,count*step)-step
+		var height := (48.0 if city else 18.0)+float((i*43+9)%61)
+		var roof := road-112-height
+		var building := Color("192638") if track>0 else Color("607583")
+		g.draw_rect(Rect2(x,roof,step*.73,height+69),building)
+		if city and i%3==0:
+			g.draw_line(Vector2(x+step*.44,roof),Vector2(x+step*.44,roof-19),Color(accent,.44),2)
+		if track>0 and g.profile.effects_quality>0:
+			for j in 4:
+				var light := Vector2(x+9+j*step*.14,roof+8+(i+j)%3*8)
+				g.draw_rect(Rect2(light,Vector2(4,2)),Color(accent,.39 if city else .26))
+		if track==0 and i%3==1:
+			var base := Vector2(x+step*.35,road-110)
+			var tip := base+Vector2(-36,-112)
+			g.draw_polyline(PackedVector2Array([base,base+Vector2(0,-112),tip,tip+Vector2(-45,25)]),Color("536977"),3,true)
+			g.draw_line(tip,tip+Vector2(0,36),Color("536977"),1,true)
 
 static func tree(g: Node2D,p: Vector2,s: float) -> void:
 	g.draw_rect(Rect2(p+Vector2(29,4)*s,Vector2(6,175)*s),Color("222e37"))
@@ -82,7 +113,9 @@ static func tree(g: Node2D,p: Vector2,s: float) -> void:
 			if lane == 0 and g.staging.red_light and lamp < 4: active = false
 			var c: Color = Color("f2ae43") if lamp<3 else (Color("7ce5a5") if lamp==3 else Color("fa5145"))
 			var center := Vector2(x,p.y+(48+lamp*22)*s)
-			if active and g.profile.effects_quality > 0: g.draw_circle(center,10*s,Color(c,.1))
+			if active and g.profile.effects_quality > 0:
+				var extent := Vector2.ONE*40*s
+				AutomotiveUI.glow(g,Rect2(center-extent*.5,extent),Color(c,.52))
 			g.draw_circle(center,7*s,c if active else Color("273039"))
 	g.text_at("STAGE",p.x,p.y-8,11,Color("d8e2de"))
 	g.text_at("P",p.x+2*s,p.y+15*s,8,Color("d8e2de"))

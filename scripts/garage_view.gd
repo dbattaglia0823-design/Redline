@@ -118,6 +118,9 @@ func draw_results() -> void:
 	g.draw_workshop(Rect2(36,219,615,380))
 	g.draw_car(Vector2(77,332),2.28,g.PAINTS[g.profile.paint],0.0,g.profile.wheels,false,g.profile.vehicle_id,-1,.315,g.car)
 	t(GameCatalog.spec(g.profile.vehicle_id).name.to_upper(),61,567,23)
+	if g.result_record:
+		g.glass.surface(g,Rect2(423,235,207,37),Color("173335"),Color(GREEN,.54),12)
+		t("NEW PERSONAL BEST",439,259,15,GREEN,true)
 	g.draw_rect(Rect2(679,219,487,380),Color("e9e2d0"))
 	for i in 27:
 		g.draw_circle(Vector2(688+i*18,219),4,BG)

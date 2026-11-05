@@ -11,6 +11,20 @@ const BLUE = Color("62cafa")
 const ORANGE = Color("ff9966")
 static var shared_theme: Theme
 static var glass_styles: Dictionary = {}
+static var soft_light: ImageTexture
+
+static func glow(canvas: CanvasItem,bounds: Rect2,tint: Color) -> void:
+	if soft_light == null:
+		var image := Image.new()
+		image.load_svg_from_string("""<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128">
+		<defs><radialGradient id="light"><stop stop-color="white"/>
+		<stop offset=".42" stop-color="white" stop-opacity=".57"/>
+		<stop offset=".76" stop-color="white" stop-opacity=".16"/>
+		<stop offset="1" stop-color="white" stop-opacity="0"/></radialGradient></defs>
+		<rect width="128" height="128" fill="url(#light)"/></svg>""")
+		soft_light = ImageTexture.create_from_image(image)
+	canvas.draw_texture_rect(soft_light,bounds,false,tint)
+
 
 class GlassButton extends Button:
 	var light: Tween
@@ -33,17 +47,17 @@ class GlassButton extends Button:
 		if disabled or reduced_motion(): return
 		if light: light.kill()
 		light=create_tween()
-		light.tween_property(self,"self_modulate",value,.14).set_trans(Tween.TRANS_SINE)
+		light.tween_property(self,"self_modulate",value,.14).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 # Rasterize each nine-slice material once. Its rim stays round when the surface grows.
 static func glass_material(kind: String) -> StyleBoxTexture:
 	if glass_styles.has(kind): return glass_styles[kind]
 	var palette: Dictionary={
-		"clear":["#606c77","#3a444f","#202833",.68],
+		"clear":["#526b80","#26384b","#111c29",.65],
 		"hover":["#87929d","#43515c","#202c37",.80],
-		"card":["#4e5b66","#303b46","#202833",.73],
-		"panel":["#45515e","#2d3742","#1b2430",.74],
-		"sheet":["#495462","#29333f","#111923",.90],
+		"card":["#384c61","#202f40","#111c28",.67],
+		"panel":["#394f65","#202d3e","#101925",.76],
+		"sheet":["#3f546a","#243345","#111a27",.92],
 		"warm":["#ba805b","#784b37","#402a27",.94],
 		"selected":["#ad8c78","#634a40","#30262a",.90],
 		"disabled":["#414951","#30353b","#20252d",.70],
@@ -52,14 +66,14 @@ static func glass_material(kind: String) -> StyleBoxTexture:
 	var svg := """<svg xmlns="http://www.w3.org/2000/svg" width="144" height="76">
 	<defs>
 	<linearGradient id="body" x2="0" y2="100%%"><stop stop-color="%s"/><stop offset=".54" stop-color="%s"/><stop offset="1" stop-color="%s"/></linearGradient>
-	<linearGradient id="rim" x2="16%%" y2="100%%"><stop stop-color="#fff" stop-opacity=".64"/><stop offset=".38" stop-color="#f1f4f8" stop-opacity=".21"/><stop offset=".72" stop-color="#b8c5d4" stop-opacity=".15"/><stop offset="1" stop-color="#d9e6f7" stop-opacity=".44"/></linearGradient>
-	<linearGradient id="gleam"><stop stop-color="#fff" stop-opacity="0"/><stop offset=".32" stop-color="#fff" stop-opacity=".50"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+	<linearGradient id="rim" x2="16%%" y2="100%%"><stop stop-color="#fff" stop-opacity=".48"/><stop offset=".38" stop-color="#f1f4f8" stop-opacity=".21"/><stop offset=".72" stop-color="#b8c5d4" stop-opacity=".15"/><stop offset="1" stop-color="#d9e6f7" stop-opacity=".44"/></linearGradient>
+	<linearGradient id="gleam"><stop stop-color="#fff" stop-opacity="0"/><stop offset=".32" stop-color="#fff" stop-opacity=".67"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
 	</defs>
 	<rect x="2" y="6" width="140" height="70" rx="24" fill="#000" opacity=".13"/>
 	<rect x="4" y="6" width="136" height="66" rx="23" fill="#000" opacity=".16"/>
 	<rect x="4" y="3" width="136" height="66" rx="22" fill="url(#body)" fill-opacity="%.2f" stroke="url(#rim)"/>
 	<rect x="6" y="5" width="132" height="62" rx="20" fill="none" stroke="#fff" stroke-opacity=".10"/>
-	<path d="M22 7 Q38 5 61 6 H112" fill="none" stroke="url(#gleam)"/>
+	<path d="M20 9 Q28 5 47 6 H112" fill="none" stroke="url(#gleam)"/>
 	</svg>"""%colors
 	var pixels:=Image.new()
 	pixels.load_svg_from_string(svg)

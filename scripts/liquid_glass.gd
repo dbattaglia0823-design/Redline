@@ -80,13 +80,15 @@ func button(g: Node2D,id: String,r: Rect2,primary: bool,selected: bool,enabled: 
 	elif selected: fill = PALETTE.selected; edge = Color(PALETTE.orange,.36)
 	elif hot > .08: fill = PALETTE.raised
 	if not enabled: fill = PALETTE.disabled; edge = Color("ffffff0c")
-	var shown := r.grow(-pulse*1.1) if enabled and not reduced_motion else r
+	var shown := r.grow(-pulse*pulse*2.6) if enabled and not reduced_motion else r
 	if legacy:
 		surface(g,shown,fill,edge,mini(PALETTE.radius,roundi(r.size.y*.42)),r.size.y > 36)
 	else:
 		var material:="disabled" if not enabled else ("warm" if primary else ("selected" if selected else ("hover" if hot>.08 else "clear")))
 		AutomotiveUI.glass_material(material).draw(g.get_canvas_item(),shown)
-	if hot > .01 and enabled:
+	if enabled and pulse > .01 and not reduced_motion and not legacy:
+		AutomotiveUI.glow(g,Rect2(shown.position,Vector2(shown.size.x,shown.size.y*.65)),Color(PALETTE.ink,pulse*.14))
+	if hot > .01 and enabled and shown.size.x > 36:
 		g.draw_line(shown.position+Vector2(18,1),Vector2(shown.end.x-18,shown.position.y+1),Color(1,1,1,hot*.17),1,true)
 	return shown
 
@@ -124,6 +126,9 @@ func background(g: Node2D,size: Vector2) -> void:
 			g.draw_rect(Rect2(Vector2.ZERO,size),tint)
 			var top_shade:=Color(.025,.032,.047,.54)
 			g.draw_polygon(PackedVector2Array([Vector2.ZERO,Vector2(size.x,0),Vector2(size.x,size.y*.24),Vector2(0,size.y*.24)]),PackedColorArray([top_shade,top_shade,Color.TRANSPARENT,Color.TRANSPARENT]))
+			if g.profile.effects_quality > 0:
+				AutomotiveUI.glow(g,Rect2(size*Vector2(.24,-.36),size*Vector2(1.2,1.0)),Color(.27,.52,.78,.15))
+				AutomotiveUI.glow(g,Rect2(size*Vector2(-.42,.48),size*Vector2(1.15,.92)),Color(.04,.08,.14,.58))
 			return
 	for i in 9:
 		var x := size.x*float(i)/8
@@ -142,7 +147,7 @@ static func menu_scene(g: Node2D,section: String,soft: bool=false,sheet: bool=fa
 	if not frosted_scenes.has(key):
 		var scene:=source.get_image()
 		if scene==null or scene.is_empty(): return source
-		var width:=80 if sheet else 310
+		var width:=96 if sheet else 220
 		scene.resize(width,roundi(width*float(scene.get_height())/scene.get_width()),Image.INTERPOLATE_LANCZOS)
 		frosted_scenes[key]=ImageTexture.create_from_image(scene)
 	return frosted_scenes[key]

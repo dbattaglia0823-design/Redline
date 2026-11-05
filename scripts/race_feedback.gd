@@ -64,15 +64,16 @@ func update(dt: float, car: Drivetrain, paused: bool, spec: Dictionary, origin: 
 	var shake := Vector2(sin(car.elapsed*137.0)*0.5,sin(car.elapsed*173.0))*magnitude
 	var follow := Vector2(clampf(-car.acceleration*0.32,-2.5,2.5),0.0)
 	camera_offset = camera_offset.lerp((follow+shake)*([.25,.65,1.0][clampi(quality,0,2)]),1-exp(-dt/.045))
-	body_pitch = lerpf(body_pitch,clampf(-car.acceleration*0.0008,-0.006,0.006),1.0-exp(-dt/0.08))
+	body_pitch = lerpf(body_pitch,clampf(-car.acceleration*.0015+_shock*.006,-.006,.006),1.0-exp(-dt/0.08))
 	_vibration_phase = fposmod(_vibration_phase+dt*car.rpm/60.0*TAU,TAU)
 	var idle_vibration := sin(_vibration_phase)*.16*clampf(1.0-car.speed/8.0,0,1)*clampf((2200-car.rpm)/1200,0,1) if quality > 0 else 0.0
-	var compression := clampf(car.acceleration*.13,-.5,1.1)
+	var compression := clampf(car.acceleration*.20,-.85,1.55)
 	body_offset = body_offset.lerp(Vector2(-_shock*.3,compression+idle_vibration+_shock*.35),1-exp(-dt/.055))
 	for i in range(smoke.size()-1,-1,-1):
 		var p := smoke[i]
 		p.age += dt
 		p.position += p.velocity*dt
+		p.velocity.x *= exp(-dt*.65)
 		if p.age >= p.life: smoke.remove_at(i)
 	if (not car.running and not car.staging_motion) or car.wheelspin < 0.08 or car.throttle < 0.35:
 		_emission = 0.0
@@ -84,10 +85,13 @@ func update(dt: float, car: Drivetrain, paused: bool, spec: Dictionary, origin: 
 		if smoke.size() >= int([8,24,48][clampi(quality,0,2)]): break
 		var wheel_index := 1 if car.drivetrain == "FWD" else 0
 		if car.drivetrain == "AWD": wheel_index = _particle_serial%2
-		var anchor := Vector2(float(spec.wheelbase[wheel_index]),float(spec.wheel_y))
-		var lift := float(spec.wheel_radius)*(WheelVisuals.radius_scale(car,spec)-1)
-		var x := origin.x+anchor.x*0.232*1.65
-		var y := origin.y+(anchor.y-lift+float(spec.wheel_radius)*WheelVisuals.radius_scale(car,spec)*0.9)*0.232*1.65
+		var art := VehicleAppearance.definition(str(spec.get("id","kaze")))
+		if art.is_empty(): break
+		var anchor := VehicleAppearance.point(art.rear if wheel_index == 0 else art.front)
+		var radii: Array = art.get("wheel_radii",[art.radius,art.radius])
+		var tire_scale := WheelVisuals.radius_scale(car,spec)
+		anchor.y += float(radii[wheel_index])*tire_scale-float(art.radius)*(tire_scale-1)
+		var contact := origin+anchor*.232*1.65
 		_particle_serial += 1
 		var spread := sin(_particle_serial*2.399)
-		smoke.append({"position":Vector2(x,y),"velocity":Vector2(-minf(190.0,25.0+car.speed*7.0)+spread*9.0,-18.0-spread*9.0),"age":0.0,"life":0.55+spread*0.10,"strength":car.wheelspin})
+		smoke.append({"position":contact,"velocity":Vector2(-minf(190.0,25.0+car.speed*7.0)+spread*9.0,-18.0-spread*9.0),"age":0.0,"life":0.70+spread*0.14,"strength":car.wheelspin})

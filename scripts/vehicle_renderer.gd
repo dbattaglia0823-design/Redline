@@ -5,7 +5,7 @@ static func layer(g: Node2D,path: String,pivot: Vector2,scale: float,modulate: C
 	var tex := VehicleAppearance.texture(path)
 	if tex: g.draw_texture_rect(tex,Rect2(-pivot,Vector2(1000,360)*scale),false,modulate)
 
-static func draw(g: Node2D,origin: Vector2,size: float,model: String,look: Dictionary,car: Drivetrain,animate: bool,offset: Vector2,pitch: float,flame: bool,quality: int,night: bool = false,braking: bool = false) -> void:
+static func draw(g: Node2D,origin: Vector2,size: float,model: String,look: Dictionary,car: Drivetrain,animate: bool,offset: Vector2,pitch: float,flame: bool,quality: int,night: bool = false,reveal: float = 1.0) -> void:
 	var d := VehicleAppearance.definition(model)
 	if d.is_empty(): return
 	var s := size*.232
@@ -15,7 +15,8 @@ static func draw(g: Node2D,origin: Vector2,size: float,model: String,look: Dicti
 	var lift := float(d.radius)*(radius_factor-1)*s
 	var base := origin-Vector2(0,lift)
 	var body := base+offset+Vector2(0,VehicleAppearance.body_drop(look)*s)
-	var light := Color(.72,.80,.94) if night else Color.WHITE
+	var light := Color(.74,.83,1.0) if night else Color.WHITE
+	light.a = reveal
 	# Tires are unsprung. Draw the authored wheels behind the sprung body so
 	# stance, launch squat and pitch cannot drag a wheel across its fender.
 	contact_shadow(g,base,d,s,radius_factor,quality)
@@ -35,9 +36,13 @@ static func draw(g: Node2D,origin: Vector2,size: float,model: String,look: Dicti
 		for x in [0,43]: g.draw_line(p+Vector2(x,-14)*s,p+Vector2(x,8)*s,Color("364858"),4*s,true)
 	if flame:
 		var p := VehicleAppearance.point(d.exhaust)*s-pivot
-		var pulse := .85+.15*sin(car._sim_time*TAU*car.rpm/120) if car != null else 1.0
-		g.draw_colored_polygon(PackedVector2Array([p+Vector2(0,-5)*s,p+Vector2(-110*pulse,-10)*s,p+Vector2(-65*pulse,5)*s,p+Vector2(-120*pulse,12)*s,p+Vector2(0,8)*s]),Color("ff693d"))
-		g.draw_line(p,p+Vector2(-52*pulse,0)*s,Color("ffe5b5"),4*s,true)
+		var pulse := .88+.12*sin(car._sim_time*48) if car != null else 1.0
+		var jet := Vector2(90*pulse,18)*s
+		var hot := Color("ffad68") if car == null or not car.nitrous_active else Color("8bcaff")
+		if quality > 0:
+			AutomotiveUI.glow(g,Rect2(p-jet*Vector2(1.4,1.6),jet*Vector2(1.8,3.2)),Color(hot,.45))
+		g.draw_polygon(PackedVector2Array([p+Vector2(0,-4)*s,p-Vector2(jet.x,1*s),p+Vector2(0,5)*s]),PackedColorArray([hot,Color(hot,0),hot]))
+		g.draw_line(p,p-Vector2(jet.x*.34,0),Color("ffeed8"),maxf(1,4*s),true)
 	g.draw_set_transform(Vector2.ZERO)
 	draw_wheels(g,base,size,s,model,d,look,car,animate,quality,light,true)
 
@@ -48,11 +53,18 @@ static func contact_shadow(g: Node2D,base: Vector2,d: Dictionary,s: float,radius
 	var radii: Array=d.get("wheel_radii",[d.radius,d.radius])
 	var y := maxf(rear.y+float(radii[0])*radius_factor,front.y+float(radii[1])*radius_factor)
 	var center := base+Vector2((rear.x+front.x)*.5,y)*s
-	for band in 3:
-		var points := PackedVector2Array()
-		var extent := Vector2((front.x-rear.x)*.62+float(d.radius),6.0+band*3.0)*s
-		for n in 25: points.append(center+Vector2(cos(n*TAU/24.0),sin(n*TAU/24.0))*extent)
-		g.draw_colored_polygon(points,Color(0.005,0.009,0.015,.08 if band>0 else .20))
+	var spread := Vector2((front.x-rear.x)*1.65,56)*s
+	AutomotiveUI.glow(g,Rect2(center-spread*.5,spread),Color(.008,.014,.025,.83))
+	for axle in [rear,front]:
+		var patch := Vector2(float(d.radius)*2.2,23)*s
+		var contact := base+Vector2(axle.x,y)*s
+		AutomotiveUI.glow(g,Rect2(contact-patch*.5,patch),Color(.004,.007,.014,.88))
+
+static func showroom_light(g: Node2D,bounds: Rect2,quality: int) -> void:
+	if quality == 0: return
+	var area := bounds.size
+	AutomotiveUI.glow(g,Rect2(bounds.position+area*Vector2(.04,.13),area*Vector2(.92,.88)),Color(.24,.49,.74,.22))
+	AutomotiveUI.glow(g,Rect2(bounds.position+area*Vector2(.09,.60),area*Vector2(.82,.34)),Color(.36,.65,.86,.19))
 
 static func draw_wheels(g: Node2D,base: Vector2,size: float,s: float,model: String,d: Dictionary,look: Dictionary,car: Drivetrain,animate: bool,quality: int,light: Color,reflections_only: bool) -> void:
 	var spec := GameCatalog.spec(model)

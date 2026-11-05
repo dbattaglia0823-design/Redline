@@ -109,7 +109,8 @@ func action(id: String) -> bool:
 	elif id == "custom_compare": compare = not compare
 	elif id == "custom_discard": candidate = g.profile.appearance_for(g.profile.vehicle_id); compare = false
 	elif id == "custom_install":
-		g.show_toast(g.profile.install_appearance(category,int(candidate[category])))
+		var message: String = g.profile.install_appearance(category,int(candidate[category]))
+		g.show_toast(message,message.begins_with("Installed "))
 		candidate = g.profile.appearance_for(g.profile.vehicle_id); compare = false
 	elif id == "custom_reset": g.profile.restore_appearance(); candidate = g.profile.appearance_for(g.profile.vehicle_id); compare = false
 	else: return false

@@ -87,7 +87,7 @@ func draw() -> void:
 	var s := GameCatalog.spec(id); var c := factory(id)
 	g.draw_workshop(Rect2(36,246,726,270))
 	t(str(s.brand)+" / "+str(s.year),58,277,18,g.MUTED)
-	g.draw_car(Vector2(72+pow(1-age,2)*18,290),2.65,g.PAINTS[2],0,0,false,id)
+	g.draw_car(Vector2(90,287),2.65,g.PAINTS[2],0,0,false,id)
 	for i in mini(4,ids.size()-page*4):
 		var item: String = ids[page*4+i]; var x := 36+i*184
 		g.button("dealer_%d" % GameCatalog.CAR_IDS.find(item),"",Rect2(x,530,173,92),false,item == id)
@@ -135,7 +135,7 @@ func action(id: String) -> bool:
 	elif id == "shop_details": details = not details
 	elif id.begins_with("dealer_") and id.trim_prefix("dealer_").is_valid_int(): g.dealer_index = clampi(int(id.trim_prefix("dealer_")),0,GameCatalog.CAR_IDS.size()-1); age = 0
 	elif id == "buy_car":
-		if g.profile.buy_vehicle(GameCatalog.CAR_IDS[g.dealer_index],equip): g.refresh_car(); g.show_toast("Added to your collection")
+		if g.profile.buy_vehicle(GameCatalog.CAR_IDS[g.dealer_index],equip): g.refresh_car(); g.show_toast("Added to your collection",true)
 		else: g.show_toast("Locked, owned, or insufficient credits")
 	else: return false
 	return true

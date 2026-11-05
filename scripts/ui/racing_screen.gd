@@ -257,7 +257,9 @@ func results(body: VBoxContainer) -> void:
 	var heading:=AutomotiveUI.row(body)
 	var outcome:="Red light" if game.staging.red_light else ("You win" if game.result_win else str(game.active_contract.get("name","Rival"))+" wins")
 	add_label(heading,outcome,42,GlassPalette.GREEN if game.result_win else AutomotiveUI.ORANGE)
-	add_label(heading,game.distance_label(game.active_distance),22,AutomotiveUI.MUTED)
+	var badge_text: String = "NEW PERSONAL BEST" if game.result_record else game.distance_label(game.active_distance)
+	var badge := add_label(heading,badge_text,18 if portrait else 22,GlassPalette.GREEN if game.result_record else AutomotiveUI.MUTED,true)
+	badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	var content: BoxContainer=AutomotiveUI.column(body,12) if portrait else AutomotiveUI.row(body,18)
 	content.size_flags_vertical=Control.SIZE_EXPAND_FILL
 	var visuals:=AutomotiveUI.column(content,6)
@@ -274,7 +276,7 @@ func results(body: VBoxContainer) -> void:
 	if portrait: content.move_child(slip.get_parent(),0)
 	slip.add_theme_constant_override("separation",8)
 	add_label(slip,"REDLINE / TIME SLIP",26,AutomotiveUI.BLUE,true)
-	slip_line(slip,"LANE","YOU","RIVAL",AutomotiveUI.MUTED,17)
+	slip_line(slip,game.distance_label(game.active_distance),"YOU","RIVAL",AutomotiveUI.MUTED,17)
 	slip_line(slip,"Elapsed","%.3f s"%game.staging.elapsed(game.player_finish),"%.3f s"%game.staging.elapsed(game.rival_finish,1) if game.rival_finish>0 else "DNF",AutomotiveUI.INK,26)
 	slip_line(slip,"Reaction","%.3f s"%game.player_reaction if game.staging.released[0] else "—","%.3f s"%game.staging.reactions[1] if game.staging.released[1] else "—")
 	slip_line(slip,"Trap speed","%.1f mph"%game.finish_speed,"%.1f mph"%game.rival_trap_speed if game.rival_finish>0 else "—")

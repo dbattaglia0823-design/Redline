@@ -19,10 +19,10 @@ static func draw_rim_reflection(g: Node2D,center: Vector2,radius: float,state: D
 	var angle := float(state.angle)
 	var blur := clampf(absf(float(state.omega))/150.0,0.0,1.0)
 	var width := maxf(.65,radius*.035)
-	var intensity := motion*(.14-.04*blur)*light.get_luminance()
+	var intensity := motion*(.23-.07*blur)*light.get_luminance()
 	for index in (2 if quality>1 else 1):
 		var phase := angle+index*2.35
-		var length := .38+blur*.42
+		var length := .34+blur*.66
 		for feather in 3:
 			var arc_color := Color(.83,.87,.90,intensity*(1.0-feather*.27)*(1.0-index*.48))
 			g.draw_arc(center,radius*(.87-feather*.014),phase+feather*.045,phase+length-feather*.045,8,arc_color,width,true)

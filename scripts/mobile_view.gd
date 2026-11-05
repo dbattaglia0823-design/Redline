@@ -16,7 +16,7 @@ func nav() -> void:
 func preview(id: String,y: float,car: Drivetrain,look: Dictionary = {}) -> void:
 	g.draw_workshop(Rect2(24,y,552,230))
 	var appearance: Dictionary = g.profile.appearance_for(id) if look.is_empty() else look
-	g.draw_car(Vector2(30,y+13),2.3,g.PAINTS[int(appearance.paint)],0,int(appearance.rim),false,id,-1,.315,car,Vector2.ZERO,0,appearance)
+	g.draw_car(Vector2(38,y+13),2.25,g.PAINTS[int(appearance.paint)],0,int(appearance.rim),false,id,-1,.315,car,Vector2.ZERO,0,appearance)
 func stats(car: Drivetrain,y: float) -> void:
 	var values: Array = g.menu.hub.stats(car)
 	for i in 4:
@@ -227,6 +227,7 @@ func driver() -> void:
 func results() -> void:
 	header("RED LIGHT" if g.staging.red_light else ("VICTORY" if g.result_win else "RACE COMPLETE"))
 	t(g.distance_label(g.active_distance),24,112,24,g.GREEN)
+	if g.result_record: t("NEW PERSONAL BEST",325,112,20,g.GREEN)
 	preview(g.profile.vehicle_id,146,g.car)
 	var net: int = g.result_reward-g.active_stake
 	var rt := ("RED " if g.staging.red_light else "")+"%.3f S" % g.player_reaction if g.staging.released[0] else "--"
