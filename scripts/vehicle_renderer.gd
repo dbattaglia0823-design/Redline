@@ -5,7 +5,7 @@ static func layer(g: Node2D,path: String,pivot: Vector2,scale: float,modulate: C
 	var tex := VehicleAppearance.texture(path)
 	if tex: g.draw_texture_rect(tex,Rect2(-pivot,Vector2(1000,360)*scale),false,modulate)
 
-static func draw(g: Node2D,origin: Vector2,size: float,model: String,look: Dictionary,car: Drivetrain,animate: bool,offset: Vector2,pitch: float,flame: bool,quality: int,night: bool = false,braking: bool = false) -> void:
+static func draw(g: Node2D,origin: Vector2,size: float,model: String,look: Dictionary,car: Drivetrain,animate: bool,offset: Vector2,pitch: float,flame: bool,quality: int,night: bool = false,braking: bool = false,effects: RaceFeedback = null) -> void:
 	var d := VehicleAppearance.definition(model)
 	if d.is_empty(): return
 	var s := size*.232
@@ -20,7 +20,7 @@ static func draw(g: Node2D,origin: Vector2,size: float,model: String,look: Dicti
 		# Soft variation under the facility's light banks; no realtime lights.
 		var pool := .97+.055*sin(car.distance*.065)
 		light *= Color(pool,pool,pool,1)
-	elif animate and g.screen == "race" and g.race_track_index()==2:
+	elif animate and g.has_method("race_track_index") and g.race_track_index()==2:
 		light = Color(1,.97,.91)
 	# Tires are unsprung. Draw the authored wheels behind the sprung body so
 	# stance, launch squat and pitch cannot drag a wheel across its fender.
@@ -39,16 +39,23 @@ static func draw(g: Node2D,origin: Vector2,size: float,model: String,look: Dicti
 		var p := VehicleAppearance.point(d.spoiler)*s-pivot
 		g.draw_line(p+Vector2(-18,-14)*s,p+Vector2(64,-14)*s,Color("101e2a"),9*s,true)
 		for x in [0,43]: g.draw_line(p+Vector2(x,-14)*s,p+Vector2(x,8)*s,Color("364858"),4*s,true)
-	if animate and car != null and quality > 0 and car.running:
+	if animate and car != null:
 		var tail := VehicleAppearance.point(d.exhaust)*s-pivot
-		var spread := 4.0+clampf(car.speed*.12,0,9)
-		var opacity := .11 if night else .07
-		TrackPresentation.glow(g,Rect2(tail+Vector2(-24,-spread*.6),Vector2(28,spread)),Color(.68,.75,.8,opacity*(.4+car.throttle)))
-	if flame:
-		var p := VehicleAppearance.point(d.exhaust)*s-pivot
-		var pulse := .85+.15*sin(car._sim_time*TAU*car.rpm/120) if car != null else 1.0
-		g.draw_colored_polygon(PackedVector2Array([p+Vector2(0,-5)*s,p+Vector2(-110*pulse,-10)*s,p+Vector2(-65*pulse,5)*s,p+Vector2(-120*pulse,12)*s,p+Vector2(0,8)*s]),Color("ff693d"))
-		g.draw_line(p,p+Vector2(-52*pulse,0)*s,Color("ffe5b5"),4*s,true)
+		var pulse := effects.exhaust_pulse if effects != null else .2
+		var boost := effects.boost_haze if effects != null else 0.0
+		var spray := effects.nitrous_glow if effects != null else 0.0
+		var flash := effects.exhaust_glow if effects != null else (0.4 if flame and RaceFeedback.backfire_capable(car) else 0.0)
+		if quality > 0 and (car.running or car.staging_motion):
+			# A faint pulsing hot plume at the authored outlet, not a flame on
+			# every shift. Boost increases shimmer; nitrous subtly cools its tint.
+			var spread := 4.0+clampf(car.speed*.12,0,9)+boost*10
+			var length := 16.0+pulse*12.0+car.exhaust_stage*2
+			TrackPresentation.glow(g,Rect2(tail+Vector2(-length,-spread*.5),Vector2(length,spread)),Color(.68-spray*.13,.73,.8+spray*.12,(.035+pulse*.045+boost*.04)))
+		if flash > .08 and RaceFeedback.backfire_capable(car):
+			var length := (28.0+car.exhaust_stage*7.0)*flash*s/.3828
+			if quality > 0: TrackPresentation.glow(g,Rect2(tail-Vector2(length,10),Vector2(length+8,20)),Color(1,.38,.12,flash*.45))
+			g.draw_colored_polygon(PackedVector2Array([tail+Vector2(0,-2),tail+Vector2(-length,-1),tail+Vector2(-length*.5,3),tail+Vector2(0,2)]),Color(1,.45,.18,flash))
+			g.draw_line(tail,tail-Vector2(length*.45,0),Color(.7,.85,1,flash),1.5,true)
 	g.draw_set_transform(Vector2.ZERO)
 	draw_wheels(g,base,size,s,model,d,look,car,animate,quality,light,true)
 
