@@ -129,6 +129,8 @@ func race_touch_layout() -> bool:
 
 func sync_menu_size() -> void:
 	var target := race_view_size() if screen == "race" else (Vector2i(600,1300) if is_portrait() else Vector2i(1200,760))
+	if screen=="garage" and tab in ["dealer","owned","style"] and not glass.legacy and not is_portrait() and get_window().size.y<500:
+		target=race_view_size()
 	if get_window().content_scale_size != target:
 		get_window().content_scale_size = target
 		controls.clear(); dragging_wager = ""; menu_dirty = true
@@ -555,6 +557,9 @@ func _input(event: InputEvent) -> void:
 	if tuning!=null and tuning.handle_input(event): return
 	menu_dirty = true
 	if input_override.x >= 0.0: return
+	if native_workshop!=null and native_workshop.handle_scroll_touch(event):
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventKey:
 		handle_key_input(event)
 		if native_workshop!=null and native_workshop.visible and event.pressed and (event.keycode in [KEY_TAB,KEY_ENTER,KEY_SPACE] or event.physical_keycode in [KEY_TAB,KEY_ENTER,KEY_SPACE]):
@@ -837,7 +842,7 @@ func _draw() -> void:
 	var compact := is_portrait()
 	dock.visible = false
 	if native_workshop!=null: native_workshop.visible=native_workshop.supports()
-	glass.background(self,Vector2(race_view_size()) if screen == "race" else (Vector2(600,1300) if compact else Vector2(1200,760)))
+	glass.background(self,Vector2(get_window().content_scale_size))
 	if native_workshop!=null and native_workshop.supports():
 		native_workshop.sync()
 	elif screen=="garage" and tab=="races" and career_board.active:

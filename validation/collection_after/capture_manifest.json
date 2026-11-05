@@ -1,0 +1,422 @@
+[
+  {
+    "file": "classes_1200x760.png",
+    "logical_canvas": [
+      1200,
+      760
+    ],
+    "rendered_viewport": [
+      1200,
+      760
+    ],
+    "window": [
+      1200,
+      760
+    ]
+  },
+  {
+    "file": "dealer_1200x760.png",
+    "logical_canvas": [
+      1200,
+      760
+    ],
+    "rendered_viewport": [
+      1200,
+      760
+    ],
+    "window": [
+      1200,
+      760
+    ]
+  },
+  {
+    "file": "details_1200x760.png",
+    "logical_canvas": [
+      1200,
+      760
+    ],
+    "rendered_viewport": [
+      1200,
+      760
+    ],
+    "window": [
+      1200,
+      760
+    ]
+  },
+  {
+    "file": "owned_1200x760.png",
+    "logical_canvas": [
+      1200,
+      760
+    ],
+    "rendered_viewport": [
+      1200,
+      760
+    ],
+    "window": [
+      1200,
+      760
+    ]
+  },
+  {
+    "file": "style_1200x760.png",
+    "logical_canvas": [
+      1200,
+      760
+    ],
+    "rendered_viewport": [
+      1200,
+      760
+    ],
+    "window": [
+      1200,
+      760
+    ]
+  },
+  {
+    "file": "wheels_1200x760.png",
+    "logical_canvas": [
+      1200,
+      760
+    ],
+    "rendered_viewport": [
+      1200,
+      760
+    ],
+    "window": [
+      1200,
+      760
+    ]
+  },
+  {
+    "file": "finish_1200x760.png",
+    "logical_canvas": [
+      1200,
+      760
+    ],
+    "rendered_viewport": [
+      1200,
+      760
+    ],
+    "window": [
+      1200,
+      760
+    ]
+  },
+  {
+    "file": "classes_1920x1080.png",
+    "logical_canvas": [
+      1200,
+      760
+    ],
+    "rendered_viewport": [
+      1705,
+      1080
+    ],
+    "window": [
+      1920,
+      1080
+    ]
+  },
+  {
+    "file": "dealer_1920x1080.png",
+    "logical_canvas": [
+      1200,
+      760
+    ],
+    "rendered_viewport": [
+      1705,
+      1080
+    ],
+    "window": [
+      1920,
+      1080
+    ]
+  },
+  {
+    "file": "details_1920x1080.png",
+    "logical_canvas": [
+      1200,
+      760
+    ],
+    "rendered_viewport": [
+      1705,
+      1080
+    ],
+    "window": [
+      1920,
+      1080
+    ]
+  },
+  {
+    "file": "owned_1920x1080.png",
+    "logical_canvas": [
+      1200,
+      760
+    ],
+    "rendered_viewport": [
+      1705,
+      1080
+    ],
+    "window": [
+      1920,
+      1080
+    ]
+  },
+  {
+    "file": "style_1920x1080.png",
+    "logical_canvas": [
+      1200,
+      760
+    ],
+    "rendered_viewport": [
+      1705,
+      1080
+    ],
+    "window": [
+      1920,
+      1080
+    ]
+  },
+  {
+    "file": "wheels_1920x1080.png",
+    "logical_canvas": [
+      1200,
+      760
+    ],
+    "rendered_viewport": [
+      1705,
+      1080
+    ],
+    "window": [
+      1920,
+      1080
+    ]
+  },
+  {
+    "file": "finish_1920x1080.png",
+    "logical_canvas": [
+      1200,
+      760
+    ],
+    "rendered_viewport": [
+      1705,
+      1080
+    ],
+    "window": [
+      1920,
+      1080
+    ]
+  },
+  {
+    "file": "classes_390x844.png",
+    "logical_canvas": [
+      600,
+      1300
+    ],
+    "rendered_viewport": [
+      389,
+      844
+    ],
+    "window": [
+      390,
+      844
+    ]
+  },
+  {
+    "file": "dealer_390x844.png",
+    "logical_canvas": [
+      600,
+      1300
+    ],
+    "rendered_viewport": [
+      389,
+      844
+    ],
+    "window": [
+      390,
+      844
+    ]
+  },
+  {
+    "file": "details_390x844.png",
+    "logical_canvas": [
+      600,
+      1300
+    ],
+    "rendered_viewport": [
+      389,
+      844
+    ],
+    "window": [
+      390,
+      844
+    ]
+  },
+  {
+    "file": "owned_390x844.png",
+    "logical_canvas": [
+      600,
+      1300
+    ],
+    "rendered_viewport": [
+      389,
+      844
+    ],
+    "window": [
+      390,
+      844
+    ]
+  },
+  {
+    "file": "style_390x844.png",
+    "logical_canvas": [
+      600,
+      1300
+    ],
+    "rendered_viewport": [
+      389,
+      844
+    ],
+    "window": [
+      390,
+      844
+    ]
+  },
+  {
+    "file": "wheels_390x844.png",
+    "logical_canvas": [
+      600,
+      1300
+    ],
+    "rendered_viewport": [
+      389,
+      844
+    ],
+    "window": [
+      390,
+      844
+    ]
+  },
+  {
+    "file": "finish_390x844.png",
+    "logical_canvas": [
+      600,
+      1300
+    ],
+    "rendered_viewport": [
+      389,
+      844
+    ],
+    "window": [
+      390,
+      844
+    ]
+  },
+  {
+    "file": "classes_844x390.png",
+    "logical_canvas": [
+      1645,
+      760
+    ],
+    "rendered_viewport": [
+      844,
+      389
+    ],
+    "window": [
+      844,
+      390
+    ]
+  },
+  {
+    "file": "dealer_844x390.png",
+    "logical_canvas": [
+      1645,
+      760
+    ],
+    "rendered_viewport": [
+      844,
+      389
+    ],
+    "window": [
+      844,
+      390
+    ]
+  },
+  {
+    "file": "details_844x390.png",
+    "logical_canvas": [
+      1645,
+      760
+    ],
+    "rendered_viewport": [
+      844,
+      389
+    ],
+    "window": [
+      844,
+      390
+    ]
+  },
+  {
+    "file": "owned_844x390.png",
+    "logical_canvas": [
+      1645,
+      760
+    ],
+    "rendered_viewport": [
+      844,
+      389
+    ],
+    "window": [
+      844,
+      390
+    ]
+  },
+  {
+    "file": "style_844x390.png",
+    "logical_canvas": [
+      1645,
+      760
+    ],
+    "rendered_viewport": [
+      844,
+      389
+    ],
+    "window": [
+      844,
+      390
+    ]
+  },
+  {
+    "file": "wheels_844x390.png",
+    "logical_canvas": [
+      1645,
+      760
+    ],
+    "rendered_viewport": [
+      844,
+      389
+    ],
+    "window": [
+      844,
+      390
+    ]
+  },
+  {
+    "file": "finish_844x390.png",
+    "logical_canvas": [
+      1645,
+      760
+    ],
+    "rendered_viewport": [
+      844,
+      389
+    ],
+    "window": [
+      844,
+      390
+    ]
+  }
+]

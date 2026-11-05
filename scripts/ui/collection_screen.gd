@@ -1,6 +1,56 @@
 class_name CollectionScreen
 extends WorkshopScreen
 
+var scroll_pointer: int=-1
+var scroll_start:=Vector2.ZERO
+var scroll_offset:=0
+var scroll_moved:=false
+var touch_scroll: ScrollContainer
+
+func handle_scroll_touch(event: InputEvent) -> bool:
+	# Defer option taps until release so a swipe cannot select an option, and
+	# consume the event once through the same existing action dispatcher.
+	if not visible or game.screen!="garage" or game.tab!="style" or not compact_landscape():
+		scroll_pointer=-1; touch_scroll=null; return false
+	if event is InputEventScreenTouch and event.canceled and event.index==scroll_pointer:
+		scroll_pointer=-1; touch_scroll=null; return true
+	if event is InputEventScreenTouch and event.pressed and not event.canceled and visible and compact_landscape() and game.tab=="style":
+		var scroll: ScrollContainer=find_child("LandscapeOptions",true,false)
+		if scroll==null or not scroll.get_global_rect().has_point(event.position): return false
+		if scroll_pointer>=0: return true
+		scroll_pointer=event.index; touch_scroll=scroll; scroll_start=event.position; scroll_offset=scroll.scroll_horizontal; scroll_moved=false
+		return true
+	if event is InputEventScreenDrag and event.index==scroll_pointer:
+		if is_instance_valid(touch_scroll):
+			var delta: float=event.position.x-scroll_start.x
+			if absf(delta)>12: scroll_moved=true
+			if scroll_moved: touch_scroll.scroll_horizontal=scroll_offset-roundi(delta/game.scale.x)
+		return true
+	if event is InputEventScreenTouch and not event.pressed and event.index==scroll_pointer:
+		scroll_pointer=-1
+		if is_instance_valid(touch_scroll) and not touch_scroll.is_queued_for_deletion() and not scroll_moved and not event.canceled and touch_scroll.get_global_rect().has_point(event.position):
+			game.activate_at(game.to_local(event.position),"touch_%d"%event.index)
+		touch_scroll=null
+		return true
+	return false
+
+func compact_landscape() -> bool:
+	return game.tab in ["dealer","owned","style"] and not game.is_portrait() and game.get_window().size.y<500
+
+func canvas_size() -> Vector2:
+	return Vector2(game.race_view_size()) if compact_landscape() else super.canvas_size()
+
+func button(parent: Node,id: String,text: String,primary: bool=false) -> Button:
+	var b:=super.button(parent,id,text,primary)
+	if compact_landscape(): b.custom_minimum_size.y=86; b.add_theme_font_size_override("font_size",24)
+	return b
+
+func sync() -> void:
+	super.sync()
+	if visible and compact_landscape():
+		game.buttons=game.buttons.filter(func(entry): return not str(entry.id).begins_with("tab_"))
+		game.dock.present(Rect2(24,640,size.x-48,104),game.tab)
+
 # Phase 2 composes the established native surface; the existing models own state.
 func supports() -> bool:
 	if not game.glass.legacy and game.screen=="garage" and not game.menu.hub.dyno_open and game.tab in ["dealer","owned","style"]: return true
@@ -22,6 +72,8 @@ func state_key() -> String:
 
 func build() -> void:
 	if game.tab not in ["dealer","owned","style"]: super.build(); return
+	if compact_landscape():
+		CollectionLandscape.new(self).build(); build_notice(); return
 	var body:=container(Rect2(24,20,552,1100) if portrait else Rect2(36,20,1128,638))
 	body.add_theme_constant_override("separation",10 if portrait else 12)
 	header(body)

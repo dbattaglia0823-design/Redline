@@ -110,10 +110,11 @@ static func comparison(parent: Node,title: String,before: float,after: float,uni
 static func vehicle_card(parent: Node,g: Node2D,id: String,car: Drivetrain,look: Dictionary,state: String,selected: bool,height: float=110) -> Button:
 	var b:=content_card(parent,height,selected)
 	var content: VBoxContainer=b.get_meta("content")
-	var thumb:=VehiclePreview.new(); content.add_child(thumb); thumb.configure(g,id,car,look,false,height-59)
-	content.add_child(label(str(GameCatalog.spec(id).name),17))
+	var wide_menu: bool=g.get_window().size.y<500 and g.get_window().content_scale_size.x>1200
+	var thumb:=VehiclePreview.new(); content.add_child(thumb); thumb.configure(g,id,car,look,false,height-(77 if wide_menu else 59))
+	content.add_child(label(str(GameCatalog.spec(id).name),24 if wide_menu else 17))
 	var state_color: Color=Color("91c9ad") if state.begins_with("Equipped") else (BLUE if state.begins_with("Owned") else (Color("eea29b") if state.begins_with("Level") else MUTED))
-	content.add_child(label(state,14,state_color))
+	content.add_child(label(state,20 if wide_menu else 14,state_color))
 	b.tooltip_text=str(GameCatalog.spec(id).name)+" / "+state
 	return b
 

@@ -1,5 +1,8 @@
 # REDLINE — Native UI modernization, phase 2
 
+The final four-resolution review and expanded input checks are recorded in
+[COLLECTION_FINAL_REVIEW.md](COLLECTION_FINAL_REVIEW.md).
+
 Implemented locally in the existing project on November 4, 2026. No push,
 replacement project, save migration or new visual theme was introduced.
 

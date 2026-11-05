@@ -28,7 +28,7 @@ func click(id: String,touch: bool = false) -> void:
 func key(code: Key) -> void:
 	var e := InputEventKey.new(); e.physical_keycode=code; e.pressed=true; game._input(e)
 func audit(label: String) -> void:
-	var canvas := Rect2(0,0,600,1300) if game.is_portrait() else Rect2(0,0,1200,760)
+	var canvas := Rect2(Vector2.ZERO,Vector2(game.get_window().content_scale_size))
 	var ids: Dictionary = {}
 	for i in game.buttons.size():
 		var a: Dictionary = game.buttons[i]

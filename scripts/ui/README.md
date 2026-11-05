@@ -73,3 +73,23 @@ cosmetic ownership/reinstallation, persistence, and locked/unaffordable states.
 It is registered in the full validation runner. `capture_collection_ui.gd`
 captures the class overview, showroom, collection and customization on desktop
 and phone; `-- --before` selects the pre-migration baseline directory.
+
+### Final resolution and input coverage
+
+Short landscape windows use `CollectionLandscape`, a presentation-only composer
+over the same models, widgets and actions. It reuses the existing wide logical
+canvas convention from racing; no vehicle dynamics change. Larger controls,
+side-by-side content, a fixed footer and wider navigation avoid shrinking a
+desktop composition into a small letterboxed viewport. Other menus keep their
+existing logical canvas conventions.
+
+The landscape cosmetic strip uses a touch gesture adapter. It consumes swipes
+without selecting an option and sends genuine taps through `activate_at` once
+on release. Mouse, keyboard and race controls keep their existing paths. This
+is not an additional purchase handler. Native scrollbars/focus remain available.
+
+The capture script now records 1200×760, 1920×1080, 390×844 and 844×390. Godot
+viewport textures omit window letterbox margins; the script copies the actual
+viewport pixels unchanged into a window-sized black frame. It performs no
+resampling or artwork editing. `capture_manifest.json` records window, native
+viewport and logical-canvas dimensions for every image.

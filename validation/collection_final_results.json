@@ -1,0 +1,68 @@
+{
+  "scope": "Final targeted UI and gameplay regression",
+  "tests": [
+    {
+      "log": "validation/test_collection_ui.log",
+      "passed": true,
+      "test": "test_collection_ui"
+    },
+    {
+      "log": "validation/test_glass_ui.log",
+      "passed": true,
+      "test": "test_glass_ui"
+    },
+    {
+      "log": "validation/test_dealer_classes_ui.log",
+      "passed": true,
+      "test": "test_dealer_classes_ui"
+    },
+    {
+      "log": "validation/test_customization_ui.log",
+      "passed": true,
+      "test": "test_customization_ui"
+    },
+    {
+      "log": "validation/test_native_workshop.log",
+      "passed": true,
+      "test": "test_native_workshop"
+    },
+    {
+      "log": "validation/test_physics.log",
+      "passed": true,
+      "test": "test_physics"
+    },
+    {
+      "log": "validation/test_upgrade_model.log",
+      "passed": true,
+      "test": "test_upgrade_model"
+    },
+    {
+      "log": "validation/test_customization.log",
+      "passed": true,
+      "test": "test_customization"
+    },
+    {
+      "log": "validation/test_controls.log",
+      "passed": true,
+      "test": "test_controls"
+    },
+    {
+      "log": "validation/test_flow.log",
+      "passed": true,
+      "test": "test_flow"
+    },
+    {
+      "log": "validation/test_shutdown.log",
+      "passed": true,
+      "test": "test_shutdown"
+    }
+  ],
+  "test_count": 11,
+  "native_results": {
+    "checks": 14152,
+    "passed": true,
+    "viewport_mouse_touch": true
+  },
+  "passed": true,
+  "capture_manifest": "validation/collection_after/capture_manifest.json"
+}

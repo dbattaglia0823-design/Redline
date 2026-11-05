@@ -32,8 +32,9 @@ class DockItem extends Button:
 		var key: String=GlassDock.TABS[index][0]
 		var selected: bool=dock.active==key or (dock.active=="owned" and key=="garage")
 		var color: Color=AutomotiveUI.ORANGE if selected else AutomotiveUI.MUTED
-		symbol.icon_size=23 if g.is_portrait() else 18; symbol.custom_minimum_size=Vector2.ONE*(symbol.icon_size+4); symbol.ink=color; symbol.queue_redraw()
-		caption.add_theme_font_size_override("font_size",18 if g.is_portrait() else 13); caption.add_theme_color_override("font_color",color)
+		var wide_menu: bool=g.screen=="garage" and g.get_window().content_scale_size.x>1200
+		symbol.icon_size=28 if wide_menu else (23 if g.is_portrait() else 18); symbol.custom_minimum_size=Vector2.ONE*(symbol.icon_size+4); symbol.ink=color; symbol.queue_redraw()
+		caption.add_theme_font_size_override("font_size",26 if wide_menu else (18 if g.is_portrait() else 13)); caption.add_theme_color_override("font_color",color)
 		queue_redraw()
 	func _draw() -> void:
 		var g: Node2D = dock.game

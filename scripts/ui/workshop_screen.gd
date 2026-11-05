@@ -64,7 +64,7 @@ func button(parent: Node,id: String,title: String,primary: bool=false) -> Button
 func sync() -> void:
 	visible=supports()
 	if not visible: return
-	portrait=game.is_portrait(); size=Vector2(600,1300) if portrait else Vector2(1200,760)
+	portrait=game.is_portrait(); size=canvas_size()
 	var key:=state_key()
 	if key!=signature:
 		signature=key
@@ -74,6 +74,12 @@ func sync() -> void:
 		targets.clear(); build()
 	publish_targets()
 	if game.tab!="performance" or game.menu.hub.categories: game.draw_navigation()
+
+func canvas_size() -> Vector2:
+	return Vector2(600,1300) if game.is_portrait() else Vector2(1200,760)
+
+func handle_scroll_touch(_event: InputEvent) -> bool:
+	return false
 
 func state_key() -> String:
 	var w: UpgradeWorkshop=game.workshop
