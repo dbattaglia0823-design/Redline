@@ -18,7 +18,7 @@ func touch(id: String,index: int,down: bool = true) -> void:
 	check(not item.is_empty(),"Missing HUD target: "+id)
 	if item.is_empty(): return
 	var e := InputEventScreenTouch.new(); e.index=index; e.pressed=down
-	e.position=game.to_global(item.rect.get_center()); game._input(e)
+	e.position=game.to_global(item.rect.get_center()); root.push_input(e,true)
 func run() -> void:
 	game=load("res://scenes/main.tscn").instantiate(); root.add_child(game)
 	game.set_process(false); game.set_physics_process(false)
@@ -44,6 +44,15 @@ func run() -> void:
 			check(target("manual_1").is_empty()!=manual,"H gate does not match installed transmission")
 			check(target("clutch").is_empty()==(game.car.has_converter or game.car.transmission_kind=="dct"),"Wrong clutch hardware layout")
 			check(target("transbrake").is_empty()!=game.car.has_transbrake,"Wrong transbrake layout")
+			check(game.race_hud.elapsed_text.text=="0.000 s","Staging showed a running timer")
+			if window==Vector2i(1200,760) and hardware=="manual5":
+				var mouse:=InputEventMouseButton.new()
+				mouse.button_index=MOUSE_BUTTON_LEFT
+				mouse.position=game.to_global(target("gas").rect.get_center())
+				mouse.pressed=true; root.push_input(mouse,true)
+				check(game.gas_input()==1,"Mouse throttle press missed")
+				mouse=mouse.duplicate(); mouse.pressed=false; root.push_input(mouse,true)
+				check(game.gas_input()==0,"Mouse throttle stayed held")
 			game.countdown=0; game.car.running=true; game.rival.running=true
 			game.controls.clear(); touch("gas",0); touch("brake",1)
 			check(game.gas_input()==1 and game.brake_input()==1,"Simultaneous thumb pedals failed")
@@ -63,6 +72,17 @@ func run() -> void:
 			await frame()
 			check(game.car.telemetry()==before,"HUD mutated simulation")
 			check(game.race_hud.readings.rpm==game.car.rpm and game.race_hud.readings.boost==game.car.boost,"HUD values diverged from solver")
+			if hardware=="dct8":
+				game.staging.released[0]=true; game.staging.reactions[0]=.2
+				game.car.elapsed=3.7; game.car.distance=100; game.rival.distance=102
+				await frame()
+				check(game.race_hud.elapsed_text.text=="3.500 s","Live ET included reaction time")
+				check(game.race_hud.gap_text.text=="-2.0 m","Deficit readout diverged from lane positions")
+				check(is_equal_approx(game.race_hud.progress.value,100.0),"Progress did not match measured distance")
+				game.player_finish=14.75; game.finish_hold_left=.4
+				await frame()
+				check(game.race_hud.elapsed_text.text=="14.550 s","Finish timer did not freeze at measured ET")
+				game.player_finish=0; game.finish_hold_left=0
 			var first: float=game.race_hud.readings.speed
 			touch("race_units",4); await frame()
 			check(absf(game.race_hud.readings.speed-first*1.609344)<.001,"Metric conversion is wrong")
@@ -73,7 +93,7 @@ func run() -> void:
 			if hardware in ["manual5","dct8","drag3"]:
 				root.get_texture().get_image().save_png("res://validation/race_hud/%dx%d_%s.png"%[window.x,window.y,hardware])
 			game.set_race_paused(true); await frame()
-			check(target("gas").is_empty() and not target("resume").is_empty(),"Pause overlay leaked race targets")
+			check(target("gas").is_empty() and not target("resume").is_empty() and not game.race_hud.status.visible,"Pause overlay leaked HUD content")
 			touch("resume",5); check(not game.paused_race,"Resume touch failed")
 			game.profile.forfeit_wager()
 	# Needle/shift lights must derive from each build, not from a universal threshold.

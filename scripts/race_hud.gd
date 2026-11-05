@@ -10,42 +10,93 @@ const GREEN := GlassPalette.GREEN
 var g: Node2D
 var styles: Dictionary = {}
 var readings: Dictionary = {}
+var status: PanelContainer
+var event_text: Label
+var distance_text: Label
+var elapsed_text: Label
+var gap_text: Label
+var progress: ProgressBar
+var status_layout := -1
 
-func _init(game: Node2D) -> void: g = game
+func _init(game: Node2D) -> void:
+	g = game
+	status = PanelContainer.new()
+	status.hide()
+	status.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	status.theme = AutomotiveUI.theme_resource()
+	var skin := AutomotiveUI.surface(Color("07131ef2"),Color("284652"),13)
+	skin.content_margin_top = 4
+	skin.content_margin_bottom = 4
+	status.add_theme_stylebox_override("panel",skin)
+	g.add_child(status)
+	var row := AutomotiveUI.row(status,12)
+	var event := AutomotiveUI.column(row,0)
+	event_text = AutomotiveUI.label("",19,BLUE)
+	distance_text = AutomotiveUI.label("",15,DIM,true)
+	event.add_child(event_text)
+	event.add_child(distance_text)
+	elapsed_text = AutomotiveUI.label("",35,WHITE,true)
+	elapsed_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	row.add_child(elapsed_text)
+	gap_text = AutomotiveUI.label("",20,GREEN,true)
+	gap_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	row.add_child(gap_text)
+	progress = ProgressBar.new()
+	progress.show_percentage = false
+	progress.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	progress.add_theme_stylebox_override("background", AutomotiveUI.surface(Color("172e3c"),Color.TRANSPARENT,2))
+	progress.add_theme_stylebox_override("fill", AutomotiveUI.surface(BLUE,Color.TRANSPARENT,2))
+	for style in ["background","fill"]:
+		var box: StyleBoxFlat = progress.get_theme_stylebox(style)
+		box.set_border_width_all(0)
+		box.content_margin_top=0
+		box.content_margin_bottom=0
+	# A non-Control host keeps the rail outside the panel's row layout.
+	var host := Node2D.new()
+	status.add_child(host)
+	host.add_child(progress)
 
-func surface(r: Rect2, active: bool = false, warm: bool = false) -> void:
-	var key := str(active)+str(warm)
+func hide_status() -> void:
+	status.hide()
+
+func surface(r: Rect2, active: bool = false, warm: bool = false, radius: int = 15) -> void:
+	var key := Vector3i(int(active),int(warm),radius)
 	if not styles.has(key):
-		var s := StyleBoxFlat.new()
-		s.bg_color = Color("523023ed") if active and warm else (Color("193849ee") if active else Color("07131eea"))
-		s.border_color = Color(ORANGE if warm else BLUE,.85 if active else .28)
-		s.set_border_width_all(1); s.set_corner_radius_all(18)
+		var fill := Color("653621f5") if active and warm else (Color("193849f0") if active else (Color("2b201df0") if warm else Color("07131eea")))
+		var s := AutomotiveUI.surface(fill,Color(ORANGE if warm else BLUE,.85 if active else .28),radius)
 		s.shadow_color = Color(0,0,0,.22); s.shadow_size = 5; s.shadow_offset = Vector2(0,3)
 		styles[key] = s
 	g.draw_style_box(styles[key],r)
 	g.draw_line(r.position+Vector2(20,1),Vector2(r.end.x-20,r.position.y+1),Color(ORANGE if warm else BLUE,.3 if active else .12),1,true)
 
 func text(value: String,p: Vector2,size: int = 16,c: Color = WHITE,mono: bool = false) -> void:
-	g.text_at(value,p.x,p.y,size,c,mono)
+	g.draw_string(AutomotiveUI.NUMBERS if mono else AutomotiveUI.DISPLAY,p,value,HORIZONTAL_ALIGNMENT_LEFT,-1,size,c)
 
 func centered(value: String,p: Vector2,size: int,c: Color = WHITE,mono: bool = false) -> void:
-	var f: Font = g.mono if mono else g.font
+	var f: Font = AutomotiveUI.NUMBERS if mono else AutomotiveUI.DISPLAY
 	text(value,p-Vector2(f.get_string_size(value,HORIZONTAL_ALIGNMENT_LEFT,-1,size).x*.5,0),size,c,mono)
 
 func control(id: String,label: String,r: Rect2,binding: String = "",warm: bool = false,selected: bool = false,enabled: bool = true) -> void:
 	var held: bool = g.controls.value(id)>0 if RaceControls.HOLD_ACTIONS.has(id) else selected
-	var hover: bool = r.has_point(g.get_local_mouse_position()) and not OS.has_feature("mobile")
+	var hover: bool = r.has_point(g.get_local_mouse_position()) and not OS.has_feature("mobile") and not (g.screen=="race" and g.race_touch_layout())
 	if not g.glass.states.has(id): g.glass.states[id] = {"hot":0.0,"pulse":0.0,"hover":false}
 	g.glass.states[id].hover = hover
 	var pulse: float = g.glass.states[id].pulse
-	surface(r.grow(-pulse*1.5) if not g.profile.reduced_motion else r,held or selected or (hover and enabled) or pulse>0,warm and enabled)
+	var radius := 22 if id=="gas" else (10 if id in ["up","down","brake"] or id.begins_with("manual_") else 15)
+	var face := r.grow(-maxf(pulse*1.5,2.0 if held else 0.0)) if not g.profile.reduced_motion else r
+	surface(face,enabled and (held or selected or hover or pulse>0),warm and enabled,radius)
+	if g.screen=="race" and id in ["gas","brake","clutch"] and r.size.y>=84:
+		for i in 3:
+			var grip := Vector2(r.get_center().x+(i-1)*13,r.position.y+17)
+			g.draw_line(grip,grip+Vector2(0,9),Color(ORANGE if warm else BLUE,.65 if held else .23),3,true)
 	var ink := (ORANGE if warm else BLUE) if held or selected else WHITE
 	if not enabled: ink = Color("52616d")
 	var phone: bool = g.is_portrait() or g.race_touch_layout()
 	var size := 24 if phone else 18
 	var shown_label:=label
-	while size>(20 if phone else 14) and g.font.get_string_size(shown_label,HORIZONTAL_ALIGNMENT_LEFT,-1,size).x>r.size.x-24: size-=1
-	while shown_label.length()>4 and g.font.get_string_size(shown_label,HORIZONTAL_ALIGNMENT_LEFT,-1,size).x>r.size.x-24: shown_label=shown_label.left(shown_label.length()-4)+"..."
+	if id in ["up","down"]: size = 36 if phone else 30
+	while size>(20 if phone else 14) and AutomotiveUI.DISPLAY.get_string_size(shown_label,HORIZONTAL_ALIGNMENT_LEFT,-1,size).x>r.size.x-24: size-=1
+	while shown_label.length()>4 and AutomotiveUI.DISPLAY.get_string_size(shown_label,HORIZONTAL_ALIGNMENT_LEFT,-1,size).x>r.size.x-24: shown_label=shown_label.left(shown_label.length()-4)+"..."
 	centered(shown_label,r.get_center()+Vector2(0,6 if phone or binding=="" else 0),size,ink)
 	if binding!="" and not phone: centered(binding,Vector2(r.get_center().x,r.end.y-10),11,DIM,true)
 	if RaceControls.HOLD_ACTIONS.has(id):
@@ -72,101 +123,139 @@ func draw(portrait: bool = false) -> void:
 	if g.paused_race: pause(w,portrait)
 
 func top(w: float,p: bool) -> void:
-	var h := 96 if p else (108 if g.race_touch_layout() else 52)
-	surface(Rect2(16,10,w-32,h))
-	var track := "TEST TRACK" if g.practice_mode else str(TrackPresentation.spec(g.race_track_index()).name)
+	var touch: bool = g.race_touch_layout() and not p
+	var pause_size := Vector2(90,90) if touch else (Vector2(76,76) if p else Vector2(48,44))
+	var pause_rect := Rect2(Vector2(w-pause_size.x-18,12),pause_size)
+	control("pause","Ⅱ",pause_rect)
+	var right := pause_rect.position.x-10
+	if OS.is_debug_build() and not p and not touch:
+		control("telemetry","F3",Rect2(right-48,12,48,44),"",false,g.debug_physics)
+		right-=58
+	var h := 77.0 if p or touch else 59.0
+	status.position = Vector2(18,12)
+	status.size = Vector2(right-18,h)
+	status.visible = not g.paused_race
+	var layout := 2 if touch else (1 if p else 0)
+	if layout!=status_layout:
+		status_layout=layout
+		event_text.get_parent().size_flags_stretch_ratio=1.55 if p else 1.0
+		gap_text.size_flags_stretch_ratio=.8 if p else 1.0
+		event_text.add_theme_font_size_override("font_size",23 if touch else 19)
+		distance_text.add_theme_font_size_override("font_size",19 if touch else 15)
+		elapsed_text.add_theme_font_size_override("font_size",41 if touch else (29 if p else 35))
+		gap_text.add_theme_font_size_override("font_size",24 if touch else 20)
+	var track := "TEST TRACK" if g.practice_mode else str(TrackPresentation.spec(g.race_track_index()).name).to_upper()
 	if not g.practice_mode and g.active_contract.has("id"):
-		track="CLASS "+str(g.active_contract.series)+(" / FINAL" if int(g.active_contract.round)==4 else " / RIVAL" if int(g.active_contract.round)==3 else " / HEAT %d"%(int(g.active_contract.round)+1))
-		if str(g.active_contract.series)=="OPEN": track=str(g.active_contract.event_name).to_upper()
-	text(track,Vector2(32,34),17 if p else (20 if g.race_touch_layout() else 13),BLUE)
-	text(g.distance_label(g.active_distance),Vector2(32,64 if p else 49),17 if p else (18 if g.race_touch_layout() else 12),DIM)
-	var time: float = g.player_finish if g.finish_hold_left>0 else g.car.elapsed
-	centered("%.3f"%time,Vector2(284 if p else w*.5,65 if p else 40),40 if g.race_touch_layout() and not p else 34,WHITE,true)
-	if not p: text("s",Vector2(w*.5+63,40),14,DIM)
+		track = str(g.active_contract.event_name).to_upper()
+	event_text.text = track
+	var meters := clampf(g.car.distance,0.0,g.active_distance)
+	distance_text.text = "%s  ·  %d/%d m"%[g.distance_label(g.active_distance),floori(meters),roundi(g.active_distance)]
+	var total: float = g.player_finish if g.player_finish>0 else g.car.elapsed
+	elapsed_text.text = "%.3f s"%g.staging.elapsed(total) if g.staging.released[0] else "0.000 s"
 	var gap: float = g.car.distance-g.rival.distance
-	var lead := ("+" if gap>=0 else "-")+"%.1f m"%absf(gap)
-	text("PRACTICE" if g.practice_mode else lead,Vector2(365 if p else w-287,72 if p else 31),24 if g.race_touch_layout() and not p else 19,GREEN if gap>=0 else ORANGE,true)
-	if not p: text("%d / %d m"%[mini(int(g.car.distance),int(g.active_distance)),roundi(g.active_distance)],Vector2(w-287,49),12,DIM,true)
-	var r := Rect2(32,h-1,(w-64 if p else w-386),3)
-	g.draw_rect(r,Color(BLUE,.12)); g.draw_rect(Rect2(r.position,Vector2(r.size.x*clampf(g.car.distance/g.active_distance,0,1),3)),BLUE)
-	control("pause","II",Rect2(w-116,12,90,90) if g.race_touch_layout() and not p else (Rect2(w-100,16,76,76) if p else Rect2(w-78,12,50,44)))
-	if OS.is_debug_build() and not p and not g.race_touch_layout(): control("telemetry","F3",Rect2(w-136,12,50,44),"",false,g.debug_physics)
+	gap_text.text = "SOLO" if g.practice_mode else ("%+.1f m"%gap if absf(gap)>=.05 else "EVEN")
+	gap_text.add_theme_color_override("font_color",DIM if g.practice_mode or absf(gap)<.05 else (GREEN if gap>0 else ORANGE))
+	var rail := Rect2(34,12+h-7,right-50,2)
+	progress.position = rail.position-status.position
+	progress.size = rail.size
+	progress.max_value = g.active_distance
+	progress.value = meters
 
 func stage(w: float,p: bool) -> void:
-	if g.countdown>0:
-		var r := Rect2(24,120 if p else (126 if g.race_touch_layout() else 92),340 if p else 310,52)
-		surface(r)
-		for i in 2:
-			var on: bool = g.staging.beam(0,i==0)
-			g.draw_circle(r.position+Vector2(17+i*119,17),3,GREEN if on else DIM)
-			text("PRE-STAGE" if i==0 else "STAGE",r.position+Vector2(27+i*119,22),12,GREEN if on else DIM)
-		var hint := "Clutch + gas / release on green" if g.car.control_mode=="hpattern" else ("Gas + transbrake / release on green" if g.car.has_transbrake else ("Hold gas / watch tree" if g.staging.assisted else "Brake + gas / release on green"))
-		text(hint,r.position+Vector2(14,43),15 if p else 13,DIM)
-		control("staging_assist","ASSIST" if g.staging.assisted else "MANUAL",Rect2(24,180 if p else (186 if g.race_touch_layout() else 152),140,72 if p else (90 if g.race_touch_layout() else 52)),"",false,g.staging.assisted)
+	var touch: bool = g.race_touch_layout() and not p
+	var y := 104.0 if p or touch else 78.0
 	var message := ""
 	var tint := GREEN
 	if g.staging.red_light: message="RED LIGHT"; tint=ORANGE
 	elif g.finish_hold_left>0: message="FINISH"
-	elif g.countdown<=0 and g.car.elapsed<.5: message="GO"
-	if message!="": centered(message,Vector2(w*.5,204 if p else 130),28,tint,true)
+	elif g.countdown<=0 and g.car.elapsed<.45: message="GO"
+	if message!="":
+		var chip := Rect2(w*.5-90,y,180,36)
+		surface(chip)
+		centered(message,chip.get_center()+Vector2(0,7),22,tint,true)
+	if g.countdown<=0: return
+	var assist := Rect2(18,y,132,76 if p else (90 if touch else 44))
+	control("staging_assist","ASSIST" if g.staging.assisted else "MANUAL",assist,"",false,g.staging.assisted)
+	var panel := Rect2(assist.end.x+8,y,276,51)
+	surface(panel)
+	var base := panel.position+Vector2(13,17)
+	for i in 2:
+		var on: bool = g.staging.beam(0,i==0)
+		g.draw_circle(base+Vector2(i*112,0),4,BLUE if on else Color("394857"))
+		text("PRE-STAGE" if i==0 else "STAGE",base+Vector2(10+i*112,5),15,WHITE if on else DIM)
+	var hint := ""
+	if not g.staging.beam(0): hint="Ease forward to stage"
+	elif g.car.has_transbrake: hint="Release transbrake on green"
+	elif g.car.control_mode=="hpattern": hint="Release clutch on green"
+	elif g.staging.assisted: hint="Launch on green"
+	else: hint="Release brake on green"
+	text(hint,base+Vector2(0,25),15,WHITE)
 
-func tach(center: Vector2,radius: float,p: bool) -> void:
+func tach(center: Vector2,width: float,p: bool) -> void:
 	var c: Drivetrain = g.car
-	var maximum: float = ceilf((c.redline_rpm+400)/1000)*1000
+	var maximum := ceilf((c.redline_rpm+300)/1000)*1000
 	var steps := int(maximum/1000)
-	var actual := clampf(g.feedback.visual_rpm/maximum,0,1)
-	g.draw_arc(center,radius,PI,TAU,64,Color(BLUE,.12),9,true)
-	var red := PI+PI*c.redline_rpm/maximum
-	g.draw_arc(center,radius,red,TAU,16,Color(ORANGE,.8 if c.limiter else .45),9,true)
-	g.draw_arc(center,radius,PI,PI+actual*PI,64,ORANGE if c.limiter else BLUE,5,true)
-	for i in steps+1:
-		var angle: float = PI+PI*i/steps
-		var v := Vector2(cos(angle),sin(angle))
-		g.draw_line(center+v*(radius-12),center+v*(radius-18),ORANGE if i*1000>=c.redline_rpm else DIM,1,true)
-		centered(str(i),center+v*(radius-30)+Vector2(0,5),20 if g.race_touch_layout() and not p else (17 if p else 12),DIM,true)
-	var needle := Vector2(cos(PI+actual*PI),sin(PI+actual*PI))
-	g.draw_line(center+needle*42,center+needle*(radius-22),ORANGE,2,true)
-	centered("%04d"%roundi(c.rpm),center-Vector2(0,25),36 if p or g.race_touch_layout() else 29,ORANGE if c.limiter else WHITE,true)
-	centered("RPM x 1000",center-Vector2(0,6),12,DIM)
-	var target: float = readings.target
-	var capable: bool = c.gear>0 and c.gear<c.gear_ratios.size()
-	var fraction := clampf((c.rpm-(target-1700))/1700,0,1) if capable and g.show_shift_guide else 0.0
+	var rpm: float = c.rpm if g.profile.reduced_motion else g.feedback.visual_rpm
+	var start := center.x-width*.5
+	var fraction := clampf(rpm/maximum,0,1)
+	var capable: bool = c.gear>0 and c.gear<c.gear_ratios.size() and c.control_mode!="automatic"
+	var shift_fill := clampf((c.rpm-(float(readings.target)-1500))/1500,0,1) if capable and g.show_shift_guide and c.shift_left<=0 else 0.0
 	for i in 9:
-		var lit: bool = fraction >= (i+1)/9.0
-		var color := GREEN if i<6 else ORANGE
-		var pos := center+Vector2((i-4)*16,-radius-18)
-		g.draw_circle(pos,4,color if lit else Color(BLUE,.14))
-	var hint := "LIMITER" if c.limiter else ("SHIFT" if c.upshift_ready() and g.show_shift_guide else "")
-	if g.shift_notice_left>0: hint=g.shift_notice
-	elif g.shift_flash>0: hint=c.shift_message
-	if hint.length()>26: hint=hint.left(26)
-	centered(hint,center+Vector2(0,22),13,ORANGE if c.limiter or g.shift_notice_left>0 else GREEN)
+		var lit := shift_fill>=(i+1)/9.0
+		var ink := BLUE if i<6 else (GREEN if c.shift_recommended() else ORANGE)
+		g.draw_rect(Rect2(center.x-87+i*20,center.y-48,14,5),ink if lit else Color("263c4b"))
+	var bar_y := center.y-29
+	for i in 24:
+		var t := i/24.0
+		var length := width/24.0-2
+		var x := start+i*width/24.0
+		var red := (i+.5)/24.0*maximum>=c.redline_rpm
+		var ink := ORANGE if red or c.limiter else BLUE
+		g.draw_rect(Rect2(x,bar_y,length,14),Color(ink,.36 if red else .16))
+		var fill := clampf((fraction-t)*24,0,1)*length
+		if fill>0: g.draw_rect(Rect2(x,bar_y,fill,14),ink)
+	for i in steps+1:
+		var x := start+width*i/steps
+		centered(str(i),Vector2(x,center.y+5),18 if g.race_touch_layout() and not p else (15 if p else 12),ORANGE if i*1000>=c.redline_rpm else DIM,true)
+	centered("%04d RPM"%roundi(c.rpm),center+Vector2(0,39),31,ORANGE if c.limiter else WHITE,true)
+	var hint := "RPM × 1000"
+	var tint := DIM
+	if c.limiter: hint="REV LIMITER"; tint=ORANGE
+	elif g.shift_notice_left>0: hint=g.shift_notice; tint=ORANGE
+	elif g.shift_flash>0 and c.shift_message!="":
+		hint=c.shift_message; tint=GREEN if hint=="PERFECT SHIFT" else BLUE
+	elif c.wheelspin>.15 and c.throttle>.1: hint="WHEELSPIN"; tint=ORANGE
+	elif capable and c.shift_recommended() and g.show_shift_guide: hint="SHIFT WINDOW"; tint=GREEN
+	centered(hint.left(29),center+Vector2(0,61),14,tint,true)
 
 func dashboard(w: float,p: bool) -> void:
 	var c: Drivetrain = g.car
-	var top_y := 604 if p else (548 if g.race_touch_layout() else 582)
-	surface(Rect2(16,top_y,w-32,(680 if p else 746-top_y)))
-	var cx := w*.5
 	var touch: bool = g.race_touch_layout()
-	# A narrow landscape screen needs room for the manual clutch beside the gate.
-	if touch and not p and (c.has_transbrake or (not c.has_converter and c.transmission_kind!="dct")): cx+=84
-	tach(Vector2(cx,850 if p else 721),145 if p else (132 if touch else 112),p)
-	var gear_pos := Vector2(91,760) if p else Vector2(cx-(172 if touch else 201),667)
-	centered(str(readings.gear),gear_pos,62 if p else 53,ORANGE if c.shift_left>0 else WHITE,true)
-	centered("GEAR",gear_pos+Vector2(0,24),18 if touch else 12,DIM)
-	var status := "ENGAGING" if c.shift_left>0 else ("QUEUED" if c.queued_shift!=0 else c.transmission_kind.to_upper())
-	centered(status,gear_pos+Vector2(0,45),11,ORANGE if c.shift_left>0 else DIM)
-	if c.queued_shift!=0: centered("QUEUED "+("+" if c.queued_shift>0 else "-"),gear_pos+Vector2(0,62),12,BLUE)
-	var speed_pos := Vector2(484,760) if p else Vector2(cx+183,667)
-	centered("%03d"%roundi(g.feedback.visual_mph*(1.609344 if g.profile.metric_speed else 1.0)),speed_pos,49 if p else 44,WHITE,true)
-	centered("KM/H" if g.profile.metric_speed else "MPH",speed_pos+Vector2(0,24),18 if touch else 12,BLUE)
-	g.buttons.append({"id":"race_units","rect":Rect2(speed_pos-Vector2(65,58),Vector2(130,90))})
-	if c.base_boost>0 or c.turbo_stage>0: centered("%.2f BAR"%c.boost,speed_pos+Vector2(0,46),12,DIM,true)
-	if c.wheelspin>.15 and c.throttle>.1: centered("TRACTION",Vector2(cx,905 if p else 741),12,ORANGE)
-	var left := 24.0
+	var cx := w*.5
+	if touch and not p and c.control_mode=="hpattern": cx+=42
+	var dial_y := 764.0 if p else 634.0
+	var width := 256.0 if p else (320.0 if touch else 284.0)
+	var cluster := Rect2(cx-(282 if p else 268),dial_y-70,564 if p else 536,154)
+	surface(cluster)
+	tach(Vector2(cx,dial_y),width,p)
+	var gear_pos := Vector2(cx-(204 if p else 218),dial_y+12)
+	var speed_pos := Vector2(cx+(204 if p else 218),dial_y+12)
+	var gear_color := ORANGE if c.shift_left>0 else (GREEN if g.shift_flash>0 and c.shift_message=="PERFECT SHIFT" else WHITE)
+	centered(str(readings.gear),gear_pos,52,gear_color,true)
+	centered("GEAR",gear_pos+Vector2(0,24),15,DIM)
+	var mode := "AUTO" if c.control_mode=="automatic" else c.transmission_kind.to_upper()
+	var gear_status := "ENGAGING" if c.shift_left>0 else ("QUEUED "+("+" if c.queued_shift>0 else "−") if c.queued_shift!=0 else mode)
+	centered(gear_status,gear_pos+Vector2(0,45),13,gear_color if c.shift_left>0 else DIM)
+	var speed: float = readings.speed if g.profile.reduced_motion else g.feedback.visual_mph*(1.609344 if g.profile.metric_speed else 1.0)
+	centered("%03d"%roundi(speed),speed_pos,44,WHITE,true)
+	centered("KM/H" if g.profile.metric_speed else "MPH",speed_pos+Vector2(0,24),15,BLUE)
+	g.buttons.append({"id":"race_units","rect":Rect2(speed_pos-Vector2(52,48),Vector2(104,92))})
+	if c.base_boost>0 or c.turbo_stage>0:
+		centered("%.2f BAR"%c.boost,speed_pos+Vector2(0,47),13,BLUE,true)
+	var left := 20.0
 	var right := w-286
-	var row := 940.0 if p else (586.0 if touch else 594.0)
-	var ch := 88.0 if p else (146.0 if touch else 62.0)
+	var row := 940.0 if p else (612.0 if touch else 608.0)
+	var ch := 88.0 if p else (128.0 if touch else 60.0)
 	var columns := 3 if c.control_mode=="hpattern" else 2
 	if c.control_mode=="hpattern":
 		var count: int = c.gear_ratios.size()
@@ -181,33 +270,34 @@ func dashboard(w: float,p: bool) -> void:
 		for gear in range(1,count+1):
 			var col := int((gear-1)/2); var rr := (gear-1)%2
 			control("manual_%d"%gear,str(gear),Rect2(left+col*cell,gate_y+rr*gate_step,cell-5,gate_h),"",false,c.gear==gear)
-		control("manual_0","N",Rect2(24,842,92,72) if p else Rect2(left+gate_width+8,548 if touch else 590,90 if touch else 48,90 if touch else 48),"",false,c.gear==0)
+		control("manual_0","N",Rect2(24,842,92,72) if p else Rect2(left+gate_width+8,548 if touch else 590,112 if touch else 48,90 if touch else 48),"",false,c.gear==0)
 	elif c.control_mode!="automatic":
-		control("down","-",Rect2(left,row,120,ch),"Q")
-		control("up","+",Rect2(left+132,row,120,ch),"E",true,g.show_shift_guide and c.upshift_ready())
-	else:
-		centered("AUTO",Vector2(left+126,row+38),24,BLUE,true)
-		centered("%d-SPEED / SHIFT MAP"%c.gear_ratios.size(),Vector2(left+126,row+63),12,DIM)
+		control("down","−",Rect2(left,row,120,ch),"Q")
+		control("up","+",Rect2(left+132,row,120,ch),"E",true,g.show_shift_guide and c.shift_recommended())
 	var no_aux: bool = c.has_converter or c.transmission_kind=="dct"
 	var pedal_y := (1050.0 if no_aux and not c.has_transbrake else 1182.0) if p else row
 	var pedal_h := (222.0 if no_aux and not c.has_transbrake else 90.0) if p else ch
-	var aux_y := 1100.0 if p else (700.0 if c.control_mode=="hpattern" and not touch else (row+74 if not touch else row))
-	var aux_x := left if p or not touch else left+396
+	var aux := Rect2(left,1100,252,70) if p else Rect2(left,row+70,252,58)
+	if touch and not p:
+		if c.control_mode=="hpattern": aux=Rect2(left+296,648,112,90)
+		elif c.has_transbrake: aux=Rect2(left,row,202,ch)
+		else: aux=Rect2(left+264,row,132,ch)
+	elif not p and c.control_mode=="hpattern": aux=Rect2(left,700,252,44)
 	if c.has_transbrake:
-		control("transbrake","TRANSBRAKE",Rect2(aux_x,aux_y,252 if p or not touch else 145,70 if p else (ch if touch else (44 if c.control_mode=="hpattern" else 58))),"B",false,g.transbrake_input())
-	elif not c.has_converter and c.transmission_kind!="dct":
-		control("clutch","CLUTCH",Rect2(aux_x,aux_y,252 if p or not touch else 145,70 if p else (ch if touch else (44 if c.control_mode=="hpattern" else 58))),"SHIFT",false,g.clutch_input()>.01)
+		control("transbrake","TRANSBRAKE",aux,"B",false,g.transbrake_input())
+	elif not no_aux:
+		control("clutch","CLUTCH",aux,"SHIFT",false,g.clutch_input()>.01)
 	if p:
 		control("brake","BRAKE",Rect2(left,pedal_y,252,pedal_h),"S")
 		right=312
 		control("gas","THROTTLE",Rect2(right,1050,264,222),"W",true)
 	else:
-		control("brake","BRAKE",Rect2(right,row,114,ch),"S")
-		control("gas","THROTTLE",Rect2(right+126,row,136,ch),"W",true)
-	var nr := Rect2(right,940 if p else (490 if touch else row+ch+10),264 if p else 262,88 if p else (90 if touch else 58))
+		control("brake","BRAKE",Rect2(right,row+(16 if touch else 0),108,ch-(16 if touch else 0)),"S")
+		control("gas","THROTTLE",Rect2(right+119,row,147,ch),"W",true)
+	var nr := Rect2(right,940 if p else (514 if touch else row+ch+10),264 if p else 262,88 if p else (90 if touch else 58))
 	var kit_allowed: bool=g.practice_mode or not g.active_contract.has("id") or c.nitrous_stage>0 or c.hardware.parts.values().has("progressive")
 	var available: bool = c.nitrous_remaining>.001 and kit_allowed
-	control("nitrous","N2O  %.1fs"%c.nitrous_remaining if available else ("N2O / FIT KIT" if not kit_allowed else "N2O  UNAVAILABLE"),nr,"SPACE",false,c.nitrous_active,available)
+	control("nitrous",("SPRAY  %.1f s" if c.nitrous_active else "N₂O  %.1f s")%c.nitrous_remaining if available else ("N₂O  ·  NO KIT" if not kit_allowed else "N₂O  ·  EMPTY"),nr,"SPACE",false,c.nitrous_active,available)
 	if available:
 		g.draw_line(nr.position+Vector2(16,nr.size.y-5),Vector2(nr.position.x+16+(nr.size.x-32)*clampf(c.nitrous_remaining/c.nitrous_capacity(),0,1),nr.end.y-5),GREEN,2,true)
 

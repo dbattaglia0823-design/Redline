@@ -840,6 +840,7 @@ func draw_navigation() -> void:
 
 func _draw() -> void:
 	ui_offset = Vector2.ZERO
+	if screen != "race": race_hud.hide_status()
 	if screen == "garage": normalize_wager()
 	buttons.clear()
 	var compact := is_portrait()
