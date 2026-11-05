@@ -117,18 +117,15 @@ func background(g: Node2D,size: Vector2) -> void:
 	g.draw_rect(Rect2(Vector2.ZERO,size),PALETTE.background)
 	if not legacy and g.screen!="race":
 		var section: String=g.tab if g.screen=="garage" else "races"
-		var sheet: bool=g.menu.hub.dyno_open or (section=="performance" and not g.menu.hub.categories)
+		var sheet: bool=g.menu.hub.dyno_open
 		var tex:=menu_scene(g,section,true,sheet)
 		if tex!=null:
 			draw_cover(g,tex,Rect2(Vector2.ZERO,size))
-			var tint:=Color(.025,.034,.049,.34 if section in ["garage","owned"] else .41)
-			if section=="driver": tint.a=.63
-			g.draw_rect(Rect2(Vector2.ZERO,size),tint)
-			var top_shade:=Color(.025,.032,.047,.54)
-			g.draw_polygon(PackedVector2Array([Vector2.ZERO,Vector2(size.x,0),Vector2(size.x,size.y*.24),Vector2(0,size.y*.24)]),PackedColorArray([top_shade,top_shade,Color.TRANSPARENT,Color.TRANSPARENT]))
-			if g.profile.effects_quality > 0:
-				AutomotiveUI.glow(g,Rect2(size*Vector2(.24,-.36),size*Vector2(1.2,1.0)),Color(.27,.52,.78,.15))
-				AutomotiveUI.glow(g,Rect2(size*Vector2(-.42,.48),size*Vector2(1.15,.92)),Color(.04,.08,.14,.58))
+			g.draw_rect(Rect2(Vector2.ZERO,size),Color(.039,.034,.040,.86 if section=="performance" else .73))
+			var shade:=Color(.031,.028,.034,.55)
+			g.draw_polygon(PackedVector2Array([Vector2(0,size.y*.42),size*Vector2(1,.42),size,Vector2(0,size.y)]),PackedColorArray([Color.TRANSPARENT,Color.TRANSPARENT,shade,shade]))
+			if g.profile.effects_quality>0:
+				AutomotiveUI.glow(g,Rect2(size*Vector2(-.29,-.42),size*Vector2(.99,1.20)),Color(.66,.29,.18,.16))
 			return
 	for i in 9:
 		var x := size.x*float(i)/8

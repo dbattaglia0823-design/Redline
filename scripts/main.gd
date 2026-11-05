@@ -134,7 +134,7 @@ func race_touch_layout() -> bool:
 func sync_menu_size() -> void:
 	var target := race_view_size() if screen == "race" else (Vector2i(600,1300) if is_portrait() else Vector2i(1200,760))
 	var catalog: bool=tab=="performance" and not menu.hub.dyno_open and (menu.hub.categories or workshop.mode in ["basic","hardware"])
-	if (screen=="results" or (screen=="garage" and (catalog or tab in ["dealer","owned","style","races"]))) and not glass.legacy and not is_portrait() and get_window().size.y<500:
+	if (screen=="results" or (screen=="garage" and (catalog or tab in ["garage","dealer","owned","style","races"]))) and not glass.legacy and not is_portrait() and get_window().size.y<500:
 		target=race_view_size()
 	if get_window().content_scale_size != target:
 		get_window().content_scale_size = target

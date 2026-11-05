@@ -77,7 +77,7 @@ func championship_picker(body: VBoxContainer) -> void:
 	var heading:=AutomotiveUI.row(body)
 	var summary:=AutomotiveUI.column(heading,1)
 	var crowned:=Championships.trophies(game.profile)
-	add_label(summary,"REDLINE Champion" if crowned==6 else "Class championships",30)
+	add_label(summary,"REDLINE Champion" if crowned==6 else "Championship ladder",32)
 	add_label(summary,"%02d / %d races   ·   %d / 6 trophies"%[Championships.completed(game.profile),Championships.TOTAL_RACES,crowned],17,Championships.TROPHY,true)
 	small_action(heading,"cb_back","Street series")
 	var cards:=grid(body,2 if portrait else 3,12)
@@ -90,7 +90,7 @@ func championship_picker(body: VBoxContainer) -> void:
 		bind(card,"cb_class_"+letter)
 		var content: VBoxContainer=card.get_meta("content")
 		var class_heading:=AutomotiveUI.row(content,4)
-		add_label(class_heading,"CLASS "+letter,16,AutomotiveUI.BLUE,true)
+		add_label(class_heading,"CLASS "+letter,16,AutomotiveUI.ORANGE,true)
 		class_heading.add_child(trophy_icon(Championships.TROPHY if wins==Championships.ROUNDS else Color("526476")))
 		add_label(content,Championships.TITLES[index],22 if portrait else 26)
 		add_label(content,state+"  /  %d of %d"%[wins,Championships.ROUNDS],18,AutomotiveUI.ORANGE if reason!="" else GlassPalette.GREEN)
@@ -142,7 +142,7 @@ func race_board(body: VBoxContainer) -> void:
 	var contract: Dictionary=game.current_contract()
 	if contract.is_empty(): return
 	var heading:=AutomotiveUI.row(body)
-	add_label(heading,"Street series" if not board.active else ("Open class rivals" if board.series=="OPEN" else "Class "+board.series+" / "+Championships.TITLES[Championships.CLASSES.find(board.series)]),29)
+	add_label(heading,("Street series" if portrait else "Street series / Matchmaking") if not board.active else ("Open class rivals" if board.series=="OPEN" else "Class "+board.series+" / "+Championships.TITLES[Championships.CLASSES.find(board.series)]),29)
 	if board.active: small_action(heading,"cb_back","Championships")
 	else:
 		small_action(heading,"open_championships","Championships")
@@ -162,6 +162,7 @@ func race_board(body: VBoxContainer) -> void:
 	else: street_events(choices)
 	var hero:=AutomotiveUI.column(content,7)
 	hero.size_flags_vertical=Control.SIZE_EXPAND_FILL
+	add_label(hero,"RIVAL PROFILE  /  "+game.distance_label(float(contract.distance) if board.active else game.FINISH),14,AutomotiveUI.ORANGE,true)
 	var description:=AutomotiveUI.row(hero)
 	add_label(description,str(contract.name),29)
 	if not board.active and not compact_landscape(): small_action(description,"recommend_rival","Finding…" if game.recommend_pending else "Find match")

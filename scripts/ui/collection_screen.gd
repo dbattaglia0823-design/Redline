@@ -36,7 +36,7 @@ func handle_scroll_touch(event: InputEvent) -> bool:
 
 func compact_landscape() -> bool:
 	var workshop_catalog: bool=game.tab=="performance" and not game.menu.hub.dyno_open and (game.menu.hub.categories or game.workshop.mode in ["basic","hardware"])
-	return (workshop_catalog or game.tab in ["dealer","owned","style"]) and not game.is_portrait() and game.get_window().size.y<500
+	return (workshop_catalog or game.tab in ["garage","dealer","owned","style"]) and not game.is_portrait() and game.get_window().size.y<500
 
 func canvas_size() -> Vector2:
 	return Vector2(game.race_view_size()) if compact_landscape() else super.canvas_size()
@@ -92,7 +92,7 @@ func grid(parent: Node,columns: int,gap: int=10) -> GridContainer:
 
 func title(parent: Node,name: String,back_id: String="",back_label: String="Garage") -> void:
 	var row:=AutomotiveUI.row(parent)
-	row.add_child(AutomotiveUI.label(name,28))
+	row.add_child(AutomotiveUI.label(name,33))
 	if back_id!="":
 		var back:=button(row,back_id,back_label); back.custom_minimum_size.x=158; back.size_flags_horizontal=Control.SIZE_SHRINK_END
 
@@ -101,15 +101,15 @@ func vehicle(parent: Node,id: String,c: Drivetrain,look: Dictionary,height: floa
 	return view
 
 func classes(body: VBoxContainer) -> void:
-	title(body,"Choose your class")
-	body.add_child(AutomotiveUI.label("Factory performance  /  quarter mile",17,AutomotiveUI.MUTED))
+	title(body,"Dealership / Class index")
+	body.add_child(AutomotiveUI.label("INVENTORY  /  FACTORY QUARTER-MILE CLASS",14,AutomotiveUI.ORANGE,true))
 	var layout:=grid(body,2 if portrait else 3,14)
 	for i in 6:
 		var letter: String=PerformanceClasses.ORDER[i]; var ids: Array=game.menu.dealer.class_ids(letter)
 		var card:=AutomotiveUI.content_card(layout,236 if portrait else 225)
 		bind(card,"shop_class_"+letter)
 		var content: VBoxContainer=card.get_meta("content")
-		content.add_child(AutomotiveUI.label(letter+"  /  "+DealershipView.CLASS_NAMES[i],26,AutomotiveUI.BLUE))
+		content.add_child(AutomotiveUI.label(letter+"  /  "+DealershipView.CLASS_NAMES[i],26,AutomotiveUI.INK))
 		if not ids.is_empty():
 			var available: Array=ids.filter(func(id): return not game.profile.garage.has(id))
 			var offers: Array=ids if available.is_empty() else available
@@ -243,12 +243,12 @@ func collection(body: VBoxContainer) -> void:
 
 func customize(body: VBoxContainer) -> void:
 	var custom: CustomizationView=game.menu.customize; var id: String=game.profile.vehicle_id
-	var top:=AutomotiveUI.row(body); top.add_child(AutomotiveUI.label("Customize",28)); button(top,"custom_compare","Show preview" if custom.compare else "Show installed"); button(top,"custom_back","Garage")
+	var top:=AutomotiveUI.row(body); top.add_child(AutomotiveUI.label("Paint & trim",30)); button(top,"custom_compare","Show preview" if custom.compare else "Show installed"); button(top,"custom_back","Garage")
 	var look: Dictionary=game.profile.appearance_for(id) if custom.compare else custom.candidate
 	var hero:=vehicle(body,id,game.car,look,160 if portrait else 210)
 	hero.size_flags_vertical=Control.SIZE_EXPAND_FILL
 	var viewing:=AutomotiveUI.label("Installed view" if custom.compare else ("Preview" if custom.has_preview() else "Installed"),14,AutomotiveUI.BLUE)
-	hero.add_child(viewing); viewing.position=Vector2(12,8); viewing.size=Vector2(170,22)
+	hero.add_child(viewing); viewing.position=Vector2(16,12); viewing.size=Vector2(170,22)
 	var cats:=grid(body,3 if portrait else 6,8)
 	for key in VehicleAppearance.definition(id).compatible:
 		var b:=button(cats,"custom_category_"+key,VehicleAppearance.LABELS[VehicleAppearance.CATEGORIES.find(key)])

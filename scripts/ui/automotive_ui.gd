@@ -5,10 +5,10 @@ extends RefCounted
 const BODY = preload("res://assets/ui/fonts/Ubuntu-Regular.ttf")
 const DISPLAY = preload("res://assets/ui/fonts/Ubuntu-Medium.ttf")
 const NUMBERS = preload("res://assets/ui/fonts/SourceCodePro-Regular.ttf")
-const INK = Color("edf3fa")
-const MUTED = Color("91a6b9")
-const BLUE = Color("62cafa")
-const ORANGE = Color("ff9966")
+const INK = Color("f1eee8")
+const MUTED = Color("a5a8ac")
+const BLUE = Color("a9ced5")
+const ORANGE = Color("ff8659")
 static var shared_theme: Theme
 static var glass_styles: Dictionary = {}
 static var soft_light: ImageTexture
@@ -94,38 +94,24 @@ class TechnicalIcon extends Control:
 	func _draw() -> void:
 		LiquidGlass.new().icon(self,icon_key,Vector2(2,2),icon_size,ink)
 
-class PartEmblem extends TechnicalIcon:
-	func _draw() -> void:
-		var mid:=size*.5
-		var radius:=minf(size.x,size.y)*.46
-		var corners:=PackedVector2Array()
-		for i in 6: corners.append(mid+Vector2.from_angle(TAU*i/6)*radius)
-		draw_colored_polygon(corners,Color("102d3d"))
-		corners.append(corners[0])
-		draw_polyline(corners,Color("376379"),1,true)
-		draw_arc(mid,radius*.74,PI*.15,PI*.85,12,Color("51727e"),1,true)
-		LiquidGlass.new().icon(self,icon_key,mid-Vector2.ONE*icon_size*.5,icon_size,ink)
-
-static func part_emblem(key: String,extent: float) -> Control:
-	var icon:=PartEmblem.new()
-	icon.icon_key=key
-	icon.icon_size=extent*.58
-	icon.custom_minimum_size=Vector2.ONE*extent
-	icon.size_flags_vertical=Control.SIZE_SHRINK_CENTER
-	icon.mouse_filter=Control.MOUSE_FILTER_IGNORE
-	return icon
-
-static func part_card(parent: Node,title: String,fitted: String,metric: String,key: String,height: float) -> Button:
-	var card:=content_card(parent,height)
-	var content: VBoxContainer=card.get_meta("content")
-	var line:=row(content,8)
-	line.add_child(part_emblem(key,42))
-	var names:=column(line,2)
-	names.add_child(label(title,22 if height>=100 else 19))
-	names.add_child(label(fitted,16 if height>=100 else 14,BLUE))
-	content.add_child(label(metric,16 if height>=100 else 14,MUTED))
-	card.tooltip_text=title+" / "+fitted+" / "+metric
-	return card
+static func part_row(parent: Node,title: String,fitted: String,key: String,height: float) -> Button:
+	var entry:=content_card(parent,height)
+	var content: VBoxContainer=entry.get_meta("content")
+	var line:=row(content,10)
+	line.size_flags_vertical=Control.SIZE_EXPAND_FILL
+	var emblem:=TechnicalIcon.new()
+	emblem.icon_key=key
+	emblem.ink=ORANGE
+	emblem.custom_minimum_size=Vector2(30,30)
+	emblem.size_flags_vertical=Control.SIZE_SHRINK_CENTER
+	emblem.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	line.add_child(emblem)
+	var names:=column(line,1)
+	names.size_flags_vertical=Control.SIZE_SHRINK_CENTER
+	names.add_child(label(title,21 if height>=68 else 18))
+	names.add_child(label(fitted,14,MUTED))
+	entry.tooltip_text=title+" / "+fitted
+	return entry
 
 static func surface(fill: Color,edge: Color=Color("294353"),radius: int=14) -> StyleBoxFlat:
 	var s:=StyleBoxFlat.new()
@@ -142,15 +128,26 @@ static func theme_resource() -> Theme:
 	for variant in ["Secondary","Primary","Selection","Navigation"]:
 		t.set_type_variation(variant,"Button")
 		var primary: bool=variant=="Primary"
-		t.set_stylebox("normal",variant,glass_material("warm" if primary else ("card" if variant=="Selection" else "clear")))
-		t.set_stylebox("hover",variant,glass_material("warm" if primary else "hover"))
-		t.set_stylebox("pressed",variant,glass_material("warm" if primary else "selected"))
-		t.set_stylebox("disabled",variant,glass_material("disabled"))
-		t.set_stylebox("focus",variant,surface(Color.TRANSPARENT,Color("e7cfb6"),18))
-		for state in ["font_color","font_hover_color","font_pressed_color"]: t.set_color(state,variant,INK)
-		t.set_color("font_disabled_color",variant,Color("677d8f"))
+		var navigation: bool=variant=="Navigation"
+		var selection: bool=variant=="Selection"
+		var normal:=surface(ORANGE if primary else (Color("191b1f") if not navigation else Color("0f1014")),Color("303137") if not primary else ORANGE,4)
+		var hover:=surface(Color("ff9d76") if primary else Color("27282e"),Color("51433e"),4)
+		var pressed:=surface(Color("dc6c43") if primary else Color("32241f"),Color("7b4736"),4)
+		if navigation or selection:
+			pressed.border_color=ORANGE
+			pressed.set_border_width_all(0)
+			pressed.set_border_width(SIDE_BOTTOM if navigation else SIDE_LEFT,3)
+		t.set_stylebox("normal",variant,normal)
+		t.set_stylebox("hover",variant,hover)
+		t.set_stylebox("pressed",variant,pressed)
+		t.set_stylebox("hover_pressed",variant,pressed)
+		t.set_stylebox("disabled",variant,surface(Color("1c1d20"),Color("27292d"),4))
+		t.set_stylebox("focus",variant,surface(Color.TRANSPARENT,Color("efc59b"),4))
+		for state in ["font_color","font_hover_color","font_pressed_color","font_hover_pressed_color"]:
+			t.set_color(state,variant,Color("1d110d") if primary else INK)
+		t.set_color("font_disabled_color",variant,Color("7c8085"))
 		t.set_font("font",variant,DISPLAY)
-	t.set_stylebox("panel","PanelContainer",glass_material("panel"))
+	t.set_stylebox("panel","PanelContainer",surface(Color("15161a"),Color("313138"),5))
 	for scrollbar in ["VScrollBar","HScrollBar"]:
 		t.set_stylebox("scroll",scrollbar,surface(Color("ffffff08"),Color.TRANSPARENT,5))
 		t.set_stylebox("grabber",scrollbar,surface(Color("a5b2bf6b"),Color.TRANSPARENT,5))
@@ -219,6 +216,30 @@ static func comparison(parent: Node,title: String,before: float,after: float,uni
 	var result:=label((format%before)+" → "+(format%after)+" "+unit,17,color,true)
 	result.custom_minimum_size.x=230; result.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT; r.add_child(result)
 
+static func metric_heading(parent: Node) -> void:
+	var header:=row(parent,8)
+	header.add_child(label("MEASURE",12,MUTED,true))
+	for column_name in ["INSTALLED","PREVIEW"]:
+		metric_value(header,column_name,12,MUTED)
+
+static func metric_value(parent: Node,value: String,points: int,color: Color) -> void:
+	var number:=label(value,points,color,true)
+	number.custom_minimum_size.x=112
+	number.size_flags_horizontal=Control.SIZE_FILL
+	number.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT
+	parent.add_child(number)
+
+static func metric_row(parent: Node,value: String,delta_ink: Color) -> void:
+	var fields:=value.split("  ",false,1)
+	var pair:=fields[1].split(" > ",false,1) if fields.size()==2 else PackedStringArray()
+	if pair.size()!=2:
+		parent.add_child(label(value,16,delta_ink))
+		return
+	var line:=row(parent,8)
+	line.add_child(label(fields[0],17))
+	metric_value(line,pair[0],17,MUTED)
+	metric_value(line,pair[1],17,delta_ink)
+
 static func vehicle_card(parent: Node,g: Node2D,id: String,car: Drivetrain,look: Dictionary,state: String,selected: bool,height: float=110) -> Button:
 	var b:=content_card(parent,height,selected)
 	var content: VBoxContainer=b.get_meta("content")
@@ -234,13 +255,13 @@ static func selection(parent: Node,title: String,state: String,detail: String,se
 	var b:=button(parent,"","Selection",height); b.toggle_mode=true; b.set_pressed_no_signal(selected)
 	var m:=MarginContainer.new(); m.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	b.add_child(m); m.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	for side in ["left","right"]: m.add_theme_constant_override("margin_"+side,18)
+	for side in ["left","right"]: m.add_theme_constant_override("margin_"+side,12 if height==70 else 18)
 	for side in ["top","bottom"]: m.add_theme_constant_override("margin_"+side,10)
 	var c:=column(m,3)
 	var heading:=row(c,8)
 	if icon_key!="":
 		var icon:=TechnicalIcon.new(); icon.icon_key=icon_key; icon.custom_minimum_size=Vector2(32,32); icon.mouse_filter=Control.MOUSE_FILTER_IGNORE; heading.add_child(icon)
-	heading.add_child(label(title,21))
+	heading.add_child(label(title,18 if height==70 else 21))
 	c.add_child(label(state,15,state_color if state_color!=MUTED else (ORANGE if selected else MUTED)))
 	if detail!="": c.add_child(label(detail,15,INK))
 	return b

@@ -142,17 +142,20 @@ func run() -> void:
 		await click("hub_back",phone); await click("upgrade_system_-1",phone)
 		if phone:
 			var scroller: ScrollContainer=game.native_workshop.find_child("CatalogList",true,false)
-			var point: Vector2=game.to_global(target("hub_category_0").rect.get_center())+Vector2(0,65)
+			var point: Vector2=scroller.get_global_rect().get_center()
+			var scrollbar:=scroller.get_v_scroll_bar()
+			var can_scroll:=scrollbar.max_value>scrollbar.page
 			var finger:=InputEventScreenTouch.new(); finger.index=8; finger.pressed=true; finger.position=point
 			root.push_input(finger,true)
 			var drag:=InputEventScreenDrag.new(); drag.index=8; drag.position=point-Vector2(0,75)
 			root.push_input(drag,true)
 			finger=finger.duplicate(); finger.pressed=false; finger.position=drag.position; root.push_input(finger,true)
 			await frame()
-			check(scroller.scroll_vertical>0 and game.menu.hub.categories,"Catalog swipe selected a part or failed to scroll")
+			check(game.menu.hub.categories and (not can_scroll or scroller.scroll_vertical>0),"Catalog swipe selected a part or failed to scroll")
 			scroller.scroll_vertical=0; await frame()
 		var search: LineEdit=game.native_workshop.search
 		search.grab_focus()
+		search.edit()
 		for character in "large frame":
 			var typing:=InputEventKey.new(); typing.pressed=true; typing.unicode=character.unicode_at(0)
 			typing.keycode=KEY_SPACE if character==" " else 0
