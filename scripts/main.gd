@@ -272,8 +272,8 @@ func _process(dt: float) -> void:
 		shift_notice_left = maxf(0.0,shift_notice_left-dt)
 		if screen == "race":
 			feedback.set_quality(profile.effects_quality); rival_feedback.set_quality(profile.effects_quality)
-			feedback.update(dt,car,false,GameCatalog.spec(profile.vehicle_id),race_origins()[0])
-			rival_feedback.update(dt,rival,false,GameCatalog.spec(str(active_contract.get("model","kaze"))),race_origins()[1])
+			feedback.update(dt,car,false,GameCatalog.spec(profile.vehicle_id),race_origins()[0],profile.reduced_motion,6.0 if is_portrait() else 12.0)
+			rival_feedback.update(dt,rival,false,GameCatalog.spec(str(active_contract.get("model","kaze"))),race_origins()[1],profile.reduced_motion,6.0 if is_portrait() else 12.0)
 	if is_instance_valid(sound):
 		sound.pump()
 	if tuning!=null and ((screen=="garage" and tab=="tuning") or screen=="practice_results"): tuning.update()
@@ -950,7 +950,7 @@ func draw_race_world() -> void:
 		draw_car(origins[1]+camera,1.65,PAINTS[rival_paint_index()],rival.distance,2,rival_feedback.exhaust_glow > .18,str(active_contract.get("model","kaze")),rival.wheel_angle,rival.tire_radius,rival,rival_feedback.body_offset,rival_feedback.body_pitch,rival_appearance())
 		if origins[1].x > 0 and origins[1].x < (370 if is_portrait() else 940): text_at("RIVAL",origins[1].x+70,origins[1].y+3,12,MUTED,true)
 		draw_tire_smoke(rival_feedback)
-	draw_car(origins[0]+camera,1.65,PAINTS[profile.paint],car.distance,profile.wheels,feedback.exhaust_glow > .18 or car.nitrous_active,profile.vehicle_id,car.wheel_angle,car.tire_radius,car,feedback.body_offset,feedback.body_pitch)
+	draw_car(origins[0]+camera,1.65,PAINTS[profile.paint],car.distance,profile.wheels,feedback.exhaust_glow > .18,profile.vehicle_id,car.wheel_angle,car.tire_radius,car,feedback.body_offset,feedback.body_pitch)
 	draw_tire_smoke(feedback)
 
 
@@ -960,10 +960,10 @@ func draw_race() -> void:
 func draw_tire_smoke(cloud: RaceFeedback) -> void:
 	for particle in cloud.smoke:
 		var age: float = particle.age/particle.life
-		var extent := Vector2(18,12).lerp(Vector2(86,52),age)
+		var radius: float = 6.0+smoothstep(0,1,age)*42.0
 		var center: Vector2 = particle.position+(Vector2.ZERO if profile.reduced_motion else feedback.camera_offset)
-		var opacity: float = pow(1-age,1.4)*particle.strength*.33
-		AutomotiveUI.glow(self,Rect2(center-extent*.5,extent),Color(.67,.74,.80,opacity))
+		var night: bool = TrackPresentation.spec(race_track_index()).night
+		TrackPresentation.glow(self,Rect2(center-Vector2.ONE*radius,Vector2.ONE*radius*2),Color(.48,.53,.58,sin(age*PI)*.32*particle.strength) if night else Color(.67,.65,.62,sin(age*PI)*.28*particle.strength))
 
 func draw_results() -> void:
 	menu.draw_results()
@@ -998,7 +998,11 @@ func draw_car(origin: Vector2, scale_value: float, paint: Color, _travel: float,
 		origin += Vector2(13,3)*remaining
 		reveal -= .25*remaining
 		menu_dirty = menu_dirty or remaining > 0
-	VehicleRenderer.draw(self,origin,scale_value,model,look,vehicle,driven_angle >= 0,body_offset,pitch,flame,profile.effects_quality,night,reveal)
+	var braking: bool = brake_input() > .05 if vehicle == car else (vehicle != null and vehicle.braking_force > 50)
+	var effects: RaceFeedback = null
+	if screen=="race" and driven_angle>=0:
+		effects = feedback if vehicle==car else (rival_feedback if vehicle==rival else null)
+	VehicleRenderer.draw(self,origin,scale_value,model,look,vehicle,driven_angle >= 0,body_offset,pitch,flame,profile.effects_quality,night,braking,effects,reveal)
 
 func refresh_car() -> void:
 	menu_dirty = true

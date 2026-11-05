@@ -14,12 +14,17 @@ static func radius_scale(car: Drivetrain, spec: Dictionary) -> float:
 # simulation accumulates both axle phases, including wheelspin and reverse.
 # No tire outline, substitute wheel, whole-image rotation, or wall-clock timer.
 static func draw_rim_reflection(g: Node2D,center: Vector2,radius: float,state: Dictionary,quality: int,light: Color) -> void:
-	var motion := clampf(absf(float(state.omega))/8.0,0.0,1.0)
+	var motion := smoothstep(.5,12.0,absf(float(state.omega)))
 	if quality == 0 or motion <= .001: return
 	var angle := float(state.angle)
 	var blur := clampf(absf(float(state.omega))/150.0,0.0,1.0)
 	var width := maxf(.65,radius*.035)
-	var intensity := motion*(.23-.07*blur)*light.get_luminance()
+	var intensity := motion*(.14-.04*blur)*light.get_luminance()
+	# Sparse, low-opacity concentric sweeps suggest exposure blur while leaving
+	# the authored spokes, hub and caliper visible. Never rotate the wheel PNG.
+	if quality == 2 and blur > .15:
+		for band in 2:
+			g.draw_arc(center,radius*(.52+band*.18),angle*.35,angle*.35+TAU*.82,20,Color(.66,.73,.79,blur*.035),maxf(.6,radius*.055),true)
 	for index in (2 if quality>1 else 1):
 		var phase := angle+index*2.35
 		var length := .34+blur*.66
