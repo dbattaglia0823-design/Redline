@@ -15,12 +15,16 @@ func capture() -> void:
 	DirAccess.make_dir_recursive_absolute(folder)
 	for portrait in [false,true]:
 		root.size = Vector2i(390,844) if portrait else Vector2i(1200,760)
-		for tab in ["garage","performance","races"]:
+		for tab in ["garage","performance","dealer","style","races","driver"]:
 			game.tab = tab; game.menu.hub.categories = true
 			await frame()
 			for i in 90: RaceAI.advance_estimates(1000)
 			await frame()
 			root.get_texture().get_image().save_png(folder+"/"+tab+("_mobile" if portrait else "_desktop")+".png")
+		game.tab="races"; game.career_board.open()
+		await frame()
+		root.get_texture().get_image().save_png(folder+"/career"+("_mobile" if portrait else "_desktop")+".png")
+		game.career_board.active=false
 		game.tab = "performance"; await frame(); game.menu.hub.open_upgrade(0); await frame()
 		root.get_texture().get_image().save_png(folder+"/upgrade"+("_mobile" if portrait else "_desktop")+".png")
 	game.stop_presentation_audio(); await create_timer(.12).timeout

@@ -10,6 +10,68 @@ const MUTED = Color("91a6b9")
 const BLUE = Color("62cafa")
 const ORANGE = Color("ff9966")
 static var shared_theme: Theme
+static var glass_styles: Dictionary = {}
+
+class GlassButton extends Button:
+	var light: Tween
+
+	func _ready() -> void:
+		mouse_entered.connect(func(): illuminate(Color(1.15,1.15,1.15)))
+		mouse_exited.connect(func(): illuminate(Color.WHITE))
+		pressed.connect(func():
+			if disabled or reduced_motion(): return
+			if light: light.kill()
+			self_modulate=Color(.76,.79,.83)
+			illuminate(Color.WHITE))
+
+	func reduced_motion() -> bool:
+		var ancestor:=get_parent()
+		while ancestor!=null and not ancestor is Node2D: ancestor=ancestor.get_parent()
+		return ancestor!=null and ancestor.get("profile")!=null and ancestor.profile.reduced_motion
+
+	func illuminate(value: Color) -> void:
+		if disabled or reduced_motion(): return
+		if light: light.kill()
+		light=create_tween()
+		light.tween_property(self,"self_modulate",value,.14).set_trans(Tween.TRANS_SINE)
+
+# Rasterize each nine-slice material once. Its rim stays round when the surface grows.
+static func glass_material(kind: String) -> StyleBoxTexture:
+	if glass_styles.has(kind): return glass_styles[kind]
+	var palette: Dictionary={
+		"clear":["#606c77","#3a444f","#202833",.68],
+		"hover":["#87929d","#43515c","#202c37",.80],
+		"card":["#4e5b66","#303b46","#202833",.73],
+		"panel":["#45515e","#2d3742","#1b2430",.74],
+		"sheet":["#495462","#29333f","#111923",.90],
+		"warm":["#ba805b","#784b37","#402a27",.94],
+		"selected":["#ad8c78","#634a40","#30262a",.90],
+		"disabled":["#414951","#30353b","#20252d",.70],
+	}
+	var colors: Array=palette[kind]
+	var svg := """<svg xmlns="http://www.w3.org/2000/svg" width="144" height="76">
+	<defs>
+	<linearGradient id="body" x2="0" y2="100%%"><stop stop-color="%s"/><stop offset=".54" stop-color="%s"/><stop offset="1" stop-color="%s"/></linearGradient>
+	<linearGradient id="rim" x2="16%%" y2="100%%"><stop stop-color="#fff" stop-opacity=".64"/><stop offset=".38" stop-color="#f1f4f8" stop-opacity=".21"/><stop offset=".72" stop-color="#b8c5d4" stop-opacity=".15"/><stop offset="1" stop-color="#d9e6f7" stop-opacity=".44"/></linearGradient>
+	<linearGradient id="gleam"><stop stop-color="#fff" stop-opacity="0"/><stop offset=".32" stop-color="#fff" stop-opacity=".50"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+	</defs>
+	<rect x="2" y="6" width="140" height="70" rx="24" fill="#000" opacity=".13"/>
+	<rect x="4" y="6" width="136" height="66" rx="23" fill="#000" opacity=".16"/>
+	<rect x="4" y="3" width="136" height="66" rx="22" fill="url(#body)" fill-opacity="%.2f" stroke="url(#rim)"/>
+	<rect x="6" y="5" width="132" height="62" rx="20" fill="none" stroke="#fff" stroke-opacity=".10"/>
+	<path d="M22 7 Q38 5 61 6 H112" fill="none" stroke="url(#gleam)"/>
+	</svg>"""%colors
+	var pixels:=Image.new()
+	pixels.load_svg_from_string(svg)
+	var style:=StyleBoxTexture.new()
+	style.texture=ImageTexture.create_from_image(pixels)
+	for side in [SIDE_LEFT,SIDE_TOP,SIDE_RIGHT,SIDE_BOTTOM]:
+		# Short controls must leave room for the middle slice at desktop sizes.
+		style.set_texture_margin(side,27 if side in [SIDE_LEFT,SIDE_RIGHT] else 17)
+		style.set_content_margin(side,18 if side in [SIDE_LEFT,SIDE_RIGHT] else 12)
+		style.set_expand_margin(side,3 if side!=SIDE_BOTTOM else 5)
+	glass_styles[kind]=style
+	return style
 
 class TechnicalIcon extends Control:
 	var icon_key: String
@@ -65,21 +127,24 @@ static func theme_resource() -> Theme:
 	t.set_color("font_color","Label",INK)
 	for variant in ["Secondary","Primary","Selection","Navigation"]:
 		t.set_type_variation(variant,"Button")
-		var fill:=Color("102331") if variant!="Primary" else Color("74391f")
-		if variant=="Navigation": fill=Color("081620")
-		var edge:=Color("315064") if variant!="Primary" else Color("c57548")
-		var radius:=9 if variant=="Selection" else (16 if variant=="Navigation" else 13)
-		t.set_stylebox("normal",variant,surface(fill,edge,radius))
-		t.set_stylebox("hover",variant,surface(fill.lightened(.09),BLUE,radius))
-		t.set_stylebox("pressed",variant,surface(Color("392b25") if variant!="Primary" else Color("9c4924"),ORANGE,radius))
-		t.set_stylebox("disabled",variant,surface(Color("101c25"),Color("23313d"),radius))
-		t.set_stylebox("focus",variant,surface(Color.TRANSPARENT,ORANGE,radius))
+		var primary: bool=variant=="Primary"
+		t.set_stylebox("normal",variant,glass_material("warm" if primary else ("card" if variant=="Selection" else "clear")))
+		t.set_stylebox("hover",variant,glass_material("warm" if primary else "hover"))
+		t.set_stylebox("pressed",variant,glass_material("warm" if primary else "selected"))
+		t.set_stylebox("disabled",variant,glass_material("disabled"))
+		t.set_stylebox("focus",variant,surface(Color.TRANSPARENT,Color("e7cfb6"),18))
 		for state in ["font_color","font_hover_color","font_pressed_color"]: t.set_color(state,variant,INK)
 		t.set_color("font_disabled_color",variant,Color("677d8f"))
 		t.set_font("font",variant,DISPLAY)
-	var panel_style:=surface(Color("0c1c28ef"))
-	panel_style.shadow_size=10; panel_style.shadow_color=Color(0,0,0,.2); panel_style.shadow_offset=Vector2(0,4)
-	t.set_stylebox("panel","PanelContainer",panel_style)
+	t.set_stylebox("panel","PanelContainer",glass_material("panel"))
+	for scrollbar in ["VScrollBar","HScrollBar"]:
+		t.set_stylebox("scroll",scrollbar,surface(Color("ffffff08"),Color.TRANSPARENT,5))
+		t.set_stylebox("grabber",scrollbar,surface(Color("a5b2bf6b"),Color.TRANSPARENT,5))
+		t.set_stylebox("grabber_highlight",scrollbar,surface(Color("c7d2db98"),Color.TRANSPARENT,5))
+		t.set_stylebox("grabber_pressed",scrollbar,surface(Color("c7d2dbb8"),Color.TRANSPARENT,5))
+		for state in ["scroll","grabber","grabber_highlight","grabber_pressed"]:
+			var scroll_style:=t.get_stylebox(state,scrollbar)
+			for side in [SIDE_LEFT,SIDE_TOP,SIDE_RIGHT,SIDE_BOTTOM]: scroll_style.set_content_margin(side,4)
 	t.set_constant("separation","VBoxContainer",12); t.set_constant("separation","HBoxContainer",14)
 	shared_theme=t
 	return t
@@ -115,7 +180,7 @@ static func stat(parent: Node,title: String,value: String,unit: String) -> void:
 	var u:=label(unit,14,MUTED); u.custom_minimum_size.x=26; u.size_flags_horizontal=Control.SIZE_SHRINK_BEGIN; u.size_flags_vertical=Control.SIZE_SHRINK_CENTER; r.add_child(u)
 
 static func button(parent: Node,title: String,variant: String="Secondary",height: float=48) -> Button:
-	var b:=Button.new(); b.text=title; b.theme_type_variation=variant
+	var b:=GlassButton.new(); b.text=title; b.theme_type_variation=variant
 	b.custom_minimum_size.y=height; b.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	b.mouse_default_cursor_shape=Control.CURSOR_POINTING_HAND
 	# Pointer routing uses the existing single action dispatcher. Native focus and

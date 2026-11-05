@@ -157,7 +157,7 @@ func options(mobile: bool) -> void:
 			var r:=Rect2(24,y+target*70,552,64) if mobile else Rect2(36,y+target*52,654,46)
 			button("stage_pick_%d"%target,"",r,false,w.preview_stage==target)
 			fit(GameCatalog.stage_name(g.selected_part,target),r.position.x+16,r.position.y+(38 if mobile else 29),r.size.x-180,21 if mobile else 18)
-			var state: String="Equipped" if target==stage else ("Included" if target<stage else "$%d"%g.profile.upgrade_cost(g.selected_part,target))
+			var state: String="Equipped" if target==stage else ("Owned" if target<=g.profile.highest_stage(g.selected_part) else "$%d"%g.profile.upgrade_cost(g.selected_part,target))
 			t(state,r.end.x-140,r.position.y+(38 if mobile else 29),18 if mobile else 14,g.GREEN if target<=stage else g.MUTED)
 		if mobile and GameCatalog.max_stage(g.selected_part)<5 and engine_changed(g.car,w._preview):
 			t("HP",24,654,17,g.ORANGE); t("Nm",68,654,17,g.GREEN)
@@ -232,7 +232,7 @@ func comparison(mobile: bool) -> void:
 		var details: Array=w.part_details(part) if w.mode=="hardware" else package_details(index)
 		for i in mini(4,details.size()): fit(str(details[i]),x,top+103+i*(30 if mobile else 39),552 if mobile else 400,18 if mobile else 14,g.MUTED)
 	var description: String=str(EXPLAIN.get(slot,package_description(index))) if w.mode=="hardware" else package_description(index)
-	if w.mode=="basic" and w.preview_stage<int(g.profile.stages[g.selected_part]): description="Included in your equipped package; packages do not downgrade."
+	if w.mode=="basic" and w.preview_stage<int(g.profile.stages[g.selected_part]): description="This tier is owned and can be equipped free."
 	if mobile and slot in ["induction","boost"]: description="Onset %.0f > %.0f rpm / response %.2f > %.2f s"%[boost_onset(g.car),boost_onset(c),spool(g.car),spool(c)]
 	if w.mode=="hardware" and g.profile.hardware.owned_parts.has(w.selected_hardware) and not VehicleParts.is_owned(g.profile.hardware,w.selected_hardware): description="Owned for another gearbox; this one needs a new fitment."
 	if w.mode=="hardware" and w.selected_hardware=="": description="Restores this slot's factory or packaged specification."
@@ -254,9 +254,9 @@ func purchase(r: Rect2) -> void:
 	if w.mode=="basic":
 		var current: int=g.profile.stages[g.selected_part]
 		id="install_%d_%d"%[g.selected_part,w.preview_stage]; price=g.profile.upgrade_cost(g.selected_part,w.preview_stage)
-		label="Equipped" if w.preview_stage==current else ("Included" if w.preview_stage<current else "Purchase / $%d"%price)
-		primary=w.preview_stage>current
-		if g.profile.upgrade_reason(g.selected_part)!="" and primary: label="Hardware required"; primary=false
+		label="Equipped" if w.preview_stage==current else ("Equip Free" if price==0 else "Purchase / $%d"%price)
+		primary=w.preview_stage!=current
+		if g.profile.upgrade_quote(g.selected_part,w.preview_stage).reason!="" and primary: label="Hardware required"; primary=false
 	else:
 		id="hw_buy"; var data:=w.part_comparison(); var slot:=w.current_slot()
 		var owned: bool=w.selected_hardware=="" or VehicleParts.is_owned(g.profile.hardware,w.selected_hardware)
@@ -282,7 +282,7 @@ static func metric(label: String,a: float,b: float,unit: String,precision: int=0
 	return label+"  "+(format%a)+" > "+(format%b)+(" "+unit if unit!="" else "")
 func metrics(a: Drivetrain,b: Drivetrain,index: int,slot: String) -> Array[String]:
 	var rows: Array[String]=[]
-	if engine_changed(a,b) and index in [0,1,2,4,5]:
+	if engine_changed(a,b):
 		rows.append(metric("Power",a.peak_horsepower(),b.peak_horsepower(),"hp")); rows.append(metric("Torque",GarageHub.peak_torque(a),GarageHub.peak_torque(b),"Nm"))
 	match slot:
 		"internals": rows.append(metric("Engine support",a.mechanical_torque_capacity(),b.mechanical_torque_capacity(),"Nm")); rows.append(metric("RPM headroom",a._mechanical_redline,b._mechanical_redline,"rpm")); rows.append(metric("Usable torque",a.supported_engine_torque(),b.supported_engine_torque(),"Nm"))
@@ -301,14 +301,20 @@ func metrics(a: Drivetrain,b: Drivetrain,index: int,slot: String) -> Array[Strin
 		"transbrake": rows.append("Launch lock: "+("Enabled" if b.has_transbrake else "Not installed"))
 	if slot=="":
 		match index:
+			5:
+				rows.append(metric("Boost",a.boost_target(a.redline_rpm,1),b.boost_target(b.redline_rpm,1),"bar",2))
+				rows.append(metric("Boost onset",boost_onset(a),boost_onset(b),"rpm"))
+				rows.append(metric("Spool response",spool(a),spool(b),"s",2))
+				if b.hardware.parts.has("induction"): rows.append("Fitted assembly controls the boost curve")
 			6: rows.append(metric("Spray capacity",a.nitrous_capacity(),b.nitrous_capacity(),"s",1)); rows.append(metric("Nozzle request",55+a.nitrous_stage*6,55+b.nitrous_stage*6,"%")); rows.append(metric("Torque ceiling",a.supported_engine_torque(),b.supported_engine_torque(),"Nm"))
 			7: rows.append(metric("Shift time",a.shift_duration*1000,b.shift_duration*1000,"ms")); rows.append(metric("Input rating",a.input_capacity(),b.input_capacity(),"Nm")); rows.append(metric("Clutch capacity",a.clutch_capacity(),b.clutch_capacity(),"Nm"))
 			10: rows.append(metric("Grip",GarageHub.grip(a),GarageHub.grip(b),"",2))
 			12: rows.append(metric("Brake limit",brake_limit(a),brake_limit(b),"m/s2",2))
 			14: rows.append(metric("Vehicle mass",a.mass(),b.mass(),"kg"))
-	if rows.is_empty(): rows.append("Engine output unchanged")
+	if rows.is_empty():
+		rows.append(metric("Power",a.peak_horsepower(),b.peak_horsepower(),"hp"))
+		rows.append(metric("Torque",GarageHub.peak_torque(a),GarageHub.peak_torque(b),"Nm"))
 	if slot=="wheels": rows.append(metric("Rolling radius",a.tire_radius*1000,b.tire_radius*1000,"mm")); rows.append(metric("Wheel inertia",a.wheel_inertia,b.wheel_inertia,"kg m2",2))
-	if g.is_portrait() and index in [8,9,10,11,12,13,14] and rows.size()<3: rows.append(race_comparison(b))
 	return rows
 
 func metric_color(value: String) -> Color:
@@ -318,7 +324,7 @@ func metric_color(value: String) -> Color:
 	if is_equal_approx(before,after): return g.MUTED
 	for neutral in ["radius","inertia","transfer","Final drive","Nozzle","Stall","Multiplication","Forward gears"]:
 		if value.contains(neutral): return g.INK
-	var less_good:=value.contains("Mass") or value.contains("mass") or value.contains("Shift") or value.contains("ramp") or value.contains("onset") or value.contains("1/4 est")
+	var less_good:=value.contains("Mass") or value.contains("mass") or value.contains("Shift") or value.contains("ramp") or value.contains("onset") or value.contains("Spool") or value.contains("1/4 est")
 	return g.GREEN if (after<before if less_good else after>before) else Color("eea29b")
 
 func package_description(index: int) -> String:
@@ -334,7 +340,7 @@ func package_description(index: int) -> String:
 	return "Changes apply only after purchase or installation."
 func package_details(index: int) -> Array:
 	var c:=candidate()
-	return [package_description(index),"Packages include lower levels; no downgrades.","Parts remain individually owned and reinstallable.","Engine limiter %.0f rpm / mass %.0f kg"%[c.redline_rpm,c.mass()]]
+	return [package_description(index),"Purchased tiers and all lower levels can be equipped free.","Parts remain individually owned and reinstallable.","Engine limiter %.0f rpm / mass %.0f kg"%[c.redline_rpm,c.mass()]]
 
 func race_comparison(c: Drivetrain) -> String:
 	var contracts: Array=[]

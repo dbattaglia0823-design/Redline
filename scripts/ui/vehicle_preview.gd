@@ -14,11 +14,9 @@ class PreviewArt extends Node2D:
 	func _draw() -> void:
 		var area: Vector2=view.size
 		if area.x<1 or area.y<1: return
-		if view.showroom and view.game.showroom_texture:
-			var tex: Texture2D=view.game.showroom_texture
-			var scale: float=maxf(area.x/tex.get_width(),area.y/tex.get_height())
-			var region: Vector2=area/scale
-			draw_texture_rect_region(tex,Rect2(Vector2.ZERO,area),Rect2((tex.get_size()-region)*.5,region),Color(.68,.77,.88))
+		if view.showroom:
+			var tex:=LiquidGlass.menu_scene(view.game,view.game.tab if not view.game.glass.legacy else "garage")
+			if tex!=null: LiquidGlass.draw_cover(self,tex,Rect2(Vector2.ZERO,area),Color(.75,.79,.85))
 		var s: float=minf(area.x/255.0,maxf(1,area.y-10)/84.0)
 		var origin:=Vector2((area.x-s*232)*.5,(area.y-s*83.5)*.5)
 		VehicleRenderer.draw(self,origin,s,view.model,view.look,view.car,false,Vector2.ZERO,0,false,view.game.profile.effects_quality)

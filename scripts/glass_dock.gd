@@ -44,9 +44,8 @@ class DockItem extends Button:
 func setup(g: Node2D) -> void:
 	game = g; mouse_filter = Control.MOUSE_FILTER_IGNORE; theme = LiquidGlass.THEME
 	add_child(panel); panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT); panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var style := LiquidGlass.THEME.get_stylebox("panel","PanelContainer").duplicate() as StyleBoxFlat
-	style.set_corner_radius_all(LiquidGlass.PALETTE.radius); style.corner_detail = 12; style.bg_color = LiquidGlass.PALETTE.surface; style.border_color = GlassPalette.EDGE; style.set_border_width_all(1); style.shadow_size = LiquidGlass.PALETTE.shadow_size+5
-	style.content_margin_left = 0; style.content_margin_right = 0; style.content_margin_top = 0; style.content_margin_bottom = 0
+	var style := AutomotiveUI.glass_material("panel").duplicate() as StyleBoxTexture
+	for side in [SIDE_LEFT,SIDE_TOP,SIDE_RIGHT,SIDE_BOTTOM]: style.set_content_margin(side,0)
 	panel.add_theme_stylebox_override("panel",style)
 	var margins := MarginContainer.new(); margins.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	for side in ["left","right","top","bottom"]: margins.add_theme_constant_override("margin_"+side,8)
@@ -78,4 +77,4 @@ func animate(dt: float) -> bool:
 
 func draw_selection() -> void:
 	var width := (row.size.x-5*4)/6.0
-	game.glass.surface(row,Rect2(selection*(width+4),0,width,row.size.y),Color("49382f99"),Color("ffb28a20"),18,false)
+	AutomotiveUI.glass_material("selected").draw(row.get_canvas_item(),Rect2(selection*(width+4),0,width,row.size.y))

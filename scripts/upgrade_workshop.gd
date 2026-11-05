@@ -237,11 +237,12 @@ func stage_preview() -> Drivetrain:
 	var index: int = g.selected_part
 	var stage: int = g.profile.stages[index]
 	if preview_stage < 0 or preview_stage > GameCatalog.max_stage(index): preview_stage = mini(GameCatalog.max_stage(index),stage+1)
-	var key := JSON.stringify([g.profile.vehicle_id,g.profile.stages,g.profile.hardware,index,preview_stage])
+	var quote: Dictionary=g.profile.upgrade_quote(index,preview_stage)
+	var key := JSON.stringify([g.profile.vehicle_id,quote.build,quote.stages,quote.reason])
 	if key != _preview_key:
 		_preview_key = key; _preview = Drivetrain.new(); _preview.configure_vehicle(GameCatalog.spec(g.profile.vehicle_id))
-		var levels: Array = g.profile.stages.duplicate(); levels[index] = maxi(stage,preview_stage)
-		_preview.configure(levels); _preview.configure_build(g.profile.hardware,g.profile.vehicle_id,false)
+		_preview.configure(quote.stages if quote.reason=="" else g.profile.stages)
+		_preview.configure_build(quote.build if quote.reason=="" else g.profile.hardware,g.profile.vehicle_id,false)
 	return _preview
 
 func part_comparison() -> Dictionary:

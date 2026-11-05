@@ -134,7 +134,7 @@ func preview() -> Drivetrain:
 	if categories: return g.car
 	if not g.glass.legacy and g.workshop.mode in ["basic","hardware"]: return studio.candidate()
 	if g.workshop.mode == "hardware" and g.workshop._part_preview != null: return g.workshop._part_preview
-	if g.workshop.mode == "basic" and g.profile.stages[g.selected_part] < GameCatalog.max_stage(g.selected_part) and g.workshop._preview != null: return g.workshop._preview
+	if g.workshop.mode == "basic": return g.workshop.stage_preview()
 	return g.car
 func open_upgrade(index: int) -> void:
 	if not categories: studio.remember(selected)

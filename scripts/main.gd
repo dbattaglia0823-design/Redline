@@ -786,7 +786,8 @@ func action_enabled(id: String) -> bool:
 	if id == "bet_more": return wager < mini(profile.credits,int(current_contract().get("max_bet",0)))
 	if id.begins_with("install_"):
 		var pieces := id.split("_"); var index := int(pieces[1]); var stage := int(pieces[2])
-		return profile.upgrade_reason(index)=="" and stage > int(profile.stages[index]) and profile.credits >= profile.upgrade_cost(index,stage)
+		var quote:=profile.upgrade_quote(index,stage)
+		return quote.reason=="" and not quote.equipped and profile.credits>=int(quote.cost)
 	if id == "hw_buy":
 		var d := workshop.part_comparison(); var owned := workshop.selected_hardware == "" or VehicleParts.is_owned(profile.hardware,workshop.selected_hardware)
 		return str(profile.hardware.parts.get(workshop.current_slot(),"")) != workshop.selected_hardware and d.reason == "" and (owned or profile.credits >= int(d.part.get("cost",0)))

@@ -184,10 +184,10 @@ func catalog_action(id: String) -> bool:
 func state_key() -> String:
 	var w: UpgradeWorkshop=game.workshop
 	var projection: String=""
-	if game.tab=="performance" and not game.menu.hub.categories and game.menu.hub.selected>=7:
+	if game.tab=="performance" and not game.menu.hub.categories:
 		var quote:=active_quote()
 		projection=game.menu.hub.studio.race_comparison(quote_preview(quote) if quote.reason=="" else game.car)
-	return JSON.stringify([size,game.tab,game.profile.vehicle_id,game.profile.credits,game.profile.xp,game.profile.stages,game.profile.hardware,game.profile.appearance_for(game.profile.vehicle_id),game.menu.hub.categories,game.menu.hub.selected,game.menu.hub.studio.system,w.mode,w.slot_index,w.parts_page,w.preview_stage,w.selected_hardware,w.details,game.profile.muted,game.profile.effects_quality,projection,PerformanceClasses.label(game.profile)])
+	return JSON.stringify([size,game.tab,game.profile.vehicle_id,game.profile.credits,game.profile.xp,game.profile.stages,game.profile.owned_stages,game.profile.hardware,game.profile.appearance_for(game.profile.vehicle_id),game.menu.hub.categories,game.menu.hub.selected,game.menu.hub.studio.system,w.mode,w.slot_index,w.parts_page,w.preview_stage,w.selected_hardware,w.details,game.profile.muted,game.profile.effects_quality,projection,PerformanceClasses.label(game.profile)])
 
 func _process(_delta: float) -> void:
 	if not visible: return
@@ -229,7 +229,7 @@ func build() -> void:
 		else: overview(body)
 	if modal:
 		targets.clear()
-		var dim:=ColorRect.new(); dim.color=Color(0,.015,.025,.86); dim.mouse_filter=Control.MOUSE_FILTER_STOP
+		var dim:=ColorRect.new(); dim.color=Color(0,.015,.025,.33); dim.mouse_filter=Control.MOUSE_FILTER_STOP
 		add_child(dim); dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		modal_content()
 	build_notice()
@@ -323,7 +323,7 @@ func overview(body: VBoxContainer) -> void:
 	if short_catalog(): search.custom_minimum_size.y=90
 	search.add_theme_font_override("font",AutomotiveUI.BODY)
 	if short_catalog(): search.add_theme_font_size_override("font_size",24)
-	search.add_theme_stylebox_override("normal",AutomotiveUI.surface(Color("08141e"),Color("294858"),10))
+	search.add_theme_stylebox_override("normal",AutomotiveUI.glass_material("panel"))
 	search.add_theme_stylebox_override("focus",AutomotiveUI.surface(Color.TRANSPARENT,AutomotiveUI.BLUE,10))
 	catalog.add_child(search)
 	search.text_changed.connect(func(value): query=value; filter_catalog())
@@ -384,7 +384,7 @@ func filter_catalog() -> void:
 func active_quote() -> Dictionary:
 	var w: UpgradeWorkshop=game.workshop
 	if w.mode=="basic":
-		w.stage_preview()
+		if w.preview_stage<0: w.stage_preview()
 		return game.profile.upgrade_quote(game.selected_part,w.preview_stage)
 	return game.profile.upgrade_quote(-1,-1,w.current_slot(),w.selected_hardware)
 
@@ -409,9 +409,7 @@ func modal_content() -> void:
 	add_child(p)
 	p.position=Vector2(12,42) if portrait else Vector2(58,58)
 	p.size=Vector2(576,1206) if portrait else Vector2(size.x-116,644)
-	var skin:=AutomotiveUI.surface(Color("0b1924"),Color("3d667d"),18)
-	skin.shadow_size=22; skin.shadow_color=Color(0,0,0,.5); skin.shadow_offset=Vector2(0,8)
-	p.add_theme_stylebox_override("panel",skin)
+	p.add_theme_stylebox_override("panel",AutomotiveUI.glass_material("sheet"))
 	if not game.glass.reduced_motion and last_modal_category!=h.selected:
 		p.modulate.a=.82
 		p.create_tween().tween_property(p,"modulate:a",1.0,.13)
@@ -471,17 +469,18 @@ func modal_content() -> void:
 			var label:=AutomotiveUI.label(str(item.name),22 if short_catalog() else 18,AutomotiveUI.BLUE if item.support else AutomotiveUI.INK)
 			label.tooltip_text="Required supporting upgrade" if item.support else "Selected upgrade"
 			row.add_child(label)
-			var price:=AutomotiveUI.label(("Owned / fit" if item.cost==0 else "$%d"%item.cost),20 if short_catalog() else 16,AutomotiveUI.BLUE,true)
+			var price:=AutomotiveUI.label(("Unequip" if item.get("removal",false) else ("Equip free" if item.cost==0 else "$%d"%item.cost)),20 if short_catalog() else 16,AutomotiveUI.BLUE,true)
 			price.custom_minimum_size.x=112; price.size_flags_horizontal=Control.SIZE_SHRINK_END
 			price.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT
 			row.add_child(price)
-			if item.replaces!="": wrapped(details,"Replaces "+str(item.replaces),AutomotiveUI.MUTED)
+			if item.get("removal",false): wrapped(details,str(item.reason)+" • stays owned",AutomotiveUI.MUTED)
+			elif item.replaces!="": wrapped(details,"Replaces "+str(item.replaces),AutomotiveUI.MUTED)
 	if confirming: wrapped(details,"Confirm to fit everything listed in one purchase.",AutomotiveUI.ORANGE)
 	details.add_child(HSeparator.new())
-	details.add_child(AutomotiveUI.label("PERFORMANCE  /  FITTED → PROPOSED",14,AutomotiveUI.BLUE,true))
+	details.add_child(AutomotiveUI.label("PERFORMANCE  /  CURRENT → SELECTED",14,AutomotiveUI.BLUE,true))
 	for metric in studio.metrics(game.car,candidate,h.selected,slot):
 		details.add_child(AutomotiveUI.label(metric,22 if short_catalog() else 18,studio.metric_color(metric)))
-	if h.selected>=7 and (not portrait or h.selected==7):
+	if quote.reason=="":
 		details.add_child(AutomotiveUI.label(studio.race_comparison(candidate),16,AutomotiveUI.MUTED))
 	wrapped(details,UpgradeStudio.EXPLAIN.get(slot,studio.package_description(h.selected)),AutomotiveUI.MUTED)
 	if UpgradeStudio.engine_changed(game.car,candidate):
@@ -502,9 +501,9 @@ func modal_content() -> void:
 	if GarageHub.TUNE_KEYS.has(h.selected): button(tools,"upgrade_section_tune","Tuning")
 	elif h.selected in [0,1,2,8]: button(tools,"sound_preview","Sound")
 	var price: int=quote.cost
-	var text: String="Purchase & install  /  $%d"%price if price>0 else "Install owned / factory"
-	if quote.items.size()>1: text=("Confirm installation" if confirming else "Purchase & install all")+"  /  $%d"%price
-	if quote.equipped: text="Equipped / included"
+	var text: String="Purchase & install  /  $%d"%price if price>0 else "Equip Free"
+	if quote.items.size()>1: text=("Confirm changes" if confirming else "Equip Free") if price==0 else ("Confirm installation" if confirming else "Purchase & install all")+"  /  $%d"%price
+	if quote.equipped: text="Equipped"
 	elif quote.reason!="": text="Unavailable"
 	elif price>game.profile.credits: text=game.missing_credits(price)
 	var footer:=AutomotiveUI.row(body,8)
@@ -519,7 +518,7 @@ func stage_options(list: VBoxContainer) -> void:
 	var installed: int=game.profile.stages[game.selected_part]
 	for tier in GameCatalog.max_stage(game.selected_part)+1:
 		var quote: Dictionary=game.profile.upgrade_quote(game.selected_part,tier)
-		var state: String="Equipped" if tier==installed else ("Included in build" if tier<installed else "$%d"%quote.cost)
+		var state: String="Equipped" if tier==installed else ("Owned" if tier<=game.profile.highest_stage(game.selected_part) else "Purchase / $%d"%quote.cost)
 		if quote.items.size()>1: state+=" incl. support"
 		var row:=AutomotiveUI.selection(list,GameCatalog.stage_name(game.selected_part,tier),state,"",w.mode=="basic" and w.preview_stage==tier,90 if short_catalog() else (70 if portrait else 56),"",GlassPalette.GREEN if tier==installed else AutomotiveUI.MUTED)
 		bind(row,"stage_pick_%d"%tier)

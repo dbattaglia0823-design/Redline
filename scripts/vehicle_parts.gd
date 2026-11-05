@@ -43,7 +43,7 @@ const PARTS := {
 }
 
 static func default_build() -> Dictionary:
-	return {"transmission":"legacy6","owned_transmissions":["legacy6"],"parts":{},"owned_parts":[],"tune":{},"fitments":{},"performance_stages":{}}
+	return {"transmission":"legacy6","owned_transmissions":["legacy6"],"parts":{},"owned_parts":[],"tune":{},"fitments":{},"performance_stages":{},"owned_performance_stages":{}}
 
 static func normalize(value: Variant, vehicle: String, stage: int = 5) -> Dictionary:
 	var b := default_build()
@@ -72,6 +72,9 @@ static func normalize(value: Variant, vehicle: String, stage: int = 5) -> Dictio
 	if ranks is Dictionary:
 		for trans in b.owned_transmissions:
 			if ranks.has(trans): b.performance_stages[trans] = clampi(int(ranks[trans]),0,5)
+	var purchased = value.get("owned_performance_stages",{})
+	for trans in b.owned_transmissions:
+		b.owned_performance_stages[trans]=maxi(int(b.performance_stages.get(trans,0)),clampi(int(purchased.get(trans,0)),0,5) if purchased is Dictionary else 0)
 	var installed = value.get("parts",{})
 	if installed is Dictionary:
 		for slot in SLOTS:

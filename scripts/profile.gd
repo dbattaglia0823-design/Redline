@@ -12,6 +12,7 @@ var wheels := 0
 var appearance: Dictionary = VehicleAppearance.normalize({})
 var owned_appearance: Array = VehicleAppearance.owned_defaults(appearance)
 var stages: Array = GameCatalog.blank_stages()
+var owned_stages: Array = GameCatalog.blank_stages()
 var muted := false
 var effects_quality := 2
 var reduced_motion := false
@@ -36,9 +37,11 @@ func next_level_xp() -> int:
 
 func snapshot_vehicle() -> void:
 	hardware.performance_stages[hardware.transmission] = int(stages[4])
+	for index in stages.size(): owned_stages[index]=highest_stage(index)
+	hardware.get_or_add("owned_performance_stages",{})[hardware.transmission]=owned_stages[4]
 	var entry: Dictionary = garage.get(vehicle_id,{}).duplicate(true)
 	appearance.paint = paint; appearance.rim = wheels
-	entry.merge({"paint":paint,"wheels":wheels,"appearance":appearance.duplicate(true),"owned_appearance":owned_appearance.duplicate(),"stages":GameCatalog.normalize_stages(stages),"hardware":hardware.duplicate(true)},true)
+	entry.merge({"paint":paint,"wheels":wheels,"appearance":appearance.duplicate(true),"owned_appearance":owned_appearance.duplicate(),"stages":GameCatalog.normalize_stages(stages),"owned_stages":owned_stages.duplicate(),"hardware":hardware.duplicate(true)},true)
 	garage[vehicle_id] = entry
 
 func load_profile() -> void:
@@ -82,13 +85,14 @@ func load_profile() -> void:
 	reduced_motion = bool(data.get("reduced_motion",false))
 	metric_speed = bool(data.get("metric_speed",false))
 	# Migrate original saves without removing their car, paint, money, or upgrades.
-	garage = {"miata":{"paint":paint,"wheels":wheels,"stages":stages.duplicate(),"hardware":GameCatalog.factory_build("miata")}}
+	garage = {"miata":{"paint":paint,"wheels":wheels,"stages":stages.duplicate(),"owned_stages":data.get("owned_stages",[]),"hardware":GameCatalog.factory_build("miata")}}
 	var saved_garage = data.get("garage", {})
 	if saved_garage is Dictionary:
 		for id in GameCatalog.CAR_IDS:
 			var entry = saved_garage.get(id)
 			if entry is Dictionary:
 				garage[id] = {"paint":clampi(int(entry.get("paint",0)),0,5),"wheels":clampi(int(entry.get("wheels",0)),0,2),"stages":GameCatalog.normalize_stages(entry.get("stages",[])),"hardware":VehicleParts.normalize(entry.get("hardware",{}),id)}
+				garage[id].owned_stages = GameCatalog.normalize_stages(entry.get("owned_stages",[]))
 				garage[id].tuning_presets = normalize_tune_presets(entry.get("tuning_presets",{}))
 				garage[id].appearance = VehicleAppearance.normalize(entry.get("appearance",{}),int(garage[id].paint),int(garage[id].wheels))
 				garage[id].owned_appearance = normalize_cosmetic_ownership(entry.get("owned_appearance",[]),garage[id].appearance)
@@ -135,6 +139,9 @@ func apply_vehicle(id: String) -> void:
 	owned_appearance = normalize_cosmetic_ownership(entry.get("owned_appearance",[]),appearance)
 	stages = GameCatalog.normalize_stages(entry.stages)
 	hardware = VehicleParts.normalize(entry.get("hardware",{}),id,int(stages[4]))
+	owned_stages = GameCatalog.normalize_stages(entry.get("owned_stages",[]))
+	for index in stages.size(): owned_stages[index]=maxi(owned_stages[index],stages[index])
+	hardware.owned_performance_stages[hardware.transmission]=maxi(int(hardware.get("owned_performance_stages",{}).get(hardware.transmission,0)),owned_stages[4])
 
 func select_vehicle(id: String) -> bool:
 	if not garage.has(id) or not pending_wager.is_empty(): return false
@@ -196,7 +203,7 @@ func save() -> void:
 	if file == null:
 		save_error = "Could not save progress"
 		return
-	file.store_string(JSON.stringify({"career_version":1,"championship_wins":championship_wins,"career_claims":career_claims,"career_serial":career_serial,"event_records":event_records,"roster_version":2,"retired_garage":retired_garage,"credits":credits,"xp":xp,"wins":wins,"races":races,"best":best,"paint":paint,"wheels":wheels,"stages":stages,"muted":muted,"effects_quality":effects_quality,"reduced_motion":reduced_motion,"metric_speed":metric_speed,"vehicle_id":vehicle_id,"garage":garage,"career_wins":career_wins,"pending_wager":pending_wager}))
+	file.store_string(JSON.stringify({"career_version":1,"championship_wins":championship_wins,"career_claims":career_claims,"career_serial":career_serial,"event_records":event_records,"roster_version":2,"retired_garage":retired_garage,"credits":credits,"xp":xp,"wins":wins,"races":races,"best":best,"paint":paint,"wheels":wheels,"stages":stages,"owned_stages":owned_stages,"muted":muted,"effects_quality":effects_quality,"reduced_motion":reduced_motion,"metric_speed":metric_speed,"vehicle_id":vehicle_id,"garage":garage,"career_wins":career_wins,"pending_wager":pending_wager}))
 	file.flush()
 	file.close()
 	if DirAccess.rename_absolute(ProjectSettings.globalize_path(SAVE_PATH+".tmp"),ProjectSettings.globalize_path(SAVE_PATH)) != OK:
@@ -204,12 +211,16 @@ func save() -> void:
 		return
 	save_error = ""
 
+func highest_stage(index: int) -> int:
+	if index==4: return maxi(int(stages[4]),int(hardware.get("owned_performance_stages",{}).get(hardware.transmission,0)))
+	return maxi(int(stages[index]),int(owned_stages[index]))
+
 func upgrade_cost(index: int, target: int = -1) -> int:
 	if index < 0 or index >= GameCatalog.PART_NAMES.size(): return 0
 	var current := int(stages[index])
 	if target < 0: target = current + 1
 	var cost := 0
-	for tier in range(current + 1, mini(target, GameCatalog.max_stage(index)) + 1): cost += GameCatalog.PART_COSTS[index] * tier
+	for tier in range(highest_stage(index) + 1, mini(target, GameCatalog.max_stage(index)) + 1): cost += GameCatalog.PART_COSTS[index] * tier
 	return cost
 
 func upgrade_reason(index: int) -> String:
@@ -218,15 +229,15 @@ func upgrade_reason(index: int) -> String:
 
 # The quote owns copies of the build. Only commit_upgrade_quote writes the profile.
 func upgrade_quote(index: int, tier: int, slot: String="", id: String="") -> Dictionary:
-	var quote := {"build":hardware.duplicate(true),"stages":stages.duplicate(),"items":[],"cost":0,"reason":"","equipped":false}
+	var quote := {"build":hardware.duplicate(true),"stages":stages.duplicate(),"owned":owned_stages.duplicate(),"items":[],"cost":0,"reason":"","equipped":false}
 	if slot=="":
 		if index<0 or index>=stages.size() or tier<0 or tier>GameCatalog.max_stage(index):
 			quote.reason="Unknown package"
 			return quote
-		if tier<=int(stages[index]):
+		if tier==int(stages[index]):
 			quote.equipped=true
 			return quote
-		if upgrade_reason(index)!="": quote_part(quote,"turbo_hybrid",true,[])
+		if tier>0 and upgrade_reason(index)!="": quote_part(quote,"turbo_hybrid",true,[])
 		quote_stage(quote,index,tier,false)
 	else:
 		if not VehicleParts.SLOTS.has(slot) or (id!="" and VehicleParts.PARTS.get(id,{}).get("slot")!=slot):
@@ -240,16 +251,35 @@ func upgrade_quote(index: int, tier: int, slot: String="", id: String="") -> Dic
 			quote.items.append({"name":"Factory hardware","cost":0,"support":false,"replaces":VehicleParts.PARTS[hardware.parts[slot]].name})
 		else:
 			quote_part(quote,id,false,[])
-	for installed in quote.build.parts.values():
-		var reason := VehicleParts.compatible(str(installed),quote.build,int(quote.stages[4]))
-		if reason!="": quote.reason=reason; break
+	# A downgrade can invalidate an installed dependent. Keep its ownership
+	# and include the removal in the quote. Repeat for chained dependencies.
+	var selected: String=id
+	var removed:=true
+	while removed:
+		removed=false
+		for fitted_slot in quote.build.parts.keys():
+			var installed: String=quote.build.parts[fitted_slot]
+			var reason:=VehicleParts.compatible(installed,quote.build,int(quote.stages[4]))
+			if reason=="" and installed=="boost_control":
+				reason=VehicleParts.boost_control_reason(quote.build,float(GameCatalog.spec(vehicle_id).get("base_boost",.45)),int(quote.stages[1]))
+			if reason=="": continue
+			if installed==selected:
+				quote.reason=reason
+				break
+			quote.build.parts.erase(fitted_slot)
+			quote.items.append({"name":VehicleParts.PARTS[installed].name,"cost":0,"support":true,"replaces":"","removal":true,"reason":reason})
+			removed=true
 	if not pending_wager.is_empty(): quote.reason="Finish your race first"
 	return quote
 
 func quote_stage(quote: Dictionary,index: int,tier: int,support: bool) -> void:
-	if tier<=int(quote.stages[index]): return
+	if tier==int(quote.stages[index]) or (support and tier<int(quote.stages[index])): return
 	var cost:=upgrade_cost(index,tier)
 	quote.stages[index]=tier
+	quote.owned[index]=maxi(highest_stage(index),tier)
+	if index==4:
+		quote.build.performance_stages[quote.build.transmission]=tier
+		quote.build.get_or_add("owned_performance_stages",{})[quote.build.transmission]=quote.owned[index]
 	quote.cost+=cost
 	var name:=GameCatalog.stage_name(index,tier)
 	if support and index==4: name+=" gearbox upgrade"
@@ -285,31 +315,29 @@ func commit_upgrade_quote(index: int,tier: int,slot: String,id: String,expected:
 	if credits<int(quote.cost): return "Not enough credits"
 	var before_build:=hardware
 	var before_stages:=stages
+	var before_owned:=owned_stages
 	var before_garage:=garage.duplicate(true)
 	hardware=quote.build
 	stages=quote.stages
+	owned_stages=quote.owned
 	credits-=int(quote.cost)
 	save()
 	if save_error!="":
 		hardware=before_build
 		stages=before_stages
+		owned_stages=before_owned
 		garage=before_garage
 		credits+=int(quote.cost)
 		return save_error
-	return "Installed "+str(quote.items.back().name)
+	for item in quote.items:
+		if not item.support: return "Installed "+str(item.name)
+	return "Build updated"
 
 func upgrade(index: int, target: int = -1) -> bool:
 	if index < 0 or index >= stages.size() or not pending_wager.is_empty(): return false
-	if upgrade_reason(index)!="": return false
-	var current := int(stages[index])
-	if target < 0: target = current + 1
-	if target <= current or target > GameCatalog.max_stage(index): return false
-	var cost := upgrade_cost(index, target)
-	if credits < cost: return false
-	credits -= cost
-	stages[index] = target
-	save()
-	return true
+	if target < 0: target = int(stages[index])+1
+	var quote:=upgrade_quote(index,target)
+	return commit_upgrade_quote(index,target,"","",JSON.stringify(quote)).begins_with("Installed ")
 
 func begin_wager(amount: int,contract: Dictionary = {}) -> bool:
 	if amount < 0 or amount > credits or not pending_wager.is_empty(): return false
@@ -343,6 +371,7 @@ func install_transmission(id: String) -> String:
 	if credits < cost: return "Not enough credits"
 	var candidate := hardware.duplicate(true)
 	candidate.performance_stages[candidate.transmission] = int(stages[4])
+	candidate.get_or_add("owned_performance_stages",{})[candidate.transmission]=highest_stage(4)
 	candidate.transmission = id
 	# Different gearbox families cannot retain physically incompatible internals.
 	if id != str(hardware.transmission):
@@ -351,6 +380,7 @@ func install_transmission(id: String) -> String:
 	credits -= cost
 	if not candidate.owned_transmissions.has(id): candidate.owned_transmissions.append(id)
 	stages[4] = int(candidate.performance_stages.get(id,0))
+	owned_stages[4] = maxi(int(stages[4]),int(candidate.owned_performance_stages.get(id,0)))
 	hardware = candidate
 	save()
 	return "Installed "+str(spec.name)
@@ -379,6 +409,7 @@ func install_hardware(id: String) -> String:
 
 func transmission_unlock_stage() -> int:
 	var highest := int(stages[4])
+	for rank in hardware.get("owned_performance_stages",{}).values(): highest = maxi(highest,int(rank))
 	for rank in hardware.performance_stages.values(): highest = maxi(highest,int(rank))
 	return highest
 

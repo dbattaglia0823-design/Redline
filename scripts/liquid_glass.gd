@@ -5,6 +5,13 @@ extends RefCounted
 # The only screen read is the optional modal backdrop. Low quality uses tint only.
 const PALETTE: GlassPalette = preload("res://assets/ui/liquid_glass.tres")
 const THEME: Theme = preload("res://assets/ui/glass_theme.tres")
+const MENU_SCENES := {
+	"performance":preload("res://assets/ui/tuning_bay.svg"),
+	"dealer":preload("res://assets/ui/dealer_hall.svg"),
+	"style":preload("res://assets/ui/mod_studio.svg"),
+	"races":preload("res://assets/ui/pit_lane.svg"),
+}
+static var frosted_scenes: Dictionary = {}
 var legacy := false
 var reduced_motion := false
 var states: Dictionary = {}
@@ -39,6 +46,9 @@ func surface(g: CanvasItem,r: Rect2,fill: Color = PALETTE.surface,edge: Color = 
 	if edge == GlassPalette.EDGE: edge = PALETTE.edge
 	if legacy:
 		g.draw_rect(r,fill); g.draw_rect(r,edge,false,1); return
+	if fill==PALETTE.surface or fill==PALETTE.modal_surface:
+		AutomotiveUI.glass_material("sheet" if fill==PALETTE.modal_surface else "panel").draw(g.get_canvas_item(),r)
+		return
 	var key := str(fill)+str(edge)+str(radius)+str(shadow)
 	if not styles.has(key):
 		var style := StyleBoxFlat.new()
@@ -71,7 +81,11 @@ func button(g: Node2D,id: String,r: Rect2,primary: bool,selected: bool,enabled: 
 	elif hot > .08: fill = PALETTE.raised
 	if not enabled: fill = PALETTE.disabled; edge = Color("ffffff0c")
 	var shown := r.grow(-pulse*1.1) if enabled and not reduced_motion else r
-	surface(g,shown,fill,edge,mini(PALETTE.radius,roundi(r.size.y*.42)),r.size.y > 36)
+	if legacy:
+		surface(g,shown,fill,edge,mini(PALETTE.radius,roundi(r.size.y*.42)),r.size.y > 36)
+	else:
+		var material:="disabled" if not enabled else ("warm" if primary else ("selected" if selected else ("hover" if hot>.08 else "clear")))
+		AutomotiveUI.glass_material(material).draw(g.get_canvas_item(),shown)
 	if hot > .01 and enabled:
 		g.draw_line(shown.position+Vector2(18,1),Vector2(shown.end.x-18,shown.position.y+1),Color(1,1,1,hot*.17),1,true)
 	return shown
@@ -99,6 +113,18 @@ func animate(dt: float,buttons: Array) -> bool:
 
 func background(g: Node2D,size: Vector2) -> void:
 	g.draw_rect(Rect2(Vector2.ZERO,size),PALETTE.background)
+	if not legacy and g.screen!="race":
+		var section: String=g.tab if g.screen=="garage" else "races"
+		var sheet: bool=g.menu.hub.dyno_open or (section=="performance" and not g.menu.hub.categories)
+		var tex:=menu_scene(g,section,true,sheet)
+		if tex!=null:
+			draw_cover(g,tex,Rect2(Vector2.ZERO,size))
+			var tint:=Color(.025,.034,.049,.34 if section in ["garage","owned"] else .41)
+			if section=="driver": tint.a=.63
+			g.draw_rect(Rect2(Vector2.ZERO,size),tint)
+			var top_shade:=Color(.025,.032,.047,.54)
+			g.draw_polygon(PackedVector2Array([Vector2.ZERO,Vector2(size.x,0),Vector2(size.x,size.y*.24),Vector2(0,size.y*.24)]),PackedColorArray([top_shade,top_shade,Color.TRANSPARENT,Color.TRANSPARENT]))
+			return
 	for i in 9:
 		var x := size.x*float(i)/8
 		g.draw_line(Vector2(x,0),Vector2(x-size.x*.12,size.y),Color(GlassPalette.BLUE,.025),1,true)
@@ -107,6 +133,25 @@ func background(g: Node2D,size: Vector2) -> void:
 	for i in 5:
 		var k := 5-i
 		_halo(g,size,k)
+
+static func menu_scene(g: Node2D,section: String,soft: bool=false,sheet: bool=false) -> Texture2D:
+	var source: Texture2D=MENU_SCENES.get(section,g.showroom_texture)
+	if source==null or not soft: return source
+	# Frost the static scene once, rather than sample the screen behind every card.
+	var key:=source.resource_path+str(sheet)
+	if not frosted_scenes.has(key):
+		var scene:=source.get_image()
+		if scene==null or scene.is_empty(): return source
+		var width:=80 if sheet else 310
+		scene.resize(width,roundi(width*float(scene.get_height())/scene.get_width()),Image.INTERPOLATE_LANCZOS)
+		frosted_scenes[key]=ImageTexture.create_from_image(scene)
+	return frosted_scenes[key]
+
+static func draw_cover(canvas: CanvasItem,texture: Texture2D,bounds: Rect2,tint: Color=Color.WHITE) -> void:
+	var pixels:=texture.get_size()
+	var factor:=maxf(bounds.size.x/pixels.x,bounds.size.y/pixels.y)
+	var region:=bounds.size/factor
+	canvas.draw_texture_rect_region(texture,bounds,Rect2((pixels-region)*.5,region),tint)
 
 func _halo(g: Node2D,size: Vector2,k: int) -> void:
 	g.draw_circle(Vector2(size.x*.87,-size.y*.12),float(k)*size.x*.22,Color(.30,.40,.51,.008),true,-1,true)
