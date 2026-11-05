@@ -112,7 +112,7 @@ func _ready() -> void:
 	sound.enabled = not profile.muted
 	audio_lab=AudioLab.new(); add_child(audio_lab); audio_lab.setup(self)
 	dock = GlassDock.new(); add_child(dock); dock.setup(self)
-	native_workshop=CollectionScreen.new(); add_child(native_workshop); native_workshop.setup(self)
+	native_workshop=RacingScreen.new(); add_child(native_workshop); native_workshop.setup(self)
 	RenderingServer.set_default_clear_color(glass.PALETTE.background)
 	get_window().size_changed.connect(sync_menu_size)
 	get_tree().auto_accept_quit = false
@@ -129,7 +129,7 @@ func race_touch_layout() -> bool:
 
 func sync_menu_size() -> void:
 	var target := race_view_size() if screen == "race" else (Vector2i(600,1300) if is_portrait() else Vector2i(1200,760))
-	if screen=="garage" and tab in ["dealer","owned","style"] and not glass.legacy and not is_portrait() and get_window().size.y<500:
+	if (screen=="results" or (screen=="garage" and tab in ["dealer","owned","style","races"])) and not glass.legacy and not is_portrait() and get_window().size.y<500:
 		target=race_view_size()
 	if get_window().content_scale_size != target:
 		get_window().content_scale_size = target
@@ -691,7 +691,10 @@ func action(id: String) -> void:
 				selected_opponent = mini(4,int(profile.career_wins[event_index]))
 				if career_board.active:
 					var ids:=Championships.ids(career_board.series)
-					career_board.selected=str(ids[mini(4,Championships.wins(profile,career_board.series))])
+					if career_board.series=="OPEN":
+						if not ids.is_empty(): career_board.selected=str(ids[posmod(ids.find(career_board.selected)+1,ids.size())])
+					elif not ids.is_empty():
+						career_board.selected=str(ids[mini(ids.size()-1,Championships.wins(profile,career_board.series))])
 			"results_upgrades": go_garage(); menu.hub.action("hub_upgrades")
 			"garage": go_garage()
 			"up": paddle(1)

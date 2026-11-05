@@ -14,12 +14,17 @@ func click(id: String) -> void:
 	for item in game.buttons:
 		if item.id==id: point=game.to_global(item.rect.get_center())
 	check(point.x>=0,"Missing career action: "+id)
-	var e:=InputEventScreenTouch.new(); e.index=6; e.pressed=true; e.position=point
-	game._input(e); e.pressed=false; game._input(e); await frame()
+	var e: InputEvent
+	if root.size.x<1000:
+		e=InputEventScreenTouch.new(); e.index=6
+	else:
+		e=InputEventMouseButton.new(); e.button_index=MOUSE_BUTTON_LEFT
+	e.pressed=true; e.position=point; root.push_input(e,true)
+	e=e.duplicate(); e.pressed=false; root.push_input(e,true); await frame()
 func key(code: Key,down: bool=true) -> void:
 	var e:=InputEventKey.new(); e.physical_keycode=code; e.pressed=down; game._input(e)
 func bounds(label: String) -> void:
-	var region:=Rect2(0,0,600,1300) if game.is_portrait() else Rect2(0,0,1200,760)
+	var region:=Rect2(Vector2.ZERO,Vector2(root.content_scale_size))
 	for i in game.buttons.size():
 		check(region.encloses(game.buttons[i].rect),"Offscreen "+label+" / "+str(game.buttons[i].id))
 		for j in range(i+1,game.buttons.size()): check(not game.buttons[i].rect.intersects(game.buttons[j].rect),"Overlapping "+label+" / "+str(game.buttons[i].id)+" / "+str(game.buttons[j].id))
@@ -39,7 +44,15 @@ func run() -> void:
 	DirAccess.make_dir_recursive_absolute("res://validation/class_career")
 	for phone in [false,true]:
 		root.size=Vector2i(390,844) if phone else Vector2i(1200,760)
-		game.go_garage(); game.tab="races"; game.career_board.active=false; await frame(); await click("open_championships")
+		game.go_garage(); game.tab="races"; game.career_board.active=false
+		game.event_index=0; game.selected_opponent=0
+		RaceAI.request_estimate(game.current_contract(),game.FINISH)
+		RaceAI.request_estimate(RaceAI.player_contract(game.profile),game.FINISH)
+		for step in 40: RaceAI.advance_estimates(1200)
+		await frame()
+		bounds("street series")
+		root.get_texture().get_image().save_png("res://validation/class_career/street_"+("phone" if phone else "desktop")+".png")
+		await click("open_championships")
 		bounds("class picker")
 		root.get_texture().get_image().save_png("res://validation/class_career/classes_"+("phone" if phone else "desktop")+".png")
 		for letter in Championships.CLASSES:
@@ -61,6 +74,10 @@ func run() -> void:
 	check(game.screen=="results" and game.result_win and game.profile.championship_wins.get("E",0)==1,"Stock starter cannot beat first class racer")
 	var money: int=game.profile.credits; game.complete_race(); check(game.profile.credits==money,"Results granted duplicate class reward")
 	root.get_texture().get_image().save_png("res://validation/class_career/first_victory.png")
+	root.size=Vector2i(390,844); await frame(); bounds("phone time slip")
+	root.get_texture().get_image().save_png("res://validation/class_career/results_phone.png")
+	root.size=Vector2i(844,390); await frame(); bounds("landscape time slip")
+	root.size=Vector2i(1200,760); await frame(); bounds("desktop time slip")
 	await click("next_rival"); await click("race")
 	check(game.active_distance==201.168,"Championship eighth-mile heat was forced to a quarter mile")
 	await race_player(); check(game.screen=="results" and game.player_finish>0 and game.profile.championship_wins.E==(2 if game.result_win else 1),"Short championship timing or progression failed")
@@ -68,6 +85,8 @@ func run() -> void:
 	await frame(); await click("race"); check(game.active_distance==804.672,"Open half-mile distance not honored")
 	await race_player(); check(game.screen=="results" and game.player_finish>0,"Long open race did not finish")
 	check(not game.profile.career_claims.has("open_3"),"Losing long race claimed a first-win bonus")
+	await click("next_rival")
+	check(game.career_board.selected=="open_4","Next Race did not advance to the next open-class rival")
 	# Full mechanical upgrade -> tune -> save -> practice -> championship loop.
 	game.go_garage(); game.profile.credits=80000; game.profile.xp=20000; game.profile.career_wins=[5,5,5]; await frame()
 	await click("tab_performance"); await click("hub_category_0"); await click("install_0_1"); await click("hub_back")

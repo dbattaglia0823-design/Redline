@@ -73,7 +73,7 @@ func sync() -> void:
 			child.queue_free()
 		targets.clear(); build()
 	publish_targets()
-	if game.tab!="performance" or game.menu.hub.categories: game.draw_navigation()
+	if game.screen=="garage" and (game.tab!="performance" or game.menu.hub.categories): game.draw_navigation()
 
 func canvas_size() -> Vector2:
 	return Vector2(600,1300) if game.is_portrait() else Vector2(1200,760)

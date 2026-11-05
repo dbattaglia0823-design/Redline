@@ -47,7 +47,7 @@ func button(parent: Node,id: String,text: String,primary: bool=false) -> Button:
 
 func sync() -> void:
 	super.sync()
-	if visible and compact_landscape():
+	if visible and game.screen=="garage" and compact_landscape():
 		game.buttons=game.buttons.filter(func(entry): return not str(entry.id).begins_with("tab_"))
 		game.dock.present(Rect2(24,640,size.x-48,104),game.tab)
 
