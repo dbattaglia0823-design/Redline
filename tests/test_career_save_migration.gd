@@ -18,7 +18,20 @@ func _initialize() -> void:
 	check(restored.garage.has("civic_si") and restored.stages==p.stages and restored.paint==4,"Migration lost vehicles or upgrades")
 	check(restored.hardware.parts.values().has("ecu") and restored.hardware.tune.launch_rpm==4200 and restored.tuning_presets().street.name=="Old street tune","Migration lost transmission hardware, tuning or saved presets")
 	check(FileAccess.file_exists(DriverProfile.SAVE_PATH+".pre_championships"),"Legacy save was not backed up")
-	check(Championships.sanitize_wins({"E":99,"D":-3,"C":[],"B":"bad"})=={"E":5,"D":0,"C":0,"B":0,"A":0,"S":0},"Malformed championship state not normalized safely")
+	check(Championships.sanitize_wins({"E":99,"D":-3,"C":[],"B":"bad"})=={"E":10,"D":0,"C":0,"B":0,"A":0,"S":0},"Malformed championship state not normalized safely")
+	raw["career_version"]=1
+	raw["championship_wins"]={"E":5,"D":2}
+	raw["career_claims"]=["class_E_4","open_0"]
+	raw["event_records"]={"class_E_4":{"wins":1,"best_et":15.7}}
+	file=FileAccess.open(DriverProfile.SAVE_PATH,FileAccess.WRITE); file.store_string(JSON.stringify(raw)); file.close()
+	restored=DriverProfile.new(); restored.load_profile()
+	check(Championships.wins(restored,"E")==5 and Championships.wins(restored,"D")==2,"Five-race save changed cleared rounds")
+	check(Championships.trophies(restored)==0 and Championships.unlock_reason(restored,"D")=="" and Championships.unlock_reason(restored,"C")=="","Five-race save lost access or granted a new trophy")
+	check(restored.career_claims==["class_E_4","open_0"] and is_equal_approx(restored.event_records.class_E_4.best_et,15.7),"Legacy claim or ET lost")
+	restored.save(); restored=DriverProfile.new(); restored.load_profile()
+	check(Championships.unlock_reason(restored,"C")=="","Migrated access did not survive version 2 save")
+	var fresh:=DriverProfile.new(); fresh.wins=30; fresh.career_wins=[5,5,5]
+	check(Championships.unlock_reason(fresh,"D")!="","Street wins bypassed the championship boss")
 	p=DriverProfile.new()
 	var event:=Championships.event("class_E_0")
 	check(p.begin_wager(100,event),"Valid event entry rejected")

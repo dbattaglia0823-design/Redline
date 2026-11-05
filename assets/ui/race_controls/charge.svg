@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="128" viewBox="0 0 160 64">
+
+<defs><linearGradient id="fluid" x2="0" y2="1"><stop stop-color="#9eefff"/><stop offset=".32" stop-color="#42ccf7"/><stop offset="1" stop-color="#145f9d"/></linearGradient></defs>
+<path d="M20 17h83q12 0 20 15-8 15-20 15H20q-7 0-7-7V24q0-7 7-7Z" fill="url(#fluid)"/>
+<path d="M25 19h76" stroke="#d8faff" stroke-opacity=".66" stroke-width="1.4" stroke-linecap="round"/>
+
+</svg>

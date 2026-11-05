@@ -230,8 +230,13 @@ func transbrake_input() -> bool:
 	return car.has_transbrake and controls.value("transbrake") > 0.0
 
 func nitrous_input() -> bool:
-	if screen=="race" and not practice_mode and active_contract.has("id") and car.nitrous_stage==0 and not car.hardware.parts.values().has("progressive"): return false
-	return false if input_override.x >= 0.0 else controls.value("nitrous") > 0.0
+	return nitrous_lock_reason()=="" and input_override.x<0.0 and controls.value("nitrous")>0.0
+
+func nitrous_lock_reason() -> String:
+	if screen!="race" or practice_mode or not active_contract.has("id"): return ""
+	if active_contract.get("rule","")=="motor_only": return "MOTOR ONLY"
+	if car.nitrous_stage==0 and not car.hardware.parts.values().has("progressive"): return "NO KIT"
+	return ""
 
 func set_race_paused(value: bool) -> void:
 	menu_dirty = true
@@ -403,15 +408,13 @@ func start_race() -> void:
 		return
 	toast_left = 0
 	practice_mode=false; manual_tree_armed=true
-	active_contract = contract.duplicate(true)
-	active_contract.driver_seed = float(contract.driver_seed)+profile.races*0.73
-	active_contract.reaction = clampf(float(contract.reaction)+sin(profile.races*1.71+selected_opponent)*0.02,0.08,0.90)
+	active_contract = RaceAI.live_contract(contract,profile.races,selected_opponent)
 	active_distance = float(contract.distance) if career_board.active else maxf(FINISH,float(contract.distance))
 	active_contract.distance = active_distance
 	active_stake = stake
 	refresh_car()
 	car.reset()
-	if career_board.active and car.nitrous_stage==0 and not car.hardware.parts.values().has("progressive"): car.nitrous_auto=false
+	if career_board.active and (contract.get("rule","")=="motor_only" or (car.nitrous_stage==0 and not car.hardware.parts.values().has("progressive"))): car.nitrous_auto=false
 	RaceAI.configure(rival,active_contract)
 	staging.reset(car,rival)
 	run_telemetry.begin(car,active_distance)
@@ -469,7 +472,7 @@ func complete_race() -> void:
 	if not staging.red_light and quarter_record: profile.best=player_finish
 	var payout:=profile.award_race(active_contract,result_win,staging.red_light,staging.elapsed(player_finish),player_reaction,finish_speed,int(active_contract.get("legacy_career",event_index)),int(active_contract.get("legacy_rival",selected_opponent)))
 	if payout.is_empty(): return
-	result_bonus=int(payout.bonus); result_base_pay=int(payout.base); result_bet_return=int(payout.bet_return); result_reward=int(payout.reward); result_xp=int(payout.xp)
+	result_bonus=int(payout.bonus); result_base_pay=int(payout.base)-result_bonus; result_bet_return=int(payout.bet_return); result_reward=int(payout.reward); result_xp=int(payout.xp)
 	if finish_speed == 0.0: finish_speed = car.speed*Drivetrain.MPH_PER_MPS
 	car.running = false
 	screen = "results"
@@ -492,6 +495,7 @@ func go_garage() -> void:
 
 func paddle(direction: int) -> void:
 	if screen != "race" or paused_race or finish_hold_left > 0.0: return
+	glass.press("up" if direction>0 else "down")
 	var status := car.request_shift(direction,clutch_input())
 	seen_shift_request = car.shift_request_serial
 	if status == "SHIFT ACCEPTED":
@@ -715,11 +719,7 @@ func action(id: String) -> void:
 				tab = "races"
 				selected_opponent = mini(4,int(profile.career_wins[event_index]))
 				if career_board.active:
-					var ids:=Championships.ids(career_board.series)
-					if career_board.series=="OPEN":
-						if not ids.is_empty(): career_board.selected=str(ids[posmod(ids.find(career_board.selected)+1,ids.size())])
-					elif not ids.is_empty():
-						career_board.selected=str(ids[mini(ids.size()-1,Championships.wins(profile,career_board.series))])
+					career_board.select_next(result_win and result_bonus>0 and bool(active_contract.get("boss",false)))
 			"results_upgrades": go_garage(); menu.hub.action("hub_upgrades")
 			"garage": go_garage()
 			"up": paddle(1)
@@ -837,6 +837,10 @@ func action_enabled(id: String) -> bool:
 		var key:=id.trim_prefix("tune_plus_").trim_prefix("tune_minus_")
 		if not workshop.tuning_enabled(key): return false
 		var plus:=id.begins_with("tune_plus_")
+		if TuningSetup.EXTRA.has(key):
+			var setting: Array=TuningSetup.EXTRA[key]
+			var value := workshop.tune_default(key)
+			return value<float(setting[2])-.0001 if plus else value>float(setting[1])+.0001
 		if key=="shift" and workshop.gear_index>=car.gear_ratios.size()-1: return false
 		if key=="launch_rpm": return car.launch_rpm<6000 if plus else car.launch_rpm>2200
 		if key=="nitrous_ramp": return car._nitrous_ramp<.9999 if plus else car._nitrous_ramp>.1501

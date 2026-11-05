@@ -32,6 +32,16 @@ static func draw_rim_reflection(g: Node2D,center: Vector2,radius: float,state: D
 			var arc_color := Color(.83,.87,.90,intensity*(1.0-feather*.27)*(1.0-index*.48))
 			g.draw_arc(center,radius*(.87-feather*.014),phase+feather*.045,phase+length-feather*.045,8,arc_color,width,true)
 
+static func draw_compound_mark(g: Node2D,center: Vector2,radius: float,compound: int,state: Dictionary,light: Color) -> void:
+	if radius<8: return
+	var phase := float(state.angle)-PI*.72
+	var ink := Color("d5c6a5") if compound==3 else Color("a8b5ba")
+	ink *= light
+	ink.a *= .78-float(state.blur)*.53
+	g.draw_arc(center,radius*.89,phase,phase+(.55 if compound==1 else .83),10,ink,maxf(1,radius*.036),true)
+	if compound>=2:
+		g.draw_arc(center,radius*.89,phase+PI,phase+PI+.83,10,ink,maxf(1,radius*.036),true)
+
 static func draw_wheel(g: Node2D, center: Vector2, radius: float, scale: float, rim: int, state: Dictionary, quality: int, look: Dictionary = {}) -> void:
 	var segments: int = [16,24,36][clampi(quality,0,2)]
 	var color: Color = [Color("c5cdd2"),Color("b8a077"),Color("6d7b88")][clampi(rim,0,2)]

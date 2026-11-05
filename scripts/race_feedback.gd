@@ -39,12 +39,12 @@ static func backfire_capable(car: Drivetrain) -> bool:
 # integration steps keep recovery stable across render rates and long frames.
 func suspension(dt: float, car: Drivetrain) -> void:
 	var package: String = str(car.hardware.parts.get("suspension",""))
-	var stiffness := 18.0 if package=="street_susp" else (11.0 if package=="drag_susp" else 14.0)
+	var stiffness := float(VehicleParts.PARTS.get(package,{}).get("frequency",14.0))
 	var frequency := stiffness*sqrt(1280.0/car.mass())
 	var compliance := clampf(car.load_transfer_scale/.18,.45,1.45)
 	var drive_factor := .82 if car.drivetrain=="FWD" else (.92 if car.drivetrain=="AWD" else 1.0)
 	var target := clampf(-car.acceleration*.00067*compliance*drive_factor,-.0054,.0054)
-	var heave_target := clampf(absf(car.acceleration)*.035+_shock*.22,0,.65)
+	var heave_target := clampf(absf(car.acceleration)*.035+_shock*.22+car.wheel_hop*sin(car._sim_time*TAU*10.0),0,.65)
 	var remaining := dt
 	while remaining > .000001:
 		var h := minf(remaining,1.0/120.0)

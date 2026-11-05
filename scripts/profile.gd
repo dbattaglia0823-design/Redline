@@ -22,6 +22,7 @@ var vehicle_id := "miata"
 var garage: Dictionary = {"miata":{"paint":0,"wheels":0,"stages":[0,0,0,0,0,0,0,0],"hardware":{"transmission":"oem_miata","owned_transmissions":["oem_miata"]}}}
 var career_wins: Array = [0,0,0]
 var championship_wins: Dictionary = {}
+var legacy_class_access: Array = []
 var career_claims: Array = []
 var event_records: Dictionary = {}
 var career_serial := 0
@@ -52,7 +53,11 @@ func load_profile() -> void:
 		DirAccess.copy_absolute(ProjectSettings.globalize_path(SAVE_PATH),ProjectSettings.globalize_path(SAVE_PATH+".pre_roster_v2"))
 	if int(data.get("career_version",0))<1 and not FileAccess.file_exists(SAVE_PATH+".pre_championships"):
 		DirAccess.copy_absolute(ProjectSettings.globalize_path(SAVE_PATH),ProjectSettings.globalize_path(SAVE_PATH+".pre_championships"))
-	championship_wins=Championships.sanitize_wins(data.get("championship_wins",{}))
+	var career_version := int(data.get("career_version",0))
+	if career_version==1 and not FileAccess.file_exists(SAVE_PATH+".pre_career_v2"):
+		DirAccess.copy_absolute(ProjectSettings.globalize_path(SAVE_PATH),ProjectSettings.globalize_path(SAVE_PATH+".pre_career_v2"))
+	championship_wins=Championships.sanitize_wins(data.get("championship_wins",{}),5 if career_version<2 else Championships.ROUNDS)
+	legacy_class_access=Championships.sanitize_access(data.get("legacy_class_access",[]))
 	career_claims=[]
 	var claimed: Variant=data.get("career_claims",[])
 	if claimed is Array:
@@ -64,13 +69,17 @@ func load_profile() -> void:
 	var records: Variant=data.get("event_records",{})
 	if records is Dictionary:
 		for id in records:
-			if not id is String or id.length()>64 or not records[id] is Dictionary or event_records.size()>=64: continue
+			if not id is String or id.length()>64 or not records[id] is Dictionary or event_records.size()>=128: continue
 			var row: Dictionary={}
 			for key in ["wins","finishes","best_et","last_et","last_rt","trap_mph"]:
 				var number: Variant=records[id].get(key)
 				if (number is int or number is float) and is_finite(float(number)): row[key]=maxf(0,float(number)) if key!="last_rt" else float(number)
 			event_records[id]=row
 	data = migrate_roster(data)
+	if int(data.get("traction_version",0))<1:
+		if not FileAccess.file_exists(SAVE_PATH+".pre_traction"):
+			DirAccess.copy_absolute(ProjectSettings.globalize_path(SAVE_PATH),ProjectSettings.globalize_path(SAVE_PATH+".pre_traction"))
+		migrate_traction(data)
 	retired_garage = data.get("retired_garage",{}).duplicate(true)
 	credits = maxi(0, int(data.get("credits", 2400)))
 	xp = maxi(0, int(data.get("xp", 0)))
@@ -102,6 +111,8 @@ func load_profile() -> void:
 	var progress = data.get("career_wins", [0,0,0])
 	if progress is Array and progress.size() == 3:
 		for i in 3: career_wins[i] = clampi(int(progress[i]),0,5)
+	if career_version<2:
+		legacy_class_access=Championships.migrated_access(championship_wins,career_wins,wins)
 	# Interrupted runs forfeit the already-charged stake, never refund it on reload.
 	pending_wager = {}
 
@@ -121,13 +132,41 @@ static func migrate_roster(raw: Dictionary) -> Dictionary:
 			var levels:=GameCatalog.normalize_stages(entries[old].get("stages",[])); var refund:=int(GameCatalog.CARS.get(old,{}).get("price",0))
 			for i in levels.size(): refund+=GameCatalog.PART_COSTS[i]*int(levels[i])*(int(levels[i])+1)/2
 			var build: Dictionary=entries[old].get("hardware",{})
-			for part in build.get("owned_parts",[]): refund+=int(VehicleParts.PARTS.get(part,{}).get("cost",0))
+			for part in build.get("owned_parts",[]):
+				refund+=int(VehicleParts.PARTS.get(part,{}).get("cost",VehicleParts.RETIRED_COOLING_COSTS.get(part,0)))
 			for trans in build.get("owned_transmissions",[]): refund+=int(TransmissionCatalog.spec(str(trans)).cost) if trans!="legacy6" else 0
 			data.credits=int(data.get("credits",0))+refund
 		entries.erase(old)
 	data.garage=entries; data.vehicle_id=RosterData.RETIRED.get(active,active if RosterData.IDS.has(active) else "miata")
 	data.retired_garage=archive; data.roster_version=2
 	return data
+
+static func migrate_traction(data: Dictionary) -> void:
+	var entries: Variant = data.get("garage",{})
+	if not entries is Dictionary: return
+	for id in entries:
+		var entry: Variant = entries[id]
+		if not entry is Dictionary: continue
+		var levels := GameCatalog.normalize_stages(entry.get("stages",[]))
+		var owned_levels := GameCatalog.normalize_stages(entry.get("owned_stages",[]))
+		var build: Variant = entry.get("hardware",{})
+		if not build is Dictionary: build = {}
+		var owned: Variant = build.get("owned_parts",[])
+		if not owned is Array: owned = []
+		var parts: Variant = build.get("parts",{})
+		if not parts is Dictionary: parts = {}
+		for retired in VehicleParts.RETIRED_COOLING_COSTS:
+			if owned.has(retired):
+				data.credits = int(data.get("credits",2400))+int(VehicleParts.RETIRED_COOLING_COSTS[retired])
+		var installed_tier := int(levels[2])+(1 if parts.get("wheels")=="drag_wheels" else 0)
+		var owned_tier := maxi(int(owned_levels[2]),int(levels[2]))+(1 if owned.has("drag_wheels") or parts.get("wheels")=="drag_wheels" else 0)
+		for tier in range(1,owned_tier+1):
+			var tire: String = VehicleParts.TIRE_LADDER[tier]
+			if not owned.has(tire): owned.append(tire)
+		if installed_tier>0 and not parts.has("tires"): parts.tires = VehicleParts.TIRE_LADDER[installed_tier]
+		build.parts=parts; build.owned_parts=owned; entry.hardware=build
+		levels[2]=0; owned_levels[2]=0
+		entry.stages=levels; entry.owned_stages=owned_levels
 
 func apply_vehicle(id: String) -> void:
 	vehicle_id = id
@@ -203,7 +242,7 @@ func save() -> void:
 	if file == null:
 		save_error = "Could not save progress"
 		return
-	file.store_string(JSON.stringify({"career_version":1,"championship_wins":championship_wins,"career_claims":career_claims,"career_serial":career_serial,"event_records":event_records,"roster_version":2,"retired_garage":retired_garage,"credits":credits,"xp":xp,"wins":wins,"races":races,"best":best,"paint":paint,"wheels":wheels,"stages":stages,"owned_stages":owned_stages,"muted":muted,"effects_quality":effects_quality,"reduced_motion":reduced_motion,"metric_speed":metric_speed,"vehicle_id":vehicle_id,"garage":garage,"career_wins":career_wins,"pending_wager":pending_wager}))
+	file.store_string(JSON.stringify({"career_version":2,"legacy_class_access":legacy_class_access,"championship_wins":championship_wins,"career_claims":career_claims,"career_serial":career_serial,"event_records":event_records,"roster_version":2,"traction_version":1,"retired_garage":retired_garage,"credits":credits,"xp":xp,"wins":wins,"races":races,"best":best,"paint":paint,"wheels":wheels,"stages":stages,"owned_stages":owned_stages,"muted":muted,"effects_quality":effects_quality,"reduced_motion":reduced_motion,"metric_speed":metric_speed,"vehicle_id":vehicle_id,"garage":garage,"career_wins":career_wins,"pending_wager":pending_wager}))
 	file.flush()
 	file.close()
 	if DirAccess.rename_absolute(ProjectSettings.globalize_path(SAVE_PATH+".tmp"),ProjectSettings.globalize_path(SAVE_PATH)) != OK:
@@ -248,7 +287,7 @@ func upgrade_quote(index: int, tier: int, slot: String="", id: String="") -> Dic
 			return quote
 		if id=="":
 			quote.build.parts.erase(slot)
-			quote.items.append({"name":"Factory hardware","cost":0,"support":false,"replaces":VehicleParts.PARTS[hardware.parts[slot]].name})
+			quote.items.append({"name":VehicleParts.factory_name(slot),"cost":0,"support":false,"replaces":VehicleParts.PARTS[hardware.parts[slot]].name})
 		else:
 			quote_part(quote,id,false,[])
 	# A downgrade can invalidate an installed dependent. Keep its ownership
@@ -573,8 +612,8 @@ func award_race(contract: Dictionary,won: bool,red: bool,et: float,reaction: flo
 		if won:
 			if series!="OPEN":
 				var current:=Championships.wins(self,series)
-				if int(c.round)==current: championship_wins[series]=mini(5,current+1)
-			if int(c.get("completion_bonus",0))>0 and not career_claims.has(id) and (series=="OPEN" or Championships.wins(self,series)==5):
+				if int(c.round)==current: championship_wins[series]=mini(Championships.ROUNDS,current+1)
+			if int(c.get("completion_bonus",0))>0 and not career_claims.has(id) and (series=="OPEN" or (bool(c.get("boss",false)) and Championships.wins(self,series)==Championships.ROUNDS)):
 				bonus=int(c.completion_bonus); career_claims.append(id)
 		var record: Dictionary=event_records.get(id,{})
 		record.finishes=int(record.get("finishes",0))+1

@@ -29,16 +29,16 @@ func click(id: String) -> void:
 func capture(name: String) -> void:
 	for i in 50: RaceAI.advance_estimates(1000)
 	await frame()
-	root.get_texture().get_image().save_png("res://validation/upgrade_studio/"+name+("_phone" if game.is_portrait() else "_desktop")+".png")
+	root.get_texture().get_image().save_png("res://.qa/traction_studio/"+name+("_phone" if game.is_portrait() else "_desktop")+".png")
 func run_checks() -> void:
 	game=load("res://scenes/main.tscn").instantiate(); root.add_child(game); game.set_process(false); game.set_physics_process(false)
 	game.profile=DriverProfile.new(); game.profile.credits=1000000; game.profile.xp=20000; game.profile.stages[4]=5; game.refresh_car()
-	DirAccess.make_dir_recursive_absolute("res://validation/upgrade_studio")
+	DirAccess.make_dir_recursive_absolute("res://.qa/traction_studio")
 	for phone in [false,true]:
 		root.size=Vector2i(390,844) if phone else Vector2i(1200,760)
 		game.go_garage(); await frame(); await click("tab_performance")
 		var found: Dictionary={}
-		for system in 4:
+		for system in UpgradeStudio.GROUPS.size():
 			await click("upgrade_system_%d"%system)
 			for id in game.native_workshop.targets:
 				if id.begins_with("hub_category_") and game.native_workshop.targets[id].visible: found[id]=true
@@ -66,8 +66,28 @@ func run_checks() -> void:
 		await click("hub_back"); await click("upgrade_system_2"); await click("hub_category_14"); await click("stage_pick_1")
 		check(game.menu.hub.preview().mass()<game.car.mass() and game.menu.hub.preview().peak_horsepower()==game.car.peak_horsepower(),"Weight preview fabricates engine power")
 		await capture("weight_comparison")
-		await click("hub_back"); await click("upgrade_system_3"); await click("hub_category_13"); await click("hw_pick_radiator"); await capture("cooling_comparison"); await click("hub_back")
-	var file:=FileAccess.open("res://validation/upgrade_studio_ui_results.json",FileAccess.WRITE)
+		await click("hub_back"); await click("upgrade_system_2"); await click("hub_category_10")
+		var tire_id: String="street_radial" if phone else "drag_slicks"
+		await click("hw_pick_"+tire_id)
+		var tire_preview: Drivetrain=game.menu.hub.preview()
+		var fitted_wheel: String=game.profile.hardware.parts.get("wheels","")
+		check(tire_preview.hardware.parts.get("tires")==tire_id and not is_equal_approx(tire_preview.effective_grip(),game.car.effective_grip()),"Slick preview missed grip")
+		for step in 80: PerformanceClasses.advance()
+		await capture("tire_comparison")
+		await click("hw_buy")
+		check(game.profile.hardware.parts.get("tires")==tire_id and game.profile.hardware.parts.get("wheels","")==fitted_wheel,"Tire purchase changed wheel equipment")
+		await click("hub_back"); await click("hub_category_11")
+		if game.workshop.mode!="hardware": await click("hw_slot_0")
+		await click("hw_pick_competition_shocks" if phone else "hw_pick_pro_drag_susp")
+		for step in 80: PerformanceClasses.advance()
+		await capture("suspension_comparison")
+		await click("hw_buy"); await click("upgrade_section_tune"); await click("tune_plus_launch_damping")
+		check(float(game.profile.hardware.tune.get("launch_damping",0))>1,"Damping control did not adjust the fitted suspension")
+		await click("hub_back"); await click("hub_category_13"); await click("hw_pick_light_wheels")
+		await capture("wheel_comparison"); await click("hw_buy")
+		check(game.profile.hardware.parts.get("tires")==tire_id and game.profile.hardware.parts.get("wheels")=="light_wheels","Wheel purchase replaced the selected tire")
+		await click("hub_back")
+	var file:=FileAccess.open("res://.qa/traction_studio_ui_results.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"passed":failures==0,"checks":checks,"note":"All 15 grouped categories, native phone/desktop captures, real touch navigation, preview isolation, installed-versus-preview parity, owned parts, saved selection, gearbox conversions, non-engine comparisons"},"  ")); file.close()
 	print("UPGRADE STUDIO UI: ","PASS" if failures==0 else "FAIL"," / ",checks," checks")
 	game.stop_presentation_audio(); await create_timer(.12).timeout; game.queue_free(); await process_frame; await process_frame; call_deferred("quit",0 if failures==0 else 1)

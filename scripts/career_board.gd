@@ -14,10 +14,32 @@ func button(id: String,label: String,r: Rect2,primary: bool=false,chosen: bool=f
 	if g.race_touch_layout() and not g.is_portrait(): g.race_hud.control(id,label,r,"",primary,chosen,g.action_enabled(id))
 	else: g.button(id,label,r,primary,chosen)
 func select_series(letter: String) -> void:
-	series=letter; picker=false
 	var options:=Championships.ids(letter)
-	if not options.is_empty(): selected=str(options[mini(4,Championships.wins(g.profile,letter)) if letter!="OPEN" else 0])
+	if options.is_empty(): return
+	series=letter; picker=false
+	selected=str(options[mini(options.size()-1,Championships.wins(g.profile,letter)) if letter!="OPEN" else 0])
 	g.wager=0; g.menu_dirty=true
+
+func select_next(crowned: bool) -> void:
+	var options:=Championships.ids(series)
+	if options.is_empty(): return
+	if series=="OPEN":
+		selected=str(options[posmod(options.find(selected)+1,options.size())])
+		return
+	var rank:=Championships.CLASSES.find(series)
+	if crowned and Championships.trophies(g.profile)==Championships.CLASSES.size():
+		picker=true
+	elif crowned and rank>=0 and rank+1<Championships.CLASSES.size():
+		select_series(Championships.CLASSES[rank+1])
+	else:
+		selected=str(options[mini(options.size()-1,Championships.wins(g.profile,series))])
+
+func rung_state(item: Dictionary) -> String:
+	if series=="OPEN": return "Open"
+	var cleared:=Championships.wins(g.profile,series)
+	if int(item.round)<cleared: return "Cleared"
+	if int(item.round)==cleared and Championships.unlock_reason(g.profile,series)=="": return "Next up"
+	return "Locked"
 func draw() -> void:
 	var p: bool=g.is_portrait()
 	if p: g.mobile.header("CLASS CAREER")
@@ -36,8 +58,8 @@ func draw_classes(p: bool) -> void:
 		button("cb_class_"+letter,"",r,false,letter==series)
 		text(letter,r.position.x+18,r.position.y+55,42,GlassPalette.BLUE if locked=="" else g.MUTED)
 		text(Championships.TITLES[i],r.position.x+18,r.position.y+88,22 if p else 21)
-		text("%d / 5 wins"%Championships.wins(g.profile,letter),r.position.x+18,r.position.y+120,20 if p else 15,g.GREEN)
-		g.fit_text(("CHAMPION / BONUS EARNED" if Championships.wins(g.profile,letter)==5 else "Final bonus $%d"%Championships.BONUSES[i]) if locked=="" else "Clear %s / %d race wins"%[Championships.CLASSES[maxi(0,i-1)],i*3],r.position.x+18,r.position.y+151,r.size.x-36,18 if p else 14,g.MUTED)
+		text("%d / %d wins"%[Championships.wins(g.profile,letter),Championships.ROUNDS],r.position.x+18,r.position.y+120,20 if p else 15,g.GREEN)
+		g.fit_text(("TROPHY EARNED" if Championships.wins(g.profile,letter)==Championships.ROUNDS else "Boss bonus $%d"%Championships.BONUSES[i]) if locked=="" else locked,r.position.x+18,r.position.y+151,r.size.x-36,18 if p else 14,g.MUTED)
 	button("cb_open","OPEN CLASS / RECOVERY & RIVAL CHALLENGES",Rect2(24,876,552,88) if p else Rect2(36,562,1130,90) if g.race_touch_layout() else Rect2(36,600,1130,54),true)
 func draw_rival(p: bool) -> void:
 	var c:=contract()
@@ -46,11 +68,14 @@ func draw_rival(p: bool) -> void:
 	var options:=Championships.ids(series)
 	for i in options.size():
 		var item:=Championships.event(str(options[i]))
-		var r:=Rect2(24+i*112,570,104,68) if p else Rect2(36,182+i*94,310,90) if g.race_touch_layout() else Rect2(36,182+i*88,310,78)
-		button("cb_rival_"+str(item.id),str(i+1) if p else "",r,false,selected==item.id)
-		if not p:
-			text(str(item.name),r.position.x+16,r.position.y+29,20)
-			text("FINAL" if series!="OPEN" and i==4 else ("RIVAL CHALLENGE" if i==3 else str(item.event_name).split(" / ")[0]),r.position.x+16,r.position.y+55,12,g.MUTED)
+		var boss:=bool(item.get("boss",false))
+		var state:=rung_state(item)
+		var r:=Rect2(24+(i%5)*112,568+int(i/5)*72,104,68) if p else Rect2(36+(i%2)*158,182+int(i/2)*94,152,90)
+		button("cb_rival_"+str(item.id),"",r,boss,selected==item.id)
+		var mark:="%02d · BOSS"%(i+1) if boss else "%02d"%(i+1)
+		text(mark,r.position.x+10,r.position.y+24,16,Championships.TROPHY if boss else GlassPalette.BLUE)
+		if not p: g.fit_text(str(item.name),r.position.x+10,r.position.y+48,r.size.x-20,16)
+		text(state,r.position.x+10,r.position.y+(48 if p else 72),15,g.GREEN if state=="Cleared" else g.MUTED)
 	if p:
 		text(str(c.name),24,202,30); text(str(c.nickname),24,238,21,GlassPalette.BLUE)
 		g.draw_workshop(Rect2(24,258,552,220))
@@ -72,10 +97,10 @@ func draw_rival(p: bool) -> void:
 		var gap: float=float(estimate.time)-float(expected.time)
 		comparison=("Favorable" if gap>.7 else "Close match" if gap>-.7 else "Challenging")+" / rival %.2fs / you %.2fs"%[estimate.time,expected.time]
 	var x:=24 if p else 390
-	var y:=682 if p else 402
+	var y:=735 if p else 402
 	g.fit_text(comparison,x,y,552 if p else 744,21 if p else 17,g.GREEN)
-	g.fit_text(str(c.tradeoff),x,y+38,552 if p else 744,19 if p else 14,g.MUTED)
-	text(("OPEN" if series=="OPEN" else "CLASS "+series)+" / "+g.distance_label(float(c.distance)),x,y+75,23 if p else 16,GlassPalette.BLUE)
+	g.fit_text(str(c.get("intro",c.tradeoff)),x,y+32,552 if p else 744,19 if p else 14,g.MUTED)
+	text(("OPEN" if series=="OPEN" else "CLASS "+series)+" / "+g.distance_label(float(c.distance)),x,y+61,23 if p else 16,GlassPalette.BLUE)
 	text("WIN $%d / FINISH $%d"%[c.purse,int(float(c.purse)*.4)],x,832 if p else 514,23 if p else 17)
 	if int(c.completion_bonus)>0 and (p or not g.race_touch_layout()): text("Bonus earned" if g.profile.career_claims.has(str(c.id)) else "First win bonus $%d"%int(c.completion_bonus),x,872 if p else 546,21 if p else 15,g.GREEN)
 	var short: bool=g.race_touch_layout() and not p
@@ -94,6 +119,9 @@ func action(id: String) -> void:
 		else: picker=true
 	elif id=="cb_open": select_series("OPEN")
 	elif id.begins_with("cb_class_"): select_series(id.trim_prefix("cb_class_"))
-	elif id.begins_with("cb_rival_"): selected=id.trim_prefix("cb_rival_"); g.wager=0
+	elif id.begins_with("cb_rival_"):
+		var candidate:=Championships.event(id.trim_prefix("cb_rival_"))
+		if candidate.get("series","")==series:
+			selected=str(candidate.id); g.wager=0
 	g.menu_dirty=true
 

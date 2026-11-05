@@ -13,11 +13,11 @@ var show_hp := true
 var show_torque := true
 var _cars: Dictionary = {}
 var studio: UpgradeStudio
-const CATEGORY_SLOTS := [["internals","displacement","compression"],["intake"],["exhaust"],["fuel"],["ecu"],["induction","boost"],["nitrous"],["controls","gearset","transbrake"],["clutch","converter"],["differential","final_drive"],["wheels"],["suspension"],[],["cooling"],[]]
-const STAGE_CATEGORIES := [0,2,5,6,7,10,12,14]
-const TUNE_KEYS := {4:["launch_rpm","redline"],5:["boost"],6:["nitrous_ramp"],7:["firmness","ratio","shift"],8:["stall"],9:["final_drive"]}
-const CATEGORIES := [["Engine internals",0,0],["Intake",0,3],["Exhaust",5,0],["Fuel system",0,4],["ECU / electronics",0,5],["Forced induction",1,0],["Nitrous",7,0],["Transmission",4,-1],["Clutch / converter",4,1],["Differential / gearing",2,1],["Tires / wheels",2,0],["Suspension",3,0],["Brakes",6,-1],["Cooling",3,1],["Weight reduction",3,-1]]
-const SHORT_NAMES := ["Engine", "Intake", "Exhaust", "Fuel system", "Electronics", "Induction", "Nitrous", "Transmission", "Clutch / converter", "Differential", "Tires / wheels", "Suspension", "Brakes", "Cooling", "Weight"]
+const CATEGORY_SLOTS := [["internals","displacement","compression"],["intake"],["exhaust"],["fuel"],["ecu"],["induction","boost"],["nitrous"],["controls","gearset","transbrake"],["clutch","converter"],["differential","final_drive"],["tires"],["suspension"],[],["wheels"],[]]
+const STAGE_CATEGORIES := [0,2,5,6,7,12,14]
+const TUNE_KEYS := {4:["launch_rpm","redline"],5:["boost"],6:["nitrous_ramp"],7:["firmness","ratio","shift"],8:["stall"],9:["final_drive"],10:["tire_pressure"],11:["launch_damping"]}
+const CATEGORIES := [["Engine internals",0,0],["Intake",0,3],["Exhaust",5,0],["Fuel system",0,4],["ECU / electronics",0,5],["Forced induction",1,0],["Nitrous",7,0],["Transmission",4,-1],["Clutch / converter",4,1],["Differential / gearing",2,1],["Tires",2,0],["Suspension",3,0],["Brakes",6,-1],["Wheels",2,1],["Weight reduction",3,-1]]
+const SHORT_NAMES := ["Engine", "Intake", "Exhaust", "Fuel system", "Electronics", "Induction", "Nitrous", "Transmission", "Clutch / converter", "Differential", "Tires", "Suspension", "Brakes", "Wheels", "Weight"]
 func _init(game: Node2D) -> void:
 	g = game; studio=UpgradeStudio.new(game)
 func t(s: String,x: float,y: float,size: int = 18,c: Color = Color("f2eee4")) -> void: g.text_at(s,x,y,size,c)
@@ -35,7 +35,7 @@ static func peak_torque(c: Drivetrain) -> float:
 	var peak := 0.0
 	for rpm in range(int(c.idle_rpm),int(c.redline_rpm)+1,50): peak = maxf(peak,c.full_engine_torque(rpm))
 	return peak
-static func grip(c: Drivetrain) -> float: return c.grip_coefficient+c.tire_stage*0.095+c.extra_grip
+static func grip(c: Drivetrain) -> float: return c.effective_grip()
 func stats(c: Drivetrain) -> Array:
 	return ["%d %sHP" % [c.peak_horsepower(),"ICE " if float(c._base_spec.get("hybrid_kw",0))>0 else ""],"%.0f NM" % peak_torque(c),"%.2f GRIP" % grip(c),"%.0f KG" % c.mass()]
 func draw_garage() -> void:
@@ -218,7 +218,7 @@ func back() -> bool:
 func action(id: String) -> bool:
 	if id=="owned_filter": owned_filter=(owned_filter+1)%7; owned_page=0; return true
 	if id=="owned_sort": owned_sort=not owned_sort; owned_page=0; return true
-	if id.begins_with("upgrade_system_"): studio.system=clampi(int(id.trim_prefix("upgrade_system_")),0,3); categories=true; return true
+	if id.begins_with("upgrade_system_"): studio.system=clampi(int(id.trim_prefix("upgrade_system_")),0,UpgradeStudio.GROUPS.size()-1); categories=true; return true
 	if id.begins_with("hw_slot_") and not categories: g.workshop.mode="hardware"
 	if id == "hub_owned_prev": owned_page = maxi(0,owned_page-1)
 	elif id == "hub_owned_next": owned_page += 1

@@ -101,6 +101,8 @@ static func draw_wheels(g: Node2D,base: Vector2,size: float,s: float,model: Stri
 				var extent := radius+2*s*radius_factor
 				g.draw_texture_rect(texture,Rect2(center-Vector2.ONE*extent,Vector2.ONE*extent*2),false,light)
 		elif not reflections_only: WheelVisuals.draw_wheel(g,center,radius,size,int(look.rim),state,quality,look)
+		if not reflections_only and car!=null and car.tire_sidewall_mark>0 and int(look.sidewall)==0:
+			WheelVisuals.draw_compound_mark(g,center,radius,car.tire_sidewall_mark,state,light)
 
 
 

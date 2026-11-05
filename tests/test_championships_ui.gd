@@ -41,7 +41,7 @@ func race_player() -> void:
 func run() -> void:
 	game=load("res://scenes/main.tscn").instantiate(); root.add_child(game)
 	game.set_process(false); game.set_physics_process(false); game.profile=DriverProfile.new(); game.refresh_car()
-	DirAccess.make_dir_recursive_absolute("res://validation/class_career")
+	DirAccess.make_dir_recursive_absolute("res://.qa/class_career_expanded")
 	for phone in [false,true]:
 		root.size=Vector2i(390,844) if phone else Vector2i(1200,760)
 		game.go_garage(); game.tab="races"; game.career_board.active=false
@@ -51,10 +51,10 @@ func run() -> void:
 		for step in 40: RaceAI.advance_estimates(1200)
 		await frame()
 		bounds("street series")
-		root.get_texture().get_image().save_png("res://validation/class_career/street_"+("phone" if phone else "desktop")+".png")
+		root.get_texture().get_image().save_png("res://.qa/class_career_expanded/street_"+("phone" if phone else "desktop")+".png")
 		await click("open_championships")
 		bounds("class picker")
-		root.get_texture().get_image().save_png("res://validation/class_career/classes_"+("phone" if phone else "desktop")+".png")
+		root.get_texture().get_image().save_png("res://.qa/class_career_expanded/classes_"+("phone" if phone else "desktop")+".png")
 		for letter in Championships.CLASSES:
 			await click("cb_class_"+letter); bounds("rival "+letter)
 			if letter=="S": check(not game.action_enabled("race"),"Locked class can enter")
@@ -63,7 +63,7 @@ func run() -> void:
 		await click("cb_class_E"); bounds("E rival")
 		for step in 40: RaceAI.advance_estimates(1200)
 		await frame()
-		root.get_texture().get_image().save_png("res://validation/class_career/rival_"+("phone" if phone else "desktop")+".png")
+		root.get_texture().get_image().save_png("res://.qa/class_career_expanded/rival_"+("phone" if phone else "desktop")+".png")
 		await click("cb_back"); await click("cb_back")
 		check(not game.career_board.active,"Back failed to restore original street series")
 	# A brand-new stock starter must be able to beat the first class rival.
@@ -73,9 +73,9 @@ func run() -> void:
 	await race_player()
 	check(game.screen=="results" and game.result_win and game.profile.championship_wins.get("E",0)==1,"Stock starter cannot beat first class racer")
 	var money: int=game.profile.credits; game.complete_race(); check(game.profile.credits==money,"Results granted duplicate class reward")
-	root.get_texture().get_image().save_png("res://validation/class_career/first_victory.png")
+	root.get_texture().get_image().save_png("res://.qa/class_career_expanded/first_victory.png")
 	root.size=Vector2i(390,844); await frame(); bounds("phone time slip")
-	root.get_texture().get_image().save_png("res://validation/class_career/results_phone.png")
+	root.get_texture().get_image().save_png("res://.qa/class_career_expanded/results_phone.png")
 	root.size=Vector2i(844,390); await frame(); bounds("landscape time slip")
 	root.size=Vector2i(1200,760); await frame(); bounds("desktop time slip")
 	await click("next_rival"); await click("race")
@@ -88,7 +88,7 @@ func run() -> void:
 	await click("next_rival")
 	check(game.career_board.selected=="open_4","Next Race did not advance to the next open-class rival")
 	# Full mechanical upgrade -> tune -> save -> practice -> championship loop.
-	game.go_garage(); game.profile.credits=80000; game.profile.xp=20000; game.profile.career_wins=[5,5,5]; await frame()
+	game.go_garage(); game.profile.credits=80000; game.profile.xp=20000; game.profile.career_wins=[5,5,5]; game.profile.legacy_class_access=["D","C","B","A","S"]; await frame()
 	await click("tab_performance"); await click("hub_category_0"); await click("install_0_1"); await click("hub_back")
 	game.menu.hub.studio.system=0; game.menu.hub.open_upgrade(4); await frame()
 	await click("hw_pick_ecu"); await click("hw_buy"); await click("upgrade_section_tune"); await click("open_tuning")
@@ -120,7 +120,46 @@ func run() -> void:
 		await click("cb_class_E"); bounds("landscape rival")
 		for b in game.buttons:
 			if str(b.id).begins_with("cb_") or b.id in ["race","bet_more","bet_less","bet_clear"]: check(minf(b.rect.size.x,b.rect.size.y)*float(window.y)/760>=44,"Small landscape race target")
-		root.get_texture().get_image().save_png("res://validation/class_career/rival_landscape_%d.png"%window.x)
+		root.get_texture().get_image().save_png("res://.qa/class_career_expanded/rival_landscape_%d.png"%window.x)
+	# Enter the real final race, run the solver, and verify the trophy and result screen.
+	game.go_garage(); game.tab="races"
+	game.profile.credits=1000000
+	game.profile.xp=100000
+	game.profile.championship_wins={"E":10,"D":10,"C":10,"B":10,"A":10,"S":9}
+	check(game.profile.buy_vehicle("demon"),"Boss test could not purchase a legal S car")
+	game.profile.stages=[3,2,3,1,5,3,0,1]
+	game.refresh_car()
+	game.career_board.select_series("S")
+	for window in [Vector2i(1200,760),Vector2i(390,844),Vector2i(844,390)]:
+		root.size=window
+		await frame()
+		for step in 40: RaceAI.advance_estimates(1200)
+		await frame(); bounds("boss ladder")
+		var rungs:=0
+		for entry in game.buttons:
+			if str(entry.id).begins_with("cb_rival_"): rungs+=1
+		check(rungs==10,"Boss ladder did not show all ten rivals")
+		root.get_texture().get_image().save_png("res://.qa/class_career_expanded/boss_ladder_%d.png"%window.x)
+	game.career_board.selected="class_S_6"
+	await frame(); await click("race")
+	check(game.screen=="race" and game.active_distance==201.168 and game.nitrous_lock_reason()=="MOTOR ONLY","Motor-only heat did not apply its distance and nitrous rule")
+	game.car.nitrous_auto=false
+	key(KEY_SPACE)
+	check(not game.nitrous_input(),"Motor-only heat allowed keyboard nitrous")
+	key(KEY_SPACE,false)
+	game.go_garage(); game.tab="races"; game.career_board.select_series("S")
+	root.size=Vector2i(390,844)
+	await frame(); await click("race")
+	check(game.screen=="race" and game.active_contract.get("boss",false),"Boss race did not start")
+	root.get_texture().get_image().save_png("res://.qa/class_career_expanded/boss_intro.png")
+	await race_player()
+	check(game.screen=="results" and game.result_win and Championships.trophies(game.profile)==6,"Final boss battle did not award the sixth trophy")
+	check(game.result_bonus==Championships.BONUSES[-1],"Final boss battle paid the wrong bonus")
+	check(game.result_base_pay==int(game.active_contract.purse),"Time slip included the trophy bonus in base pay")
+	bounds("boss results")
+	root.get_texture().get_image().save_png("res://.qa/class_career_expanded/boss_victory.png")
+	await click("next_rival")
+	check(game.career_board.picker,"Final victory did not return to the completed career overview")
 	game.stop_presentation_audio(); await create_timer(.12).timeout; game.queue_free(); await process_frame
 	print("CLASS CAREER UI / PHONE / STARTER WIN / UPGRADE-TUNE-TEST-RACE / SECOND VEHICLE / SAVE: ",checks," / ","PASS" if failures==0 else "FAIL")
 	quit(0 if failures==0 else 1)

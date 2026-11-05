@@ -22,7 +22,7 @@ func run_checks() -> void:
 	check(game.car.peak_horsepower() == hp and game.profile.stages[0] == 2,"Owned build changed on switch")
 	h.action("hub_upgrades"); await frame()
 	var found: Dictionary = {}
-	for system in 4:
+	for system in UpgradeStudio.GROUPS.size():
 		h.action("upgrade_system_%d" % system); await frame()
 		for item in game.buttons:
 			if str(item.id).begins_with("hub_category_"): found[item.id] = true

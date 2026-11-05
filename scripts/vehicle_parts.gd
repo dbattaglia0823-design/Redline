@@ -1,7 +1,9 @@
 class_name VehicleParts
 extends RefCounted
 
-const SLOTS := ["internals","displacement","compression","intake","fuel","ecu","induction","boost","clutch","converter","controls","differential","final_drive","wheels","suspension","cooling","transbrake","gearset","exhaust","nitrous"]
+const SLOTS := ["internals","displacement","compression","intake","fuel","ecu","induction","boost","clutch","converter","controls","differential","final_drive","wheels","tires","suspension","transbrake","gearset","exhaust","nitrous"]
+const RETIRED_COOLING_COSTS := {"radiator":1800,"race_cooling":3900}
+const TIRE_LADDER := ["","street_tires","uhp_tires","street_radial","competition_radial","drag_slicks"]
 const TRANSMISSION_SLOTS := ["clutch","converter","controls","transbrake","gearset"]
 const FINAL_DRIVES := [2.73,3.0,3.20,3.55,3.85,4.10,4.30]
 # One installed item per slot; previously bought items remain owned per car.
@@ -31,16 +33,29 @@ const PARTS := {
 	"spool":{"slot":"differential","name":"Straight-line locked differential","cost":3000,"stage":2,"grip":0.085,"mass":1.0},
 	"final_kit":{"slot":"final_drive","name":"Interchangeable final-drive kit","cost":3400,"stage":1,"final_tune":true},
 	"light_wheels":{"slot":"wheels","name":"Lightweight road wheel set","cost":1600,"stage":0,"wheel_inertia":-0.5,"mass":-8.0},
-	"drag_wheels":{"slot":"wheels","name":"Tall drag wheel / tire package","cost":3300,"stage":2,"radius":0.335,"grip":0.10,"wheel_inertia":0.4,"mass":4.0},
-	"street_susp":{"slot":"suspension","name":"Adjustable street suspension","cost":1700,"stage":0,"transfer":0.14,"fwd_transfer":0.12,"mass":-3.0},
-	"drag_susp":{"slot":"suspension","name":"Drag weight-transfer package","cost":3700,"stage":2,"transfer":0.25,"fwd_transfer":0.08,"mass":-5.0},
-	"radiator":{"slot":"cooling","name":"High-capacity cooling kit","cost":1800,"stage":0,"cooling":1.45,"mass":5.0},
-	"race_cooling":{"slot":"cooling","name":"Race engine / transmission coolers","cost":3900,"stage":3,"cooling":2.0,"mass":9.0},
+	"drag_wheels":{"slot":"wheels","name":"Tall drag wheel set","cost":3300,"stage":2,"radius":0.335,"wheel_inertia":0.4,"mass":4.0},
+	"street_tires":{"slot":"tires","name":"Performance street tires","cost":850,"stage":0,"grip":.095,"rolling":.99,"mass":1.0,"wheel_inertia":.03,"launch_bite":.015,"slip_loss":.080,"pressure_peak":32.0},
+	"uhp_tires":{"slot":"tires","name":"Ultra-high-performance tires","cost":1750,"stage":0,"grip":.19,"rolling":1.04,"mass":2.0,"wheel_inertia":.07,"launch_bite":.022,"slip_loss":.065,"pressure_peak":30.0},
+	"street_radial":{"slot":"tires","name":"Street drag radials","cost":2800,"stage":0,"grip":.285,"rolling":1.12,"mass":4.0,"wheel_inertia":.14,"launch_bite":.035,"slip_loss":.055,"pressure_peak":27.0,"radius_scale":1.012,"sidewall_mark":1},
+	"competition_radial":{"slot":"tires","name":"Competition drag radials","cost":4450,"stage":0,"grip":.35,"rolling":1.18,"mass":6.0,"wheel_inertia":.21,"launch_bite":.058,"slip_loss":.040,"pressure_peak":25.0,"radius_scale":1.025,"sidewall_mark":2},
+	"drag_slicks":{"slot":"tires","name":"Full drag slicks","cost":6300,"stage":0,"grip":.41,"rolling":1.25,"mass":7.0,"wheel_inertia":.28,"launch_bite":.085,"slip_loss":.055,"pressure_peak":23.0,"radius_scale":1.036,"sidewall_mark":3},
+	"street_susp":{"slot":"suspension","name":"Sport suspension","cost":1700,"stage":0,"transfer":.14,"fwd_transfer":.12,"mass":-3.0,"frequency":18.0,"hop_damping":.22,"launch_support":.012},
+	"coilovers":{"slot":"suspension","name":"Adjustable coilovers","cost":2600,"stage":0,"transfer":.19,"fwd_transfer":.10,"mass":-4.0,"frequency":16.0,"hop_damping":.38,"launch_support":.022,"adjustable":true},
+	"drag_susp":{"slot":"suspension","name":"Performance drag suspension","cost":3700,"stage":2,"transfer":.25,"fwd_transfer":.08,"mass":-5.0,"frequency":11.0,"hop_damping":.49,"launch_support":.036},
+	"competition_shocks":{"slot":"suspension","name":"Competition drag shocks and springs","cost":5350,"stage":0,"transfer":.30,"fwd_transfer":.055,"mass":-3.0,"frequency":12.0,"hop_damping":.65,"launch_support":.050,"adjustable":true},
+	"pro_drag_susp":{"slot":"suspension","name":"Professional drag racing suspension","cost":7400,"stage":0,"transfer":.34,"fwd_transfer":.035,"mass":1.0,"frequency":13.0,"hop_damping":.78,"launch_support":.068,"adjustable":true},
 	"transbrake":{"slot":"transbrake","name":"Transbrake valve-body kit","cost":3000,"stage":4,"brake":true},
 	"gearset":{"slot":"gearset","name":"Interchangeable ratio cassette kit","cost":6800,"stage":3,"ratio_tune":true},
 	"headers":{"slot":"exhaust","name":"Tuned exhaust manifold","cost":2100,"stage":0,"flow":0.045,"mass":-3.0},
 	"progressive":{"slot":"nitrous","name":"Progressive nitrous controller","cost":2800,"stage":0,"nitrous_ramp":0.35},
 }
+
+static func factory_name(slot: String) -> String:
+	match slot:
+		"tires": return "Factory tires"
+		"suspension": return "Factory suspension"
+		"wheels": return "Factory wheels"
+	return "Factory hardware"
 
 static func default_build() -> Dictionary:
 	return {"transmission":"legacy6","owned_transmissions":["legacy6"],"parts":{},"owned_parts":[],"tune":{},"fitments":{},"performance_stages":{},"owned_performance_stages":{}}

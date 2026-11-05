@@ -12,11 +12,14 @@ func measure(p: DriverProfile) -> Dictionary:
 	return {}
 func _initialize() -> void: call_deferred("run")
 func run() -> void:
-	check(Championships.catalog().size()==35,"Incomplete championship catalog")
-	var report: Array=[]
+	check(Championships.catalog().size()==65,"Incomplete championship catalog")
+	var names: Dictionary={}
+	var builds: Dictionary={}
 	for letter in Championships.CLASSES:
-		var ids:=Championships.ids(letter); check(ids.size()==5,"Missing class rounds")
-		var first:=0.0; var final:=0.0
+		var ids:=Championships.ids(letter); check(ids.size()==Championships.ROUNDS,"Missing class rounds")
+		var previous:=INF
+		var boss_count:=0
+		var distance_times: Dictionary={}
 		for id in ids:
 			var c:=Championships.event(id)
 			var bench:=VehicleBench.run(GameCatalog.spec(c.model),c.stages,c.hardware)
@@ -24,10 +27,21 @@ func run() -> void:
 			check(bench.safety_clamps==0,"Rival numerical instability: "+id)
 			var actual:=RaceAI.estimate(c,float(c.distance)); var quarter:=RaceAI.estimate(c,402.336)
 			check(actual.clamps==0 and actual.time<90 and actual.mph>0,"AI failed to finish: "+id)
-			if c.round==0: first=float(quarter.time)
-			if c.round==4: final=float(quarter.time)
-			report.append({"id":id,"model":c.model,"class":letter,"distance":c.distance,"potential_s":bench.quarter_s,"race_s":actual.time,"quarter_ai_s":quarter.time,"trap_mph":actual.mph})
-		check(final<first,"Final rival not harder under equal quarter-mile conditions: "+letter)
+			check(float(quarter.time)<previous-.035,"Quarter-mile normalized ladder regressed: "+id)
+			check(float(actual.time)<float(distance_times.get(c.distance,INF)),"Same-distance ladder regressed: "+id)
+			distance_times[c.distance]=actual.time
+			check(not names.has(c.name),"Duplicate rival name: "+id)
+			names[c.name]=true
+			var build_key:=JSON.stringify([c.model,c.stages,c.hardware])
+			check(not builds.has(build_key),"Duplicate rival car build: "+id)
+			builds[build_key]=true
+			if bool(c.get("boss",false)):
+				boss_count+=1
+				check(int(c.round)==Championships.ROUNDS-1 and float(quarter.time)<previous-.14,"Boss is not a distinct difficulty step: "+id)
+				check(float(bench.quarter_s)+.035<float(actual.time),"Boss exceeds a tuned legal player's benchmark: "+id)
+				check(not str(c.intro).is_empty() and not str(c.victory).is_empty(),"Missing boss presentation: "+id)
+			previous=float(quarter.time)
+		check(boss_count==1,"Expected exactly one boss in "+letter)
 	var p:=DriverProfile.new(); p.career_wins=[5,2,1]; p.credits=2400
 	var first_event:=Championships.event("class_E_0")
 	check(Championships.eligibility(p,first_event)=="","Starter cannot enter first championship")
@@ -38,26 +52,40 @@ func run() -> void:
 	check(result.base==int(first_event.purse) and p.championship_wins.E==1,"Reward did not use bound entry contract")
 	var money:=p.credits
 	check(p.award_race(first_event,true,false,16,.25,80,0,0).is_empty() and p.credits==money,"Duplicate championship payout")
-	check(not p.begin_wager(0,Championships.event("class_E_4")),"Skipped directly to locked final")
-	for round in range(1,5):
-		var c:=Championships.event("class_E_%d"%round)
-		check(p.begin_wager(0,c),"Sequential heat locked unexpectedly")
-		p.award_race(c,true,false,15,.2,85,0,0)
-	check(p.championship_wins.E==5 and Championships.unlock_reason(p,"D")=="","Class completion failed to unlock next class")
-	var last:=Championships.event("class_E_4")
-	check(p.begin_wager(0,last),"Completed event cannot be replayed")
-	result=p.award_race(last,true,false,15,.2,85,0,0)
-	check(result.bonus==0,"Completion bonus farmed on replay")
+	check(not p.begin_wager(0,Championships.event("class_E_9")),"Skipped directly to locked final")
+	for letter in Championships.CLASSES:
+		if letter!="E": check(Championships.unlock_reason(p,letter)=="","Boss did not unlock the next class")
+		var legal:=Championships.event(Championships.ids(letter)[0])
+		p.vehicle_id=legal.model; p.hardware=legal.hardware; p.stages=legal.stages
+		p.garage[p.vehicle_id]={"stages":p.stages,"hardware":p.hardware}
+		measure(p)
+		for round in range(1 if letter=="E" else 0,Championships.ROUNDS):
+			var c:=Championships.event("class_%s_%d"%[letter,round])
+			if c.get("rule","")=="motor_only":
+				check(not p.begin_wager(1,c),"Motor-only accepted a wager")
+			check(p.begin_wager(0,c),"Sequential heat locked unexpectedly: "+str(c.id))
+			result=p.award_race(c,true,false,15,.2,85,0,0)
+			check(result.get("bonus",-1)==int(c.completion_bonus),"Incorrect first-clear bonus: "+str(c.id))
+		var last:=Championships.event("class_%s_9"%letter)
+		check(p.begin_wager(0,last),"Completed boss cannot be replayed")
+		result=p.award_race(last,true,false,15,.2,85,0,0)
+		check(result.bonus==0,"Completion bonus farmed on replay")
+	check(Championships.completed(p)==60 and Championships.trophies(p)==6,"Full career did not award six trophies")
+	for id in Championships.ids("OPEN"):
+		var c:=Championships.event(id)
+		if c.vehicle_rule!="":
+			p.vehicle_id=c.vehicle_rule; p.hardware=GameCatalog.factory_build(p.vehicle_id); p.stages=GameCatalog.blank_stages()
+		check(p.begin_wager(0,c),"Open recovery unavailable")
+		p.award_race(c,true,false,16,.2,85,0,0)
 	var claims:=p.career_claims.duplicate()
 	p.save(); var restored:=DriverProfile.new(); restored.load_profile()
-	check(restored.championship_wins.E==5 and restored.career_claims==claims and restored.credits==p.credits,"Championship save lost rewards or progress")
+	check(Championships.completed(restored)==60 and restored.career_claims==claims and restored.credits==p.credits,"Championship save lost rewards or progress")
+	check(restored.event_records.size()==65,"Expanded save dropped event records")
 	check(restored.career_wins==[5,2,1],"Legacy series progress overwritten")
-	var balance:=0
 	for letter in Championships.CLASSES:
 		var class_pay:=0
 		for id in Championships.ids(letter): class_pay+=int(Championships.event(id).purse)
-		balance+=class_pay+Championships.BONUSES[Championships.CLASSES.find(letter)]
-		check(class_pay>=Championships.PAY[Championships.CLASSES.find(letter)]*5,"Invalid championship economy")
+		check(class_pay>=Championships.PAY[Championships.CLASSES.find(letter)]*Championships.ROUNDS,"Invalid championship economy")
 	p=DriverProfile.new(); p.stages=[3,2,3,2,3,2,0,1]
 	var measured:=measure(p)
 	check(not measured.is_empty() and measured.get("class","E")!="E","Upgraded starter did not change class")
@@ -69,7 +97,5 @@ func run() -> void:
 	check(Championships.eligibility(p,Championships.event("open_0"))=="","Upgraded car blocked from open recovery race")
 	p.vehicle_id="civic_si"; p.hardware=GameCatalog.factory_build("civic_si")
 	check(Championships.eligibility(p,Championships.event("open_4"))!="","Vehicle-specific challenge ignored car rule")
-	var f:=FileAccess.open("res://validation/championship_balance.json",FileAccess.WRITE); f.store_string(JSON.stringify(report,"  ")); f.close()
-	f=FileAccess.open("res://validation/championship_summary.json",FileAccess.WRITE); f.store_string(JSON.stringify({"checks":checks,"passed":failures==0,"championships":6,"rivals":30,"open_events":5,"first_clear_rewards":balance},"  ")); f.close()
-	print("CLASS CAREER / 30 RIVALS / REAL AI / REWARDS / MIGRATION / ELIGIBILITY: ",checks," / ","PASS" if failures==0 else "FAIL")
+	print("CLASS CAREER / 60 RIVALS / REAL AI / REWARDS / ELIGIBILITY: ",checks," / ","PASS" if failures==0 else "FAIL")
 	quit(0 if failures==0 else 1)

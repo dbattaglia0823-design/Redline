@@ -67,6 +67,14 @@ static func configure(car: Drivetrain,contract: Dictionary) -> void:
 	car.configure_build(contract.get("hardware",GameCatalog.factory_build(str(contract.model))),str(contract.model))
 	if car.shift_map.is_empty(): car.rebuild_shift_map()
 	car.reset()
+	if contract.get("rule","")=="motor_only": car.nitrous_auto=false
+
+static func live_contract(contract: Dictionary,run_index: int,opponent_index: int) -> Dictionary:
+	var live := contract.duplicate(true)
+	live.driver_seed = float(contract.driver_seed)+run_index*.73
+	var spread := float(contract.get("reaction_spread",.02))
+	live.reaction = clampf(float(contract.reaction)+sin(run_index*1.71+opponent_index)*spread,.08,.90)
+	return live
 
 static func launch_target(car: Drivetrain) -> float:
 	if car.launch_control and car.hardware.tune.has("launch_rpm"): return car.launch_rpm
@@ -107,7 +115,7 @@ static func step(car: Drivetrain,contract: Dictionary,dt: float) -> void:
 				else: car.request_shift(1)
 		if car.control_mode == "hpattern" and car.shift_left > 0: clutch = 1; pedal = 0
 		elif car._base_spec.has("id"): clutch=launch_clutch(car)
-	var spray: bool=int(contract.get("driver_model",1))==2 and bool(contract.get("nitrous",false)) and not waiting and car.gear>=int(contract.get("nitrous_gear",2)) and car.wheelspin<.12 and car.shift_left<=0
+	var spray: bool=int(contract.get("driver_model",1))==2 and bool(contract.get("nitrous",false)) and contract.get("rule","")!="motor_only" and not waiting and car.gear>=int(contract.get("nitrous_gear",2)) and car.wheelspin<.12 and car.shift_left<=0
 	car.step(dt,pedal,0.0,clutch,spray,waiting and car.has_transbrake)
 
 static func estimate(contract: Dictionary,distance: float = 402.336) -> Dictionary:

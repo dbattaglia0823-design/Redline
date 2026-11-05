@@ -17,7 +17,7 @@ static func force(car, v: float, g: int) -> float:
 	if predicted >= car.redline_rpm: tq *= maxf(0.0,1.0-(predicted-car.redline_rpm)/400.0)
 	tq = minf(tq,car.input_capacity())
 	var raw: float = tq*mult*car.ratio_for(g)*car.trans_efficiency/car.tire_radius
-	var grip: float = car.mass()*9.81*(car.grip_coefficient+car.tire_stage*0.095+car.extra_grip)
+	var grip: float = car.mass()*9.81*car.effective_grip()
 	return minf(raw,grip)-0.5*1.225*car.drag_area*v*v-car.mass()*9.81*car.rolling_coefficient
 
 static func acceleration_time(car, start: float, ending: float, g: int) -> float:

@@ -170,6 +170,15 @@ func icon(g: CanvasItem,key: String,p: Vector2,s: float,color: Color) -> void:
 	if color == GlassPalette.MUTED: color = PALETTE.muted
 	var w := 1.7; var c := p+Vector2(s,s)*.5; var radius := s*.35
 	match key:
+		"trophy":
+			var cup := PackedVector2Array([Vector2(.27,.14),Vector2(.73,.14),Vector2(.69,.45),Vector2(.58,.59),Vector2(.42,.59),Vector2(.31,.45),Vector2(.27,.14)])
+			for i in cup.size(): cup[i]=p+cup[i]*s
+			g.draw_polyline(cup,color,w,true)
+			for side in [-1,1]:
+				var x: float=.5+side*.21
+				g.draw_polyline(PackedVector2Array([p+Vector2(x,.24)*s,p+Vector2(.5+side*.38,.24)*s,p+Vector2(.5+side*.33,.42)*s,p+Vector2(x,.46)*s]),color,w,true)
+			g.draw_line(p+Vector2(.5,.59)*s,p+Vector2(.5,.80)*s,color,w,true)
+			g.draw_line(p+Vector2(.32,.82)*s,p+Vector2(.68,.82)*s,color,w,true)
 		"garage":
 			g.draw_polyline(PackedVector2Array([p+Vector2(1,s*.43),p+Vector2(s*.5,1),p+Vector2(s-1,s*.43),p+Vector2(s-1,s-1),p+Vector2(1,s-1),p+Vector2(1,s*.43)]),color,w,true)
 			g.draw_line(p+Vector2(s*.3,s*.6),p+Vector2(s*.7,s*.6),color,w,true)
@@ -219,16 +228,19 @@ func icon(g: CanvasItem,key: String,p: Vector2,s: float,color: Color) -> void:
 			var points := PackedVector2Array([p+Vector2(s*.5,0),p+Vector2(s*.5,s*.15)])
 			for i in 6: points.append(p+Vector2(s*(.25 if i%2 == 0 else .75),s*(.22+i*.11)))
 			points.append(p+Vector2(s*.5,s*.9)); points.append(p+Vector2(s*.5,s)); g.draw_polyline(points,color,w,true)
-		"Cooling":
-			g.draw_rect(Rect2(p+Vector2(s*.1,s*.2),Vector2(s*.8,s*.6)),color,false,w)
-			for i in 4: g.draw_line(p+Vector2(s*(.25+i*.17),s*.3),p+Vector2(s*(.25+i*.17),s*.7),color,w,true)
+		"Tires":
+			g.draw_circle(c,radius,color,false,w,true)
+			g.draw_circle(c,radius*.70,color,false,w,true)
+			for i in 6:
+				var direction:=Vector2.from_angle(TAU*i/6)
+				g.draw_line(c+direction*radius*.74,c+direction*radius*.95,color,w,true)
 		"Weight reduction":
 			g.draw_circle(p+Vector2(s*.5,s*.22),s*.15,color,false,w,true)
 			g.draw_polyline(PackedVector2Array([p+Vector2(s*.25,s*.4),p+Vector2(s*.75,s*.4),p+Vector2(s*.9,s*.9),p+Vector2(s*.1,s*.9),p+Vector2(s*.25,s*.4)]),color,w,true)
 		"Brakes":
 			g.draw_arc(c,radius,.7,TAU-.7,20,color,w,true); g.draw_circle(c,s*.09,color,true,-1,true)
 			g.draw_line(p+Vector2(s*.8,s*.23),p+Vector2(s*.8,s*.76),color,w*2,true)
-		"Transmission", "Clutch / converter", "Tires / wheels":
+		"Transmission", "Clutch / converter", "Wheels":
 			g.draw_circle(c,radius,color,false,w,true); g.draw_circle(c,radius*.35,color,false,w,true)
 			for i in 5:
 				var angle := TAU*i/5; var direction := Vector2(cos(angle),sin(angle))

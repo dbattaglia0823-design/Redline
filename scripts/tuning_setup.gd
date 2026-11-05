@@ -15,7 +15,8 @@ const EXTRA := {
 	"converter_lock":["Converter lock speed ratio",0.75,0.95,0.025,0.85,"turbine/pump"],
 	"launch_gear":["Launch gear",1,2,1,1,"gear"],
 	"tire_pressure":["Tire pressure",18,40,1,32,"psi"],
-	"diff_lock":["Differential preload",0.25,1.0,0.1,1.0,"fraction"]
+	"diff_lock":["Differential preload",0.25,1.0,0.1,1.0,"fraction"],
+	"launch_damping":["Launch damping",.65,1.35,.05,1.0,"relative"]
 }
 const GROUPS := {
 	"Launch":["launch_rpm","launch_enabled","tc_slip","throttle_gamma"],
@@ -23,7 +24,7 @@ const GROUPS := {
 	"Nitrous":["nitrous_auto","nitrous_min_rpm","nitrous_min_gear","nitrous_throttle","nitrous_ramp"],
 	"Gearbox":["ratio","shift","final_drive","firmness","launch_gear"],
 	"Coupling":["stall","clutch_rate","converter_lock"],
-	"Grip":["tire_pressure","diff_lock"]
+	"Grip":["tire_pressure","launch_damping","diff_lock"]
 }
 static func reason(key: String,b: Dictionary,stage: int,vehicle: String) -> String:
 	var fitted: Array=b.parts.values()
@@ -39,7 +40,10 @@ static func reason(key: String,b: Dictionary,stage: int,vehicle: String) -> Stri
 	if key=="launch_gear":
 		if kind not in ["automatic","drag"] or not fitted.has("race_controller"): return "Automatic race controller required"
 		if fitted.has("transbrake"): return "Transbrake launches require first gear"
-	if key=="tire_pressure": return "Drag wheel / tire package required" if not fitted.has("drag_wheels") else ""
+	if key=="tire_pressure": return "Upgrade tires to tune pressure" if not b.parts.has("tires") and not fitted.has("drag_wheels") else ""
+	if key=="launch_damping":
+		var suspension: Dictionary=VehicleParts.PARTS.get(b.parts.get("suspension",""),{})
+		return "" if suspension.get("adjustable",false) else "Adjustable suspension required"
 	if key=="diff_lock": return "Adjustable limited-slip differential required" if not fitted.has("lsd") else ""
 	return ""
 

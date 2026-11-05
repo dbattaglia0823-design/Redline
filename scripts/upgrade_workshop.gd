@@ -21,8 +21,8 @@ var lab_result: Dictionary = {}
 var lab_build := ""
 var _preview: Drivetrain
 var _preview_key := ""
-const GROUPS := [["internals","displacement","compression","intake","fuel","ecu"],["induction","boost"],["wheels","differential"],["suspension","cooling"],["controls","clutch","converter","transbrake","gearset","final_drive"],["exhaust","intake"],["suspension","cooling"],["nitrous","fuel"]]
-const TITLES := {"internals":"Internals","displacement":"Displacement","compression":"Compression","intake":"Intake","fuel":"Fuel delivery","ecu":"ECU","induction":"Turbo / supercharger","boost":"Boost control","clutch":"Clutch packs","converter":"Converter","controls":"Shift hardware","differential":"Differential","final_drive":"Final drive","wheels":"Wheels / tires","suspension":"Suspension","cooling":"Cooling","transbrake":"Transbrake","gearset":"Ratio cassettes","exhaust":"Exhaust","nitrous":"Nitrous control"}
+const GROUPS := [["internals","displacement","compression","intake","fuel","ecu"],["induction","boost"],["tires","wheels","differential"],["suspension"],["controls","clutch","converter","transbrake","gearset","final_drive"],["exhaust","intake"],["suspension"],["nitrous","fuel"]]
+const TITLES := {"internals":"Internals","displacement":"Displacement","compression":"Compression","intake":"Intake","fuel":"Fuel delivery","ecu":"ECU","induction":"Turbo / supercharger","boost":"Boost control","clutch":"Clutch packs","converter":"Converter","controls":"Shift hardware","differential":"Differential","final_drive":"Final drive","wheels":"Wheels","tires":"Tires","suspension":"Suspension","transbrake":"Transbrake","gearset":"Ratio cassettes","exhaust":"Exhaust","nitrous":"Nitrous control"}
 
 func _init(game: Node2D) -> void: g = game
 func t(value: String,x: float,y: float,size: int = 16,color: Color = Color("f2eee4")) -> void: g.text_at(value,x,y,size,color)
@@ -76,11 +76,11 @@ func draw_parts() -> void:
 
 func part_details(part: Dictionary) -> Array[String]:
 	var rows: Array[String] = []
-	var labels := {"torque":"Displacement / torque factor","flow":"High-RPM flow gain","safe":"Engine torque support","inertia":"Rotating inertia change","redline":"Mechanical RPM headroom","clutch":"Clutch capacity factor","cooling":"Cooling capacity factor","mass":"Mass change, kg","grip":"Effective tire grip gain","radius":"Rolling radius, m","wheel_inertia":"Wheel inertia change","onset":"Turbo onset, RPM","spool":"Spool constant, sec","boost_add":"Extra boost capacity, bar","fuel":"Fuel-flow support factor","pressure":"Supercharger boost, bar","multiplication":"Stall torque multiplication","nitrous_ramp":"Progressive spray, sec","transfer":"Weight-transfer response","shift_scale":"Actuator time factor"}
+	var labels := {"torque":"Displacement / torque factor","flow":"High-RPM flow gain","safe":"Engine torque support","inertia":"Rotating inertia change","redline":"Mechanical RPM headroom","clutch":"Clutch capacity factor","mass":"Mass change, kg","grip":"Effective tire grip gain","radius":"Rolling radius, m","wheel_inertia":"Wheel inertia change","onset":"Turbo onset, RPM","spool":"Spool constant, sec","boost_add":"Extra boost capacity, bar","fuel":"Fuel-flow support factor","pressure":"Supercharger boost, bar","multiplication":"Stall torque multiplication","nitrous_ramp":"Progressive spray, sec","transfer":"Weight-transfer response","shift_scale":"Actuator time factor"}
 	for key in labels:
 		if not part.has(key): continue
 		var value:=float(part[key])
-		if key in ["torque","safe","clutch","cooling","fuel","shift_scale"]: rows.append("%s: %.2fx"%[labels[key],value])
+		if key in ["torque","safe","clutch","fuel","shift_scale"]: rows.append("%s: %.2fx"%[labels[key],value])
 		elif key=="flow": rows.append("High-RPM flow potential: +%.1f%%"%(value*100))
 		elif key=="onset": rows.append("Boost onset: %.0f RPM"%value)
 		elif key=="redline": rows.append("Mechanical RPM headroom: +%.0f RPM"%value)
@@ -149,13 +149,19 @@ func draw_scoped_tuning() -> void:
 	for i in keys.size():
 		var key: String = keys[i]
 		var values := {"launch_rpm":g.car.launch_rpm,"redline":g.car.redline_rpm,"boost":g.car.boost_target(g.car.redline_rpm,1),"nitrous_ramp":g.car._nitrous_ramp,"firmness":g.car.shift_firmness,"stall":g.car.converter_stall,"final_drive":g.car.final_drive,"ratio":g.car.gear_ratios[gear_index],"shift":g.car.shift_map[gear_index] if gear_index < g.car.shift_map.size() else 0}
-		tune_row(str(labels[key]),tune_value(key,float(values[key])),key,300+i*85,tuning_enabled(key))
+		tune_row(str(labels.get(key,TuningSetup.EXTRA.get(key,[""])[0])),tune_value(key,float(values.get(key,tune_default(key)))),key,300+i*85,tuning_enabled(key))
 	t("Applies to installed hardware",744,470,16,g.MUTED)
 	b("open_tuning","Saved setups / test track",Rect2(743,479,402,44))
 	for i in 3: b("preset_"+["street","drag","safe"][i],["STREET","DRAG","SAFE"][i],Rect2(743+i*136,533,128,48))
 	if g.menu.hub.selected == 7: b("tune_reset","RESET AUTOMATIC SHIFT MAP",Rect2(743,596,402,48))
 
+func tune_default(key: String) -> float:
+	var row: Array=TuningSetup.EXTRA.get(key,[])
+	return float(g.profile.hardware.tune.get(key,row[4])) if not row.is_empty() else 0.0
+
 func tune_value(key: String,value: float) -> String:
+	if key=="tire_pressure": return "%.0f psi"%value
+	if key=="launch_damping": return "%.2fx"%value
 	if key=="shift" and gear_index>=g.car.gear_ratios.size()-1: return "Top gear / no upshift"
 	if key in ["launch_rpm","redline","stall","shift"]: return "%.0f RPM"%value
 	if key=="boost": return "%.2f bar"%value
@@ -229,7 +235,9 @@ func change_tune(key: String, direction: float) -> void:
 			else:
 				for i in range(options.size()-1,-1,-1):
 					if float(options[i])<g.car.final_drive-.0001: value=options[i]; break
-		_: return
+		_:
+			if not TuningSetup.EXTRA.has(key): return
+			value = tune_default(key)+direction*float(TuningSetup.EXTRA[key][3])
 	if not g.profile.tune_hardware(key,value): g.show_toast("Outside hardware limits / check gear order")
 	g.refresh_car()
 
@@ -281,10 +289,9 @@ static func comparison_rows(a: Drivetrain,b: Drivetrain) -> Array[String]:
 	if absf(a.final_drive-b.final_drive) > .001: rows.append("Final drive %.2f > %.2f" % [a.final_drive,b.final_drive])
 	if absf(a.clutch_capacity()-b.clutch_capacity()) > 1: rows.append("Clutch %.0f > %.0f Nm" % [a.clutch_capacity(),b.clutch_capacity()])
 	if a.brake_stage != b.brake_stage:
-		var before := minf(8*(1+a.brake_stage*.18),9.81*(1.05+a.tire_stage*.06))
-		var after := minf(8*(1+b.brake_stage*.18),9.81*(1.05+b.tire_stage*.06))
+		var before := minf(8*(1+a.brake_stage*.18),9.81*a.brake_grip())
+		var after := minf(8*(1+b.brake_stage*.18),9.81*b.brake_grip())
 		rows.append("Braking force %+.0f%%" % ((after/before-1)*100))
-	if absf(a._cooling-b._cooling) > .001: rows.append("Cooling capacity %+.0f%%" % ((b._cooling/a._cooling-1)*100))
 	if absf(a.load_transfer_scale-b.load_transfer_scale) > .001: rows.append("Launch transfer %.2f > %.2f" % [a.load_transfer_scale,b.load_transfer_scale])
 	if absf(a.supported_engine_torque()-b.supported_engine_torque()) > 1: rows.append("Torque support %.0f > %.0f Nm" % [a.supported_engine_torque(),b.supported_engine_torque()])
 	if absf(a.engine_inertia-b.engine_inertia) > .001: rows.append("Rev inertia %.3f > %.3f" % [a.engine_inertia,b.engine_inertia])
@@ -305,6 +312,7 @@ func available_transmissions() -> Array:
 	return ids
 
 func tuning_enabled(key: String) -> bool:
+	if TuningSetup.EXTRA.has(key): return TuningSetup.reason(key,g.profile.hardware,int(g.profile.stages[4]),g.profile.vehicle_id)==""
 	if key=="boost" and VehicleParts.boost_control_reason(g.profile.hardware,g.car.base_boost,g.car.turbo_stage)!="": return false
 	var fitted: Array = g.profile.hardware.parts.values()
 	var enabled := {"launch_rpm":fitted.has("ecu"),"redline":fitted.has("ecu"),"boost":fitted.has("boost_control"),"nitrous_ramp":fitted.has("progressive"),"firmness":g.car.transmission_kind in ["drag","automatic","dct"],"stall":g.car.hardware.parts.has("converter"),"final_drive":fitted.has("final_kit"),"ratio":fitted.has("gearset"),"shift":fitted.has("race_controller") and gear_index < g.car.shift_map.size()}

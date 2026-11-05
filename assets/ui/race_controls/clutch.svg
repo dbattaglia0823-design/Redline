@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="152" height="200" viewBox="0 0 76 100">
+<defs>
+<linearGradient id="metal" x2=".85" y2="1"><stop stop-color="#b2c4ce"/><stop offset=".24" stop-color="#607987"/><stop offset=".57" stop-color="#394f5e"/><stop offset="1" stop-color="#1d2b36"/></linearGradient>
+<linearGradient id="edge" x2="0" y2="1"><stop stop-color="#e2eced"/><stop offset=".5" stop-color="#778f9a"/><stop offset="1" stop-color="#364954"/></linearGradient>
+</defs>
+<path d="M31 4h14l4 50H28z" fill="#172730" stroke="#415762" stroke-width="2"/>
+<path d="M 19,30 H 55 Q 62,30 63,37 L 65,72 Q 65,81 57,81 H 20 Q 12,81 12,73 V 38 Q 12,30 19,30 Z" transform="translate(0 3)" fill="#080f16" stroke="#0d161e" stroke-width="3"/>
+<path d="M 19,30 H 55 Q 62,30 63,37 L 65,72 Q 65,81 57,81 H 20 Q 12,81 12,73 V 38 Q 12,30 19,30 Z" fill="url(#metal)" stroke="url(#edge)" stroke-width="2"/>
+<path d="M22 42h32m-32 9h32m-32 9h32m-32 9h32" stroke="#192934" stroke-width="4" stroke-linecap="round"/><path d="M22 40h32m-32 9h32m-32 9h32m-32 9h32" stroke="#a9bbc0" stroke-opacity=".45" stroke-linecap="round"/>
+
+</svg>

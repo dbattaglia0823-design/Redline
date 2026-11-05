@@ -134,6 +134,13 @@ var combustion_fraction := 1.0
 var extra_grip := 0.0
 var extra_mass := 0.0
 var load_transfer_scale := 0.18
+var tire_grip := 0.0
+var tire_launch_bite := 0.0
+var tire_slip_loss := 0.0
+var tire_sidewall_mark := 0
+var suspension_launch_support := 0.0
+var hop_damping := 0.0
+var wheel_hop := 0.0
 var _base_spec: Dictionary = {}
 var _torque_points: Array = TORQUE_POINTS
 var _torque_factor := 1.0
@@ -142,7 +149,6 @@ var _factory_curve_redline := REDLINE
 var _safe_factor := 1.0
 var _fuel_factor := 1.0
 var _clutch_factor := 1.0
-var _cooling := 1.0
 var _supercharger := ""
 var _super_pressure := 0.0
 var _boost_extra := 0.0
@@ -266,6 +272,7 @@ func reset() -> void:
 	throttle = 0.0
 	boost = 0.0
 	wheelspin = 0.0
+	wheel_hop = 0.0
 	shift_left = 0.0
 	running = false
 	limiter = false
@@ -493,7 +500,7 @@ func _substep(dt: float, pedal: float, brake: float, clutch: float, nitrous: boo
 	else: nitrous_delivery = 0.0
 	if engine_torque > 0.0: engine_torque = minf(engine_torque,supported_engine_torque())
 	overload = maxf(0.0,absf(engine_torque)/maxf(1.0,input_capacity())-1.0)
-	engine_temperature += (maxf(0.0,engine_torque)*omega*0.000006-(engine_temperature-85.0)*0.08*_cooling)*dt
+	engine_temperature += (maxf(0.0,engine_torque)*omega*0.000006-(engine_temperature-85.0)*0.08)*dt
 	component_wear = minf(0.8,component_wear+dt*(overload*0.001+maxf(0.0,transmission_temperature-115.0)*0.00001))
 	if engine_torque > 0.0: engine_torque *= clampf(1.0-maxf(0.0,engine_temperature-110.0)/100.0-component_wear*0.2,0.55,1.0)
 	# Lump gearbox/bearing efficiency into a power loss, without altering kinematic ratios.
@@ -521,12 +528,14 @@ func _substep(dt: float, pedal: float, brake: float, clutch: float, nitrous: boo
 		var m := mass()
 		drag_force = 0.5*1.225*drag_area*speed*speed
 		var rolling := m*9.81*rolling_coefficient*pressure_rolling if speed > 0.001 else 0.0
-		braking_force = minf(brake*m*8.0*(1.0+brake_stage*0.18),m*9.81*(1.05+tire_stage*0.06))
+		braking_force = minf(brake*m*8.0*(1.0+brake_stage*0.18),m*9.81*brake_grip())
 		var free_v := speed-(drag_force+rolling+braking_force)/m*dt
-		var grip_transfer := load_transfer_scale*clampf(acceleration,-8.0,8.0)/9.81
-		if drivetrain == "FWD": grip_transfer = -grip_transfer
-		elif drivetrain == "AWD": grip_transfer = 0.0
-		available_traction = m*9.81*maxf(0.05,(grip_coefficient+tire_stage*0.095+extra_grip)*pressure_grip+grip_transfer)
+		var launch_window := 1.0-smoothstep(3.0,21.0,speed)
+		if tire_slip_loss>0 or suspension_launch_support>0:
+			var hop_target := .10*wheelspin*launch_window*(1.0-hop_damping)
+			wheel_hop = lerpf(wheel_hop,hop_target,1.0-exp(-dt*14.0))
+		var hop_unload := wheel_hop*maxf(0.0,sin(_sim_time*TAU*10.0))
+		available_traction = m*9.81*maxf(.05,traction_grip(acceleration,launch_window,wheelspin)-hop_unload)
 		var tire_limit := available_traction*dt
 		# Battery-limited electric axle torque joins the wheel/road impulse solve.
 		# It does not raise combustion torque or bypass tire traction.
@@ -581,7 +590,7 @@ func _substep(dt: float, pedal: float, brake: float, clutch: float, nitrous: boo
 	# Read-only visual phase for the non-driven axle; keep continuity as tire radius changes.
 	rolling_wheel_angle = fposmod(rolling_wheel_angle+(old_speed+speed)*0.5/tire_radius*dt,TAU)
 	clutch_slip_rpm = (turbine_omega*RPM_PER_RAD if has_converter else rpm)-wheel_omega*total_ratio*RPM_PER_RAD
-	transmission_temperature += (absf(clutch_torque*clutch_slip_rpm/RPM_PER_RAD)/80000.0-(transmission_temperature-80.0)*0.06*_cooling)*dt
+	transmission_temperature += (absf(clutch_torque*clutch_slip_rpm/RPM_PER_RAD)/80000.0-(transmission_temperature-80.0)*0.06)*dt
 	slip_ratio = (wheel_omega*tire_radius-speed)/maxf(3.0,speed)
 	wheelspin = clampf(maxf(0.0,slip_ratio),0.0,1.0)
 	var delivered := engine_torque-engine_inertia*(safe_omega-old_engine_omega)/dt if has_converter else clutch_torque
@@ -595,13 +604,24 @@ func _substep(dt: float, pedal: float, brake: float, clutch: float, nitrous: boo
 func telemetry() -> Dictionary:
 	return {"time":elapsed,"rpm":rpm,"gear":gear,"mph":speed*MPH_PER_MPS,"distance_m":distance,"engine_nm":engine_torque,"clutch_nm":clutch_torque,"load":engine_load,"clutch":clutch_engagement,"clutch_slip_rpm":clutch_slip_rpm,"wheel_rad_s":wheel_omega,"slip_ratio":slip_ratio,"tire_force_n":traction_force,"traction_limit_n":available_traction,"acceleration_mps2":acceleration,"boost_bar":boost,"nitrous_s":nitrous_remaining,"fuel_cut":fuel_cut,"limiter":limiter,"shift_s":shift_left,"sync_nm":sync_torque,"converter_slip":converter_slip,"converter_pump_nm":converter_pump_nm,"converter_turbine_nm":converter_turbine_nm,"converter_input_w":converter_input_w,"converter_output_w":converter_output_w,"converter_lock":converter_lock,"transbrake":transbrake_active,"engine_c":engine_temperature,"transmission_c":transmission_temperature,"wear":component_wear,"overload":overload,"transmission":transmission_id,"control_mode":control_mode}
 
+func effective_grip() -> float:
+	return (grip_coefficient+extra_grip+(tire_grip if tire_grip>0 else tire_stage*.095))*pressure_grip
+
+func brake_grip() -> float:
+	return 1.05+(tire_grip*.60 if tire_grip>0 else tire_stage*.06)
+
+func traction_grip(at_acceleration: float,launch_window: float,spin: float) -> float:
+	var transfer := load_transfer_scale*clampf(at_acceleration,-8.0,8.0)/9.81
+	if drivetrain=="FWD": transfer = -transfer
+	elif drivetrain=="AWD": transfer = 0.0
+	return effective_grip()+transfer+(tire_launch_bite+suspension_launch_support*(1.0-.5*spin))*launch_window-tire_slip_loss*smoothstep(.12,1.0,spin)
+
 func reset_modifiers() -> void:
 	_torque_factor = 1.0
 	_flow = 0.0
 	_safe_factor = 1.0
 	_fuel_factor = 1.0
 	_clutch_factor = 1.0
-	_cooling = 1.0
 	_supercharger = ""
 	_super_pressure = 0.0
 	_boost_extra = 0.0
@@ -611,6 +631,13 @@ func reset_modifiers() -> void:
 	extra_mass = 0.0
 	extra_grip = 0.0
 	load_transfer_scale = 0.18
+	tire_grip = 0.0
+	tire_launch_bite = 0.0
+	tire_slip_loss = 0.0
+	tire_sidewall_mark = 0
+	suspension_launch_support = 0.0
+	hop_damping = 0.0
+	wheel_hop = 0.0
 	has_transbrake = false
 	launch_control = false
 	shift_firmness = 1.0
@@ -649,9 +676,8 @@ func configure_build(build: Dictionary, vehicle: String = "kaze", plan: bool = t
 		_safe_factor *= float(part.get("safe",1.0))
 		_fuel_factor *= float(part.get("fuel",1.0))
 		_clutch_factor *= float(part.get("clutch",1.0))
-		_cooling *= float(part.get("cooling",1.0))
 		extra_mass += float(part.get("mass",0.0))
-		extra_grip += float(part.get("grip",0.0))/(1.0+tire_stage*0.12)
+		if part.slot!="tires": extra_grip += float(part.get("grip",0.0))/(1.0+tire_stage*0.12)
 		engine_inertia = maxf(0.08,engine_inertia+float(part.get("inertia",0.0)))
 		_mechanical_redline += float(part.get("redline",0.0))
 		if part.has("shift_scale"): shift_duration = maxf(0.14 if transmission_kind == "manual" else 0.035,shift_duration*float(part.shift_scale))
@@ -669,6 +695,16 @@ func configure_build(build: Dictionary, vehicle: String = "kaze", plan: bool = t
 		if part.has("launch"): launch_control = true
 		if part.has("stall_min"): converter_stall = clampf(float(hardware.tune.get("stall",(float(part.stall_min)+float(part.stall_max))*0.5)),float(part.stall_min),float(part.stall_max))
 		if part.has("multiplication"): converter_multiplication = float(part.multiplication)
+	var tire: Dictionary = VehicleParts.PARTS.get(hardware.parts.get("tires",""),{})
+	var suspension: Dictionary = VehicleParts.PARTS.get(hardware.parts.get("suspension",""),{})
+	tire_grip = float(tire.get("grip",0.0))
+	tire_launch_bite = float(tire.get("launch_bite",0.0))
+	tire_slip_loss = float(tire.get("slip_loss",0.0))
+	tire_sidewall_mark = int(tire.get("sidewall_mark",0))
+	tire_radius *= float(tire.get("radius_scale",1.0))
+	rolling_coefficient *= float(tire.get("rolling",1.0))
+	suspension_launch_support = float(suspension.get("launch_support",0.0))
+	hop_damping = float(suspension.get("hop_damping",0.0))
 	var fitted: Array = hardware.parts.values()
 	if fitted.has("ecu"):
 		redline_rpm = clampf(float(hardware.tune.get("redline",redline_rpm)),minf(6500.0,_mechanical_redline-500.0),_mechanical_redline)
@@ -712,10 +748,14 @@ func configure_build(build: Dictionary, vehicle: String = "kaze", plan: bool = t
 			"converter_lock": converter_lock_ratio=float(setting)
 			"diff_lock": extra_grip-=.055*(1.0-float(setting))/(1.0+tire_stage*.12)
 			"tire_pressure":
-				# A lumped straight-line contact-patch approximation, optimum at 26 psi.
-				# It cannot model carcass temperature or individual-wheel lateral behavior.
-				pressure_grip=clampf((1.0-.0015*pow(float(setting)-26,2))/.946,.70,1.06)
+				# Compound-specific straight-line pressure response; nominal setup is 32 psi.
+				var peak := float(tire.get("pressure_peak",26.0))
+				var nominal := 1.0-.0015*pow(32.0-peak,2)
+				pressure_grip=clampf((1.0-.0015*pow(float(setting)-peak,2))/nominal,.70,1.06 if tire.is_empty() else 1.12)
 				pressure_rolling=1.0+maxf(0,32-float(setting))*.018
+			"launch_damping":
+				hop_damping=clampf(hop_damping*float(setting),0,.95)
+				suspension_launch_support *= 1.0-.65*maxf(0,float(setting)-1.0)
 	gear = clampi(gear,0,gear_ratios.size())
 	if _advanced and plan: rebuild_shift_map()
 

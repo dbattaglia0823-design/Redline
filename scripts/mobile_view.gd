@@ -144,7 +144,9 @@ func tuning() -> void:
 		var enabled := w.tuning_enabled(key)
 		var needs := {"launch_rpm":"Requires ECU","redline":"Requires ECU","boost":"Boost controller","nitrous_ramp":"Progressive kit","stall":"Converter kit","final_drive":"Final-drive kit","ratio":"Ratio cassette kit","shift":"Race controller","firmness":"Auto / DCT only"}
 		if key=="boost" and g.profile.hardware.parts.values().has("boost_control") and not enabled: needs.boost="Inactive for belt drive" if g.car._supercharger!="" else "Turbo source required"
-		t(str(labels[key]),24,y+24,23); t(w.tune_value(key,float(values[key])) if enabled else str(needs.get(key,"Hardware required")),24,y+64,20,g.GREEN if enabled else g.MUTED)
+		var fallback: String=TuningSetup.reason(key,g.profile.hardware,int(g.profile.stages[4]),g.profile.vehicle_id) if TuningSetup.EXTRA.has(key) else "Hardware required"
+		t(str(labels.get(key,TuningSetup.EXTRA.get(key,[""])[0])),24,y+24,23)
+		g.fit_text(w.tune_value(key,float(values.get(key,w.tune_default(key)))) if enabled else str(needs.get(key,fallback)),24,y+64,282,20,g.GREEN if enabled else g.MUTED)
 		b("tune_minus_"+key,"-",Rect2(312,y,120,76)); b("tune_plus_"+key,"+",Rect2(456,y,120,76))
 	b("open_tuning","SAVED SETUPS / TEST TRACK",Rect2(24,830,552,70))
 	for i in 3: b("preset_"+["street","drag","safe"][i],["STREET","DRAG","SAFE"][i],Rect2(24+i*184,930,172,68))

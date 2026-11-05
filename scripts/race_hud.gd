@@ -8,6 +8,15 @@ const WHITE := GlassPalette.INK
 const ORANGE := GlassPalette.ORANGE
 const GREEN := GlassPalette.GREEN
 const SPLITS := {402.336:"1/4 MI",304.8:"1000 FT",201.168:"1/8 MI",100.0:"100 M",18.288:"60 FT"}
+const CONTROL_ART := {
+	"gas":preload("res://assets/ui/race_controls/throttle.svg"),
+	"brake":preload("res://assets/ui/race_controls/brake.svg"),
+	"clutch":preload("res://assets/ui/race_controls/clutch.svg"),
+	"down":preload("res://assets/ui/race_controls/down.svg"),
+	"up":preload("res://assets/ui/race_controls/up.svg"),
+}
+const BOTTLE := preload("res://assets/ui/race_controls/bottle.svg")
+const CHARGE := preload("res://assets/ui/race_controls/charge.svg")
 var g: Node2D
 var styles: Dictionary = {}
 var readings: Dictionary = {}
@@ -83,29 +92,95 @@ func control(id: String,label: String,r: Rect2,binding: String = "",warm: bool =
 	if not g.glass.states.has(id): g.glass.states[id] = {"hot":0.0,"pulse":0.0,"hover":false}
 	g.glass.states[id].hover = hover
 	var pulse: float = g.glass.states[id].pulse
-	var radius := 22 if id=="gas" else (10 if id in ["up","down","brake"] or id.begins_with("manual_") else 15)
+	var physical: bool = g.screen=="race" and (CONTROL_ART.has(id) or id=="nitrous")
+	var active := enabled and (held or selected or hover or pulse>0)
+	var phone: bool = g.is_portrait() or g.race_touch_layout()
+	g.buttons.append({"id":id,"rect":r,"disabled":not enabled})
+	if physical:
+		var pressed := enabled and (pulse>0 or (RaceControls.HOLD_ACTIONS.has(id) and held))
+		hardware_control(id,label,r,binding if not phone else "",active,pressed,selected and enabled,enabled)
+		return
+	var radius := 10 if id.begins_with("manual_") else 15
 	var face := r.grow(-maxf(pulse*1.5,2.0 if held else 0.0)) if not g.profile.reduced_motion else r
-	surface(face,enabled and (held or selected or hover or pulse>0),warm and enabled,radius)
-	if g.screen=="race" and id in ["gas","brake","clutch"] and r.size.y>=84:
-		for i in 3:
-			var grip := Vector2(r.get_center().x+(i-1)*13,r.position.y+17)
-			g.draw_line(grip,grip+Vector2(0,9),Color(ORANGE if warm else BLUE,.65 if held else .23),3,true)
+	surface(face,active,warm and enabled,radius)
 	var ink := (ORANGE if warm else BLUE) if held or selected else WHITE
 	if not enabled: ink = Color("52616d")
-	var phone: bool = g.is_portrait() or g.race_touch_layout()
 	var size := 24 if phone else 18
 	var shown_label:=label
-	if id in ["up","down"]: size = 36 if phone else 30
 	while size>(20 if phone else 14) and AutomotiveUI.DISPLAY.get_string_size(shown_label,HORIZONTAL_ALIGNMENT_LEFT,-1,size).x>r.size.x-24: size-=1
 	while shown_label.length()>4 and AutomotiveUI.DISPLAY.get_string_size(shown_label,HORIZONTAL_ALIGNMENT_LEFT,-1,size).x>r.size.x-24: shown_label=shown_label.left(shown_label.length()-4)+"..."
 	centered(shown_label,r.get_center()+Vector2(0,6 if phone or binding=="" else 0),size,ink)
 	if binding!="" and not phone: centered(binding,Vector2(r.get_center().x,r.end.y-10),11,DIM,true)
 	if RaceControls.HOLD_ACTIONS.has(id):
 		var level: float = g.controls.value(id)
-		if id=="gas": level = g.car.throttle
-		elif id=="clutch": level = 1-g.car.clutch_engagement
 		if level>.01: g.draw_line(Vector2(r.position.x+15,r.end.y-5),Vector2(r.position.x+15+(r.size.x-30)*level,r.end.y-5),Color(ORANGE if warm else BLUE,.9),3,true)
-	g.buttons.append({"id":id,"rect":r,"disabled":not enabled})
+
+# The hardware artwork moves inside a stationary hit rectangle.
+func hardware_control(id: String,label: String,r: Rect2,binding: String,active: bool,pressed: bool,selected: bool,enabled: bool) -> void:
+	var warm := id=="gas" or id=="brake"
+	surface(r,active,warm and pressed,14)
+	var accent := ORANGE if warm else BLUE
+	if pressed or selected:
+		g.draw_line(r.position+Vector2(12,r.size.y-4),r.end-Vector2(12,4),Color(accent,.68),2,true)
+	if id=="nitrous":
+		nitrous_bottle(r,label,binding,pressed,enabled)
+		return
+	var paddle := id=="up" or id=="down"
+	var side_label := not paddle and r.size.x/r.size.y>1.65 and r.size.x>=(130 if binding.is_empty() else 104)
+	var area := r.grow(-5)
+	if side_label: area.size.x *= .42
+	elif not paddle: area.size.y -= 24 if binding.is_empty() else 20
+	elif not binding.is_empty(): area.size.x -= 22
+	var texture: Texture2D = CONTROL_ART[id]
+	var art := fit_art(texture,area)
+	if pressed and not g.profile.reduced_motion:
+		art = art.grow(-1.5)
+		art.position.y += 2
+	if active and g.profile.effects_quality>0:
+		AutomotiveUI.glow(g,art.grow(7),Color(accent,.26 if pressed or selected else .13))
+	var light := Color(1,.89,.80) if pressed and warm else (Color(.78,.96,1) if pressed or selected else Color.WHITE)
+	g.draw_texture_rect(texture,art,false,light)
+	var ink := accent if pressed or selected else WHITE
+	if paddle:
+		if not binding.is_empty(): centered(binding,Vector2(r.end.x-19,r.get_center().y+4),12,DIM,true)
+		return
+	if side_label:
+		var x := lerpf(area.end.x,r.end.x,.47)
+		centered(label,Vector2(x,r.get_center().y+(5 if binding.is_empty() else 0)),14 if r.size.x<130 else 16,ink)
+		if not binding.is_empty(): centered(binding,Vector2(x,r.get_center().y+15),11,DIM,true)
+	else:
+		var caption := label if binding.is_empty() else label+"  "+binding
+		centered(caption,Vector2(r.get_center().x,r.end.y-9),17 if r.size.y>=80 else 12,ink)
+
+func nitrous_bottle(r: Rect2,state: String,binding: String,pressed: bool,enabled: bool) -> void:
+	var fraction: float = clampf(g.car.nitrous_remaining/maxf(g.car.nitrous_capacity(),.001),0,1) if enabled else 0.0
+	var spraying: bool = enabled and g.car.nitrous_active
+	var area := Rect2(r.position+Vector2(8,4),Vector2(r.size.x*.56,r.size.y-8))
+	var bottle := fit_art(BOTTLE,area)
+	if pressed and not g.profile.reduced_motion: bottle.position.y += 2
+	if spraying and g.profile.effects_quality>0:
+		AutomotiveUI.glow(g,bottle.grow(7),Color(BLUE,.32))
+	g.draw_texture_rect(BOTTLE,bottle,false,Color.WHITE if enabled else Color(.65,.70,.75))
+	if fraction>0:
+		# Crop the charge at a moving meniscus while retaining the fixed metal shell.
+		var edge := lerpf(13.0,124.0,fraction)/160.0
+		var fill := Rect2(bottle.position,Vector2(bottle.size.x*edge,bottle.size.y))
+		var source := Rect2(Vector2.ZERO,Vector2(CHARGE.get_width()*edge,CHARGE.get_height()))
+		g.draw_texture_rect_region(CHARGE,fill,source,Color(1.2,1.2,1.2) if spraying else Color.WHITE)
+		if fraction>.08 and fraction<.80:
+			g.draw_line(Vector2(fill.end.x,bottle.position.y+bottle.size.y*.28),
+				Vector2(fill.end.x,bottle.position.y+bottle.size.y*.72),Color(.64,.94,1,.65),1,true)
+	var x := lerpf(area.end.x,r.end.x,.48)
+	var title := "SPRAY" if spraying else "N₂O"
+	centered(title,Vector2(x,r.get_center().y-4),19 if r.size.y>=80 else 16,BLUE if spraying else WHITE)
+	var value := "%.1f s" % g.car.nitrous_remaining if enabled else state
+	centered(value,Vector2(x,r.get_center().y+15),16 if r.size.y>=80 else 13,BLUE if enabled else DIM,true)
+	if not binding.is_empty(): centered(binding,Vector2(bottle.get_center().x,r.end.y-5),10,DIM,true)
+
+static func fit_art(texture: Texture2D,area: Rect2) -> Rect2:
+	var pixels := texture.get_size()
+	var extent := pixels*minf(area.size.x/pixels.x,area.size.y/pixels.y)
+	return Rect2(area.get_center()-extent*.5,extent)
 
 func sample() -> Dictionary:
 	var c: Drivetrain = g.car
@@ -119,10 +194,20 @@ func draw(portrait: bool = false) -> void:
 	g.draw_race_world()
 	top(w,portrait)
 	stage(w,portrait)
+	boss_intro(w,portrait)
 	if portrait: lane_summary(w)
 	dashboard(w,portrait)
 	if g.debug_physics and OS.is_debug_build(): g.draw_telemetry()
 	if g.paused_race: pause(w,portrait)
+
+func boss_intro(w: float,portrait: bool) -> void:
+	if not bool(g.active_contract.get("boss",false)) or g.countdown<=1.5: return
+	var area:=Rect2(w*.5-232,198 if portrait else 148,464,68)
+	surface(area)
+	var gold:=Championships.TROPHY
+	g.draw_line(area.position+Vector2(22,0),Vector2(area.end.x-22,area.position.y),Color(gold,.55),2,true)
+	centered("CLASS %s / CHAMPIONSHIP BOSS"%g.active_contract.series,area.get_center()-Vector2(0,9),16,gold,true)
+	centered(str(g.active_contract.name)+" / "+str(g.active_contract.nickname),area.get_center()+Vector2(0,17),22,WHITE)
 
 func lane_summary(w: float) -> void:
 	var x := w-20
@@ -164,6 +249,8 @@ func top(w: float,p: bool) -> void:
 	var track := "TEST TRACK" if g.practice_mode else str(TrackPresentation.spec(g.race_track_index()).name).to_upper()
 	if not g.practice_mode and g.active_contract.has("id"):
 		track = str(g.active_contract.event_name).to_upper()
+		if p and bool(g.active_contract.get("boss",false)):
+			track = "CLASS %s BOSS"%g.active_contract.series
 	event_text.text = track
 	var meters := clampf(g.car.distance,0.0,g.active_distance)
 	distance_text.text = "%d / %d m"%[floori(meters),roundi(g.active_distance)] if p else "%s  ·  %d/%d m"%[g.distance_label(g.active_distance),floori(meters),roundi(g.active_distance)]
@@ -305,9 +392,9 @@ func dashboard(w: float,p: bool) -> void:
 			var col := int((gear-1)/2); var rr := (gear-1)%2
 			control("manual_%d"%gear,str(gear),Rect2(left+col*cell,gate_y+rr*gate_step,cell-5,gate_h),"",false,c.gear==gear)
 		control("manual_0","N",Rect2(24,842,92,72) if p else Rect2(left+gate_width+8,548 if touch else 590,112 if touch else 48,90 if touch else 48),"",false,c.gear==0)
-	elif c.control_mode!="automatic":
-		control("down","−",Rect2(left,row,120,ch),"Q")
-		control("up","+",Rect2(left+132,row,120,ch),"E",true,g.show_shift_guide and c.shift_recommended())
+	elif c.control_mode in ["paddle","sequential"]:
+		control("down","",Rect2(left,row,120,ch),"Q")
+		control("up","",Rect2(left+132,row,120,ch),"E",false,g.show_shift_guide and c.shift_recommended())
 	var no_aux: bool = c.has_converter or c.transmission_kind=="dct"
 	var pedal_y := (1050.0 if no_aux and not c.has_transbrake else 1182.0) if p else row
 	var pedal_h := (222.0 if no_aux and not c.has_transbrake else 90.0) if p else ch
@@ -329,11 +416,9 @@ func dashboard(w: float,p: bool) -> void:
 		control("brake","BRAKE",Rect2(right,row+(16 if touch else 0),108,ch-(16 if touch else 0)),"S")
 		control("gas","THROTTLE",Rect2(right+119,row,147,ch),"W",true)
 	var nr := Rect2(right,940 if p else (514 if touch else row+ch+10),264 if p else 262,88 if p else (90 if touch else 58))
-	var kit_allowed: bool=g.practice_mode or not g.active_contract.has("id") or c.nitrous_stage>0 or c.hardware.parts.values().has("progressive")
-	var available: bool = c.nitrous_remaining>.001 and kit_allowed
-	control("nitrous",("SPRAY  %.1f s" if c.nitrous_active else "N₂O  %.1f s")%c.nitrous_remaining if available else ("N₂O  ·  NO KIT" if not kit_allowed else "N₂O  ·  EMPTY"),nr,"SPACE",false,c.nitrous_active,available)
-	if available:
-		g.draw_line(nr.position+Vector2(16,nr.size.y-5),Vector2(nr.position.x+16+(nr.size.x-32)*clampf(c.nitrous_remaining/c.nitrous_capacity(),0,1),nr.end.y-5),GREEN,2,true)
+	var nitrous_lock: String = g.nitrous_lock_reason()
+	var available: bool = c.nitrous_remaining>.001 and nitrous_lock==""
+	control("nitrous","EMPTY" if nitrous_lock=="" else nitrous_lock,nr,"SPACE",false,c.nitrous_active,available)
 
 func pause(w: float,p: bool) -> void:
 	g.draw_rect(Rect2(0,0,w,1300 if p else 760),Color("02080eed")); g.buttons.clear()

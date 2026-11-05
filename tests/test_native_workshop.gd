@@ -125,7 +125,7 @@ func run() -> void:
 		var saved:=DriverProfile.new(); saved.load_profile()
 		check(saved.stages[0]==2 and saved.hardware.parts.get("internals","")=="forged","Native purchase did not persist")
 		await click("hub_back",phone)
-		for group in 4:
+		for group in UpgradeStudio.GROUPS.size():
 			await click("upgrade_system_%d"%group,phone)
 			for entry in game.buttons:
 				if entry.get("native_control") is Button:

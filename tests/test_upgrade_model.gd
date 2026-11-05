@@ -3,7 +3,7 @@ var failures:=0
 var checks:=0
 var audit: Array=[]
 func parameters(c: Drivetrain) -> Dictionary:
-	return {"hp":c.peak_horsepower(),"peak_nm":GarageHub.peak_torque(c),"mass_kg":c.mass(),"shift_ms":c.shift_duration*1000,"input_nm":c.input_capacity(),"clutch_nm":c.clutch_capacity(),"fuel_nm":c.fuel_torque_capacity(),"engine_nm":c.mechanical_torque_capacity(),"redline_rpm":c.redline_rpm,"mechanical_rpm":c._mechanical_redline,"inertia":c.engine_inertia,"boost_bar":c.boost_target(c.redline_rpm,1),"boost_onset_rpm":UpgradeStudio.boost_onset(c),"spool_s":UpgradeStudio.spool(c),"grip":GarageHub.grip(c),"radius_m":c.tire_radius,"wheel_inertia":c.wheel_inertia,"launch_transfer":c.load_transfer_scale,"cooling":c._cooling,"nitrous_s":c.nitrous_capacity(),"nitrous_ramp_s":c._nitrous_ramp,"controls":c.control_mode,"launch_control":c.launch_control,"stall_rpm":c.converter_stall,"converter_multiplier":c.converter_multiplication}
+	return {"hp":c.peak_horsepower(),"peak_nm":GarageHub.peak_torque(c),"mass_kg":c.mass(),"shift_ms":c.shift_duration*1000,"input_nm":c.input_capacity(),"clutch_nm":c.clutch_capacity(),"fuel_nm":c.fuel_torque_capacity(),"engine_nm":c.mechanical_torque_capacity(),"redline_rpm":c.redline_rpm,"mechanical_rpm":c._mechanical_redline,"inertia":c.engine_inertia,"boost_bar":c.boost_target(c.redline_rpm,1),"boost_onset_rpm":UpgradeStudio.boost_onset(c),"spool_s":UpgradeStudio.spool(c),"grip":GarageHub.grip(c),"radius_m":c.tire_radius,"wheel_inertia":c.wheel_inertia,"launch_transfer":c.load_transfer_scale,"rolling_resistance":c.rolling_coefficient,"hop_damping":c.hop_damping,"nitrous_s":c.nitrous_capacity(),"nitrous_ramp_s":c._nitrous_ramp,"controls":c.control_mode,"launch_control":c.launch_control,"stall_rpm":c.converter_stall,"converter_multiplier":c.converter_multiplication}
 func check(ok: bool,message: String) -> void:
 	checks+=1
 	if not ok: failures+=1; push_error(message)
@@ -59,7 +59,7 @@ func _initialize() -> void:
 		var c:=car(trans,parts)
 		var supporting:=parts.duplicate(); supporting.erase(id)
 		audit.append({"id":id,"kind":"component","slot":slot,"cost":VehicleParts.PARTS[id].cost,"requires":VehicleParts.PARTS[id].get("requires",""),"before":parameters(car(trans,supporting)),"after":parameters(c)})
-		if slot in ["controls","clutch","converter","differential","final_drive","wheels","suspension","cooling","transbrake","gearset","nitrous"]:
+		if slot in ["controls","clutch","converter","differential","final_drive","wheels","tires","suspension","transbrake","gearset","nitrous"]:
 			check(c.peak_horsepower()==car(trans,supporting).peak_horsepower(),"Non-engine part fabricates crank horsepower: "+id)
 		check(c.hardware.parts.get(slot,"")==id,"Existing part is unreachable: "+id)
 		check(c.mass()>0 and c.tire_radius>0 and c.clutch_capacity()>0 and c.supported_engine_torque()>0,"Invalid configured part: "+id)

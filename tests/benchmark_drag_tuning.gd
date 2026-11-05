@@ -12,7 +12,7 @@ func _initialize() -> void:
 			for stall in [0.0,3600.0,4600.0]:
 				var pair: Array = []
 				for id in ["drag3","auto10"]:
-					var parts := ["final_kit","radiator"]
+					var parts := ["final_kit"]
 					if stall > 0.0: parts.append("converter_race")
 					var b := VehicleBench.fixture(id,parts,{"final_drive":final_drive,"stall":stall})
 					var row := VehicleBench.run(spec,stages,b)
@@ -21,7 +21,7 @@ func _initialize() -> void:
 				if float(pair[0].quarter_s) < float(pair[1].quarter_s): wins += 1
 				else: losses += 1
 	var file := FileAccess.open("res://validation/drag_tuning_benchmark.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"runs":rows,"drag3_wins":wins,"auto10_wins":losses,"conditions":"Kaze-based stock street fixture or all-tier-3 built fixture (effective base grip .9); Pro Race gearbox; identical final-drive, radiator, converter kit/stall per pair. Stall zero means each gearbox factory converter."},"\t")); file.close()
+	file.store_string(JSON.stringify({"runs":rows,"drag3_wins":wins,"auto10_wins":losses,"conditions":"Kaze-based stock street fixture or all-tier-3 built fixture (effective base grip .9); Pro Race gearbox; identical final-drive and converter kit/stall per pair. Stall zero means each gearbox factory converter."},"\t")); file.close()
 	print("PAIRED DRAG TUNING: ",rows.size()," runs; 3D wins ",wins," / 10A wins ",losses)
 	if wins == 0 or losses == 0: push_error("Tuning sweep did not demonstrate conditional performance tradeoffs")
 	quit(0 if wins > 0 and losses > 0 else 1)

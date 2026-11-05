@@ -3,9 +3,9 @@ extends RefCounted
 
 # Presentation and pure candidate specifications only. All spending/installation
 # continues through DriverProfile and UpgradeWorkshop, never through previews.
-const SYSTEMS := ["Engine & Power","Drivetrain","Chassis & Grip","Supporting Systems"]
-const GROUPS := [[0,1,2,3,4,5,6],[7,8,9],[10,11,12,14],[13]]
-const PACKAGE_NAMES := {0:"Airflow build",2:"Exhaust system",5:"Turbo package",6:"Nitrous kit",7:"Gearbox internals",10:"Tire compound",12:"Brake package",14:"Weight reduction"}
+const SYSTEMS := ["Engine & Power","Drivetrain","Chassis & Grip"]
+const GROUPS := [[0,1,2,3,4,5,6],[7,8,9],[10,11,12,13,14]]
+const PACKAGE_NAMES := {0:"Airflow build",2:"Exhaust system",5:"Turbo package",6:"Nitrous kit",7:"Gearbox internals",12:"Brake package",14:"Weight reduction"}
 const EXPLAIN := {
  "internals":"Strength and inertia; ECU needed for higher RPM.",
  "displacement":"Longer stroke increases torque, mass and rotating inertia.",
@@ -22,9 +22,9 @@ const EXPLAIN := {
  "converter":"Stall RPM and multiplication change launch slip and wheel torque.",
  "differential":"Improves driven-axle traction, with a small mass tradeoff.",
  "final_drive":"Unlocks matched gearing sets; shorter gearing trades speed for torque.",
- "wheels":"Wheel mass, rolling radius and carcass geometry; compound is separate.",
- "suspension":"Changes launch weight transfer and mass, not engine output.",
- "cooling":"Less heat buildup, more weight. No instant power.",
+ "wheels":"Changes wheel mass and rotational inertia independently of tire compound.",
+ "tires":"Softer compounds put more torque down at launch. Drag rubber adds rolling drag and rotating mass.",
+ "suspension":"Transfers load to the driven axle and controls wheel hop. Adjustable setups unlock launch damping.",
  "transbrake":"Locks a compatible drag automatic for a loaded launch.",
  "gearset":"Unlocks individual ratio cassettes within mechanical fitment limits."}
 var g: Node2D
@@ -46,8 +46,11 @@ func remember(index: int) -> void:
 	for key in ["mode","slot_index","parts_page","preview_stage","selected_hardware","selected_trans","filter_index","page","gear_index"]: data[key]=w.get(key)
 	remembered[index]=data
 func restore(index: int) -> void:
-	for i in GROUPS.size():
-		if index in GROUPS[i]: system=i
+	if index not in GROUPS[system]:
+		for i in GROUPS.size():
+			if index in GROUPS[i]:
+				system=i
+				break
 	if remembered.has(index):
 		for key in remembered[index]: g.workshop.set(key,remembered[index][key])
 
@@ -56,6 +59,10 @@ func status(index: int) -> String:
 	for slot in GarageHub.CATEGORY_SLOTS[index]:
 		if g.profile.hardware.parts.has(slot): count+=1
 	if index in GarageHub.STAGE_CATEGORIES: return GameCatalog.stage_name(int(GarageHub.CATEGORIES[index][1]),int(g.profile.stages[int(GarageHub.CATEGORIES[index][1])]))+(" / %d parts"%count if count>0 else "")
+	if index in [10,11,13]:
+		var slot: String=GarageHub.CATEGORY_SLOTS[index][0]
+		var part: Dictionary=VehicleParts.PARTS.get(g.profile.hardware.parts.get(slot,""),{})
+		return str(part.get("name",VehicleParts.factory_name(slot)))
 	return "%d fitted"%count if count>0 else "Factory hardware"
 func headline(index: int) -> String:
 	var c: Drivetrain=g.car
@@ -71,7 +78,7 @@ func headline(index: int) -> String:
 		10: return "%.2f grip / %.0f mm radius"%[GarageHub.grip(c),c.tire_radius*1000]
 		11: return "%.2f launch transfer"%c.load_transfer_scale
 		12: return "%.1f m/s2 brake limit"%brake_limit(c)
-		13: return "%.2fx heat rejection"%c._cooling
+		13: return "%.0f mm radius / %.2f kg m2"%[c.tire_radius*1000,c.wheel_inertia]
 		14: return "%.0f kg vehicle mass"%c.mass()
 	return ""
 
@@ -86,11 +93,11 @@ func overview() -> void:
 		button("hub_test","Test build",Rect2(800,103,156,48))
 		button("hub_dyno","Live Dyno",Rect2(968,103,198,48))
 	for i in SYSTEMS.size():
-		button("upgrade_system_%d"%i,SYSTEMS[i],Rect2(24+(i%2)*284,176+int(i/2)*76,268,68) if mobile else Rect2(36+i*285,182,272,48),false,system==i)
-	var hero := Rect2(24,334,552,180) if mobile else Rect2(36,246,1130,170)
+		button("upgrade_system_%d"%i,SYSTEMS[i],Rect2(24+i*184,176,176,68) if mobile else Rect2(36+i*380,182,370,48),false,system==i)
+	var hero := Rect2(24,258,552,180) if mobile else Rect2(36,246,1130,170)
 	g.draw_workshop(hero if mobile else Rect2(36,246,740,170))
 	if not mobile: g.glass.surface(g,Rect2(790,246,376,170))
-	g.draw_car(Vector2(38,325) if mobile else Vector2(120,235),1.85 if mobile else 2.05,g.PAINTS[g.profile.paint],0,g.profile.wheels,false,g.profile.vehicle_id,-1,.315,g.car)
+	g.draw_car(Vector2(38,249) if mobile else Vector2(120,235),1.85 if mobile else 2.05,g.PAINTS[g.profile.paint],0,g.profile.wheels,false,g.profile.vehicle_id,-1,.315,g.car)
 	if not mobile:
 		t("CURRENT BUILD",800,275,12,GlassPalette.BLUE)
 		fit(str(GameCatalog.spec(g.profile.vehicle_id).name),800,305,340,23)
@@ -99,7 +106,7 @@ func overview() -> void:
 		t(g.menu.hub.configuration_label(),800,397,11,GlassPalette.BLUE)
 	for position in GROUPS[system].size():
 		var index: int=GROUPS[system][position]
-		var r:=Rect2(24+(position%2)*284,530+int(position/2)*116,268,106) if mobile else Rect2(36+(position%4)*285,432+int(position/4)*120,272,108)
+		var r:=Rect2(24+(position%2)*284,454+int(position/2)*116,268,106) if mobile else Rect2(36+(position%4)*285,432+int(position/4)*120,272,108)
 		button("hub_category_%d"%index,"",r,false,g.menu.hub.selected==index)
 		g.glass.icon(g,str(GarageHub.CATEGORIES[index][0]),r.position+Vector2(17,20),26,g.ORANGE if g.menu.hub.selected==index else g.MUTED)
 		fit(GarageHub.SHORT_NAMES[index],r.position.x+56,r.position.y+37,r.size.x-70,21 if mobile else 19)
@@ -178,7 +185,7 @@ func options(mobile: bool) -> void:
 			var id: String=ids[w.parts_page*3+i]; var p: Dictionary=VehicleParts.PARTS.get(id,{})
 			var r:=Rect2(24,y+i*92,552,84) if mobile else Rect2(36,y+i*92,654,84)
 			button("hw_pick_"+id if id!="" else "hw_pick_factory","",r,false,id==w.selected_hardware)
-			fit(str(p.get("name","Package assembly" if slot=="induction" and g.car.turbo_stage>0 else "Factory hardware")),r.position.x+16,r.position.y+31,r.size.x-32,21 if mobile else 19)
+			fit(str(p.get("name","Package assembly" if slot=="induction" and g.car.turbo_stage>0 else VehicleParts.factory_name(slot))),r.position.x+16,r.position.y+31,r.size.x-32,21 if mobile else 19)
 			var equipped: bool=str(g.profile.hardware.parts.get(slot,""))==id
 			var owned: bool=id=="" or VehicleParts.is_owned(g.profile.hardware,id)
 			var reason: String=VehicleParts.compatible(id,g.profile.hardware,int(g.profile.stages[4])) if id!="" else ""
@@ -201,8 +208,8 @@ func comparison(mobile: bool) -> void:
 	var w: UpgradeWorkshop=g.workshop; var h: GarageHub=g.menu.hub
 	var c:=candidate(); var index: int=h.selected; var slot:=w.current_slot() if w.mode=="hardware" else ""
 	var part: Dictionary=VehicleParts.PARTS.get(w.selected_hardware,{}) if w.mode=="hardware" else {}
-	var name: String=GameCatalog.stage_name(g.selected_part,w.preview_stage) if w.mode=="basic" else str(part.get("name","Factory hardware"))
-	var current_name: String=GameCatalog.stage_name(g.selected_part,int(g.profile.stages[g.selected_part])) if w.mode=="basic" else str(VehicleParts.PARTS.get(str(g.profile.hardware.parts.get(slot,"")),{}).get("name","Factory hardware"))
+	var name: String=GameCatalog.stage_name(g.selected_part,w.preview_stage) if w.mode=="basic" else str(part.get("name",VehicleParts.factory_name(slot)))
+	var current_name: String=GameCatalog.stage_name(g.selected_part,int(g.profile.stages[g.selected_part])) if w.mode=="basic" else str(VehicleParts.PARTS.get(str(g.profile.hardware.parts.get(slot,"")),{}).get("name",VehicleParts.factory_name(slot)))
 	var x:=24.0 if mobile else 744.0; var top:=790.0 if mobile else 247.0
 	if mobile:
 		if w.mode=="basic" and not (GameCatalog.max_stage(g.selected_part)<5 and engine_changed(g.car,c)):
@@ -274,7 +281,7 @@ static func engine_changed(a: Drivetrain,b: Drivetrain) -> bool:
 	for rpm in range(int(minf(a.idle_rpm,b.idle_rpm)),int(a.redline_rpm)+1,50):
 		if absf(a.full_engine_torque(rpm)-b.full_engine_torque(rpm))>.01: return true
 	return false
-static func brake_limit(c: Drivetrain) -> float: return minf(8*(1+c.brake_stage*.18),9.81*(1.05+c.tire_stage*.06))
+static func brake_limit(c: Drivetrain) -> float: return minf(8*(1+c.brake_stage*.18),9.81*c.brake_grip())
 static func boost_onset(c: Drivetrain) -> float: return c.idle_rpm if c._supercharger!="" else c.turbo_onset()
 static func spool(c: Drivetrain) -> float: return .045 if c._supercharger!="" else (c._spool_override if c._spool_override>0 else [.32,.24,.38,.55][c.turbo_stage])
 static func metric(label: String,a: float,b: float,unit: String,precision: int=0) -> String:
@@ -293,9 +300,19 @@ func metrics(a: Drivetrain,b: Drivetrain,index: int,slot: String) -> Array[Strin
 		"converter": rows.append(metric("Stall speed",a.converter_stall,b.converter_stall,"rpm")); rows.append(metric("Multiplication",a.converter_multiplication,b.converter_multiplication,"x",2))
 		"nitrous": rows.append(metric("Spray ramp",a._nitrous_ramp,b._nitrous_ramp,"s",2))
 		"controls": rows.append(a.control_mode.capitalize()+" > "+b.control_mode.capitalize()); rows.append(metric("Shift time",a.shift_duration*1000,b.shift_duration*1000,"ms"))
-		"differential","wheels": rows.append(metric("Grip",GarageHub.grip(a),GarageHub.grip(b),"",2)); rows.append(metric("Mass",a.mass(),b.mass(),"kg"))
-		"suspension": rows.append(metric("Launch transfer",a.load_transfer_scale,b.load_transfer_scale,"",2)); rows.append(metric("Mass",a.mass(),b.mass(),"kg"))
-		"cooling": rows.append(metric("Heat rejection",a._cooling,b._cooling,"x",2)); rows.append(metric("Mass",a.mass(),b.mass(),"kg"))
+		"differential": rows.append(metric("Grip",GarageHub.grip(a),GarageHub.grip(b),"",2)); rows.append(metric("Mass",a.mass(),b.mass(),"kg"))
+		"tires":
+			rows.append(metric("Road grip",a.effective_grip(),b.effective_grip(),"",2))
+			rows.append(metric("Launch grip",a.traction_grip(4,1,0),b.traction_grip(4,1,0),"",2))
+			rows.append(metric("Rolling resistance",a.rolling_coefficient*a.pressure_rolling*100,b.rolling_coefficient*b.pressure_rolling*100,"%",2))
+			rows.append(metric("Mass",a.mass(),b.mass(),"kg",1))
+		"suspension":
+			rows.append(metric("Launch grip",a.traction_grip(4,1,0),b.traction_grip(4,1,0),"",2))
+			rows.append(metric("Wheel hop damping",a.hop_damping*100,b.hop_damping*100,"%"))
+			rows.append(metric("Driven axle transfer",a.load_transfer_scale,b.load_transfer_scale,"",2))
+			rows.append(metric("Mass",a.mass(),b.mass(),"kg",1))
+		"wheels":
+			rows.append(metric("Mass",a.mass(),b.mass(),"kg"))
 		"final_drive": rows.append(metric("Final drive",a.final_drive,b.final_drive,"",2)); rows.append("Matched ratio tuning: "+("Unlocked" if b.hardware.parts.has("final_drive") else "Factory"))
 		"gearset": rows.append("Ratio cassettes: "+("Unlocked" if b.hardware.parts.has("gearset") else "Factory")); rows.append("Current gears: "+str(b.gear_ratios.size()))
 		"transbrake": rows.append("Launch lock: "+("Enabled" if b.has_transbrake else "Not installed"))
@@ -324,7 +341,7 @@ func metric_color(value: String) -> Color:
 	if is_equal_approx(before,after): return g.MUTED
 	for neutral in ["radius","inertia","transfer","Final drive","Nozzle","Stall","Multiplication","Forward gears"]:
 		if value.contains(neutral): return g.INK
-	var less_good:=value.contains("Mass") or value.contains("mass") or value.contains("Shift") or value.contains("ramp") or value.contains("onset") or value.contains("Spool") or value.contains("1/4 est")
+	var less_good:=value.contains("Mass") or value.contains("mass") or value.contains("Shift") or value.contains("ramp") or value.contains("onset") or value.contains("Spool") or value.contains("1/4 est") or value.begins_with("Rolling resistance") or value.begins_with("60-foot ET") or value.begins_with("0–60 mph") or value.begins_with("1/4-mile ET") or value.begins_with("Time in wheelspin")
 	return g.GREEN if (after<before if less_good else after>before) else Color("eea29b")
 
 func package_description(index: int) -> String:
@@ -341,6 +358,21 @@ func package_description(index: int) -> String:
 func package_details(index: int) -> Array:
 	var c:=candidate()
 	return [package_description(index),"Purchased tiers and all lower levels can be equipped free.","Parts remain individually owned and reinstallable.","Engine limiter %.0f rpm / mass %.0f kg"%[c.redline_rpm,c.mass()]]
+
+func traction_projection(c: Drivetrain) -> Array[String]:
+	var results: Array[Dictionary] = []
+	for car in [g.car,c]:
+		var stages := [car.engine_stage,car.turbo_stage,car.tire_stage,car.weight_stage,car.gearbox_stage,car.exhaust_stage,car.brake_stage,car.nitrous_stage]
+		results.append(PerformanceClasses.request(g.profile.vehicle_id,stages,car.hardware))
+	var rows: Array[String] = []
+	if results[0].is_empty() or results[1].is_empty():
+		rows.append("Measuring launches and quarter-mile runs…")
+		return rows
+	for row in [["60-foot ET","sixty_ft_s"],["0–60 mph","zero_60_s"],["1/4-mile ET","quarter_et_s"],["Time in wheelspin","wheelspin_s"]]:
+		var before: Variant=results[0].get(row[1])
+		var after: Variant=results[1].get(row[1])
+		if before!=null and after!=null: rows.append(metric(row[0],float(before),float(after),"s",2))
+	return rows
 
 func race_comparison(c: Drivetrain) -> String:
 	var contracts: Array=[]

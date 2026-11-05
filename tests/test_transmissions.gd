@@ -80,13 +80,13 @@ func _initialize() -> void:
 	var roots := vehicle("legacy6",["roots"])
 	var centrifugal := vehicle("legacy6",["centrifugal"])
 	check(roots.boost_target(1500.0,1.0) > centrifugal.boost_target(1500.0,1.0),"Supercharger curves do not differ")
-	var tires := vehicle("legacy6",["drag_wheels","lsd","drag_susp"])
-	check(tires.tire_radius > stock.tire_radius and tires.extra_grip > 0.1 and tires.load_transfer_scale > stock.load_transfer_scale,"Chassis parts disconnected")
-	var hot := vehicle("drag3"); var cool := vehicle("drag3",["race_cooling"])
-	for tick in 14400:
-		hot.step(1.0/240.0,1.0,0.0,1.0)
-		cool.step(1.0/240.0,1.0,0.0,1.0)
-	check(cool.engine_temperature < hot.engine_temperature,"Cooling does not reduce engine temperature")
+	var tires := vehicle("legacy6",["drag_wheels","street_radial","lsd","drag_susp"])
+	check(tires.tire_radius > stock.tire_radius and tires.effective_grip() > stock.effective_grip()+0.1 and tires.load_transfer_scale > stock.load_transfer_scale,"Chassis parts disconnected")
+	var hot := vehicle("drag3")
+	hot.engine_temperature = 115
+	hot.transmission_temperature = 115
+	for tick in 720: hot.step(1.0/240.0,0.0,0.0,1.0)
+	check(hot.engine_temperature < 115 and hot.transmission_temperature < 115,"Passive heat dissipation stopped working")
 	var strained := vehicle("manual3",["paddles"],{},0)
 	strained.base_torque = 1000.0; strained.base_boost = 1.5; strained.running = true
 	for tick in 2400: strained.step(1.0/240.0,1.0)
