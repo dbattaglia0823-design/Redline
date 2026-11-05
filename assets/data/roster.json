@@ -68,11 +68,11 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      223,
-      777
+      237,
+      793
     ],
     "wheel_y": 274,
-    "wheel_radius": 76,
+    "wheel_radius": 75,
     "source": "https://www.miata.net/faq/First%2025%20Years/Pricing%20%26%20Specs%20-%20Model%20Year/Specifications/1990%20MX-5%20Miata%20Specifications.pdf",
     "reference_quarter_s": 16.8,
     "evidence": {
@@ -153,11 +153,11 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      226,
-      787
+      235,
+      793
     ],
     "wheel_y": 274,
-    "wheel_radius": 74,
+    "wheel_radius": 68,
     "source": "https://hondanews.com/en-US/releases/honda-civic-si-history",
     "reference_quarter_s": 15.7,
     "evidence": {
@@ -238,11 +238,11 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      197,
-      713
+      188,
+      704
     ],
     "wheel_y": 274,
-    "wheel_radius": 61,
+    "wheel_radius": 67,
     "source": "https://www.edmunds.com/volkswagen/gti/1997/features-specs/",
     "reference_quarter_s": 15.5,
     "evidence": {
@@ -324,11 +324,11 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      228,
-      774
+      217,
+      767
     ],
     "wheel_y": 274,
-    "wheel_radius": 67,
+    "wheel_radius": 76,
     "source": "https://acuranews.com/en-US/releases/release-213ecdccccb00457c01e65004c34c6a5-2003-acura-rsx-specifications",
     "reference_quarter_s": 15.1,
     "evidence": {
@@ -414,11 +414,11 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      200,
-      774
+      209,
+      784
     ],
     "wheel_y": 274,
-    "wheel_radius": 70,
+    "wheel_radius": 78,
     "source": "https://subarumedia.iconicweb.com/mediasite/specs/2013_SubaruBRZspecs.pdf",
     "reference_quarter_s": 15.3,
     "evidence": {
@@ -500,11 +500,11 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      223,
-      766
+      231,
+      781
     ],
     "wheel_y": 274,
-    "wheel_radius": 67,
+    "wheel_radius": 74,
     "source": "https://hondanews.com/en-US/releases/release-398aa72722c1c76a6c1681004c34c9a9-1997-acura-integra-type-r-powertrain",
     "reference_quarter_s": 14.9,
     "evidence": {
@@ -590,11 +590,11 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      183,
-      685
+      187,
+      707
     ],
     "wheel_y": 274,
-    "wheel_radius": 69,
+    "wheel_radius": 72,
     "source": "https://di-uploads-pod16.s3.us-east-1.amazonaws.com/emichvw/uploads/2018/09/2012GTI.pdf",
     "reference_quarter_s": 14.8,
     "evidence": {
@@ -685,8 +685,8 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      237,
-      783
+      246,
+      799
     ],
     "wheel_y": 274,
     "wheel_radius": 76,
@@ -782,11 +782,11 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      215,
-      778
+      206,
+      775
     ],
     "wheel_y": 274,
-    "wheel_radius": 68,
+    "wheel_radius": 78,
     "source": "https://pressroom.toyota.com/toyota-announces-pricing-on-all-new-2022-gr86/",
     "reference_quarter_s": 14.0,
     "evidence": {
@@ -869,11 +869,11 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      223,
-      796
+      222,
+      814
     ],
     "wheel_y": 274,
-    "wheel_radius": 72,
+    "wheel_radius": 79,
     "source": "https://usa.nissannews.com/en-US/releases/2003-350z-press-kit",
     "reference_quarter_s": 14.1,
     "evidence": {
@@ -955,11 +955,11 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      243,
-      773
+      241,
+      782
     ],
     "wheel_y": 274,
-    "wheel_radius": 75,
+    "wheel_radius": 76,
     "source": "https://pressroom.toyota.com/supra-chronology/",
     "reference_quarter_s": 13.1,
     "evidence": {
@@ -1041,11 +1041,11 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      238,
-      805
+      242,
+      816
     ],
     "wheel_y": 274,
-    "wheel_radius": 70,
+    "wheel_radius": 77,
     "source": "https://www.edmunds.com/bmw/m3/2001/features-specs/",
     "reference_quarter_s": 13.3,
     "evidence": {
@@ -1127,11 +1127,11 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      228,
-      748
+      230,
+      745
     ],
     "wheel_y": 274,
-    "wheel_radius": 65,
+    "wheel_radius": 73,
     "source": "https://www.subaru.ca/WebPage.aspx?ArticleID=598&WebPageId=5013&WebSiteID=284",
     "reference_quarter_s": 13.3,
     "evidence": {
@@ -1213,11 +1213,11 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      229,
-      755
+      233,
+      766
     ],
     "wheel_y": 274,
-    "wheel_radius": 62,
+    "wheel_radius": 73,
     "source": "https://www.cars.com/research/mitsubishi-lancer_evolution-2003/",
     "reference_quarter_s": 13.6,
     "evidence": {
@@ -1299,11 +1299,11 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      214,
-      749
+      222,
+      764
     ],
     "wheel_y": 274,
-    "wheel_radius": 58,
+    "wheel_radius": 73,
     "source": "https://hondanews.com/en-US/honda-automobiles/releases/release-52ba9fce70874c8e990bb539b044d09a-2019-honda-civic-type-r-specifications-features",
     "reference_quarter_s": 13.5,
     "evidence": {
@@ -1389,8 +1389,8 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      247,
-      783
+      245,
+      789
     ],
     "wheel_y": 274,
     "wheel_radius": 77,
@@ -1481,11 +1481,11 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      249,
-      770
+      240,
+      774
     ],
     "wheel_y": 274,
-    "wheel_radius": 66,
+    "wheel_radius": 78,
     "source": "https://pressroom.toyota.com/2020-supra-product-supra/",
     "reference_quarter_s": 12.3,
     "evidence": {
@@ -1569,11 +1569,11 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      239,
-      783
+      235,
+      796
     ],
     "wheel_y": 274,
-    "wheel_radius": 65,
+    "wheel_radius": 78,
     "source": "https://static.nhtsa.gov/odi/tsbs/2015/MC-10137252-9999.pdf",
     "reference_quarter_s": 12.3,
     "evidence": {
@@ -1660,11 +1660,11 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      191,
-      715
+      187,
+      727
     ],
     "wheel_y": 274,
-    "wheel_radius": 62,
+    "wheel_radius": 69,
     "source": "https://newspress-vwusamedia.s3.amazonaws.com/documents%2Foriginal%2F8730-2019GolfRTechnicalSpecifications.pdf",
     "reference_quarter_s": 12.9,
     "evidence": {
@@ -1766,11 +1766,11 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      239,
-      747
+      218,
+      774
     ],
     "wheel_y": 274,
-    "wheel_radius": 72,
+    "wheel_radius": 87,
     "source": "https://usa.nissannews.com/en-US/releases/2023-nissan-z-press-kit",
     "reference_quarter_s": 12.3,
     "evidence": {
@@ -1854,11 +1854,11 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      214,
-      756
+      211,
+      766
     ],
     "wheel_y": 274,
-    "wheel_radius": 62,
+    "wheel_radius": 79,
     "source": "https://news.chevrolet.com/newsroom.detail.html/Pages/news/us/en/2021/oct/1026-corvette-z06.html",
     "reference_quarter_s": 10.5,
     "evidence": {
@@ -1941,10 +1941,10 @@
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
       233,
-      780
+      788
     ],
     "wheel_y": 274,
-    "wheel_radius": 66,
+    "wheel_radius": 76,
     "source": "https://usa.nissannews.com/en-US/releases/2020-nissan-gt-r-press-kit",
     "reference_quarter_s": 10.8,
     "evidence": {
@@ -2027,11 +2027,11 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      207,
-      761
+      215,
+      775
     ],
     "wheel_y": 274,
-    "wheel_radius": 66,
+    "wheel_radius": 73,
     "source": "https://www.audi.com/en/the-audi-r8-until-2024-updated-dynamics-for-the-high-performance-sports-car-11734/engine-11738",
     "reference_quarter_s": 10.8,
     "evidence": {
@@ -2114,11 +2114,11 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      255,
-      771
+      258,
+      778
     ],
     "wheel_y": 274,
-    "wheel_radius": 65,
+    "wheel_radius": 84,
     "source": "https://www.motortrend.com/reviews/2020-ford-mustang-shelby-gt500-first-drive-review-photos-specs",
     "reference_quarter_s": 11.0,
     "evidence": {
@@ -2202,8 +2202,8 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      241,
-      786
+      243,
+      801
     ],
     "wheel_y": 274,
     "wheel_radius": 77,
@@ -2290,11 +2290,11 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      258,
-      755
+      259,
+      769
     ],
     "wheel_y": 274,
-    "wheel_radius": 65,
+    "wheel_radius": 83,
     "source": "https://newsroom.porsche.com/en_US/products/porsche-new-911-turbo-s-coupe-cabriolet-top-of-the-range-premiere-20122.html",
     "reference_quarter_s": 10.1,
     "evidence": {
@@ -2378,11 +2378,11 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      202,
-      743
+      216,
+      763
     ],
     "wheel_y": 274,
-    "wheel_radius": 62,
+    "wheel_radius": 84,
     "source": "https://investors.mclaren.com/~/media/Files/M/McLaren-Services/results-centre/2021/mclaren-h1-2021-results-presentation_vf.pdf",
     "reference_quarter_s": 9.9,
     "evidence": {
@@ -2466,11 +2466,11 @@
     "hybrid_kwh": 7.9,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      197,
-      740
+      203,
+      755
     ],
     "wheel_y": 274,
-    "wheel_radius": 65,
+    "wheel_radius": 86,
     "source": "https://cdn.ferrari.com/cms/network/media/pdf/pr_ferrari_sf90_stradale_gbr.pdf",
     "reference_quarter_s": 9.5,
     "evidence": {
@@ -2550,11 +2550,11 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      251,
-      781
+      236,
+      795
     ],
     "wheel_y": 274,
-    "wheel_radius": 77,
+    "wheel_radius": 85,
     "source": "https://www.dodge.com/news/challenger-srt-demon-170-edition.html",
     "reference_quarter_s": 8.91,
     "evidence": {
@@ -2641,11 +2641,11 @@
     "hybrid_kwh": 0,
     "description": "Factory-inspired configuration. Technical data and estimate status in Details.",
     "wheelbase": [
-      204,
-      770
+      201,
+      782
     ],
     "wheel_y": 274,
-    "wheel_radius": 83,
+    "wheel_radius": 82,
     "source": "https://newsroom.bugatti.com/en/about/technical-specifications",
     "reference_quarter_s": 9.4,
     "evidence": {

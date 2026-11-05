@@ -1,10 +1,35 @@
 {
   "runtime_art": [
-    {"path":"assets/vehicles/source_premium/miata_na.png","author":"OpenAI image generation for REDLINE","provenance":"Original generated illustration, 2026-11-04","use":"Miata body and derived wheel/mask layers","attribution":"No third-party photograph or game sprite incorporated as a runtime asset","review":"Corrected NA nose; precise dimensions, factory wheel trim and orthographic accuracy still need artistic review"},
-    {"path":"assets/vehicles/source_premium/reference_trio.png","author":"OpenAI image generation for REDLINE","provenance":"Original generated illustration, 2026-11-04","use":"Only middle Supra A80 and bottom Mustang GT crops","rejected":"Top Miata crop has later-generation nose and is not installed"},
-    {"path":"assets/ui/showroom_premium.png","author":"OpenAI image generation for REDLINE","provenance":"Original generated empty workshop environment, 2026-11-04","use":"Shared garage/dealer/customization workshop backdrop"}
+    {
+      "path": "assets/vehicles/source_premium/miata_na.png",
+      "author": "OpenAI image generation for REDLINE",
+      "provenance": "Original generated illustration, 2026-11-04",
+      "use": "Earlier Miata source retained for comparison",
+      "attribution": "No third-party photograph or game sprite incorporated as a runtime asset",
+      "review": "Corrected NA nose; precise dimensions, factory wheel trim and orthographic accuracy still need artistic review"
+    },
+    {
+      "path": "assets/vehicles/source_premium/reference_trio.png",
+      "author": "OpenAI image generation for REDLINE",
+      "provenance": "Original generated illustration, 2026-11-04",
+      "use": "Earlier Supra and Mustang sources retained for comparison",
+      "rejected": "Top Miata crop has later-generation nose and is not installed"
+    },
+    {
+      "path": "assets/ui/showroom_premium.png",
+      "author": "OpenAI image generation for REDLINE",
+      "provenance": "Original generated empty workshop environment, 2026-11-04",
+      "use": "Shared garage/dealer/customization workshop backdrop"
+    },
+    {
+      "path": "assets/vehicles/source_premium/*_studio.png",
+      "author": "OpenAI image generation for REDLINE",
+      "provenance": "Original generated strict side-profile sheets, keyed into individual artwork on 2026-11-05",
+      "use": "All 30 active studio body and wheel sources, with per-car source axle measurements in authoring.json",
+      "attribution": "No third-party photograph or game sprite incorporated",
+      "review": "Illustrated likenesses; exact production trim and dimensional fidelity not independently certified"
+    }
   ],
-  "retained_art": "Other 27 distinct original project illustrations retain their existing provenance; this pass rebuilds their derived layers rather than claiming new original body illustrations.",
   "research_only": [
     "https://www.mazdausa.com/discover/mazda-mx-5-miata-fans",
     "https://www.caranddriver.com/news/a60872816/1990-mazda-miata-bring-a-trailer-auction/",
@@ -13,6 +38,6 @@
     "https://www.thedrive.com/news/2024-ford-mustangs-new-platform-is-a-heavy-refresh-of-the-old-one",
     "https://www.cheersandgears.com/gallery/image/27263-2024-ford-mustang-gt-side-profile/"
   ],
-  "reference_limits":"Search/image-reference results were accessible. Direct local photograph downloads failed DNS resolution; some manufacturer archive/PDF retrievals timed out or redirected. No claim of a completed dimensional photographic audit of all 30 cars.",
-  "protected_reference_game":"Extracted frames from supplied The Strip footage inspected as visual reference only. Its internal wheel-rendering method is unknown; REDLINE's reflection implementation is an approximation. No reference audio or artwork reused as runtime assets."
+  "reference_limits": "Live search and manufacturer-site DNS failed during the 2026-11-05 pass. These links document the earlier trio research. Current artwork used the existing roster year and trim specifications and earlier artwork as visual context. No claim of a fresh photographic comparison for every model.",
+  "protected_reference_game": "Extracted frames from supplied The Strip footage inspected as visual reference only. Its internal wheel-rendering method is unknown; REDLINE's reflection implementation is an approximation. No reference audio or artwork reused as runtime assets."
 }

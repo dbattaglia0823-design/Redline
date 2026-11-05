@@ -1,5 +1,5 @@
 {
-  "checks": 198,
+  "checks": 330,
   "limits": "Native rendering/capture checks; screenshots still require artistic review. No physical iPhone claim.",
   "passed": true,
   "roster": [
@@ -9,12 +9,12 @@
       "render_checks": true,
       "views_captured": [
         "garage",
+        "race",
         "upgrades",
         "collection",
         "dealer",
         "customize",
-        "appearance_preview",
-        "race"
+        "appearance_preview"
       ]
     },
     {
@@ -23,11 +23,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -37,11 +32,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -51,11 +41,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -65,11 +50,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -79,11 +59,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -93,11 +68,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -107,11 +77,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -121,11 +86,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -135,11 +95,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -149,12 +104,12 @@
       "render_checks": true,
       "views_captured": [
         "garage",
+        "race",
         "upgrades",
         "collection",
         "dealer",
         "customize",
-        "appearance_preview",
-        "race"
+        "appearance_preview"
       ]
     },
     {
@@ -163,11 +118,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -177,11 +127,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -191,11 +136,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -205,11 +145,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -219,12 +154,12 @@
       "render_checks": true,
       "views_captured": [
         "garage",
+        "race",
         "upgrades",
         "collection",
         "dealer",
         "customize",
-        "appearance_preview",
-        "race"
+        "appearance_preview"
       ]
     },
     {
@@ -233,11 +168,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -247,11 +177,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -261,11 +186,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -275,11 +195,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -289,11 +204,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -303,11 +213,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -317,11 +222,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -331,11 +231,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -345,11 +240,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -359,11 +249,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -373,11 +258,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -387,11 +267,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -401,11 +276,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     },
@@ -415,11 +285,6 @@
       "render_checks": true,
       "views_captured": [
         "garage",
-        "upgrades",
-        "collection",
-        "dealer",
-        "customize",
-        "appearance_preview",
         "race"
       ]
     }

@@ -2,11 +2,13 @@ extends "res://tests/test_qol_ui.gd"
 
 func snap(id: String,view: String) -> void:
 	await frame()
-	var path := "res://validation/vehicle_art/"+id
+	var folder := "studio_roster" if "--roster-review" in OS.get_cmdline_user_args() else "vehicle_art"
+	var path := ProjectSettings.globalize_path("res://validation/"+folder+"/"+id)
 	DirAccess.make_dir_recursive_absolute(path)
-	root.get_texture().get_image().save_png(path+"/"+view+".png")
+	check(root.get_texture().get_image().save_png(path+"/"+view+".png")==OK,id+" / "+view+" capture")
 
 func run_checks() -> void:
+	var roster_review := "--roster-review" in OS.get_cmdline_user_args()
 	root.size=Vector2i(1200,760)
 	game=load("res://scenes/main.tscn").instantiate(); root.add_child(game)
 	game.set_process(false); game.set_physics_process(false); await frame()
@@ -22,21 +24,31 @@ func run_checks() -> void:
 		var money: int=game.profile.credits
 		check(VehicleAppearance.validate(id).is_empty(),id+" manifest/anchors")
 		await snap(id,"garage")
-		game.action("tab_performance"); await snap(id,"upgrades")
-		game.action("hub_owned"); game.menu.hub.owned_selection=id; await snap(id,"collection")
-		game.action("tab_dealer"); game.menu.dealer.enter_class(PerformanceClasses.factory_class(id)); game.dealer_index=RosterData.IDS.find(id); await snap(id,"dealer")
-		game.go_garage(); game.action("tab_style"); await snap(id,"customize")
-		# Preview only, with no economy or mechanical side effects.
-		game.menu.customize.candidate.paint=4; game.menu.customize.candidate.finish=2; game.menu.customize.candidate.tint=2
-		game.menu.customize.candidate.stance=1; game.menu.customize.candidate.decal=2
-		await snap(id,"appearance_preview")
+		var views := ["garage","race"]
+		if not roster_review or id in ["miata","supra","mustang"]:
+			game.action("tab_performance"); await snap(id,"upgrades")
+			game.action("hub_owned"); game.menu.hub.owned_selection=id; await snap(id,"collection")
+			game.action("tab_dealer"); game.menu.dealer.enter_class(PerformanceClasses.factory_class(id)); game.dealer_index=RosterData.IDS.find(id); await snap(id,"dealer")
+			game.go_garage(); game.action("tab_style"); await snap(id,"customize")
+			# Preview only, with no economy or mechanical side effects.
+			game.menu.customize.candidate.paint=4; game.menu.customize.candidate.finish=2; game.menu.customize.candidate.tint=2
+			game.menu.customize.candidate.stance=1; game.menu.customize.candidate.decal=2
+			await snap(id,"appearance_preview")
+			views.append_array(["upgrades","collection","dealer","customize","appearance_preview"])
 		game.go_garage(); game.start_practice(); await frame()
-		game.car.wheel_omega=90; game.car.wheel_angle=.7; game.car.rolling_wheel_angle=.2
-		game.car.speed=10; await snap(id,"race")
+		if roster_review:
+			game.input_override=Vector2(.85,0)
+			for i in 475: game._physics_process(1.0/120)
+			game.input_override=Vector2(-1,-1)
+			check(game.car.speed>0,id+" did not launch in the race capture")
+		else:
+			game.car.wheel_omega=90; game.car.wheel_angle=.7; game.car.rolling_wheel_angle=.2
+			game.car.speed=10
+		await snap(id,"race")
 		game.go_garage()
 		check(game.profile.appearance==appearance and game.profile.stages==stages and game.profile.hardware==hardware and game.profile.credits==money,id+" rendering/preview changed saved build")
 		check(VehicleAppearance.cached_bytes()<=VehicleAppearance.CACHE_BYTES,id+" persistent texture cache exceeds mobile budget")
-		rows.append({"id":id,"views_captured":["garage","upgrades","collection","dealer","customize","appearance_preview","race"],"render_checks":true,"artistic_approval":"REVIEW REQUIRED"})
+		rows.append({"id":id,"views_captured":views,"render_checks":true,"artistic_approval":"REVIEW REQUIRED"})
 	for id in ["miata","supra","mustang"]:
 		for paint in 6:
 			for finish in ["gloss","matte","metallic"]:

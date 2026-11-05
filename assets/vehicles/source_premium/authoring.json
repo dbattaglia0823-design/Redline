@@ -1,26 +1,424 @@
 {
   "miata": {
-    "source": "assets/vehicles/source_premium/miata_na.png",
-    "rear": [449, 541], "front": [1724, 541], "radius": 175,
-    "resolution": 2,
-    "glass_luminance_max": 256,
-    "glass": [[[1074, 122], [1194, 214], [1092, 232]], [[1142, 68], [1347, 221], [1252, 226], [1106, 102]]],
-    "trim": [[[190, 70], [510, 70], [510, 137], [190, 137]]]
+    "source": "assets/vehicles/source_premium/miata_studio.png",
+    "rear": [
+      200,
+      207
+    ],
+    "front": [
+      752,
+      207
+    ],
+    "radius": 75,
+    "resolution": 2
   },
   "supra": {
-    "source": "assets/vehicles/source_premium/reference_trio.png",
-    "crop": [0, 440, 1199, 855],
-    "rear": [287, 302], "front": [933, 302], "radius": 91,
-    "resolution": 2,
-    "glass": [[[355, 95], [480, 49], [593, 60], [708, 140], [354, 132]]],
-    "lamps": [[[914, 187], [933, 194], [957, 218], [915, 212]]]
+    "source": "assets/vehicles/source_premium/supra_studio.png",
+    "rear": [
+      227,
+      223
+    ],
+    "front": [
+      828,
+      221
+    ],
+    "radius": 84,
+    "resolution": 2
   },
   "mustang": {
-    "source": "assets/vehicles/source_premium/reference_trio.png",
-    "crop": [0, 875, 1199, 1312],
-    "rear": [284, 303], "front": [950, 303], "radius": 96,
-    "resolution": 2,
-    "glass": [[[345, 82], [477, 45], [588, 54], [714, 137], [348, 132]]],
-    "lamps": [[[899, 193], [958, 203], [948, 215], [905, 211]]]
+    "source": "assets/vehicles/source_premium/mustang_studio.png",
+    "rear": [
+      237,
+      229
+    ],
+    "front": [
+      857,
+      227
+    ],
+    "radius": 88,
+    "resolution": 2
+  },
+  "civic_si": {
+    "source": "assets/vehicles/source_premium/civic_si_studio.png",
+    "rear": [
+      176,
+      211
+    ],
+    "front": [
+      668,
+      207
+    ],
+    "radius": 60,
+    "resolution": 1
+  },
+  "gti_vr6": {
+    "source": "assets/vehicles/source_premium/gti_vr6_studio.png",
+    "rear": [
+      145,
+      224
+    ],
+    "front": [
+      635,
+      224
+    ],
+    "radius": 64,
+    "resolution": 1
+  },
+  "rsx": {
+    "source": "assets/vehicles/source_premium/rsx_studio.png",
+    "rear": [
+      168,
+      215
+    ],
+    "front": [
+      676,
+      212
+    ],
+    "radius": 70,
+    "resolution": 1
+  },
+  "brz": {
+    "source": "assets/vehicles/source_premium/brz_studio.png",
+    "rear": [
+      155,
+      200
+    ],
+    "front": [
+      670,
+      196
+    ],
+    "radius": 70,
+    "resolution": 1
+  },
+  "integra": {
+    "source": "assets/vehicles/source_premium/integra_studio.png",
+    "rear": [
+      182,
+      217
+    ],
+    "front": [
+      695,
+      213
+    ],
+    "radius": 69,
+    "resolution": 1
+  },
+  "gti": {
+    "source": "assets/vehicles/source_premium/gti_studio.png",
+    "rear": [
+      152,
+      239
+    ],
+    "front": [
+      681,
+      238
+    ],
+    "radius": 73,
+    "resolution": 1
+  },
+  "s2000": {
+    "source": "assets/vehicles/source_premium/s2000_studio.png",
+    "rear": [
+      196,
+      204
+    ],
+    "front": [
+      711,
+      205
+    ],
+    "radius": 71,
+    "resolution": 1
+  },
+  "gr86": {
+    "source": "assets/vehicles/source_premium/gr86_studio.png",
+    "rear": [
+      168,
+      225
+    ],
+    "front": [
+      732,
+      225
+    ],
+    "radius": 77,
+    "resolution": 1
+  },
+  "type_r": {
+    "source": "assets/vehicles/source_premium/type_r_studio.png",
+    "rear": [
+      179,
+      224
+    ],
+    "front": [
+      699,
+      222
+    ],
+    "radius": 70,
+    "resolution": 1
+  },
+  "supra_gr": {
+    "source": "assets/vehicles/source_premium/supra_gr_studio.png",
+    "rear": [
+      190,
+      202
+    ],
+    "front": [
+      688,
+      201
+    ],
+    "radius": 73,
+    "resolution": 1
+  },
+  "camaro": {
+    "source": "assets/vehicles/source_premium/camaro_studio.png",
+    "rear": [
+      198,
+      200
+    ],
+    "front": [
+      754,
+      196
+    ],
+    "radius": 77,
+    "resolution": 1
+  },
+  "golf_r": {
+    "source": "assets/vehicles/source_premium/golf_r_studio.png",
+    "rear": [
+      148,
+      232
+    ],
+    "front": [
+      677,
+      229
+    ],
+    "radius": 68,
+    "resolution": 1
+  },
+  "z350": {
+    "source": "assets/vehicles/source_premium/z350_studio.png",
+    "rear": [
+      183,
+      217
+    ],
+    "front": [
+      764,
+      215
+    ],
+    "radius": 78,
+    "resolution": 1
+  },
+  "m3": {
+    "source": "assets/vehicles/source_premium/m3_studio.png",
+    "rear": [
+      208,
+      229
+    ],
+    "front": [
+      789,
+      225
+    ],
+    "radius": 78,
+    "resolution": 1
+  },
+  "sti": {
+    "source": "assets/vehicles/source_premium/sti_studio.png",
+    "rear": [
+      201,
+      243
+    ],
+    "front": [
+      735,
+      233
+    ],
+    "radius": 76,
+    "resolution": 1,
+    "wheel_radii": [
+      73,
+      78
+    ]
+  },
+  "evo": {
+    "source": "assets/vehicles/source_premium/evo_studio.png",
+    "rear": [
+      200,
+      236
+    ],
+    "front": [
+      740,
+      237
+    ],
+    "radius": 74,
+    "resolution": 1
+  },
+  "gt500": {
+    "source": "assets/vehicles/source_premium/gt500_studio.png",
+    "rear": [
+      251,
+      215
+    ],
+    "front": [
+      844,
+      211
+    ],
+    "radius": 96,
+    "resolution": 1
+  },
+  "redeye": {
+    "source": "assets/vehicles/source_premium/redeye_studio.png",
+    "rear": [
+      237,
+      228
+    ],
+    "front": [
+      876,
+      232
+    ],
+    "radius": 88,
+    "resolution": 1,
+    "wheel_radii": [
+      90,
+      85
+    ]
+  },
+  "turbo_s": {
+    "source": "assets/vehicles/source_premium/turbo_s_studio.png",
+    "rear": [
+      242,
+      212
+    ],
+    "front": [
+      796,
+      217
+    ],
+    "radius": 90,
+    "resolution": 1,
+    "wheel_radii": [
+      93,
+      88
+    ]
+  },
+  "mclaren": {
+    "source": "assets/vehicles/source_premium/mclaren_studio.png",
+    "rear": [
+      204,
+      200
+    ],
+    "front": [
+      829,
+      199
+    ],
+    "radius": 96,
+    "resolution": 1
+  },
+  "z400": {
+    "source": "assets/vehicles/source_premium/z400_studio.png",
+    "rear": [
+      180,
+      217
+    ],
+    "front": [
+      731,
+      217
+    ],
+    "radius": 86,
+    "resolution": 1
+  },
+  "z06": {
+    "source": "assets/vehicles/source_premium/z06_studio.png",
+    "rear": [
+      182,
+      191
+    ],
+    "front": [
+      761,
+      195
+    ],
+    "radius": 82,
+    "resolution": 1,
+    "wheel_radii": [
+      85,
+      79
+    ]
+  },
+  "gtr": {
+    "source": "assets/vehicles/source_premium/gtr_studio.png",
+    "rear": [
+      202,
+      224
+    ],
+    "front": [
+      771,
+      227
+    ],
+    "radius": 78,
+    "resolution": 1
+  },
+  "r8": {
+    "source": "assets/vehicles/source_premium/r8_studio.png",
+    "rear": [
+      180,
+      204
+    ],
+    "front": [
+      745,
+      207
+    ],
+    "radius": 74,
+    "resolution": 1,
+    "wheel_radii": [
+      76,
+      71
+    ]
+  },
+  "sf90": {
+    "source": "assets/vehicles/source_premium/sf90_studio.png",
+    "rear": [
+      205,
+      214
+    ],
+    "front": [
+      888,
+      215
+    ],
+    "radius": 106,
+    "resolution": 1,
+    "wheel_radii": [
+      109,
+      104
+    ]
+  },
+  "demon": {
+    "source": "assets/vehicles/source_premium/demon_studio.png",
+    "rear": [
+      249,
+      256
+    ],
+    "front": [
+      948,
+      262
+    ],
+    "radius": 106,
+    "resolution": 1,
+    "wheel_radii": [
+      110,
+      101
+    ]
+  },
+  "chiron": {
+    "source": "assets/vehicles/source_premium/chiron_studio.png",
+    "rear": [
+      204,
+      226
+    ],
+    "front": [
+      927,
+      226
+    ],
+    "radius": 102,
+    "resolution": 1,
+    "wheel_radii": [
+      101,
+      102
+    ]
   }
 }

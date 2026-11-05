@@ -1,9 +1,9 @@
 # Vehicle artwork v2
 
-The active renderer uses original opaque 2D artwork. Miata, Supra A80 and Mustang
-GT have new source illustrations. The other 27 keep their distinct source bodies
-and receive rebuilt paint, finish, glazing, lamp, wheel and livery layers. They
-are not described as 27 newly painted or factory-certified illustrations.
+The active renderer uses 30 distinct original studio side-profile illustrations.
+The Miata, Supra A80 and Mustang GT established the lighting and framing for the
+new set. The sources are individually keyed PNGs alongside the authoring manifest.
+They are illustrated likenesses of the roster's model years and trims.
 
 ## Rebuild
 
@@ -21,9 +21,11 @@ archives existing PNGs, manifest and roster in
 save files are retained. Runtime cosmetic indices and part ownership are stable.
 
 Original normalized legacy masters are `assets/vehicles/<id>/source.png`.
-New-source configurations are `assets/vehicles/source_premium/authoring.json`.
-The top Miata row of `reference_trio.png` was rejected for incorrect generation
-details and is NOT installed. `miata_na.png` is the replacement NA source.
+Active-source configurations are `assets/vehicles/source_premium/authoring.json`.
+The earlier trio inputs remain available for comparison. For new source sheets,
+`tools/prepare_vehicle_sheet.py` removes the solid magenta field and proposes
+wheel centers from the lower tire arcs. Review the keyed car and axle fit before
+copying the emitted configuration into the authoring manifest.
 
 The old C# atlas installer now refuses to overwrite v2 artwork. Its normalized
 master export is available through `.reference_helpers/export_legacy_masters.py`
@@ -37,6 +39,8 @@ generators or legacy atlas installer to rebuild current runtime assets.
 - Wheel center baseline: y274. Set source rear/front axle centers and tire radius
   from the illustration. Importer normalizes them and updates only the roster's
   drawing anchors, never its physical tire radius or mechanical wheelbase data.
+  A source with staggered tires can also supply separate visual radii. The rear
+  baseline stays fixed while the front wheel follows its measured center.
 - Source crop is optional. Axle coordinates and glass polygons are relative to
   that crop. Transparent padding, isolated car, no baked ground shadow or scene.
 - Use strict side elevation and level circular wheels. Inspect the actual model
@@ -87,6 +91,9 @@ appearance browsing against the texture budget. `test_rim_rendering.gd` checks
 all 30 wheel anchors, stationary phase changes, moving reflections, custom wheels
 and rendering without physics mutation. `tools/vehicle_art_contact_sheets.py`
 composes actual captures for inspection.
+`-- --roster-review` captures a real test-track launch and Garage view for
+every vehicle, with extended screens for the trio. The contact-sheet tool's
+`--roster-review` option collects those Garage and race frames.
 
 Integrity checks do not prove automotive likeness. Full-size model/trim review,
 physical iPhone performance and human assessment remain separate quality gates.

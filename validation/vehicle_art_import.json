@@ -1,266 +1,13 @@
 [
   {
-    "id": "miata",
-    "resolution": [
-      2000,
-      720
-    ],
-    "new_source": true,
-    "paint_pixels": 425188,
-    "source_sha256": "1d063ca0c57822122c31d5a6a102c8a61326035b4d9ea3ca57224a9c1ae44a65",
-    "visual_approval": "REVIEW REQUIRED"
-  },
-  {
-    "id": "civic_si",
-    "resolution": [
-      1000,
-      360
-    ],
-    "new_source": false,
-    "paint_pixels": 116389,
-    "source_sha256": "ecb70a299dfca2c42700cbe3b29edb2f5c0cc7ed7bd412a63361f88168d29ebe",
-    "visual_approval": "REVIEW REQUIRED"
-  },
-  {
-    "id": "gti_vr6",
-    "resolution": [
-      1000,
-      360
-    ],
-    "new_source": false,
-    "paint_pixels": 114252,
-    "source_sha256": "cd41f16e8707625670b021ed3a05f4139fe5ec0af509241f5b5554ea9392341e",
-    "visual_approval": "REVIEW REQUIRED"
-  },
-  {
-    "id": "rsx",
-    "resolution": [
-      1000,
-      360
-    ],
-    "new_source": false,
-    "paint_pixels": 123379,
-    "source_sha256": "a8b45e8ead7cdebdde1f8476de40aff58b1a880c8596aed8112df1f898c0be62",
-    "visual_approval": "REVIEW REQUIRED"
-  },
-  {
-    "id": "brz",
-    "resolution": [
-      1000,
-      360
-    ],
-    "new_source": false,
-    "paint_pixels": 113320,
-    "source_sha256": "96d38d98fb7ee6570a8e029fb0b05a8e1f7fd030b021dc910caff683c03b2199",
-    "visual_approval": "REVIEW REQUIRED"
-  },
-  {
-    "id": "integra",
-    "resolution": [
-      1000,
-      360
-    ],
-    "new_source": false,
-    "paint_pixels": 112413,
-    "source_sha256": "1bb7dbf60e6e26596e4529d36a690f5f2864f571ee4c4e7a9778b2f80c24f3ed",
-    "visual_approval": "REVIEW REQUIRED"
-  },
-  {
-    "id": "gti",
-    "resolution": [
-      1000,
-      360
-    ],
-    "new_source": false,
-    "paint_pixels": 106368,
-    "source_sha256": "5f825bc71192a4178ff47e22bf03a6569e467a5e060d3c803780cb828ebbf854",
-    "visual_approval": "REVIEW REQUIRED"
-  },
-  {
-    "id": "s2000",
-    "resolution": [
-      1000,
-      360
-    ],
-    "new_source": false,
-    "paint_pixels": 107220,
-    "source_sha256": "db0d12362753ead018591084537bd0db870ccf2ac12c85cb76e979fed5834083",
-    "visual_approval": "REVIEW REQUIRED"
-  },
-  {
-    "id": "gr86",
-    "resolution": [
-      1000,
-      360
-    ],
-    "new_source": false,
-    "paint_pixels": 118701,
-    "source_sha256": "106465dc1eb514dd909d9d0fb7eb6e063c3b0913b5551740ff219559ddc93205",
-    "visual_approval": "REVIEW REQUIRED"
-  },
-  {
-    "id": "z350",
-    "resolution": [
-      1000,
-      360
-    ],
-    "new_source": false,
-    "paint_pixels": 117187,
-    "source_sha256": "4c6927bdc7f0efc57859b58e3903a683b63c5f326969b0a817a8bb5f847476fb",
-    "visual_approval": "REVIEW REQUIRED"
-  },
-  {
-    "id": "supra",
-    "resolution": [
-      2000,
-      720
-    ],
-    "new_source": true,
-    "paint_pixels": 487951,
-    "source_sha256": "44065817492a540de3758f175e72d3cafeb894b47bed03e219793548f5e858bf",
-    "visual_approval": "REVIEW REQUIRED"
-  },
-  {
-    "id": "m3",
-    "resolution": [
-      1000,
-      360
-    ],
-    "new_source": false,
-    "paint_pixels": 122738,
-    "source_sha256": "f17a94c7ffe55c1e6ef928dcf676e2ad6275bd8eb6647e3567a4bd136c9bd7f9",
-    "visual_approval": "REVIEW REQUIRED"
-  },
-  {
     "id": "sti",
     "resolution": [
       1000,
       360
     ],
-    "new_source": false,
-    "paint_pixels": 119121,
-    "source_sha256": "7297ad70062c42a7ad48da98d838584f9b29f86e539509086770b9fa2f06b77d",
-    "visual_approval": "REVIEW REQUIRED"
-  },
-  {
-    "id": "evo",
-    "resolution": [
-      1000,
-      360
-    ],
-    "new_source": false,
-    "paint_pixels": 118429,
-    "source_sha256": "38b3fc2d073117b734ad1e3bf7f417ae80ebe4279b887a6e6d4a12477484ff48",
-    "visual_approval": "REVIEW REQUIRED"
-  },
-  {
-    "id": "type_r",
-    "resolution": [
-      1000,
-      360
-    ],
-    "new_source": false,
-    "paint_pixels": 123723,
-    "source_sha256": "330de677786dd50b24ebf03721dbafe16e61f6fb9538764963b6ab05a4942d6d",
-    "visual_approval": "REVIEW REQUIRED"
-  },
-  {
-    "id": "mustang",
-    "resolution": [
-      2000,
-      720
-    ],
     "new_source": true,
-    "paint_pixels": 499523,
-    "source_sha256": "59ccef9f7b87022b7148f80eac6c5e7aa4cfd59af6dca0e962ac566b417cf033",
-    "visual_approval": "REVIEW REQUIRED"
-  },
-  {
-    "id": "supra_gr",
-    "resolution": [
-      1000,
-      360
-    ],
-    "new_source": false,
-    "paint_pixels": 121692,
-    "source_sha256": "fbb35bcb90fe86952f53c7ee73debd2d009b51352b67ddc75b1a3f2d417f11f6",
-    "visual_approval": "REVIEW REQUIRED"
-  },
-  {
-    "id": "camaro",
-    "resolution": [
-      1000,
-      360
-    ],
-    "new_source": false,
-    "paint_pixels": 125755,
-    "source_sha256": "4dcde696b6c6e5fc3705e24cc9ac1fc716bb579268c56b4cb4006c67bb0e672a",
-    "visual_approval": "REVIEW REQUIRED"
-  },
-  {
-    "id": "golf_r",
-    "resolution": [
-      1000,
-      360
-    ],
-    "new_source": false,
-    "paint_pixels": 111148,
-    "source_sha256": "75f64de5184d2c18c06ca4661007be860399d272b649345eb67b83f484fdcb28",
-    "visual_approval": "REVIEW REQUIRED"
-  },
-  {
-    "id": "z400",
-    "resolution": [
-      1000,
-      360
-    ],
-    "new_source": false,
-    "paint_pixels": 108859,
-    "source_sha256": "aed515a0c128e46e62c072d1f3a0e05e31e16eb9d41b62483206e0ad071d3aa7",
-    "visual_approval": "REVIEW REQUIRED"
-  },
-  {
-    "id": "z06",
-    "resolution": [
-      1000,
-      360
-    ],
-    "new_source": false,
-    "paint_pixels": 109681,
-    "source_sha256": "f4acb3cff20798623d635e9dba2751123bb46e705e59a8f7de523dfa41d5e37a",
-    "visual_approval": "REVIEW REQUIRED"
-  },
-  {
-    "id": "gtr",
-    "resolution": [
-      1000,
-      360
-    ],
-    "new_source": false,
-    "paint_pixels": 124194,
-    "source_sha256": "f3ad1ed11aa89aec8c49fa6a7978b4feaeaa8f1c5b3e3aa5b920da611cc183c9",
-    "visual_approval": "REVIEW REQUIRED"
-  },
-  {
-    "id": "r8",
-    "resolution": [
-      1000,
-      360
-    ],
-    "new_source": false,
-    "paint_pixels": 114071,
-    "source_sha256": "683c3be88fe42ad4cd95eb665e9049e04c8c191076c84223bbc634715f6eb929",
-    "visual_approval": "REVIEW REQUIRED"
-  },
-  {
-    "id": "gt500",
-    "resolution": [
-      1000,
-      360
-    ],
-    "new_source": false,
-    "paint_pixels": 117270,
-    "source_sha256": "af8a5c9964155871700f8c3318e6d9e66f91bc0181cea9301bb0d28b767a9c22",
+    "paint_pixels": 117836,
+    "source_sha256": "2d0b1e45657d3611625e83c6d13434babaab76ba370fcec935725ef19759c478",
     "visual_approval": "REVIEW REQUIRED"
   },
   {
@@ -269,9 +16,9 @@
       1000,
       360
     ],
-    "new_source": false,
-    "paint_pixels": 114383,
-    "source_sha256": "3a061c3c5fceeb95c1d337c49628f9ffcc29c66db5fdd3c8a9065c4467fd685d",
+    "new_source": true,
+    "paint_pixels": 114517,
+    "source_sha256": "8d3835c9bbe6fc6f811a9c24a9b437e2ba35b0252a7bdfb2f75f35502074b148",
     "visual_approval": "REVIEW REQUIRED"
   },
   {
@@ -280,20 +27,31 @@
       1000,
       360
     ],
-    "new_source": false,
-    "paint_pixels": 113083,
-    "source_sha256": "e5f8415d7ea9c342db4f1088a2d6f27d23b7d7022c35dc589d79398be1e391d5",
+    "new_source": true,
+    "paint_pixels": 105539,
+    "source_sha256": "161b02311efea5f558a943b8a969184413bba878f744ee0c9610c48147688936",
     "visual_approval": "REVIEW REQUIRED"
   },
   {
-    "id": "mclaren",
+    "id": "z06",
     "resolution": [
       1000,
       360
     ],
-    "new_source": false,
-    "paint_pixels": 100955,
-    "source_sha256": "8d73f279690f11f97bcf12d07480260d1129b7cda0f3d29bf0631a29b406c6f1",
+    "new_source": true,
+    "paint_pixels": 106401,
+    "source_sha256": "d93e03045211cfdbe5161f46664f0b271fc23056de2a27becd3775e6d43b0760",
+    "visual_approval": "REVIEW REQUIRED"
+  },
+  {
+    "id": "r8",
+    "resolution": [
+      1000,
+      360
+    ],
+    "new_source": true,
+    "paint_pixels": 110600,
+    "source_sha256": "6bfd87fb5c0f2e93f89bce12778d05a9a2cbbc9bf18314565c703abdd5dacbaf",
     "visual_approval": "REVIEW REQUIRED"
   },
   {
@@ -302,9 +60,9 @@
       1000,
       360
     ],
-    "new_source": false,
-    "paint_pixels": 104330,
-    "source_sha256": "c723606e90b8fe0cf560ca76fa9a5a7522c6453444cd7badb0133f9c6a951c12",
+    "new_source": true,
+    "paint_pixels": 98278,
+    "source_sha256": "9237f08dd15f6d4c9dbfd21179b1f95207c32605e42f907539f5d94d03aee9e8",
     "visual_approval": "REVIEW REQUIRED"
   },
   {
@@ -313,9 +71,9 @@
       1000,
       360
     ],
-    "new_source": false,
-    "paint_pixels": 126802,
-    "source_sha256": "db4f5501dbb0a0b2d86c461a337f98977adefc69fe1350731f8450bb838ccc34",
+    "new_source": true,
+    "paint_pixels": 117335,
+    "source_sha256": "4a646999a57011e96ebfac505fda4c986959eeb3c80e9ace26ec01018ea1ea16",
     "visual_approval": "REVIEW REQUIRED"
   },
   {
@@ -324,9 +82,9 @@
       1000,
       360
     ],
-    "new_source": false,
-    "paint_pixels": 112737,
-    "source_sha256": "cbad7273b2fe4fa86fb91a72bdb2bbe00147bd52cdf8ddf2a4e702819c849a6f",
+    "new_source": true,
+    "paint_pixels": 106623,
+    "source_sha256": "1765ae58e523d58b6932e3d90071e0ed9bc1b4407348d2e1db6a24bdd8c02b8b",
     "visual_approval": "REVIEW REQUIRED"
   }
 ]

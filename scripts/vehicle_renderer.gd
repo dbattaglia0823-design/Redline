@@ -45,7 +45,8 @@ static func contact_shadow(g: Node2D,base: Vector2,d: Dictionary,s: float,radius
 	if quality == 0: return
 	var rear := VehicleAppearance.point(d.rear)
 	var front := VehicleAppearance.point(d.front)
-	var y := maxf(rear.y,front.y)+float(d.radius)*radius_factor
+	var radii: Array=d.get("wheel_radii",[d.radius,d.radius])
+	var y := maxf(rear.y+float(radii[0])*radius_factor,front.y+float(radii[1])*radius_factor)
 	var center := base+Vector2((rear.x+front.x)*.5,y)*s
 	for band in 3:
 		var points := PackedVector2Array()
@@ -56,11 +57,12 @@ static func contact_shadow(g: Node2D,base: Vector2,d: Dictionary,s: float,radius
 static func draw_wheels(g: Node2D,base: Vector2,size: float,s: float,model: String,d: Dictionary,look: Dictionary,car: Drivetrain,animate: bool,quality: int,light: Color,reflections_only: bool) -> void:
 	var spec := GameCatalog.spec(model)
 	var radius_factor := WheelVisuals.radius_scale(car,spec) if car != null else 1.0
+	var radii: Array=d.get("wheel_radii",[d.radius,d.radius])
 	for index in 2:
 		var driven: bool = spec.drive == "AWD" or (spec.drive == "RWD" and index == 0) or (spec.drive == "FWD" and index == 1)
 		var state := WheelVisuals.motion(car,driven,quality) if car != null and animate else {"omega":0.0,"angle":0.0,"spoke_angle":0.0,"blur":0.0,"sweep":0.0}
 		var center:=base+VehicleAppearance.point(d.rear if index == 0 else d.front)*s
-		var radius:=float(d.radius)*s*radius_factor
+		var radius:=float(radii[index])*s*radius_factor
 		if d.has("stock_wheels") and int(look.design)==0 and int(look.rim)==0 and int(look.caliper)==0 and int(look.sidewall)==0:
 			if reflections_only:
 				var rim_radius: float = float(d.get("rim_radius",[float(d.radius)*.70,float(d.radius)*.70])[index])*s*radius_factor

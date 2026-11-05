@@ -27,8 +27,8 @@ for model in roster:
  # Regression against a glazing flood leaking into neutral door reflections.
  if model=='gti_vr6' and not selected[round(190*factor),round(500*factor)]: errors.append('Door reflection misclassified as glass')
  yy,xx=np.mgrid[:h,:w]
- for center in [d['rear'],d['front']]:
-  inside=(xx-center[0]*factor)**2+(yy-center[1]*factor)**2<(d['radius']*.9*factor)**2
+ for center,radius in zip([d['rear'],d['front']],d.get('wheel_radii',[d['radius']]*2)):
+  inside=(xx-center[0]*factor)**2+(yy-center[1]*factor)**2<(radius*.9*factor)**2
   if np.any(base[:,:,3][inside]): errors.append('Duplicate authored wheels in body cutouts')
   if np.any(selected[inside]): errors.append('Paint mask covers a wheel')
  for path in d['stock_wheels']:
