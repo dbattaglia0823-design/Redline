@@ -19,6 +19,13 @@ func target(id: String) -> Dictionary:
 		if entry.id==id: return entry
 	check(false,"Missing visible action "+id); return {}
 func click(id: String,touch: bool=false) -> void:
+	var control: Control=game.native_workshop.targets.get(id)
+	if is_instance_valid(control):
+		var ancestor:=control.get_parent()
+		while ancestor!=null and not ancestor is ScrollContainer: ancestor=ancestor.get_parent()
+		if ancestor is ScrollContainer:
+			ancestor.ensure_control_visible(control)
+			await frame()
 	var entry:=target(id)
 	if entry.is_empty(): return
 	var point: Vector2=game.to_global(entry.rect.get_center())
@@ -35,30 +42,47 @@ func run() -> void:
 	for engine in [stock,low_end]: engine.configure_vehicle(GameCatalog.spec("miata")); engine.configure(GameCatalog.blank_stages())
 	check(is_equal_approx(stock.full_engine_torque(stock.redline_rpm*.75),low_end.full_engine_torque(stock.redline_rpm*.75)),"Powerband test does not isolate the low range")
 	check(UpgradeStudio.engine_changed(stock,low_end),"Dyno misses low-RPM changes with identical high-RPM torque")
+	var fixture:=DriverProfile.new()
+	var initial_quote:=fixture.upgrade_quote(-1,-1,"induction","turbo_race")
+	check(fixture.commit_upgrade_quote(-1,-1,"induction","turbo_race",JSON.stringify(initial_quote))=="Not enough credits" and fixture.hardware.parts.is_empty(),"Unaffordable bundle partially installed")
+	fixture.hardware.owned_parts.append("fuel_street")
+	var owned:=fixture.upgrade_quote(-1,-1,"induction","turbo_race")
+	check(owned.cost==7000 and owned.items[0].cost==0 and owned.build.parts.fuel=="fuel_street","Owned support was charged or left unfitted")
+	fixture.hardware.parts.fuel="fuel_ethanol"
+	var equivalent:=fixture.upgrade_quote(-1,-1,"induction","turbo_race")
+	check(equivalent.cost==7000 and equivalent.items.size()==1,"An equivalent fitted fuel system was replaced")
+	check(fixture.commit_upgrade_quote(-1,-1,"induction","turbo_race",JSON.stringify(owned)).begins_with("Build changed"),"A stale quote was accepted")
+	var blocked:=fixture.upgrade_quote(-1,-1,"converter","converter_race")
+	check(blocked.reason=="Converter automatic required","Incompatible converter did not explain its required gearbox")
+	var supported:=fixture.upgrade_quote(-1,-1,"clutch","clutch_race")
+	check(supported.stages[4]==3 and supported.items.size()==2,"Required gearbox stage was omitted")
 	game=load("res://scenes/main.tscn").instantiate(); root.add_child(game); game.set_process(false); game.set_physics_process(false)
 	DirAccess.make_dir_recursive_absolute("res://validation/native_ui")
-	for phone in [false,true]:
-		root.size=Vector2i(390,844) if phone else Vector2i(1200,760)
+	for window in [Vector2i(1200,760),Vector2i(390,844),Vector2i(844,390)]:
+		var phone: bool=window.x<1000
+		var suffix: String={1200:"desktop",390:"phone",844:"landscape"}[window.x]
+		root.size=window
+		game.native_workshop.catalog_filter=-1
 		game.profile=DriverProfile.new(); game.profile.credits=100000; game.go_garage(); game.refresh_car(); await frame()
 		game.workshop.details=false
 		check(game.native_workshop.visible,"Native Garage unavailable")
 		check(game.font is FontFile and game.mono is FontFile,"Typography depends on system fonts")
 		var garage:=target("hub_owned"); check(garage.get("native_control") is Button,"Garage action is not native")
-		root.get_texture().get_image().save_png("res://validation/native_ui/garage_"+("phone" if phone else "desktop")+".png")
-		await click("tab_performance",phone); await click("upgrade_system_0",phone); await click("hub_category_0",phone); await click("upgrade_section_basic",phone)
+		if window.x!=844: root.get_texture().get_image().save_png("res://validation/native_ui/garage_"+suffix+".png")
+		await click("tab_performance",phone); await click("upgrade_system_0",phone); await click("hub_category_0",phone)
 		check(not game.menu.hub.categories and not game.dock.visible,"Upgrade modal did not isolate the overview")
 		check(game.buttons.filter(func(item): return str(item.id).begins_with("tab_")).is_empty(),"Modal exposes background navigation")
 		var snapshot:=JSON.stringify([game.profile.hardware,game.profile.stages,game.profile.credits])
 		await click("stage_pick_2",phone)
 		check(snapshot==JSON.stringify([game.profile.hardware,game.profile.stages,game.profile.credits]),"Preview changed the save")
 		var predicted: float=game.menu.hub.studio.candidate().peak_horsepower()
-		root.get_texture().get_image().save_png("res://validation/native_ui/purchase_"+("phone" if phone else "desktop")+".png")
+		if window.x!=844: root.get_texture().get_image().save_png("res://validation/native_ui/purchase_"+suffix+".png")
 		await click("install_0_2",phone)
 		check(game.profile.credits==97900 and game.profile.stages[0]==2,"Native event purchase did not charge exactly once")
 		check(is_equal_approx(predicted,game.car.peak_horsepower()),"Preview differs from installed physics")
 		await click("install_0_2",phone)
 		check(game.profile.credits==97900,"Disabled purchase charged twice")
-		await click("hw_slot_0",phone); await click("hw_pick_forged",phone)
+		await click("hw_pick_forged",phone)
 		await click("hw_buy",phone)
 		check(game.profile.credits==95100,"Native part installation charged incorrectly")
 		check(game.profile.hardware.parts.get("internals","")=="forged","Part was not installed")
@@ -84,7 +108,46 @@ func run() -> void:
 		for label in game.native_workshop.find_children("*","Label",true,false):
 			if label.text.contains("1/4 est"): resolved=true
 		check(resolved,"Async benchmark completed but native comparison stayed in measuring state")
-		root.get_texture().get_image().save_png("res://validation/native_ui/weight_"+("phone" if phone else "desktop")+".png")
+		if window.x!=844: root.get_texture().get_image().save_png("res://validation/native_ui/weight_"+suffix+".png")
+		await click("hub_back",phone); await click("upgrade_system_-1",phone)
+		if phone:
+			var scroller: ScrollContainer=game.native_workshop.find_child("CatalogList",true,false)
+			var point: Vector2=game.to_global(target("hub_category_0").rect.get_center())+Vector2(0,65)
+			var finger:=InputEventScreenTouch.new(); finger.index=8; finger.pressed=true; finger.position=point
+			root.push_input(finger,true)
+			var drag:=InputEventScreenDrag.new(); drag.index=8; drag.position=point-Vector2(0,75)
+			root.push_input(drag,true)
+			finger=finger.duplicate(); finger.pressed=false; finger.position=drag.position; root.push_input(finger,true)
+			await frame()
+			check(scroller.scroll_vertical>0 and game.menu.hub.categories,"Catalog swipe selected a part or failed to scroll")
+			scroller.scroll_vertical=0; await frame()
+		var search: LineEdit=game.native_workshop.search
+		search.grab_focus()
+		for character in "large frame":
+			var typing:=InputEventKey.new(); typing.pressed=true; typing.unicode=character.unicode_at(0)
+			typing.keycode=KEY_SPACE if character==" " else 0
+			root.push_input(typing,true)
+		await frame()
+		check(search.text=="large frame","Catalog search did not accept keyboard input")
+		check(game.native_workshop.targets.hub_category_5.visible and not game.native_workshop.targets.hub_category_0.visible,"Search did not find the turbo by its part name")
+		search.clear(); search.text_changed.emit(""); search.release_focus(); await frame()
+		root.get_texture().get_image().save_png("res://validation/native_ui/catalog_"+suffix+".png")
+		await click("hub_category_5",phone); await click("hw_pick_turbo_race",phone)
+		var quote: Dictionary=game.native_workshop.active_quote()
+		var credits: int=game.profile.credits
+		check(quote.cost==8900 and quote.items.size()==2,"Large-frame turbo quote omitted the required fuel kit")
+		check(not game.profile.hardware.parts.has("fuel") and game.profile.credits==credits,"Bundle preview changed installed hardware or credits")
+		var preview_hp: float=game.menu.hub.preview().peak_horsepower()
+		root.get_texture().get_image().save_png("res://validation/native_ui/turbo_bundle_"+suffix+".png")
+		await click("catalog_purchase",phone)
+		check(game.profile.credits==credits and game.native_workshop.confirm_quote!="","Opening confirmation charged credits")
+		await click("catalog_cancel",phone)
+		check(game.profile.credits==credits and game.native_workshop.confirm_quote=="","Cancelling a bundle changed the profile")
+		await click("catalog_purchase",phone); await click("catalog_purchase",phone)
+		check(game.profile.credits==credits-8900 and game.profile.hardware.parts.get("fuel")=="fuel_street" and game.profile.hardware.parts.get("induction")=="turbo_race","Bundle did not install exactly once")
+		check(is_equal_approx(game.car.peak_horsepower(),preview_hp),"Bundle output differed from its preview")
+		saved.load_profile()
+		check(saved.hardware.parts.get("induction")=="turbo_race" and saved.credits==credits-8900,"Bundle did not persist")
 		game.go_garage(); await frame()
 	var report:=FileAccess.open("res://validation/native_ui/results.json",FileAccess.WRITE)
 	report.store_string(JSON.stringify({"passed":failures==0,"checks":checks,"actual_viewport_events":true},"  ")); report.close()

@@ -129,7 +129,8 @@ func race_touch_layout() -> bool:
 
 func sync_menu_size() -> void:
 	var target := race_view_size() if screen == "race" else (Vector2i(600,1300) if is_portrait() else Vector2i(1200,760))
-	if (screen=="results" or (screen=="garage" and tab in ["dealer","owned","style","races"])) and not glass.legacy and not is_portrait() and get_window().size.y<500:
+	var catalog: bool=tab=="performance" and not menu.hub.dyno_open and (menu.hub.categories or workshop.mode in ["basic","hardware"])
+	if (screen=="results" or (screen=="garage" and (catalog or tab in ["dealer","owned","style","races"]))) and not glass.legacy and not is_portrait() and get_window().size.y<500:
 		target=race_view_size()
 	if get_window().content_scale_size != target:
 		get_window().content_scale_size = target
@@ -561,6 +562,7 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		return
 	if event is InputEventKey:
+		if native_workshop!=null and native_workshop.editing_catalog(event): return
 		handle_key_input(event)
 		if native_workshop!=null and native_workshop.visible and event.pressed and (event.keycode in [KEY_TAB,KEY_ENTER,KEY_SPACE] or event.physical_keycode in [KEY_TAB,KEY_ENTER,KEY_SPACE]):
 			get_viewport().set_input_as_handled()
@@ -607,6 +609,10 @@ func activate_at(pos: Vector2, pointer: String, allow_menu: bool = true) -> void
 			return
 
 func action(id: String) -> void:
+	if native_workshop!=null and native_workshop.catalog_action(id):
+		menu_dirty=true
+		glass.focused=""
+		return
 	if id=="open_championships": career_board.open(); return
 	if id.begins_with("cb_"): career_board.action(id); return
 	if id=="open_tuning": tuning.open(); return

@@ -192,6 +192,9 @@ func options(mobile: bool) -> void:
 			t("%d / %d"%[w.parts_page+1,maxi(1,ceili(ids.size()/3.0))],260 if mobile else 340,687 if mobile else 582,18 if mobile else 14,g.MUTED)
 
 func candidate() -> Drivetrain:
+	if not g.glass.legacy and g.native_workshop!=null:
+		var quote: Dictionary=g.native_workshop.active_quote()
+		return g.native_workshop.quote_preview(quote) if quote.reason=="" else g.car
 	return g.workshop.stage_preview() if g.workshop.mode=="basic" else g.workshop.part_comparison().car
 
 func comparison(mobile: bool) -> void:

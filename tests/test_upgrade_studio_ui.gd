@@ -13,6 +13,13 @@ func frame() -> void:
 	for i in 4: game._process(.2); await process_frame
 	await RenderingServer.frame_post_draw
 func click(id: String) -> void:
+	var control: Control=game.native_workshop.targets.get(id)
+	if is_instance_valid(control):
+		var ancestor:=control.get_parent()
+		while ancestor!=null and not ancestor is ScrollContainer: ancestor=ancestor.get_parent()
+		if ancestor is ScrollContainer:
+			ancestor.ensure_control_visible(control)
+			await frame()
 	var point:=Vector2(-1,-1)
 	for b in game.buttons:
 		if b.id==id: point=game.to_global(b.rect.get_center())
@@ -33,18 +40,18 @@ func run_checks() -> void:
 		var found: Dictionary={}
 		for system in 4:
 			await click("upgrade_system_%d"%system)
-			for item in game.buttons:
-				if str(item.id).begins_with("hub_category_"): found[item.id]=true
+			for id in game.native_workshop.targets:
+				if id.begins_with("hub_category_") and game.native_workshop.targets[id].visible: found[id]=true
 			await capture("systems_%d"%system)
 		check(found.size()==15,"Grouped menu hides a category")
-		await click("upgrade_system_0"); await click("hub_category_0"); await click("upgrade_section_basic"); await click("stage_pick_2")
+		await click("upgrade_system_0"); await click("hub_category_0"); await click("stage_pick_2")
 		var money: int=game.profile.credits; var build:=JSON.stringify(game.profile.hardware); var stages: Array=game.profile.stages.duplicate()
 		check(game.menu.hub.preview().peak_horsepower()>game.car.peak_horsepower(),"Selected package preview missing")
 		await capture("airflow_preview")
 		await click("hub_dyno"); await capture("dyno_preview"); await click("hub_dyno_close")
 		check(game.profile.credits==money and JSON.stringify(game.profile.hardware)==build and game.profile.stages==stages,"Preview changed money or vehicle")
-		await click("hw_slot_0"); await click("hw_pick_forged"); await capture("internals")
-		var preview: Drivetrain=game.workshop._part_preview
+		await click("hw_pick_forged"); await capture("internals")
+		var preview: Drivetrain=game.menu.hub.studio.candidate()
 		var predicted:=JSON.stringify([preview.mass(),preview.peak_horsepower(),preview.mechanical_torque_capacity(),preview.engine_inertia])
 		await click("hw_buy")
 		check(JSON.stringify([game.car.mass(),game.car.peak_horsepower(),game.car.mechanical_torque_capacity(),game.car.engine_inertia])==predicted,"Installed part differs from preview")

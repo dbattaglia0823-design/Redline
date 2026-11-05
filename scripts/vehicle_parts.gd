@@ -112,11 +112,16 @@ static func compatible(id: String, b: Dictionary, stage: int) -> String:
 		if kind == "drag" and id != "race_controller": return "Drag controller required"
 		if id == "selector" and kind not in ["manual","sequential"]: return "Manual or sequential required"
 		if id == "race_controller" and kind not in ["automatic","dct","drag"]: return "Automatic or DCT required"
-	var requirement := str(p.get("requires",""))
-	if requirement != "" and not b.parts.values().has(requirement):
-		var equivalent: bool = (requirement == "forged" and b.parts.values().has("billet")) or (requirement == "fuel_street" and b.parts.values().has("fuel_ethanol"))
-		if not equivalent: return str(PARTS[requirement].name)+" required"
+	var requirement := missing_requirement(id,b)
+	if requirement!="": return str(PARTS[requirement].name)+" required"
 	return ""
+
+static func missing_requirement(id: String,b: Dictionary) -> String:
+	var required := str(PARTS[id].get("requires",""))
+	if required=="" or b.parts.values().has(required): return ""
+	if required=="forged" and b.parts.values().has("billet"): return ""
+	if required=="fuel_street" and b.parts.values().has("fuel_ethanol"): return ""
+	return required
 
 static func control_mode(b: Dictionary) -> String:
 	var t := TransmissionCatalog.spec(str(b.transmission))

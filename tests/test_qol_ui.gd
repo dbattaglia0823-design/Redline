@@ -23,6 +23,13 @@ func capture(name: String) -> void:
 	DirAccess.make_dir_recursive_absolute("res://validation/qol")
 	root.get_texture().get_image().save_png("res://validation/qol/"+name+("_phone" if game.is_portrait() else "_desktop")+".png")
 func click(id: String) -> void:
+	var control: Control=game.native_workshop.targets.get(id)
+	if is_instance_valid(control):
+		var ancestor:=control.get_parent()
+		while ancestor!=null and not ancestor is ScrollContainer: ancestor=ancestor.get_parent()
+		if ancestor is ScrollContainer:
+			ancestor.ensure_control_visible(control)
+			await frame()
 	for item in game.buttons:
 		if item.id == id:
 			var e := InputEventScreenTouch.new(); e.index=3; e.pressed=true; e.position=game.to_global(item.rect.get_center()); game._input(e); e.pressed=false; game._input(e)
@@ -36,7 +43,7 @@ func run_checks() -> void:
 	for phone in [false,true]:
 		game.get_window().size=Vector2i(390,844) if phone else Vector2i(1200,760)
 		game.go_garage(); await frame()
-		await click("tab_performance"); await click("hub_category_0"); await click("hw_slot_0"); await click("hw_pick_forged")
+		await click("tab_performance"); await click("hub_category_0"); await click("hw_pick_forged")
 		key(KEY_TAB,true,true); await frame(); key(KEY_TAB,false,true); await frame(); await click("hub_category_0")
 		check(game.workshop.selected_hardware=="forged" and game.workshop.mode=="hardware","Dock exit lost upgrade selection")
 		var back := InputEventMouseButton.new(); back.button_index=MOUSE_BUTTON_XBUTTON1; back.pressed=true; game._input(back); await frame()

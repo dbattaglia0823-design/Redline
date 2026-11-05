@@ -18,6 +18,39 @@ class TechnicalIcon extends Control:
 	func _draw() -> void:
 		LiquidGlass.new().icon(self,icon_key,Vector2(2,2),icon_size,ink)
 
+class PartEmblem extends TechnicalIcon:
+	func _draw() -> void:
+		var mid:=size*.5
+		var radius:=minf(size.x,size.y)*.46
+		var corners:=PackedVector2Array()
+		for i in 6: corners.append(mid+Vector2.from_angle(TAU*i/6)*radius)
+		draw_colored_polygon(corners,Color("102d3d"))
+		corners.append(corners[0])
+		draw_polyline(corners,Color("376379"),1,true)
+		draw_arc(mid,radius*.74,PI*.15,PI*.85,12,Color("51727e"),1,true)
+		LiquidGlass.new().icon(self,icon_key,mid-Vector2.ONE*icon_size*.5,icon_size,ink)
+
+static func part_emblem(key: String,extent: float) -> Control:
+	var icon:=PartEmblem.new()
+	icon.icon_key=key
+	icon.icon_size=extent*.58
+	icon.custom_minimum_size=Vector2.ONE*extent
+	icon.size_flags_vertical=Control.SIZE_SHRINK_CENTER
+	icon.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	return icon
+
+static func part_card(parent: Node,title: String,fitted: String,metric: String,key: String,height: float) -> Button:
+	var card:=content_card(parent,height)
+	var content: VBoxContainer=card.get_meta("content")
+	var line:=row(content,8)
+	line.add_child(part_emblem(key,42))
+	var names:=column(line,2)
+	names.add_child(label(title,22 if height>=100 else 19))
+	names.add_child(label(fitted,16 if height>=100 else 14,BLUE))
+	content.add_child(label(metric,16 if height>=100 else 14,MUTED))
+	card.tooltip_text=title+" / "+fitted+" / "+metric
+	return card
+
 static func surface(fill: Color,edge: Color=Color("294353"),radius: int=14) -> StyleBoxFlat:
 	var s:=StyleBoxFlat.new()
 	s.bg_color=fill; s.border_color=edge; s.set_border_width_all(1)
@@ -35,7 +68,7 @@ static func theme_resource() -> Theme:
 		var fill:=Color("102331") if variant!="Primary" else Color("74391f")
 		if variant=="Navigation": fill=Color("081620")
 		var edge:=Color("315064") if variant!="Primary" else Color("c57548")
-		var radius:=10 if variant=="Selection" else 18
+		var radius:=9 if variant=="Selection" else (16 if variant=="Navigation" else 13)
 		t.set_stylebox("normal",variant,surface(fill,edge,radius))
 		t.set_stylebox("hover",variant,surface(fill.lightened(.09),BLUE,radius))
 		t.set_stylebox("pressed",variant,surface(Color("392b25") if variant!="Primary" else Color("9c4924"),ORANGE,radius))

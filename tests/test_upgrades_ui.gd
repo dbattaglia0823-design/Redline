@@ -21,6 +21,13 @@ func center(id: String) -> Vector2:
 	check(false,"Missing upgrade/control button: "+id)
 	return Vector2(-1,-1)
 func click(id: String) -> void:
+	var control: Control=game.native_workshop.targets.get(id)
+	if is_instance_valid(control):
+		var ancestor:=control.get_parent()
+		while ancestor!=null and not ancestor is ScrollContainer: ancestor=ancestor.get_parent()
+		if ancestor is ScrollContainer:
+			ancestor.ensure_control_visible(control)
+			await refresh()
 	var e := InputEventMouseButton.new(); e.button_index = MOUSE_BUTTON_LEFT; e.position = center(id); e.pressed = true
 	game._input(e); e.pressed = false; game._input(e)
 	await refresh()
@@ -49,9 +56,9 @@ func run_checks() -> void:
 	check(found.size() == TransmissionCatalog.ROWS.size(),"Gearbox pages omit configurations")
 	await click("tx_filter_0"); await click("tx_pick_manual5"); await click("tx_buy")
 	check(game.car.control_mode == "hpattern" and game.car.gear_ratios.size() == 5,"Gearbox purchase not connected to simulation")
-	await click("hw_slot_0"); await click("hw_next"); await click("hw_pick_paddles"); await click("hw_buy")
-	# This slot is controls; parts page 1 is required for the paddle kit.
-	# Missing-button checks above make pagination errors visible.
+	await click("upgrade_section_basic")
+	await click("hw_pick_paddles"); await click("catalog_purchase"); await click("catalog_cancel")
+	# Review the prerequisite bundle and cancel before testing the separate tuning tools.
 	await click("upgrade_section_tune")
 	var rpm: float = game.car.gear_ratios[0]
 	await click("tune_plus_ratio")

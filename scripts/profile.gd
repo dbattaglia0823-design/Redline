@@ -216,6 +216,88 @@ func upgrade_reason(index: int) -> String:
 	if index==1 and float(GameCatalog.spec(vehicle_id).get("factory_super",0))>0 and str(hardware.parts.get("induction","")) not in ["turbo_hybrid","turbo_race"]: return "Fit a turbo assembly before buying turbo packages"
 	return ""
 
+# The quote owns copies of the build. Only commit_upgrade_quote writes the profile.
+func upgrade_quote(index: int, tier: int, slot: String="", id: String="") -> Dictionary:
+	var quote := {"build":hardware.duplicate(true),"stages":stages.duplicate(),"items":[],"cost":0,"reason":"","equipped":false}
+	if slot=="":
+		if index<0 or index>=stages.size() or tier<0 or tier>GameCatalog.max_stage(index):
+			quote.reason="Unknown package"
+			return quote
+		if tier<=int(stages[index]):
+			quote.equipped=true
+			return quote
+		if upgrade_reason(index)!="": quote_part(quote,"turbo_hybrid",true,[])
+		quote_stage(quote,index,tier,false)
+	else:
+		if not VehicleParts.SLOTS.has(slot) or (id!="" and VehicleParts.PARTS.get(id,{}).get("slot")!=slot):
+			quote.reason="Unknown component"
+			return quote
+		if str(hardware.parts.get(slot,""))==id:
+			quote.equipped=true
+			return quote
+		if id=="":
+			quote.build.parts.erase(slot)
+			quote.items.append({"name":"Factory hardware","cost":0,"support":false,"replaces":VehicleParts.PARTS[hardware.parts[slot]].name})
+		else:
+			quote_part(quote,id,false,[])
+	for installed in quote.build.parts.values():
+		var reason := VehicleParts.compatible(str(installed),quote.build,int(quote.stages[4]))
+		if reason!="": quote.reason=reason; break
+	if not pending_wager.is_empty(): quote.reason="Finish your race first"
+	return quote
+
+func quote_stage(quote: Dictionary,index: int,tier: int,support: bool) -> void:
+	if tier<=int(quote.stages[index]): return
+	var cost:=upgrade_cost(index,tier)
+	quote.stages[index]=tier
+	quote.cost+=cost
+	var name:=GameCatalog.stage_name(index,tier)
+	if support and index==4: name+=" gearbox upgrade"
+	quote.items.append({"name":name,"cost":cost,"support":support,"replaces":""})
+
+func quote_part(quote: Dictionary,id: String,support: bool,chain: Array) -> void:
+	if chain.has(id):
+		quote.reason="Circular component requirement"
+		return
+	var build: Dictionary=quote.build
+	var part: Dictionary=VehicleParts.PARTS[id]
+	if str(build.parts.get(part.slot,""))==id: return
+	var path:=chain+[id]
+	var required:=VehicleParts.missing_requirement(id,build)
+	if required!="": quote_part(quote,required,true,path)
+	if id=="boost_control" and VehicleParts.boost_control_reason(build,float(GameCatalog.spec(vehicle_id).get("base_boost",.45)),int(quote.stages[1]))!="":
+		quote_part(quote,"turbo_hybrid",true,path)
+	if VehicleParts.TRANSMISSION_SLOTS.has(part.slot): quote_stage(quote,4,int(part.stage),true)
+	var previous:=str(build.parts.get(part.slot,""))
+	var cost:=0 if VehicleParts.is_owned(build,id) else int(part.cost)
+	build.parts[part.slot]=id
+	if not build.owned_parts.has(id): build.owned_parts.append(id)
+	if not build.fitments.has(id): build.fitments[id]=[]
+	if not build.fitments[id].has(build.transmission): build.fitments[id].append(build.transmission)
+	quote.cost+=cost
+	quote.items.append({"name":part.name,"cost":cost,"support":support,"replaces":str(VehicleParts.PARTS.get(previous,{}).get("name",""))})
+
+func commit_upgrade_quote(index: int,tier: int,slot: String,id: String,expected: String) -> String:
+	var quote:=upgrade_quote(index,tier,slot,id)
+	if quote.reason!="": return quote.reason
+	if quote.equipped or quote.items.is_empty(): return "Already installed"
+	if JSON.stringify(quote)!=expected: return "Build changed. Review the new quote."
+	if credits<int(quote.cost): return "Not enough credits"
+	var before_build:=hardware
+	var before_stages:=stages
+	var before_garage:=garage.duplicate(true)
+	hardware=quote.build
+	stages=quote.stages
+	credits-=int(quote.cost)
+	save()
+	if save_error!="":
+		hardware=before_build
+		stages=before_stages
+		garage=before_garage
+		credits+=int(quote.cost)
+		return save_error
+	return "Installed "+str(quote.items.back().name)
+
 func upgrade(index: int, target: int = -1) -> bool:
 	if index < 0 or index >= stages.size() or not pending_wager.is_empty(): return false
 	if upgrade_reason(index)!="": return false

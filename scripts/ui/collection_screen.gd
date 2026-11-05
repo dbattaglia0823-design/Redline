@@ -11,7 +11,7 @@ func handle_scroll_touch(event: InputEvent) -> bool:
 	# Defer option taps until release so a swipe cannot select an option, and
 	# consume the event once through the same existing action dispatcher.
 	if not visible or game.screen!="garage" or game.tab!="style" or not compact_landscape():
-		scroll_pointer=-1; touch_scroll=null; return false
+		scroll_pointer=-1; touch_scroll=null; return super.handle_scroll_touch(event)
 	if event is InputEventScreenTouch and event.canceled and event.index==scroll_pointer:
 		scroll_pointer=-1; touch_scroll=null; return true
 	if event is InputEventScreenTouch and event.pressed and not event.canceled and visible and compact_landscape() and game.tab=="style":
@@ -35,7 +35,8 @@ func handle_scroll_touch(event: InputEvent) -> bool:
 	return false
 
 func compact_landscape() -> bool:
-	return game.tab in ["dealer","owned","style"] and not game.is_portrait() and game.get_window().size.y<500
+	var workshop_catalog: bool=game.tab=="performance" and not game.menu.hub.dyno_open and (game.menu.hub.categories or game.workshop.mode in ["basic","hardware"])
+	return (workshop_catalog or game.tab in ["dealer","owned","style"]) and not game.is_portrait() and game.get_window().size.y<500
 
 func canvas_size() -> Vector2:
 	return Vector2(game.race_view_size()) if compact_landscape() else super.canvas_size()
@@ -47,7 +48,7 @@ func button(parent: Node,id: String,text: String,primary: bool=false) -> Button:
 
 func sync() -> void:
 	super.sync()
-	if visible and game.screen=="garage" and compact_landscape():
+	if visible and game.screen=="garage" and compact_landscape() and (game.tab!="performance" or game.menu.hub.categories):
 		game.buttons=game.buttons.filter(func(entry): return not str(entry.id).begins_with("tab_"))
 		game.dock.present(Rect2(24,640,size.x-48,104),game.tab)
 
