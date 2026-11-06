@@ -31,6 +31,7 @@ var career_claims: Array = []
 var event_records: Dictionary = {}
 var career_serial := 0
 var pending_wager: Dictionary = {}
+var test_runs: Dictionary = {"serial":0,"vehicles":{}}
 var hardware := GameCatalog.factory_build("miata")
 var retired_garage: Dictionary = {}
 
@@ -129,6 +130,7 @@ func load_profile() -> void:
 	wheels = clampi(int(data.get("wheels", 0)), 0, 2)
 	stages = GameCatalog.normalize_stages(data.get("stages", []))
 	muted = bool(data.get("muted", false))
+	test_runs=RunArchive.normalize(data.get("test_runs",{}))
 	effects_quality = clampi(int(data.get("effects_quality",2)),0,2)
 	reduced_motion = bool(data.get("reduced_motion",false))
 	metric_speed = bool(data.get("metric_speed",false))
@@ -352,7 +354,7 @@ func save() -> void:
 	if file==null:
 		save_error="Could not save progress"
 		return
-	var payload: Dictionary={"career_version":3,"legacy_class_access":legacy_class_access,"championship_wins":championship_wins,"career_claims":career_claims,"career_serial":career_serial,"event_records":event_records,"roster_version":2,"traction_version":1,"retired_garage":retired_garage,"credits":credits,"xp":xp,"wins":wins,"races":races,"best":best,"paint":paint,"wheels":wheels,"stages":stages,"owned_stages":owned_stages,"muted":muted,"effects_quality":effects_quality,"reduced_motion":reduced_motion,"metric_speed":metric_speed,"vehicle_id":vehicle_id,"garage":garage,"career_wins":career_wins,"pending_wager":pending_wager}
+	var payload: Dictionary={"test_runs":RunArchive.pack(test_runs),"career_version":3,"legacy_class_access":legacy_class_access,"championship_wins":championship_wins,"career_claims":career_claims,"career_serial":career_serial,"event_records":event_records,"roster_version":2,"traction_version":1,"retired_garage":retired_garage,"credits":credits,"xp":xp,"wins":wins,"races":races,"best":best,"paint":paint,"wheels":wheels,"stages":stages,"owned_stages":owned_stages,"muted":muted,"effects_quality":effects_quality,"reduced_motion":reduced_motion,"metric_speed":metric_speed,"vehicle_id":vehicle_id,"garage":garage,"career_wins":career_wins,"pending_wager":pending_wager}
 	payload.save_format=SAVE_FORMAT
 	# Canonicalize JSON numbers before hashing so the reader hashes the same values.
 	payload=JSON.parse_string(JSON.stringify(payload,"",true,true))

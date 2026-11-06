@@ -180,3 +180,9 @@ See [the motion review, screenshots, clips and test results](validation/VEHICLE_
 Tuning & Test Track → Tune → Gearbox shows Number of Gears, Final Drive Ratio and every individual ratio in one scrolling list, with minus/slider/plus controls and live speeds at the RPM limit. Transmission-specific count limits, valid descending ratios, fine final-drive adjustments, existing tuning access rules and per-vehicle/transmission saving use the shared tuning system. Mouse, touch, keyboard and mobile scrolling are supported.
 
 See [the gearbox tuning review and desktop/mobile screenshots](validation/UNIFIED_GEARBOX_TUNING.md). Run `tests/test_unified_gearing.gd` for shared model/save checks and graphical `tests/test_unified_gearing_ui.gd` for input and layout validation.
+
+## Test Track analysis and comparisons
+
+Run data now saves recent tests per vehicle and distance, with A/B time slips, personal-best markers, setup comparisons and overlaid speed/RPM graphs. Drag either graph to inspect synchronized RPM, speed, wheelspin, clutch slip and acceleration. Diagnostic flags identify traction, clutch-slip, limiter and low-RPM exposure without inventing an elapsed-time penalty. Full numeric tuning groups now use the same minus/slider/plus controls as gearing; presets and optimization remain available.
+
+See [the Test Track analysis review and desktop/mobile captures](validation/TEST_TRACK_ANALYSIS.md). `tests/test_run_analysis.gd` validates measured timing, diagnostics, comparisons and persistent history; graphical `tests/test_run_analysis_ui.gd` checks controls and layouts. Recent traces are bounded and compressed in the existing integrity-checked profile; personal-best summaries remain after older traces rotate out. Physical-phone performance remains unverified.

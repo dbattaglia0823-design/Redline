@@ -24,6 +24,7 @@ var drag_pointer := ""
 var graph_rect := Rect2()
 var name_edit: LineEdit
 var gearbox_panel: GearboxTuningPanel
+var results_panel: TestResultsPanel
 const SLOTS := ["street","eighth","quarter","custom"]
 const SLOT_NAMES := ["Street","1/8 Mile","1/4 Mile","Custom"]
 const LABELS := {"gear_count":"Forward gears","launch_rpm":"Launch RPM","redline":"Rev limiter","boost":"Maximum boost / bar","boost_gear":"Gear boost cap / bar","firmness":"Shift firmness","final_drive":"Final drive","ratio":"Gear ratio","shift":"Upshift RPM"}
@@ -38,6 +39,7 @@ func button(id: String,s: String,r: Rect2,primary: bool = false,selected: bool =
 func open(initial_group: int = -1) -> void:
 	if initial_group>=0: group=initial_group; row_page=0; gear=0
 	return_tab=g.tab if g.tab!="tuning" else return_tab
+	restore_histories()
 	last=histories.get(g.profile.vehicle_id+":"+str(length),{}).get("last",{})
 	g.tab="tuning"; page="setup"; g.menu_dirty=true
 func update() -> void:
@@ -70,14 +72,14 @@ func draw() -> void:
 		"optimize": draw_optimizer(p)
 		"results": draw_results(p)
 	if g.screen!="practice_results":
-		var y := 1050 if p else (690 if page=="setup" and TuningSetup.GROUPS.keys()[group]=="Gearbox" and not short_layout() else (650 if short_layout() and page=="results" and details else 612))
+		var y := 1050 if p else (690 if page in ["setup","results"] and not short_layout() else (650 if short_layout() and page=="results" and details else 612))
 		button("tt_distance","1/8 MILE" if length<300 else "1/4 MILE",Rect2(24,y,188,76) if p else Rect2(36,y,174,90 if short_layout() else 52))
 		button("tt_drive","DRIVE TEST TRACK",Rect2(224,y,352,76) if p else Rect2(224,y,350,90 if short_layout() else 52),true)
 		if not p: text("Practice only / no wagers, rewards or career changes",600,y+33,15,g.MUTED)
 		else: text("Practice / no stakes or career changes",24,y+110,20,g.MUTED)
 	else:
-		button("tt_drive","TEST AGAIN",Rect2(24,1140,264,76) if p else Rect2(36,650,270,90) if short_layout() else Rect2(36,670,270,60),true)
-		button("tt_return","BACK TO TUNING",Rect2(312,1140,264,76) if p else Rect2(320,650,270,90) if short_layout() else Rect2(320,670,270,60))
+		button("tt_drive","TEST AGAIN",Rect2(24,1140,264,76) if p else Rect2(36,650,270,90) if short_layout() else Rect2(36,690,270,60),true)
+		button("tt_return","BACK TO TUNING",Rect2(312,1140,264,76) if p else Rect2(320,650,270,90) if short_layout() else Rect2(320,690,270,60))
 	if name_edit!=null:
 		g.draw_rect(Rect2(0,0,width,1300 if p else 760),Color(0,0,0,.85)); g.buttons.clear()
 		text("NAME THIS SETUP",24 if p else 350,484 if p else 274,24)
@@ -88,38 +90,9 @@ func draw_setup(p: bool) -> void:
 	var groups: Array=TuningSetup.GROUPS.keys()
 	for i in groups.size():
 		button("tt_group_%d"%i,(["Launch","Power","Gears","Clutch","Grip"][i] if short_layout() else str(groups[i])),Rect2(24+(i%3)*188,250+int(i/3)*68,176,60) if p else Rect2(36+(i%2)*102,252+int(i/2)*102,90,90) if short_layout() else Rect2(36,i*54+252,186,46),false,group==i)
-	if groups[group]=="Gearbox":
-		if gearbox_panel==null:
-			gearbox_panel=GearboxTuningPanel.new(); g.add_child(gearbox_panel); gearbox_panel.setup(self)
-		gearbox_panel.visible=true; gearbox_panel.sync()
-		return
-	var keys: Array=TuningSetup.GROUPS[groups[group]]
-	row_page=clampi(row_page,0,maxi(0,ceili(keys.size()/float(rows_per_page()))-1))
-	gear=clampi(gear,0,g.car.gear_ratios.size()-1); g.workshop.gear_index=gear
-	var top := 430 if p else 252
-	var x := 24 if p else 250
-	g.box(Rect2(x,top,552 if p else 916,590 if p else 336))
-	if groups[group] in ["Power","Gearbox"]:
-		button("tt_gear_prev","<",Rect2(x+16,top+12,64,60) if p else Rect2(x+530,top+8,90,90) if short_layout() else Rect2(x+530,top+8,64,44))
-		button("tt_gear_next","GEAR %d >"%(gear+1),Rect2(x+96,top+12,190,60) if p else Rect2(x+632,top+8,260,90) if short_layout() else Rect2(x+608,top+8,284,44))
-	else: text(str(groups[group])+" / installed hardware",x+20,top+35,22 if p else 18,g.MUTED)
-	for row in rows_per_page():
-		var index:=row_page*rows_per_page()+row
-		if index>=keys.size(): break
-		var key: String=keys[index]
-		var enabled:=reason(key)==""
-		var y:=top+(98+row*112 if p else (130+row*110 if short_layout() else 78+row*61))
-		var label: String=LABELS.get(key,TuningSetup.EXTRA.get(key,[key])[0])
-		text(label,x+20,y,22 if p else 17)
-		var shown: String=display_value(key) if enabled else reason(key)
-		g.fit_text(shown,x+20,y+30,312 if p else 590,18 if p else 14,g.GREEN if enabled else g.MUTED)
-		var plus:=Rect2(x+432,y-18,96,76) if p else Rect2(x+804,y-23,96,90) if short_layout() else Rect2(x+812,y-23,80,48)
-		var minus:=Rect2(x+324,y-18,96,76) if p else Rect2(x+696,y-23,96,90) if short_layout() else Rect2(x+720,y-23,80,48)
-		button("tt_minus_"+key,"-",minus,false)
-		button("tt_plus_"+key,"+",plus,enabled)
-		for target in ["tt_minus_"+key,"tt_plus_"+key]:
-			g.buttons[-1 if target.begins_with("tt_plus_") else -2].disabled=not g.action_enabled(target)
-	if keys.size()>rows_per_page(): button("tt_rows","Settings %d/%d >"%[row_page+1,ceili(keys.size()/float(rows_per_page()))],Rect2(x+20,top+510,280,60) if p else Rect2(x+280,top+8,230,90 if short_layout() else 44))
+	if gearbox_panel==null:
+		gearbox_panel=GearboxTuningPanel.new(); g.add_child(gearbox_panel); gearbox_panel.setup(self)
+	gearbox_panel.visible=true; gearbox_panel.sync()
 
 func set_gear_count(count: int) -> void:
 	if g.profile.tune_hardware("gear_count",count): g.refresh_car(); g.menu_dirty=true
@@ -195,76 +168,35 @@ func draw_optimizer(p: bool) -> void:
 
 func fmt(v: Variant) -> String: return "--" if v==null or not is_finite(float(v)) else "%.3f s"%float(v)
 
-func draw_results(p: bool) -> void:
-	if last.is_empty(): text("Complete a test-track run to review data.",24 if p else 36,294,23,g.MUTED); return
-	var m: Dictionary=last.metrics
-	text("RED LIGHT / not ranked" if m.red_light else "TEST RUN / BEAM ELAPSED TIMES",24 if p else 36,273,21,g.ORANGE if m.red_light else g.GREEN)
-	var pairs := [["REACTION",fmt(m.reaction_s)],["60 FT",fmt(m.sixty_ft_s)],["1/8 ET",fmt(m.eighth_s)],["1/8 TRAP","--" if m.eighth_mph==null else "%.1f mph"%float(m.eighth_mph)],["1/4 ET",fmt(m.quarter_s)],["1/4 TRAP","--" if m.trap_mph==null else "%.1f mph"%float(m.trap_mph)],["0-60 / FROM BEAM",fmt(m.zero_60_s)],["GREEN TOTAL",fmt(m.total_s)]]
-	for i in (0 if details else pairs.size()):
-		var x:=24+(i%2)*284 if p else 36+(i%4)*285
-		var y:=314+int(i/2)*70 if p else 316+int(i/4)*72
-		text(pairs[i][0],x,y,16 if p else 12,g.MUTED); text(pairs[i][1],x,y+28,25 if p else 24)
-	var record: Dictionary=histories.get(str(last.get("key","")),{})
-	var marker: String="eighth_s" if float(m.distance)<300 else "quarter_s"
-	var previous: Variant=record.get("previous",{}).get("metrics",{}).get(marker)
-	var best: Variant=record.get("best",{}).get("metrics",{}).get(marker)
-	if not details: text("Previous "+fmt(previous)+" / Session best "+fmt(best),24 if p else 36,610 if p else 455,19,g.MUTED)
-	button("tt_details","HIDE TELEMETRY" if details else "TELEMETRY DETAILS",Rect2(24,650 if not details else 828,552,68) if p else Rect2(820,426 if not details else 254,346,90 if short_layout() else 48),false,details)
-	if details: draw_graph(p)
+func draw_results(_p: bool) -> void:
+	if results_panel==null:
+		results_panel=TestResultsPanel.new(); g.add_child(results_panel); results_panel.setup(self)
+	results_panel.visible=true; results_panel.sync()
 
-func draw_graph(p: bool) -> void:
-	var channels:= ["speed","rpm","wheelspin","throttle","boost"]
-	for i in channels.size(): button("tt_channel_"+channels[i],channels[i].capitalize(),Rect2(24+i*112,330,104,62) if p else Rect2(36+i*144,312,134,90 if short_layout() else 42),false,channel==channels[i])
-	graph_rect=Rect2(24,420,552,380) if p else Rect2(36,424,1130,140) if short_layout() else Rect2(36,376,1130,180)
-	var data: Array=last.samples
-	if data.is_empty(): return
-	g.box(graph_rect)
-	for i in range(1,4): g.draw_line(graph_rect.position+Vector2(0,graph_rect.size.y*i/4),Vector2(graph_rect.end.x,graph_rect.position.y+graph_rect.size.y*i/4),Color(GlassPalette.BLUE,.12),1,true)
-	var maximum:=1.0
-	for row in data: maximum=maxf(maximum,float(row[channel]))
-	text("%.1f"%maximum,graph_rect.position.x+8,graph_rect.position.y+20,18 if p else 13,g.MUTED)
-	var points:=PackedVector2Array()
-	var duration: float=maxf(.001,float(data[-1].time))
-	for row in data: points.append(graph_rect.position+Vector2(float(row.time)/duration*graph_rect.size.x,graph_rect.size.y*(1-float(row[channel])/maximum)))
-	if points.size()>1: g.draw_polyline(points,g.ORANGE,2,true)
-	for shift in last.shifts:
-		var sx:=graph_rect.position.x+float(shift.time)/duration*graph_rect.size.x
-		g.draw_line(Vector2(sx,graph_rect.position.y+26),Vector2(sx,graph_rect.end.y),Color(g.GREEN,.17),1,true)
-		text(str(shift.gear),sx+3,graph_rect.position.y+40,16 if p else 12,g.GREEN)
-	text("0 s",graph_rect.position.x+8,graph_rect.end.y-7,16 if p else 12,g.MUTED)
-	text("%.1f s"%duration,graph_rect.end.x-60,graph_rect.end.y-7,16 if p else 12,g.MUTED)
-	cursor=clampi(cursor,0,data.size()-1)
-	var chosen: Dictionary=data[cursor]
-	var x:=graph_rect.position.x+float(chosen.time)/duration*graph_rect.size.x
-	g.draw_line(Vector2(x,graph_rect.position.y),Vector2(x,graph_rect.end.y),GlassPalette.BLUE,1,true)
-	g.buttons.append({"id":"tt_seek","rect":graph_rect})
-	if p:
-		text("%.2fs / %.0f rpm / %.1f mph / gear %d"%[chosen.time,chosen.rpm,chosen.speed,chosen.gear],24,930,20)
-		text("Pedal %.2f / clutch %.2f / slip %.2f"%[chosen.throttle,chosen.clutch,chosen.wheelspin],24,962,20,g.MUTED)
-		text("Boost %.2f bar / distance %.1f m"%[chosen.boost,chosen.distance],24,994,20,g.MUTED)
-		text("Acceleration %.2f m/s2 / green-clock time"%chosen.acceleration,24,1026,19,g.MUTED)
-	elif short_layout():
-		text("%.2fs / %.0f rpm / %.1f mph / gear %d / %.1f m"%[chosen.time,chosen.rpm,chosen.speed,chosen.gear,chosen.distance],36,600,24)
-		text("Pedal %.2f / clutch %.2f / slip %.2f / boost %.2f bar / accel %.1f m/s2"%[chosen.throttle,chosen.clutch,chosen.wheelspin,chosen.boost,chosen.acceleration],36,632,22,g.MUTED)
-	else: g.fit_text("%.2fs / %.0f rpm / %.1f mph / gear %d / pedal %.2f / clutch %.2f / slip %.2f / boost %.2f / %.1fm / %.1fm/s2"%[chosen.time,chosen.rpm,chosen.speed,chosen.gear,chosen.throttle,chosen.clutch,chosen.wheelspin,chosen.boost,chosen.distance,chosen.acceleration],36,590,1130,14,g.MUTED)
+func restore_histories() -> void:
+	histories.clear()
+	for id in g.profile.test_runs.get("vehicles",{}):
+		var record: Dictionary=g.profile.test_runs.vehicles[id]
+		histories[id]={"last":record.runs[0] if not record.runs.is_empty() else {},"previous":record.runs[1] if record.runs.size()>1 else {},"best":record.best}
 
 func receive_run(recorder: RunTelemetry) -> void:
-	last=recorder.snapshot(); last.key=g.profile.vehicle_id+":"+str(recorder.distance)
-	last.build=TuneOptimizer.signature(g.profile)
-	var key: String=last.key
-	var old: Dictionary=histories.get(key,{})
-	var best: Dictionary=old.get("best",{})
-	var metric: String="eighth_s" if recorder.distance<300 else "quarter_s"
-	if not last.metrics.red_light and last.metrics[metric]!=null and (best.is_empty() or float(last.metrics[metric])<float(best.metrics[metric])): best=last.duplicate(true)
-	histories[key]={"last":last.duplicate(true),"previous":old.get("last",{}),"best":best}
-	if histories.size()>12: histories.erase(histories.keys()[0])
+	if recorder.archived: return
+	var run:=RunArchive.add(g.profile.test_runs,g.profile.vehicle_id,recorder.snapshot())
+	if run.is_empty(): return
+	recorder.archived=true; last=run
+	last.key=RunArchive.key(g.profile.vehicle_id,recorder.distance)
+	restore_histories(); g.profile.save()
+	if g.profile.save_blocked or g.profile.save_error!="": g.show_toast("Run recorded · saving unavailable")
 	page="results"; details=false; cursor=0
 
 func seek(x: float) -> void:
+	if results_panel!=null and results_panel.visible:
+		results_panel.seek_fraction((x-graph_rect.position.x)/maxf(1,graph_rect.size.x)); g.menu_dirty=true; return
 	if last.is_empty() or last.samples.is_empty(): return
 	cursor=roundi(clampf((x-graph_rect.position.x)/maxf(1,graph_rect.size.x),0,1)*(last.samples.size()-1)); g.menu_dirty=true
 
 func handle_input(event: InputEvent) -> bool:
+	if results_panel!=null and results_panel.route_input(event): return true
 	if gearbox_panel!=null and gearbox_panel.route_input(event): return true
 	if name_edit!=null and name_edit.has_focus() and event is InputEventKey:
 		if event.pressed and event.keycode==KEY_ESCAPE: name_edit.queue_free(); name_edit=null; g.menu_dirty=true

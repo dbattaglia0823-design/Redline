@@ -360,11 +360,12 @@ func _physics_process(dt: float) -> void:
 	var previous_speed := car.speed
 	var previous_distance := car.distance
 	var previous_time := car.elapsed
+	var previous_rpm := car.rpm
 	var previous_rival := rival.distance
 	car.step(dt, gas_input(), brake_input(), clutch_input(), nitrous_input(), transbrake_input())
 	staging.observe(0,previous_distance,car.distance,car.elapsed-dt,dt)
 	if staging.released[0]: player_reaction = staging.reactions[0]
-	run_telemetry.observe(car,previous_distance,previous_speed,previous_time,dt,staging)
+	run_telemetry.observe(car,previous_distance,previous_speed,previous_time,dt,staging,0,previous_rpm)
 	if not practice_mode: step_rival(dt)
 	for marker in [18.288,100.0,201.168,304.8,402.336]:
 		if car.distance >= marker and not split_times.has(marker):

@@ -10,6 +10,7 @@ var heading: Label
 var summary: Label
 var rows: Dictionary = {}
 var count := -1
+var panel_group := ""
 var build_id := ""
 var cached_state := ""
 var pointer := -1
@@ -41,7 +42,7 @@ func setup(tuning: TuningLab) -> void:
 	visible=false
 
 func _process(_dt: float) -> void:
-	var shown: bool=g.screen=="garage" and g.tab=="tuning" and lab.page=="setup" and TuningSetup.GROUPS.keys()[lab.group]=="Gearbox" and lab.name_edit==null
+	var shown: bool=g.screen=="garage" and g.tab=="tuning" and lab.page=="setup"  and lab.name_edit==null
 	if not shown:
 		if visible: finish_edit()
 		scroll_velocity=0
@@ -92,6 +93,19 @@ func reveal_row(column: Control) -> void:
 	if top<scroll.scroll_vertical: scroll.scroll_vertical=roundi(top)
 	elif bottom>scroll.scroll_vertical+scroll.size.y: scroll.scroll_vertical=roundi(bottom-scroll.size.y)
 
+func rebuild_group(group: String) -> void:
+	rows.clear()
+	for child in list.get_children(): list.remove_child(child); child.queue_free()
+	if group=="Gearbox":
+		add_row(list,"gear_count","Number of Gears",1); add_row(list,"final_drive","Final Drive Ratio",.01)
+	else:
+		for key in TuningSetup.GROUPS[group]:
+			if key=="boost_gear":
+				for index in g.car.gear_ratios.size(): add_row(list,"boost_slot_%d"%index,"Gear %d boost cap · bar"%(index+1),.01)
+			else: add_row(list,key,lab.LABELS.get(key,TuningSetup.EXTRA.get(key,[key])[0]),float(TuningSetup.EXTRA[key][3]) if TuningSetup.EXTRA.has(key) else (50.0 if key=="launch_rpm" else (100.0 if key=="redline" else .01)))
+	ratio_box=VBoxContainer.new(); ratio_box.add_theme_constant_override("separation",10); list.add_child(ratio_box)
+	if group=="Gearbox": rebuild_ratios()
+
 func rebuild_ratios() -> void:
 	for key in rows.keys():
 		if key not in ["gear_count","final_drive"]: rows.erase(key)
@@ -105,6 +119,11 @@ func rebuild_ratios() -> void:
 	if g.car.transmission_kind in ["automatic","drag"]: add_row(ratio_box,"launch_gear","Launch gear",1)
 
 func bounds(key: String) -> Vector2:
+	if TuningSetup.EXTRA.has(key):
+		var row: Array=TuningSetup.EXTRA[key]; return Vector2(float(row[1]),minf(float(row[2]),g.car.gear_ratios.size()) if key=="launch_gear" else float(row[2]))
+	if key=="launch_rpm": return Vector2(2200,minf(6000,g.car.redline_rpm-400))
+	if key=="redline": return Vector2(minf(6500,g.car._mechanical_redline-500),g.car._mechanical_redline)
+	if key=="boost" or key.begins_with("boost_slot_"): return Vector2(0,VehicleParts.boost_control_limit(g.profile.hardware,g.car.base_boost,g.car.turbo_stage))
 	if key=="gear_count":
 		var limits:=TransmissionCatalog.count_limits(str(g.profile.hardware.transmission)); return Vector2(limits)
 	if key=="final_drive": return Vector2(TransmissionCatalog.FINAL_MIN,TransmissionCatalog.FINAL_MAX)
@@ -120,27 +139,36 @@ func reason(key: String) -> String:
 	if key=="gear_count" or key.begins_with("ratio_"): return lab.reason("ratio")
 	if key.begins_with("shift_"):
 		return ""
+	if key.begins_with("boost_slot_"): return lab.reason("boost_gear")
 	return lab.reason(key)
 
 func current(key: String) -> float:
 	if key=="gear_count": return g.car.gear_ratios.size()
+	if key.begins_with("boost_slot_"):
+		var index:=int(key.trim_prefix("boost_slot_")); return g.car.boost_by_gear[index] if index<g.car.boost_by_gear.size() else g.car.boost_target(g.car.redline_rpm,1)
 	if key.begins_with("ratio_"): return g.car.gear_ratios[int(key.trim_prefix("ratio_"))]
 	if key.begins_with("shift_"): return g.car.shift_map[int(key.trim_prefix("shift_"))]
 	return float(lab.value(key))
 
 func sync() -> void:
 	var p: bool=g.is_portrait(); var short: bool=lab.short_layout()
-	var state:=JSON.stringify([p,short,g.profile.vehicle_id,g.profile.hardware,g.profile.stages,g.profile.pending_wager,g.profile.metric_speed,g.car.shift_map])
+	var group: String=TuningSetup.GROUPS.keys()[lab.group]
+	var state:=JSON.stringify([group,p,short,g.profile.vehicle_id,g.profile.hardware,g.profile.stages,g.profile.pending_wager,g.profile.metric_speed,g.car.shift_map])
 	if state==cached_state: return
 	cached_state=state
 	position=Vector2(24,430) if p else Vector2(250,252)
 	size=Vector2(552,590) if p else Vector2(916,336 if short else 414)
 	var identity: String=g.profile.vehicle_id+":"+str(g.profile.hardware.transmission)
 	if identity!=build_id: finish_edit(); scroll.scroll_vertical=0; build_id=identity
-	if count!=g.car.gear_ratios.size() or (rows.has("firmness") != (g.car.transmission_kind in ["automatic","drag","dct"])):
-		count=g.car.gear_ratios.size(); rebuild_ratios()
-	heading.text=TransmissionCatalog.spec(str(g.profile.hardware.transmission)).name+" · Gearing"
-	summary.text="Live speeds at %.0f RPM · scroll for all gears"%g.car.redline_rpm
+	if group!=panel_group:
+		finish_edit(); panel_group=group; rebuild_group(group); scroll.scroll_vertical=0
+		count=g.car.gear_ratios.size()
+	elif count!=g.car.gear_ratios.size():
+		count=g.car.gear_ratios.size()
+		if group=="Gearbox": rebuild_ratios()
+		else: rebuild_group(group)
+	heading.text=TransmissionCatalog.spec(str(g.profile.hardware.transmission)).name+" · Gearing" if group=="Gearbox" else group+" · Installed setup"
+	summary.text="Live speeds at %.0f RPM · scroll for all gears"%g.car.redline_rpm if group=="Gearbox" else "Live settings · saved on release"
 	for key in rows:
 		var row: Dictionary=rows[key]; var limits:=bounds(key); var value:=current(key)
 		var lock:=reason(key)
@@ -149,7 +177,7 @@ func sync() -> void:
 		row.slider.set_value_no_signal(value); row.slider.set_block_signals(false); row.slider.editable=lock==""
 		row.minus.disabled=lock!="" or value<=limits.x+.0001
 		row.plus.disabled=lock!="" or value>=limits.y-.0001
-		row.value.text=str(roundi(value)) if key=="gear_count" or key.begins_with("shift_") else "%.3f"%value
+		row.value.text=str(roundi(value)) if key in ["gear_count","launch_rpm","redline"] or key.begins_with("shift_") else ("ON" if value>.5 else "OFF") if key=="launch_enabled" else "%.3f"%value
 		row.minus.custom_minimum_size=Vector2(90,90) if short else (Vector2(68,68) if p else Vector2(52,44))
 		row.plus.custom_minimum_size=row.minus.custom_minimum_size
 		row.slider.custom_minimum_size.y=90 if short else (68 if p else 44)
@@ -171,6 +199,10 @@ func apply(key: String,requested: float,persist: bool) -> void:
 	var setting: Variant=value
 	if key.begins_with("ratio_"):
 		tuning_key="ratios"; setting=g.car.gear_ratios.duplicate(); setting[int(key.trim_prefix("ratio_"))]=value
+	elif key.begins_with("boost_slot_"):
+		tuning_key="boost_by_gear"; setting=[]
+		for i in g.car.gear_ratios.size(): setting.append(g.car.boost_by_gear[i] if i<g.car.boost_by_gear.size() else g.car.boost_target(g.car.redline_rpm,1))
+		setting[int(key.trim_prefix("boost_slot_"))]=value
 	elif key.begins_with("shift_"):
 		tuning_key="shift_rpms"; setting=g.car.shift_map.duplicate(); setting[int(key.trim_prefix("shift_"))]=value
 	if g.profile.tune_hardware(tuning_key,setting,persist):
