@@ -55,10 +55,9 @@ func run() -> void:
 	check(not p.begin_wager(0,Championships.event("class_E_9")),"Skipped directly to locked final")
 	for letter in Championships.CLASSES:
 		if letter!="E": check(Championships.unlock_reason(p,letter)=="","Boss did not unlock the next class")
-		var legal:=Championships.event(Championships.ids(letter)[0])
-		p.vehicle_id=legal.model; p.hardware=legal.hardware; p.stages=legal.stages
+		var legal: String=GameCatalog.CAR_IDS.filter(func(id): return GameCatalog.engine_class(id)==letter)[0]
+		p.vehicle_id=legal; p.hardware=GameCatalog.factory_build(legal); p.stages=GameCatalog.blank_stages()
 		p.garage[p.vehicle_id]={"stages":p.stages,"hardware":p.hardware}
-		measure(p)
 		for round in range(1 if letter=="E" else 0,Championships.ROUNDS):
 			var c:=Championships.event("class_%s_%d"%[letter,round])
 			if c.get("rule","")=="motor_only":
@@ -88,12 +87,26 @@ func run() -> void:
 		check(class_pay>=Championships.PAY[Championships.CLASSES.find(letter)]*Championships.ROUNDS,"Invalid championship economy")
 	p=DriverProfile.new(); p.stages=[3,2,3,2,3,2,0,1]
 	var measured:=measure(p)
-	check(not measured.is_empty() and measured.get("class","E")!="E","Upgraded starter did not change class")
+	check(measured.get("class","")=="E","Upgrades changed the starter engine class")
 	var original:=measured.duplicate(true)
 	var car:=Drivetrain.new(); car.configure_vehicle(GameCatalog.spec(p.vehicle_id)); car.reset(); car.running=true
 	for i in 240: car.step(1.0/240,0,1)
 	check(PerformanceClasses.request(p.vehicle_id,p.stages,p.hardware)==original,"Bad player driving changed competitive class")
-	check(Championships.eligibility(p,first_event)!="","Over-class build admitted to E")
+	check(Championships.eligibility(p,first_event)=="","Upgraded E engine blocked from E")
+	p.hardware.engine_id="supra"
+	p.legacy_class_access=["B"]
+	check(Championships.eligibility(p,first_event)!="","Class B engine admitted to E")
+	check(Championships.eligibility(p,Championships.event("class_B_0"))=="","Class B engine blocked from B")
+	check(measure(p).get("class","")=="B","Engine swap reused the old benchmark class")
+	car.configure(p.stages)
+	car.configure_build(p.hardware,p.vehicle_id,false)
+	check(car.base_torque==float(GameCatalog.spec("supra").torque) and car.base_mass==float(GameCatalog.spec("miata").mass),"Installed engine did not supply its torque independently of chassis mass")
+	p.save()
+	restored.load_profile()
+	check(restored.hardware.get("engine_id","")=="supra","Save lost installed engine")
+	p.hardware.erase("engine_id")
+	car.configure_build(p.hardware,p.vehicle_id,false)
+	check(car.base_torque==float(GameCatalog.spec("miata").torque),"Factory engine stats did not restore")
 	check(Championships.eligibility(p,Championships.event("open_0"))=="","Upgraded car blocked from open recovery race")
 	p.vehicle_id="civic_si"; p.hardware=GameCatalog.factory_build("civic_si")
 	check(Championships.eligibility(p,Championships.event("open_4"))!="","Vehicle-specific challenge ignored car rule")

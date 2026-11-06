@@ -74,6 +74,7 @@ func run() -> void:
 	game.refresh_car()
 	DirAccess.make_dir_recursive_absolute("res://.qa/customization_studio")
 	await frame()
+	await click("hub_owned")
 	await click("tab_style")
 	check(game.tab=="style" and stage()!=null,"Design studio did not open")
 	bounds("desktop")

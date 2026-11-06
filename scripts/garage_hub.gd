@@ -42,7 +42,7 @@ func draw_garage() -> void:
 	var spec := GameCatalog.spec(g.profile.vehicle_id)
 	t("YOUR GARAGE",36,103,11,g.MUTED)
 	t(str(spec.name),36,143,34)
-	t(str(spec.engine)+"  /  "+str(spec.drive),38,170,15,g.MUTED)
+	t(g.car.engine_label+"  /  "+str(spec.drive),38,170,15,g.MUTED)
 	b("hub_owned","Change car",Rect2(986,116,180,48))
 	g.draw_workshop(Rect2(36,192,1130,354))
 	t(configuration_label()+" / "+PerformanceClasses.label(g.profile),60,221,13,g.MUTED)

@@ -31,7 +31,8 @@ func run() -> void:
 		var levels: Array=[3,3,3,3,0,3,0,0]
 		var improved:=VehicleBench.run(s,levels,build)
 		check(improved.quarter_s!=null and float(improved.quarter_s)<float(factory.quarter_s),id+" upgrades did not improve actual acceleration")
-		rows[id]={"factory":factory["class"],"upgraded":PerformanceClasses.classify(float(improved.quarter_s)),"quarter_s":improved.quarter_s}
+		check(GameCatalog.ENGINE_CLASSES.has(id) and PerformanceClasses.factory_class(id)==factory["class"],id+" factory engine tier mismatch")
+		rows[id]={"engine_class":GameCatalog.engine_class(id,build),"quarter_s":improved.quarter_s}
 		car.reset(); car.running=true
 		for i in 480: car.step(1.0/240,1,0,0)
 		if id=="sf90": check(car.hybrid_energy_j<7.9*3600000 and car.hybrid_power_w>0,"Hybrid assist not delivering energy")

@@ -82,7 +82,7 @@ func setup(owner_game: Node2D) -> void:
 	status=Label.new(); status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART; content.add_child(status)
 
 static func copy_car(source: Drivetrain) -> Drivetrain:
-	var c:=Drivetrain.new(); c.configure_vehicle(source._base_spec.duplicate(true))
+	var c:=Drivetrain.new(); c.configure_vehicle(source._chassis_spec.duplicate(true))
 	c.configure([source.engine_stage,source.turbo_stage,source.tire_stage,source.weight_stage,source.gearbox_stage,source.exhaust_stage,source.brake_stage,source.nitrous_stage])
 	c.configure_build(source.hardware.duplicate(true),str(source._base_spec.get("id","kaze")),false); c.reset(); c.running=true
 	return c

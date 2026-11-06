@@ -118,7 +118,7 @@ func draw_details(s: Dictionary,c: Drivetrain) -> void:
 	t(str(s.name)+" / FACTORY DETAILS",55,218,28)
 	var ratios := ""
 	for ratio in c.gear_ratios: ratios += "%.3f  " % ratio
-	var lines := [str(s.engine)+" / "+str(s.drive),"Idle %.0f / limiter %.0f RPM" % [c.idle_rpm,c.redline_rpm],"Mass %.0f kg / inertia %.3f kg m2" % [c.mass(),c.engine_inertia],"Tire radius %.3f m / final drive %.2f" % [c.tire_radius,c.final_drive],"%s / %.0f ms / %.0f Nm rating" % [c.transmission_kind,c.shift_duration*1000,c.input_capacity()],"Gear ratios: "+ratios,"Efficiency %.1f%% / peak boost %.2f bar" % [c.trans_efficiency*100,c.boost_target(c.redline_rpm,1.0)],"Original illustrations / configurable display names","Class benchmark: competent driver, zero reaction / no nitrous.","Compared with your active installed build; factory figures exclude upgrades."]
+	var lines := [str(s.engine)+" / "+str(s.drive),"Idle %.0f / limiter %.0f RPM" % [c.idle_rpm,c.redline_rpm],"Mass %.0f kg / inertia %.3f kg m2" % [c.mass(),c.engine_inertia],"Tire radius %.3f m / final drive %.2f" % [c.tire_radius,c.final_drive],"%s / %.0f ms / %.0f Nm rating" % [c.transmission_kind,c.shift_duration*1000,c.input_capacity()],"Gear ratios: "+ratios,"Efficiency %.1f%% / peak boost %.2f bar" % [c.trans_efficiency*100,c.boost_target(c.redline_rpm,1.0)],"Original illustrations / configurable display names","Track estimate: competent driver, zero reaction / no nitrous.","Compared with your active installed build; factory figures exclude upgrades."]
 	if float(s.get("hybrid_kw",0))>0: lines[7]="Electric assist: %.0f kW / %.1f kWh; dyno shows combustion engine." % [s.hybrid_kw,s.hybrid_kwh]
 	for i in lines.size(): t(lines[i],56,263+i*38,17,g.MUTED if i >= 7 else g.INK)
 func action(id: String) -> bool:

@@ -96,15 +96,20 @@ func run() -> void:
 	game.menu.hub.studio.system=0; game.menu.hub.open_upgrade(4); await frame()
 	await click("hw_pick_ecu"); await click("hw_buy"); await click("upgrade_section_tune"); await click("open_tuning")
 	check(game.tab=="tuning","Upgrades did not connect to tuning")
-	await click("tt_plus_launch_rpm"); var launch: float=game.car.launch_rpm
+	await click("tt_group_0")
+	var initial_launch: float=game.car.launch_rpm
+	var launch_control: Button=game.tuning.gearbox_panel.rows.launch_rpm.plus
+	launch_control.pressed.emit()
+	await frame()
+	var launch: float=game.car.launch_rpm
+	check(launch>initial_launch,"Launch RPM adjustment did not apply")
 	await click("tt_page_presets"); await click("tt_save")
 	check(game.profile.tuning_presets().has("street"),"Tuning preset not saved")
 	await click("tt_drive"); await race_player()
 	check(game.screen=="practice_results" and not game.tuning.last.is_empty(),"Upgraded practice failed")
 	await click("tt_details"); bounds("practice telemetry"); await click("tt_return"); await click("tt_back")
 	game.go_garage(); game.tab="races"; game.career_board.open(); RosterTest.ready(game)
-	var measured:=PerformanceClasses.request(game.profile.vehicle_id,game.profile.stages,game.profile.hardware)
-	game.career_board.select_series(str(measured["class"])); await frame(); await click("race"); await race_player()
+	game.career_board.select_series(GameCatalog.engine_class(game.profile.vehicle_id,game.profile.hardware)); await frame(); await click("race"); await race_player()
 	check(game.screen=="results" and game.result_win,"Tuned build could not compete in its class")
 	game.go_garage(); check(game.profile.buy_vehicle("brz"),"Earned vehicle purchase failed"); game.refresh_car()
 	RosterTest.ready(game); game.tab="races"; game.career_board.open()

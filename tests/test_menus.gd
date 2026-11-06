@@ -10,7 +10,6 @@ func check(condition: bool, message: String) -> void:
 
 func refresh() -> void:
 	RosterTest.ready(game)
-	if game != null and game.race_start_pending: game._process(0)
 	game.queue_redraw()
 	for i in 3: await process_frame
 	await RenderingServer.frame_post_draw

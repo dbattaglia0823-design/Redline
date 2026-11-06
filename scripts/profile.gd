@@ -422,7 +422,7 @@ func upgrade_quote(index: int, tier: int, slot: String="", id: String="") -> Dic
 			var installed: String=quote.build.parts[fitted_slot]
 			var reason:=VehicleParts.compatible(installed,quote.build,int(quote.stages[4]))
 			if reason=="" and installed=="boost_control":
-				reason=VehicleParts.boost_control_reason(quote.build,float(GameCatalog.spec(vehicle_id).get("base_boost",.45)),int(quote.stages[1]))
+				reason=VehicleParts.boost_control_reason(quote.build,float(GameCatalog.installed_spec(vehicle_id,quote.build).get("base_boost",.45)),int(quote.stages[1]))
 			if reason=="": continue
 			if installed==selected:
 				quote.reason=reason
@@ -456,7 +456,7 @@ func quote_part(quote: Dictionary,id: String,support: bool,chain: Array) -> void
 	var path:=chain+[id]
 	var required:=VehicleParts.missing_requirement(id,build)
 	if required!="": quote_part(quote,required,true,path)
-	if id=="boost_control" and VehicleParts.boost_control_reason(build,float(GameCatalog.spec(vehicle_id).get("base_boost",.45)),int(quote.stages[1]))!="":
+	if id=="boost_control" and VehicleParts.boost_control_reason(build,float(GameCatalog.installed_spec(vehicle_id,quote.build).get("base_boost",.45)),int(quote.stages[1]))!="":
 		quote_part(quote,"turbo_hybrid",true,path)
 	if VehicleParts.TRANSMISSION_SLOTS.has(part.slot): quote_stage(quote,4,int(part.stage),true)
 	var previous:=str(build.parts.get(part.slot,""))
@@ -558,7 +558,7 @@ func install_transmission(id: String) -> String:
 	return "Installed "+str(spec.name)
 
 func has_forced_induction() -> bool:
-	var spec := GameCatalog.spec(vehicle_id)
+	var spec := GameCatalog.installed_spec(vehicle_id,hardware)
 	return hardware.parts.has("induction") or int(stages[1])>0 or float(spec.get("base_boost",0))>0 or float(spec.get("factory_super",0))>0
 
 func install_hardware(id: String) -> String:
@@ -569,7 +569,7 @@ func install_hardware(id: String) -> String:
 	var part: Dictionary = VehicleParts.PARTS[id]
 	candidate.parts[part.slot] = id
 	if id=="boost_control":
-		var reason:=VehicleParts.boost_control_reason(candidate,float(GameCatalog.spec(vehicle_id).get("base_boost",.45)),int(stages[1]))
+		var reason:=VehicleParts.boost_control_reason(candidate,float(GameCatalog.installed_spec(vehicle_id,hardware).get("base_boost",.45)),int(stages[1]))
 		if reason!="": return reason
 	for installed in candidate.parts.values():
 		var reason := VehicleParts.compatible(str(installed),candidate,int(stages[4]))
@@ -613,21 +613,21 @@ func tune_hardware(key: String, value: Variant, persist: bool = true) -> bool:
 		hardware.tune[key]=clean
 		if persist: save()
 		return true
+	var engine_spec := GameCatalog.installed_spec(vehicle_id,hardware)
 	match key:
 		"launch_rpm":
 			if not hardware.parts.has("ecu") and TransmissionCatalog.spec(str(hardware.transmission)).kind!="drag": return false
-			hardware.tune[key] = clampf(number,2200.0,minf(6000,float(GameCatalog.spec(vehicle_id).get("redline",7600))-400))
+			hardware.tune[key] = clampf(number,2200.0,minf(6000,float(engine_spec.get("redline",7600))-400))
 		"redline":
 			if not VehicleParts.can_tune_rpm(hardware): return false
-			var factory_limit := float(GameCatalog.spec(vehicle_id).get("redline",7600.0))
+			var factory_limit := float(engine_spec.get("redline",7600.0))
 			var headroom:=0.0
 			for id in fitted: headroom+=float(VehicleParts.PARTS[id].get("redline",0))
 			var mechanical_limit:=factory_limit+headroom
 			hardware.tune[key] = clampf(number,minf(6500.0,mechanical_limit-500.0),mechanical_limit)
 		"boost":
-			var spec := GameCatalog.spec(vehicle_id)
-			if float(spec.get("factory_super",0))>0 and not hardware.parts.has("induction"): return false
-			var base:=float(spec.get("base_boost",.45))
+			if float(engine_spec.get("factory_super",0))>0 and not hardware.parts.has("induction"): return false
+			var base:=float(engine_spec.get("base_boost",.45))
 			if VehicleParts.boost_control_reason(hardware,base,int(stages[1]))!="": return false
 			hardware.tune[key] = clampf(number,0.0,VehicleParts.boost_control_limit(hardware,base,int(stages[1])))
 		"final_drive":
@@ -643,11 +643,11 @@ func tune_hardware(key: String, value: Variant, persist: bool = true) -> bool:
 			var clean: Array = []
 			for rpm in value:
 				if not (rpm is int or rpm is float) or not is_finite(float(rpm)): return false
-				var factory_limit:=float(GameCatalog.spec(vehicle_id).get("redline",7600))
+				var factory_limit:=float(engine_spec.get("redline",7600))
 				var ceiling:=factory_limit
 				for id in fitted: ceiling+=float(VehicleParts.PARTS[id].get("redline",0))
 				if VehicleParts.can_tune_rpm(hardware): ceiling=clampf(float(hardware.tune.get("redline",factory_limit)),minf(6500,ceiling-500),ceiling)
-				clean.append(clampf(float(rpm),maxf(3500,float(GameCatalog.spec(vehicle_id).get("idle",950))+1500),ceiling-50))
+				clean.append(clampf(float(rpm),maxf(3500,float(engine_spec.get("idle",950))+1500),ceiling-50))
 			hardware.tune[key] = clean
 		"gear_count":
 			var limits := TransmissionCatalog.count_limits(str(hardware.transmission))
@@ -662,7 +662,7 @@ func tune_hardware(key: String, value: Variant, persist: bool = true) -> bool:
 				if not hardware.tune.has(per_gear): continue
 				var count := int(number)-(1 if per_gear=="shift_rpms" else 0)
 				var resized: Array = hardware.tune[per_gear].slice(0,count)
-				while resized.size()<count: resized.append(resized[-1] if not resized.is_empty() else (float(GameCatalog.spec(vehicle_id).get("redline",7600))-500 if per_gear=="shift_rpms" else 1.0))
+				while resized.size()<count: resized.append(resized[-1] if not resized.is_empty() else (float(engine_spec.get("redline",7600))-500 if per_gear=="shift_rpms" else 1.0))
 				hardware.tune[per_gear]=resized
 		"ratios":
 			if not TransmissionCatalog.valid_ratios(value,TransmissionCatalog.default_ratios(hardware.transmission,hardware.tune)): return false

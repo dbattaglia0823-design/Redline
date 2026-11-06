@@ -36,7 +36,7 @@ func draw() -> void:
 	var titles := {"owned":"Your collection", "garage":"Garage", "performance":"Upgrades", "style":"Customize", "dealer":"Dealership", "races":"Race board", "driver":"Driver"}
 	var spec := GameCatalog.spec(g.profile.vehicle_id)
 	if g.tab != "garage": t(str(titles.get(g.tab,"Garage")),36,128,28)
-	var subtitles := {"garage":"%s / %s / %s" % [spec.name,spec.engine,spec.drive], "performance":"%s / %s" % [spec.name,spec.engine], "style":"", "dealer":"Factory builds", "races":"", "driver":""}
+	var subtitles := {"garage":"%s / %s / %s" % [spec.name,g.car.engine_label,spec.drive], "performance":"%s / %s" % [spec.name,g.car.engine_label], "style":"", "dealer":"Factory builds", "races":"", "driver":""}
 	if g.tab != "garage": t(str(subtitles.get(g.tab,"")),38,156,15,MUTED)
 	match g.tab:
 		"garage": draw_garage()

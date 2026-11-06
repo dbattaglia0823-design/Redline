@@ -30,7 +30,7 @@ func state_key() -> String:
 	var contract: Dictionary=game.current_contract()
 	var estimate := {} if board.active and board.picker else estimates(contract)
 	var reason := Championships.eligibility(game.profile,contract) if board.active and not board.picker else ""
-	return JSON.stringify([size,game.tab,game.profile.vehicle_id,game.profile.credits,game.profile.xp,game.profile.career_wins,game.profile.championship_wins,game.profile.legacy_class_access,board.active,board.picker,board.series,game.event_index,game.selected_opponent,contract,estimate,reason,game.race_start_pending,game.profile.muted])
+	return JSON.stringify([size,game.tab,game.profile.vehicle_id,GameCatalog.engine_class(game.profile.vehicle_id,game.profile.hardware),game.profile.credits,game.profile.xp,game.profile.career_wins,game.profile.championship_wins,game.profile.legacy_class_access,board.active,board.picker,board.series,game.event_index,game.selected_opponent,contract,estimate,reason,game.profile.muted])
 
 func publish_targets() -> void:
 	if is_instance_valid(wager_slider) and wager_slider.is_visible_in_tree():
@@ -77,8 +77,9 @@ func championship_picker(body: VBoxContainer) -> void:
 	var heading:=AutomotiveUI.row(body)
 	var summary:=AutomotiveUI.column(heading,1)
 	var crowned:=Championships.trophies(game.profile)
+	var engine_class:=GameCatalog.engine_class(game.profile.vehicle_id,game.profile.hardware)
 	add_label(summary,"REDLINE Champion" if crowned==6 else "Championship ladder",32)
-	AutomotiveUI.section_mark(summary,"%02d / %d RACES   ·   %d / 6 TROPHIES"%[Championships.completed(game.profile),Championships.TOTAL_RACES,crowned],"races",Championships.TROPHY)
+	AutomotiveUI.section_mark(summary,"ENGINE %s   ·   %02d/%d RACES   ·   %d/6 TROPHIES"%[engine_class,Championships.completed(game.profile),Championships.TOTAL_RACES,crowned],"races",Championships.TROPHY)
 	small_action(heading,"cb_open","Rival Challenges")
 	var cards:=grid(body,2 if portrait else 3,12)
 	for index in Championships.CLASSES.size():
@@ -198,7 +199,7 @@ func race_board(body: VBoxContainer) -> void:
 	if reason!="": add_label(body,reason,18,AutomotiveUI.ORANGE)
 	var footer: BoxContainer=AutomotiveUI.column(body,8) if portrait else AutomotiveUI.row(body,18)
 	wager_controls(footer,contract)
-	var race:=button(footer,"race","Preparing race…" if game.race_start_pending else (("Challenge boss" if bool(contract.get("boss",false)) else "Race") if reason=="" else "Locked"),true)
+	var race:=button(footer,"race",("Challenge boss" if bool(contract.get("boss",false)) else "Race") if reason=="" else "Locked",true)
 	if not portrait:
 		race.custom_minimum_size.x=220
 		race.size_flags_horizontal=Control.SIZE_SHRINK_END

@@ -80,6 +80,8 @@ static func default_build() -> Dictionary:
 static func normalize(value: Variant, vehicle: String, stage: int = 5) -> Dictionary:
 	var b := default_build()
 	if not value is Dictionary: return b
+	var engine := str(value.get("engine_id",""))
+	if GameCatalog.ENGINE_CLASSES.has(engine): b.engine_id=engine
 	var owned = value.get("owned_transmissions",[])
 	if not owned is Array: owned = []
 	if not owned.is_empty() and not owned.has("legacy6"): b.owned_transmissions.clear()

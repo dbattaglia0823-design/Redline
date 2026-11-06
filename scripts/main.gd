@@ -77,7 +77,6 @@ var shift_notice_left := 0.0
 var seen_shift_request := 0
 var finish_hold_left := 0.0
 var shutting_down := false
-var race_start_pending := false
 var menu_dirty := true
 var navigation_key := ""
 var navigation_age := 1.0
@@ -160,7 +159,7 @@ func race_touch_layout() -> bool:
 func sync_menu_size() -> void:
 	var target := race_view_size() if screen == "race" else (Vector2i(600,1300) if is_portrait() else Vector2i(1200,760))
 	var catalog: bool=tab=="performance" and not menu.hub.dyno_open and (menu.hub.categories or workshop.mode in ["basic","hardware","transmission"])
-	if (screen=="results" or (screen=="garage" and (catalog or tab in ["garage","dealer","owned","style","races"]))) and (not glass.legacy or screen=="results" or tab in ["races","style"]) and not is_portrait() and get_window().size.y<500:
+	if (screen=="results" or (screen=="garage" and (catalog or tab in ["garage","dealer","owned","style","races"]))) and (not glass.legacy or screen=="results" or tab in ["races","style","garage"]) and not is_portrait() and get_window().size.y<500:
 		target=race_view_size()
 	if get_window().content_scale_size != target:
 		get_window().content_scale_size = target
@@ -298,8 +297,6 @@ func _process(dt: float) -> void:
 		normalize_wager()
 		if RaceAI.advance_estimates(): menu_dirty = true
 		if PerformanceClasses.advance(): menu_dirty = true
-		if race_start_pending and not PerformanceClasses.request(profile.vehicle_id,profile.stages,profile.hardware).is_empty():
-			race_start_pending=false; start_race()
 	if not paused_race:
 		shift_flash = maxf(0.0, shift_flash - dt)
 		shift_notice_left = maxf(0.0,shift_notice_left-dt)
@@ -413,8 +410,6 @@ func toast_reveal() -> float:
 
 func start_race() -> void:
 	if screen=="practice_results": screen="garage"
-	if career_board.series!="OPEN" and PerformanceClasses.request(profile.vehicle_id,profile.stages,profile.hardware).is_empty():
-		race_start_pending=true; show_toast("Preparing race / measuring build"); return
 	menu_dirty = true
 	if screen=="race": return
 	var contract := current_contract()
@@ -500,7 +495,6 @@ func complete_race() -> void:
 	controls.clear()
 
 func go_garage() -> void:
-	race_start_pending=false
 	menu_dirty = true
 	tab = "garage"
 	if screen == "race" and finish_hold_left > 0.0: complete_race()
@@ -673,7 +667,6 @@ func action(id: String) -> void:
 	menu_dirty = true
 	glass.focused = ""
 	if id.begins_with("tab_"): dragging_wager = ""
-	if id.begins_with("tab_"): race_start_pending=false
 	if id.begins_with("tab_") and tab == "performance" and not menu.hub.categories:
 		menu.hub.studio.remember(menu.hub.selected)
 	if id == "bet_clear": wager = 0; dragging_wager = ""; return
@@ -867,13 +860,14 @@ func action_enabled(id: String) -> bool:
 
 func draw_navigation() -> void:
 	var hidden := (tuning!=null and tuning.name_edit!=null) or screen != "garage" or (tab == "performance" and not menu.hub.categories) or menu.hub.dyno_open
-	dock.visible = not hidden and not glass.legacy
+	dock.visible=not hidden
 	if hidden: return
-	if glass.legacy:
-		for i in GlassDock.TABS.size():
-			var entry: Array = GlassDock.TABS[i]
-			button("tab_"+entry[0],entry[1].to_upper(),Rect2(24+(i%3)*184,1140+int(i/3)*76,172,68) if is_portrait() else Rect2(36+i*190,687,177,47),false,tab == entry[0])
-	else: dock.present(Rect2(24,1160,552,100) if is_portrait() else (Rect2(260,659,680,90) if race_touch_layout() and tab=="races" and career_board.active else Rect2(260,679,680,70)),tab)
+	var canvas:=get_window().content_scale_size
+	var width:=minf(900.0,canvas.x-48) if canvas.x>1200 else minf(744.0,canvas.x-48)
+	var short:=canvas.x>1200 and get_window().size.y<500
+	var height:=100.0 if is_portrait() else (104.0 if short else 78.0)
+	var y:=1160.0 if is_portrait() else (642.0 if short else 669.0)
+	dock.present(Rect2((canvas.x-width)*.5,y,width,height),tab)
 
 func _draw() -> void:
 	ui_offset = Vector2.ZERO

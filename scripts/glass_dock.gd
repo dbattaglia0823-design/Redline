@@ -1,80 +1,144 @@
 class_name GlassDock
 extends Control
 
-# Native responsive containers handle dock spacing. Input deliberately stays on
-# REDLINE's existing action map, so a touch can never trigger two purchases/actions.
-const TABS := [["garage","Garage"],["performance","Upgrades"],["style","Customize"],["dealer","Dealer"],["races","Race"],["driver","Driver"]]
+const TABS := [["garage","Garage"],["performance","Upgrade"],["races","Race"],["dealer","Dealership"],["driver","Profile"]]
+const RACE := 2
 var game: Node2D
-var panel := PanelContainer.new()
-var row := HBoxContainer.new()
-var items: Array[Control] = []
+var items: Array[DockItem] = []
 var active := "garage"
-var selection := -1.0
-var selection_target := 0.0
+var selection := Rect2()
+var selection_target := Rect2()
+var frame_skin := AutomotiveUI.surface(Color("101820"),Color("526576"),22)
+var recess := AutomotiveUI.surface(Color("1b2530"),Color("2e3c49"),15)
+var race_skin := AutomotiveUI.surface(Color("3c2427"),Color("c07961"),17)
+var selected_skin := AutomotiveUI.surface(Color("253a48"),Color("76a7b6"),15)
+var race_selected := AutomotiveUI.surface(Color("773b30"),Color("ffad7f"),17)
+var shadow := AutomotiveUI.surface(Color(.014,.02,.03,.72),Color.TRANSPARENT,24)
 
 class DockItem extends Button:
 	var dock: GlassDock
-	var index := 0
+	var index: int
 	var symbol: AutomotiveUI.TechnicalIcon
 	var caption: Label
+	var press_pulse := 0.0
+
 	func prepare() -> void:
-		theme=AutomotiveUI.theme_resource(); focus_mode=Control.FOCUS_NONE
-		mouse_filter=Control.MOUSE_FILTER_PASS; mouse_default_cursor_shape=Control.CURSOR_POINTING_HAND
-		for state in ["normal","pressed","focus"]: add_theme_stylebox_override(state,StyleBoxEmpty.new())
-		add_theme_stylebox_override("hover",AutomotiveUI.surface(Color("ffffff08"),Color("ffffff10"),18))
-		var content:=AutomotiveUI.column(self,3); content.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT); content.alignment=BoxContainer.ALIGNMENT_CENTER
-		var center:=CenterContainer.new(); center.mouse_filter=Control.MOUSE_FILTER_IGNORE; content.add_child(center)
-		symbol=AutomotiveUI.TechnicalIcon.new(); symbol.icon_key=GlassDock.TABS[index][0]; symbol.mouse_filter=Control.MOUSE_FILTER_IGNORE; center.add_child(symbol)
-		caption=AutomotiveUI.label(GlassDock.TABS[index][1],13); caption.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER; content.add_child(caption)
-		pressed.connect(func(): dock.game.action("tab_"+GlassDock.TABS[index][0]))
+		focus_mode=Control.FOCUS_NONE
+		mouse_default_cursor_shape=Control.CURSOR_POINTING_HAND
+		for state in ["normal","pressed","focus","hover","hover_pressed"]:
+			add_theme_stylebox_override(state,StyleBoxEmpty.new())
+		var content:=AutomotiveUI.column(self,3)
+		content.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		content.alignment=BoxContainer.ALIGNMENT_CENTER
+		var center:=CenterContainer.new()
+		center.mouse_filter=Control.MOUSE_FILTER_IGNORE
+		content.add_child(center)
+		symbol=AutomotiveUI.TechnicalIcon.new()
+		symbol.icon_key=GlassDock.TABS[index][0]
+		center.add_child(symbol)
+		caption=AutomotiveUI.label(GlassDock.TABS[index][1],15)
+		caption.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+		content.add_child(caption)
+		pressed.connect(func():
+			press_pulse=1.0
+			queue_redraw()
+			dock.game.action("tab_"+GlassDock.TABS[index][0]))
+		mouse_entered.connect(queue_redraw)
+		mouse_exited.connect(queue_redraw)
+
 	func refresh() -> void:
-		var g: Node2D=dock.game
-		var key: String=GlassDock.TABS[index][0]
-		var selected: bool=dock.active==key or (dock.active=="owned" and key=="garage")
-		var color: Color=AutomotiveUI.ORANGE if selected else AutomotiveUI.MUTED
-		var wide_menu: bool=g.screen=="garage" and g.get_window().content_scale_size.x>1200
-		symbol.icon_size=28 if wide_menu else (23 if g.is_portrait() else 18); symbol.custom_minimum_size=Vector2.ONE*(symbol.icon_size+4); symbol.ink=color; symbol.queue_redraw()
-		caption.add_theme_font_size_override("font_size",26 if wide_menu else (18 if g.is_portrait() else 13)); caption.add_theme_color_override("font_color",color)
+		var large:=size.y>=76
+		var race:=index==GlassDock.RACE
+		var selected: bool=dock.active==GlassDock.TABS[index][0]
+		var ink:=Color("ffd4ba") if race else (AutomotiveUI.INK if selected else AutomotiveUI.MUTED)
+		symbol.icon_size=(26 if large else 22)+(5 if race else 0)
+		symbol.custom_minimum_size=Vector2.ONE*(symbol.icon_size+2)
+		symbol.ink=AutomotiveUI.ORANGE if race else (AutomotiveUI.BLUE if selected else ink)
+		symbol.queue_redraw()
+		var font_size: int=(20 if large else 16)+(2 if race else 0)
+		var font:=caption.get_theme_font("font")
+		while font_size>10 and font.get_string_size(caption.text,HORIZONTAL_ALIGNMENT_LEFT,-1,font_size).x>size.x-8:
+			font_size-=1
+		caption.add_theme_font_size_override("font_size",font_size)
+		caption.add_theme_color_override("font_color",ink)
 		queue_redraw()
+
 	func _draw() -> void:
-		var g: Node2D = dock.game
-		var key: String = GlassDock.TABS[index][0]
-		if g.glass.focused == "tab_"+key: g.glass.surface(self,Rect2(Vector2.ZERO,size),Color.TRANSPARENT,Color(g.ORANGE,.7),18,false)
+		var key: String=GlassDock.TABS[index][0]
+		var rect:=Rect2(Vector2.ZERO,size)
+		if is_hovered():
+			dock.hover_skin.draw(get_canvas_item(),rect)
+		if button_pressed or press_pulse>.05:
+			var intensity:=1.0 if button_pressed else press_pulse
+			draw_line(Vector2(15,size.y-4),Vector2(size.x-15,size.y-4),Color(AutomotiveUI.ORANGE,intensity),2,true)
+		if dock.game.glass.focused=="tab_"+key:
+			dock.focus_skin.draw(get_canvas_item(),rect)
+
+var hover_skin:=AutomotiveUI.surface(Color(1,1,1,.055),Color(1,1,1,.17),15)
+var focus_skin:=AutomotiveUI.surface(Color.TRANSPARENT,AutomotiveUI.ORANGE,15)
 
 func setup(g: Node2D) -> void:
-	game = g; mouse_filter = Control.MOUSE_FILTER_IGNORE; theme = LiquidGlass.THEME
-	add_child(panel); panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT); panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var style := AutomotiveUI.glass_material("panel").duplicate() as StyleBoxTexture
-	for side in [SIDE_LEFT,SIDE_TOP,SIDE_RIGHT,SIDE_BOTTOM]: style.set_content_margin(side,0)
-	panel.add_theme_stylebox_override("panel",style)
-	var margins := MarginContainer.new(); margins.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	for side in ["left","right","top","bottom"]: margins.add_theme_constant_override("margin_"+side,8)
-	panel.add_child(margins); margins.add_child(row); row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	row.add_theme_constant_override("separation",4)
-	row.draw.connect(draw_selection)
+	game=g
+	mouse_filter=Control.MOUSE_FILTER_IGNORE
 	for i in TABS.size():
-		var item := DockItem.new(); item.dock = self; item.index = i
-		item.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		row.add_child(item); item.prepare(); items.append(item)
+		var item:=DockItem.new()
+		item.dock=self
+		item.index=i
+		add_child(item)
+		item.prepare()
+		items.append(item)
 
 func present(rect: Rect2,section: String) -> void:
-	visible = true; position = rect.position; size = rect.size; active = section
-	selection_target = 0
-	for i in TABS.size():
-		if section == TABS[i][0]: selection_target = i
-	if selection < 0 or game.glass.reduced_motion: selection = selection_target
-	var width := (rect.size.x-16-5*4)/6.0
+	visible=true
+	position=rect.position
+	var resized:=size!=rect.size
+	size=rect.size
+	active="garage" if section in ["owned","style"] else ("performance" if section=="tuning" else section)
+	var unit:=(size.x-32.0)/5.5
+	var x:=8.0
+	selection_target=Rect2()
 	for i in items.size():
-		game.buttons.append({"id":"tab_"+TABS[i][0],"rect":Rect2(rect.position+Vector2(8+i*(width+4),8),Vector2(width,rect.size.y-16)),"native_control":items[i]})
+		var width:=unit*(1.5 if i==RACE else 1.0)
+		var inset:=5.0 if i==RACE else 9.0
+		var cell:=Rect2(x,inset,width,size.y-inset*2)
+		items[i].position=cell.position
+		items[i].size=cell.size
 		items[i].refresh()
-	row.queue_redraw()
+		var key: String=TABS[i][0]
+		if key==active: selection_target=cell
+		game.buttons.append({"id":"tab_"+key,"rect":Rect2(position+cell.position,cell.size),"native_control":items[i]})
+		x+=width+4
+	if not selection.has_area() or game.glass.reduced_motion or resized:
+		selection=selection_target
+	queue_redraw()
 
 func animate(dt: float) -> bool:
-	if not visible or selection == selection_target: return false
-	selection = selection_target if game.glass.reduced_motion else move_toward(selection,selection_target,dt*30)
-	row.queue_redraw()
-	return true
+	if not visible: return false
+	for item in items:
+		if item.press_pulse>0.0:
+			item.press_pulse=move_toward(item.press_pulse,0.0,dt*4.0)
+			item.queue_redraw()
+	if not selection.is_equal_approx(selection_target):
+		var weight:=1.0 if game.glass.reduced_motion else 1.0-exp(-dt*18.0)
+		selection=Rect2(selection.position.lerp(selection_target.position,weight),selection.size.lerp(selection_target.size,weight))
+		if selection.position.distance_to(selection_target.position)<.2: selection=selection_target
+	queue_redraw()
+	return false
 
-func draw_selection() -> void:
-	var width := (row.size.x-5*4)/6.0
-	AutomotiveUI.glass_material("selected").draw(row.get_canvas_item(),Rect2(selection*(width+4),0,width,row.size.y))
+func _draw() -> void:
+	if items.size()!=TABS.size(): return
+	var canvas:=get_canvas_item()
+	shadow.draw(canvas,Rect2(Vector2(-3,4),size+Vector2(6,3)))
+	frame_skin.draw(canvas,Rect2(Vector2.ZERO,size))
+	draw_line(Vector2(24,3),Vector2(size.x-24,3),Color(.63,.78,.86,.30),1,true)
+	for i in items.size():
+		var cell:=Rect2(items[i].position,items[i].size)
+		if i==RACE:
+			AutomotiveUI.glow(self,cell.grow(14),Color(1,.29,.12,.33 if active=="races" else .18))
+			race_skin.draw(canvas,cell)
+		else:
+			recess.draw(canvas,cell)
+	if selection.has_area():
+		(race_selected if active=="races" else selected_skin).draw(canvas,selection)
+		var y:=selection.end.y-4
+		draw_line(Vector2(selection.get_center().x-19,y),Vector2(selection.get_center().x+19,y),AutomotiveUI.ORANGE if active=="races" else AutomotiveUI.BLUE,2,true)

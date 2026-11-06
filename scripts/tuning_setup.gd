@@ -28,7 +28,7 @@ static func reason(key: String,b: Dictionary,stage: int,vehicle: String) -> Stri
 		return "Programmable ECU or higher required" if not VehicleParts.can_tune_rpm(b) else ""
 	if key in ["boost_rise","boost_gear","boost_by_gear"]:
 		if not fitted.has("boost_control"): return "Electronic boost controller required"
-		return VehicleParts.boost_control_reason(b,float(GameCatalog.spec(vehicle).get("base_boost",0)),0 if not b.has("turbo_stage") else int(b.turbo_stage))
+		return VehicleParts.boost_control_reason(b,float(GameCatalog.installed_spec(vehicle,b).get("base_boost",0)),0 if not b.has("turbo_stage") else int(b.turbo_stage))
 	if key=="clutch_rate": return "Adjustable clutch pack required" if not b.parts.has("clutch") or kind in ["drag","automatic"] else ""
 	if key=="launch_gear":
 		if kind != "automatic": return "Conventional automatic required"
@@ -45,7 +45,7 @@ static func clean(key: String,value: Variant,b: Dictionary,stage: int,vehicle: S
 	if key=="boost_by_gear":
 		if not value is Array or value.size()!=TransmissionCatalog.default_ratios(b.transmission,b.tune).size(): return null
 		var out: Array=[]
-		var limit:=VehicleParts.boost_control_limit(b,float(GameCatalog.spec(vehicle).get("base_boost",0)),turbo_stage)
+		var limit:=VehicleParts.boost_control_limit(b,float(GameCatalog.installed_spec(vehicle,b).get("base_boost",0)),turbo_stage)
 		for number in value:
 			if not (number is int or number is float) or not is_finite(float(number)): return null
 			out.append(clampf(float(number),0,limit))

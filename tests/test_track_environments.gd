@@ -16,7 +16,6 @@ func prepare(index: int) -> void:
 	game.go_garage(); game.profile = DriverProfile.new(); game.profile.xp = 20000
 	game.event_index = index; game.selected_opponent = 0; game.wager = 0
 	RosterTest.ready(game); game.start_race()
-	if game.race_start_pending: game._process(0)
 	game.feedback.reset(game.car); game.rival_feedback.reset(game.rival)
 func run() -> void:
 	DirAccess.make_dir_recursive_absolute(OUTPUT)

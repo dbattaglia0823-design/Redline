@@ -13,7 +13,7 @@ const CHARACTER := {
  "z06":[1.28,1.20,1.08],"gtr":[.95,1.15,1.05],"r8":[1.22,1.15,.96],"gt500":[1.02,1.06,1.10],"redeye":[.80,.92,1.16],
  "turbo_s":[.89,.98,.91],"mclaren":[1.18,1.17,.98],"sf90":[1.13,1.06,.90],"demon":[.88,1.12,1.22],"chiron":[.76,.92,1.02]}
 static func resolve(car: Drivetrain) -> Dictionary:
-	var id:=str(car._base_spec.get("id",""))
+	var id:=str(car.hardware.get("engine_id",car._base_spec.get("id","")))
 	var turbo:=car._supercharger=="" and car.boost_target(car.redline_rpm,1)>.05
 	var family: String
 	match car.engine_layout:

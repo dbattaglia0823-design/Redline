@@ -46,12 +46,6 @@ func button(parent: Node,id: String,text: String,primary: bool=false) -> Button:
 	if compact_landscape(): b.custom_minimum_size.y=86; b.add_theme_font_size_override("font_size",24)
 	return b
 
-func sync() -> void:
-	super.sync()
-	if visible and game.screen=="garage" and compact_landscape() and (game.tab!="performance" or game.menu.hub.categories):
-		game.buttons=game.buttons.filter(func(entry): return not str(entry.id).begins_with("tab_"))
-		game.dock.present(Rect2(24,640,size.x-48,104),game.tab)
-
 # Phase 2 composes the established native surface; the existing models own state.
 func supports() -> bool:
 	if (not game.glass.legacy or game.tab=="style") and game.screen=="garage" and not game.menu.hub.dyno_open and game.tab in ["dealer","owned","style"]: return true
@@ -65,10 +59,7 @@ func state_key() -> String:
 	if game.tab=="dealer":
 		for letter in PerformanceClasses.ORDER: measurements.append(d.class_ids(letter))
 		if not d.class_picker: measurements.append(d.preview_estimate(GameCatalog.CAR_IDS[game.dealer_index]))
-	if game.tab=="owned":
-		for id in game.profile.garage:
-			var entry: Dictionary=game.profile.garage[id]
-			measurements.append(PerformanceClasses.request(id,game.profile.stages if id==game.profile.vehicle_id else entry.stages,game.profile.hardware if id==game.profile.vehicle_id else entry.get("hardware",GameCatalog.factory_build(id))))
+	if game.tab=="owned" and h.owned_sort: measurements=h.owned_ids()
 	return JSON.stringify([size,game.tab,game.profile.vehicle_id,game.profile.garage,game.profile.stages,game.profile.hardware,game.profile.credits,game.profile.xp,game.profile.appearance_for(game.profile.vehicle_id),game.profile.owned_appearance,game.profile.effects_quality,game.profile.save_blocked,game.profile.muted,d.class_picker,d.class_filter,d.page,d.details,d.equip,game.dealer_index,h.owned_selection,h.owned_page,h.owned_filter,h.owned_sort,custom.category,custom.candidate,custom.compare,custom.focus_override,custom.zoom_step,custom.trim_open,measurements])
 
 func build() -> void:
@@ -233,10 +224,9 @@ func collection(body: VBoxContainer) -> void:
 	var hero:=vehicle(detail,selected,c,game.profile.appearance_for(selected),175 if portrait else 180)
 	if portrait: hero.size_flags_vertical=Control.SIZE_EXPAND_FILL
 	spec_summary(detail,selected,c)
-	var entry: Dictionary=game.profile.garage[selected]
-	var measured:=PerformanceClasses.request(selected,game.profile.stages if selected==game.profile.vehicle_id else entry.stages,game.profile.hardware if selected==game.profile.vehicle_id else entry.get("hardware",GameCatalog.factory_build(selected)))
+	var engine_class:=GameCatalog.engine_class(selected,c.hardware)
 	var controls: Dictionary={"hpattern":"manual","paddle":"paddle","sequential":"sequential","automatic":"automatic"}
-	detail.add_child(AutomotiveUI.label("Price %s / Race %s / %d-speed %s"%[GameCatalog.price_class(selected),measured.get("class","…"),c.gear_ratios.size(),controls.get(c.control_mode,c.control_mode)],16,AutomotiveUI.BLUE))
+	detail.add_child(AutomotiveUI.label("Price %s / Engine %s / %d-speed %s"%[GameCatalog.price_class(selected),engine_class,c.gear_ratios.size(),controls.get(c.control_mode,c.control_mode)],16,AutomotiveUI.BLUE))
 	detail.add_child(AutomotiveUI.label("Vs active  %+.0f hp / %+.0f Nm / %+.0f kg"%[c.peak_horsepower()-game.car.peak_horsepower(),GarageHub.peak_torque(c)-GarageHub.peak_torque(game.car),c.mass()-game.car.mass()],17,AutomotiveUI.MUTED))
 	if portrait: list=AutomotiveUI.column(main,8)
 	var cards:=grid(list,2 if portrait else 1,8)
@@ -245,7 +235,10 @@ func collection(body: VBoxContainer) -> void:
 		var card:=AutomotiveUI.vehicle_card(cards,game,id,owned_car,game.profile.appearance_for(id),("Equipped · Price " if id==game.profile.vehicle_id else "Owned · Price ")+GameCatalog.price_class(id),id==selected,108 if portrait else 94)
 		bind(card,"hub_pick_"+id)
 	page_controls(list,true)
-	button(body,"hub_equip","Currently equipped" if selected==game.profile.vehicle_id else "Drive this car",true)
+	var actions:=AutomotiveUI.row(body,8)
+	button(actions,"tab_style","Customize active car")
+	button(actions,"open_tuning","Test track")
+	button(actions,"hub_equip","Equipped" if selected==game.profile.vehicle_id else "Drive this car",true)
 
 func studio_button(parent: Node,id: String,label: String,selected: bool=false,primary: bool=false) -> Button:
 	var control:=button(parent,id,label,primary)

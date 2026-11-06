@@ -45,7 +45,7 @@ func garage() -> void:
 	while size > 22 and g.font.get_string_size(str(spec.name),HORIZONTAL_ALIGNMENT_LEFT,-1,size).x > 340: size -= 1
 	g.fit_text(str(spec.name),24,150,340,size)
 	b("hub_owned","Change car",Rect2(390,108,186,68))
-	t(str(spec.engine)+"  /  "+str(spec.drive),24,193,21,g.MUTED)
+	t(g.car.engine_label+"  /  "+str(spec.drive),24,193,21,g.MUTED)
 	g.draw_workshop(Rect2(24,222,552,386))
 	t(PerformanceClasses.label(g.profile),42,259,18,g.MUTED)
 	g.draw_car(Vector2(30,370),2.3,g.PAINTS[g.profile.paint],0,g.profile.wheels,false,g.profile.vehicle_id,-1,.315,g.car)

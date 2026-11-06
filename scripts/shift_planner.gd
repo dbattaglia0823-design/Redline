@@ -77,7 +77,7 @@ static func build(car) -> Array:
 
 static func trial_time(source, targets: Array) -> float:
 	var car = source.get_script().new()
-	car.configure_vehicle(source._base_spec)
+	car.configure_vehicle(source._chassis_spec)
 	car.configure([source.engine_stage,source.turbo_stage,source.tire_stage,source.weight_stage,source.gearbox_stage,source.exhaust_stage,source.brake_stage,source.nitrous_stage])
 	car.configure_build(source.hardware,str(source._base_spec.get("id","nori" if source.drivetrain == "FWD" else "kaze")),false)
 	car.shift_map = targets.duplicate()

@@ -32,7 +32,7 @@ func begin(profile: DriverProfile,length: float) -> void:
 	parameters.append(["ratios",[.97,1.03]])
 	parameters.append(["shift_rpms",[-250,250]])
 	if fitted.has("boost_control"):
-		var limit:=VehicleParts.boost_control_limit(build,float(GameCatalog.spec(model).get("base_boost",0)),int(stages[1]))
+		var limit:=VehicleParts.boost_control_limit(build,float(GameCatalog.installed_spec(model,build).get("base_boost",0)),int(stages[1]))
 		if limit>0: parameters.append(["boost",[limit*.65,limit*.85,limit]])
 	start_trial(best_tune)
 

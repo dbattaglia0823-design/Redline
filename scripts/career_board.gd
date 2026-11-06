@@ -48,8 +48,8 @@ func draw() -> void:
 	if p: g.mobile.header("CLASS CAREER")
 	else: g.draw_header(); text("Class championships",36,127,28)
 	if not picker: button("cb_back","Championships",Rect2(24,80,264,68) if p else Rect2(952,92,214,90) if g.race_touch_layout() else Rect2(952,103,214,48))
-	var current:=PerformanceClasses.request(g.profile.vehicle_id,g.profile.stages,g.profile.hardware)
-	g.fit_text("Price %s / Race %s"%[GameCatalog.price_class(g.profile.vehicle_id),current.get("class","...")],312 if p else 38,121 if p else 157,264 if p else 870,19 if p else 15,g.MUTED)
+	var engine_class:=GameCatalog.engine_class(g.profile.vehicle_id,g.profile.hardware)
+	g.fit_text("Price %s / Engine %s"%[GameCatalog.price_class(g.profile.vehicle_id),engine_class],312 if p else 38,121 if p else 157,264 if p else 870,19 if p else 15,g.MUTED)
 	if picker: draw_classes(p)
 	else: draw_rival(p)
 	g.draw_navigation()
@@ -84,7 +84,7 @@ func draw_rival(p: bool) -> void:
 		g.draw_workshop(Rect2(24,258,552,220))
 		g.draw_car(Vector2(30,248),2.3,g.PAINTS[int(c.get("paint_index",c.round))%6],0,0,false,str(c.model))
 		g.fit_text(str(GameCatalog.spec(str(c.model)).name),24,514,552,23)
-		g.fit_text(("%d HP / "%int(estimate.hp) if not estimate.is_empty() else "Measuring / ")+str(c.build_label)+" / "+str(c.get("preferred_class",c.race_class)),24,548,552,20,g.MUTED)
+		g.fit_text(("%d HP / "%int(estimate.hp) if not estimate.is_empty() else "Measuring / ")+str(c.build_label)+" / "+"Engine "+GameCatalog.engine_class(c.model,c.hardware),24,548,552,20,g.MUTED)
 	else:
 		g.box(Rect2(368,182,798,473))
 		text(str(c.name),390,220,27); text(str(c.nickname),390,250,16,GlassPalette.BLUE)
@@ -116,7 +116,6 @@ func draw_rival(p: bool) -> void:
 	g.fit_text(reason if reason!="" else "Installed nitrous kit required for spray",224 if p else 390,1045 if p else (548 if short else 641),352 if p else 550,18 if p else 13,g.ORANGE if reason!="" else g.MUTED)
 	button("race","RACE" if reason=="" else ("MEASURING" if reason.begins_with("Measuring") else "LOCKED"),Rect2(24,1086,552,68) if p else Rect2(960,560,184,90) if short else Rect2(962,568,184,48),reason=="")
 func action(id: String) -> void:
-	g.race_start_pending=false
 	if id=="cb_back":
 		open()
 	elif id=="cb_open": select_series("OPEN")

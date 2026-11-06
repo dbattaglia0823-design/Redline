@@ -76,14 +76,14 @@ func owned(left: Node,right: Node,footer: Node) -> void:
 	h.owned_page=clampi(h.owned_page,0,maxi(0,ceili(ids.size()/4.0)-1))
 	var id: String=h.owned_selection; var c:=h.vehicle(id)
 	hero(left,id,c,g.profile.appearance_for(id))
-	var entry: Dictionary=g.profile.garage[id]
-	var measured:=PerformanceClasses.request(id,g.profile.stages if id==g.profile.vehicle_id else entry.stages,g.profile.hardware if id==g.profile.vehicle_id else entry.get("hardware",GameCatalog.factory_build(id)))
+	var engine_class:=GameCatalog.engine_class(id,c.hardware)
 	var controls: Dictionary={"hpattern":"manual","paddle":"paddle","sequential":"sequential","automatic":"automatic"}
-	text(left,"Price %s / Race %s / %d-speed %s"%[GameCatalog.price_class(id),measured.get("class","…"),c.gear_ratios.size(),controls.get(c.control_mode,c.control_mode)],24,AutomotiveUI.BLUE)
+	text(left,"Price %s / Engine %s / %d-speed %s"%[GameCatalog.price_class(id),engine_class,c.gear_ratios.size(),controls.get(c.control_mode,c.control_mode)],24,AutomotiveUI.BLUE)
 	var cards:=ui.grid(right,2,8)
 	for i in mini(4,ids.size()-h.owned_page*4):
 		var item: String=ids[h.owned_page*4+i]
 		var b:=AutomotiveUI.vehicle_card(cards,g,item,h.vehicle(item),g.profile.appearance_for(item),"Equipped" if item==g.profile.vehicle_id else "Owned",id==item,156); ui.bind(b,"hub_pick_"+item)
 	text(footer,"Vs active %+.0f hp / %+.0f kg"%[c.peak_horsepower()-g.car.peak_horsepower(),c.mass()-g.car.mass()],24,AutomotiveUI.MUTED)
 	if ids.size()>4: ui.button(footer,"hub_owned_prev","‹ Page"); ui.button(footer,"hub_owned_next","Page ›")
+	ui.button(footer,"tab_style","Customize"); ui.button(footer,"open_tuning","Test track")
 	ui.button(footer,"hub_equip","Equipped" if id==g.profile.vehicle_id else "Drive this car",true)

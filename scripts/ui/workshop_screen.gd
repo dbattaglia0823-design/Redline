@@ -131,7 +131,7 @@ func setup(g: Node2D) -> void:
 	game=g; mouse_filter=Control.MOUSE_FILTER_IGNORE; theme=AutomotiveUI.theme_resource()
 
 func supports() -> bool:
-	if game.glass.legacy and not (game.tab=="performance" and not game.menu.hub.categories and game.menu.hub.selected in [5,7]): return false
+	if game.glass.legacy and game.tab!="garage" and not (game.tab=="performance" and not game.menu.hub.categories and game.menu.hub.selected in [5,7]): return false
 	if game.screen!="garage" or game.menu.hub.dyno_open: return false
 	if game.tab=="garage": return true
 	if game.tab!="performance": return false
@@ -412,15 +412,14 @@ func garage(body: VBoxContainer) -> void:
 	var badge_row: Control=caption if portrait or short_catalog() else identity
 	badge_row.add_child(badge)
 	console.add_child(HSeparator.new())
-	garage_stats(console,4)
-	var actions: BoxContainer=AutomotiveUI.column(console,8) if portrait or short_catalog() else AutomotiveUI.row(console,8)
-	var first:=AutomotiveUI.row(actions,8)
-	garage_action(first,"garage_upgrades","Upgrades","performance")
-	garage_action(first,"garage_customize","Customize","style")
-	var second:=AutomotiveUI.row(actions,8)
-	garage_action(second,"hub_owned","Change car","dealer")
-	garage_action(second,"open_tuning","Test track","track")
-	garage_action(actions,"race_menu","Race","races",true)
+	var change: BoxContainer=AutomotiveUI.column(console,9) if portrait or short_catalog() else AutomotiveUI.row(console,20)
+	garage_stats(change,4)
+	garage_action(change,"hub_owned","Change Car","dealer",true)
+	var change_button: Button=targets.hub_owned
+	change_button.custom_minimum_size.y=82 if portrait or short_catalog() else 60
+	if not portrait and not short_catalog():
+		change_button.custom_minimum_size.x=268
+		change_button.size_flags_horizontal=Control.SIZE_SHRINK_END
 
 func garage_action(parent: Node,id: String,title: String,icon_key: String,primary: bool=false) -> void:
 	var control:=button(parent,id,title,primary)

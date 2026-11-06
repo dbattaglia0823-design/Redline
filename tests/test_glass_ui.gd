@@ -9,7 +9,6 @@ func check(ok: bool,message: String) -> void:
 func _initialize() -> void: call_deferred("run_checks")
 func frame() -> void:
 	RosterTest.ready(game)
-	if game!=null and game.race_start_pending: game._process(0)
 	game.sync_menu_size(); game.queue_redraw()
 	for i in 4:
 		game._process(.2); await process_frame

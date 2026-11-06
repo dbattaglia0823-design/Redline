@@ -142,6 +142,7 @@ var suspension_launch_support := 0.0
 var hop_damping := 0.0
 var wheel_hop := 0.0
 var _base_spec: Dictionary = {}
+var _chassis_spec: Dictionary = {}
 var _torque_points: Array = TORQUE_POINTS
 var _torque_factor := 1.0
 var _flow := 0.0
@@ -179,7 +180,8 @@ func configure(stages: Array) -> void:
 	nitrous_remaining = minf(nitrous_remaining,nitrous_capacity())
 
 func configure_vehicle(spec: Dictionary) -> void:
-	_base_spec = spec.duplicate(true)
+	_chassis_spec = spec.duplicate(true)
+	_base_spec = _chassis_spec
 	_torque_points = TORQUE_POINTS
 	var curve = spec.get("torque_curve",[])
 	if curve is Array and curve.size() >= 2:
@@ -679,9 +681,11 @@ func reset_modifiers() -> void:
 
 func configure_build(build: Dictionary, vehicle: String = "kaze", plan: bool = true) -> void:
 	# Always begin from the immutable vehicle data; repeated menu refreshes cannot stack parts.
-	var original := _base_spec.duplicate(true)
-	configure_vehicle(original)
-	hardware = VehicleParts.normalize(build,vehicle,gearbox_stage)
+	var chassis := _chassis_spec
+	var normalized := VehicleParts.normalize(build,vehicle,gearbox_stage)
+	configure_vehicle(GameCatalog.with_engine(chassis,normalized.get("engine_id","")))
+	_chassis_spec = chassis
+	hardware = normalized
 	transmission_id = str(hardware.transmission)
 	var trans := TransmissionCatalog.spec(transmission_id)
 	transmission_kind = str(trans.kind)

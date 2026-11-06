@@ -40,7 +40,7 @@ func start_output() -> void:
 func update_vehicle(car: Drivetrain,paused: bool=false) -> void:
 	if _closed: return
 	var source:=preview_car if preview_active and preview_car!=null else car
-	var id:=str(source._base_spec.get("id",source.engine_layout))
+	var id:=str(source.hardware.get("engine_id",source._base_spec.get("id",source.engine_layout)))
 	if id!=_last_vehicle or source.get_instance_id()!=_last_source_id:
 		voice.last_shift_serial=source.shift_serial
 		voice.last_grind_serial=source.grind_serial; voice.grind_left=0.0

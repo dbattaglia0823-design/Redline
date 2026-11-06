@@ -32,6 +32,17 @@ const PART_EFFECTS: Array[String] = ["+14% engine torque per tier", "+0.18 bar p
 const CAREER_NAMES: Array[String] = ["DOCKSIDE RUN", "MIDNIGHT CLUB", "CITY FINALS"]
 const CAREER_LEVELS: Array[int] = [1,3,5]
 const PRICE_CLASSES := ["E","D","C","B","A","S"]
+# Fixed engine tiers preserve the established factory race classes.
+const ENGINE_CLASSES := {
+	"miata":"E", "civic_si":"E",
+	"brz":"D", "gti":"D", "gti_vr6":"D", "integra":"D", "rsx":"D",
+	"evo":"C", "gr86":"C", "s2000":"C", "sti":"C", "type_r":"C", "z350":"C",
+	"golf_r":"B", "m3":"B", "supra":"B", "supra_gr":"B",
+	"camaro":"A", "gtr":"A", "mustang":"A", "r8":"A", "redeye":"A", "z400":"A",
+	"chiron":"S", "demon":"S", "gt500":"S", "mclaren":"S", "sf90":"S", "turbo_s":"S", "z06":"S",
+}
+const ENGINE_FIELDS := ["engine","layout","cylinders","torque","torque_curve","torque_rpm","idle","redline",
+	"throttle_response","inertia","base_boost","factory_super","hybrid_kw","hybrid_kwh"]
 const PRICE_FLOORS := [0,15000,30000,47000,85000,180000]
 const BOT_NAMES := [
 	["Dockhand Dex", "Neon Nia", "Spanner Sol", "Late-shift Leo", "Harbor Quinn"],
@@ -50,6 +61,23 @@ static func spec(id: String) -> Dictionary:
 	if not data.has("brand"): data["brand"] = {"kaze":"Kaze","nori":"Nori","aster":"Aster","vanta":"Vanta"}.get(id,"Kaze")
 	if not data.has("performance_class"): data["performance_class"] = {"kaze":"Sport","nori":"Street","aster":"GT","vanta":"GT"}.get(id,"Sport")
 	return data
+
+static func engine_class(vehicle: String, build: Dictionary = {}) -> String:
+	var engine := str(build.get("engine_id",""))
+	if ENGINE_CLASSES.has(engine): return ENGINE_CLASSES[engine]
+	return ENGINE_CLASSES.get(RosterData.RETIRED.get(vehicle,vehicle),"E")
+
+static func installed_spec(vehicle: String, build: Dictionary) -> Dictionary:
+	return with_engine(spec(vehicle),str(build.get("engine_id","")))
+
+static func with_engine(chassis: Dictionary, engine: String) -> Dictionary:
+	if not ENGINE_CLASSES.has(engine) or chassis.get("id")==engine: return chassis
+	var donor := spec(engine)
+	var combined := chassis.duplicate(true)
+	for field in ENGINE_FIELDS:
+		combined.erase(field)
+		if donor.has(field): combined[field]=donor[field]
+	return combined
 
 static func blank_stages() -> Array:
 	return [0,0,0,0,0,0,0,0]
@@ -100,13 +128,12 @@ static func opponent(career: int, index: int, _profile: DriverProfile = null) ->
 	var hardware := factory_build(model)
 	if str(row[7]) != "":
 		hardware.transmission = str(row[7]); hardware.owned_transmissions.append(str(row[7]))
-	var measured := PerformanceClasses.request(model,stages,hardware)
 	return {"hardware":hardware,"skill":career,"traction_skill":.35+career*.25,"shift_error":260.0-career*90-index*20,
 		"launch_rpm":3900.0,"driver_seed":career*5+index,"name":BOT_NAMES[career][index],"model":model,"stages":stages,
 		"distance":402.336,"purse":250+career*350+index*110,
 		"max_bet":500+career*750+index*250,"reaction":.65-index*.06 if career==0 else .30-career*.06-index*.012,
 		"pedal":.80+index*.04 if career==0 else .94+index*.015,"shift_rpm":6800.0+career*80,"shift_delay":.17-career*.035,
-		"race_class":measured.get("class","..."),"build_label":"Stock" if index==0 and career==0 else "Tuned"}
+		"race_class":engine_class(model,hardware),"build_label":"Stock" if index==0 and career==0 else "Tuned"}
 
 static func max_stage(index: int) -> int:
 	return 5 if index == 4 else 3

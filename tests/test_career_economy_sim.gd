@@ -8,11 +8,7 @@ func add_candidate(pool: Array,seen: Dictionary,id: String,levels: Array,build: 
 	var key:=JSON.stringify([id,levels,build])
 	if seen.has(key): return
 	seen[key]=true
-	var measured:=VehicleBench.run(GameCatalog.spec(id),levels,build)
-	if measured.quarter_s==null or measured.safety_clamps>0: return
-	measured["class"]=PerformanceClasses.classify(float(measured.quarter_s))
-	PerformanceClasses.cache[PerformanceClasses.signature(id,levels,build)]=measured
-	pool.append({"model":id,"stages":levels.duplicate(),"hardware":build.duplicate(true),"class":measured["class"]})
+	pool.append({"model":id,"stages":levels.duplicate(),"hardware":build.duplicate(true),"class":GameCatalog.engine_class(id,build)})
 func cost(p: DriverProfile,c: Dictionary) -> int:
 	var charge:=0
 	var old: Dictionary=p.garage.get(c.model,{})
@@ -62,6 +58,9 @@ func run() -> void:
 	for id in ["supra","camaro"]:
 		var drag:=VehicleBench.fixture("drag3",["billet","fuel_ethanol","turbo_race","ecu","drag_wheels"],{"launch_rpm":4800})
 		add_candidate(pool,seen,id,[3,3,3,3,5,3,0,3],drag)
+	for id in GameCatalog.CAR_IDS:
+		for levels in [GameCatalog.blank_stages(),[1,0,1,0,1,1,0,0],[2,1,2,1,3,2,0,1],[3,2,3,2,5,3,0,3]]:
+			add_candidate(pool,seen,id,levels,GameCatalog.factory_build(id))
 	# A player-owned Demon can beat the Crown without buying its Chiron.
 	for spray in [0,1,3]:
 		add_candidate(pool,seen,"demon",[3,2,3,1,5,3,0,spray],GameCatalog.factory_build("demon"))
@@ -89,7 +88,7 @@ func run() -> void:
 			for offer in offers:
 				var candidate: Dictionary=pool[offer.index]
 				var actual:=RaceAI.estimate(driver(candidate,event),float(event.distance))
-				if actual.time<float(bot.time):
+				if actual.clamps==0 and actual.time<float(bot.time):
 					chosen=candidate; estimate=actual; price=offer.cost
 					break
 			check(not chosen.is_empty(),"No competitive authored build for "+id)
