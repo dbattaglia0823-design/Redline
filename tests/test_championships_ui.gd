@@ -143,7 +143,6 @@ func run() -> void:
 	game.career_board.selected="class_S_6"
 	await frame(); await click("race")
 	check(game.screen=="race" and game.active_distance==201.168 and game.nitrous_lock_reason()=="MOTOR ONLY","Motor-only heat did not apply its distance and nitrous rule")
-	game.car.nitrous_auto=false
 	key(KEY_SPACE)
 	check(not game.nitrous_input(),"Motor-only heat allowed keyboard nitrous")
 	key(KEY_SPACE,false)

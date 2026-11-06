@@ -13,7 +13,7 @@ func _initialize() -> void:
 			spec.engine = "3.0L turbo I6"
 			stages = [3,3,3,3,5,3,3,0]
 		for id in TransmissionCatalog.ROWS:
-			var build := VehicleBench.fixture(id,["final_kit"],{"final_drive":3.2})
+			var build := VehicleBench.fixture(id,[],{"final_drive":3.2})
 			for fixed in [0,6500,7000,7400]:
 				var bench := VehicleBench.new()
 				bench.begin(spec,stages,build,"optimized" if fixed == 0 else "fixed",float(fixed))

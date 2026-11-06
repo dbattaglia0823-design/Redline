@@ -39,12 +39,13 @@ func _initialize() -> void:
 	p.settle_wager(false)
 	p.credits = 50000
 	var saved_stages := p.stages.duplicate()
-	check(p.buy_vehicle("civic_si") and p.credits == 44800,"Dealership charged the wrong price")
+	var after_purchase:=p.credits-int(GameCatalog.spec("civic_si").price)
+	check(p.buy_vehicle("civic_si") and p.credits == after_purchase,"Dealership charged the wrong price")
 	check(p.vehicle_id == "civic_si" and p.stages == GameCatalog.blank_stages(),"Purchased car inherited another car's build")
-	check(not p.buy_vehicle("civic_si") and p.credits == 44800,"Duplicate vehicle purchase charged money")
+	check(not p.buy_vehicle("civic_si") and p.credits == after_purchase,"Duplicate vehicle purchase charged money")
 	p.paint = 1
 	p.wheels = 1
-	check(p.upgrade(1,3) and p.stages[1] == 3 and p.credits == 38800,"Tier-three installation did not charge all required tiers")
+	check(p.upgrade(1,3) and p.stages[1] == 3 and p.credits == after_purchase-6000,"Tier-three installation did not charge all required tiers")
 	check(not p.upgrade(1,2),"Upgrade allowed a downgrade")
 	p.select_vehicle("miata")
 	check(p.stages == saved_stages and p.paint == 4 and p.wheels == 2,"Switching cars lost the original build")
@@ -61,6 +62,6 @@ func _initialize() -> void:
 	check(flagship.peak_horsepower() > starter.peak_horsepower()*1.5 and flagship.grip_coefficient > starter.grip_coefficient,"Dealer vehicles do not have distinct performance")
 	var modified := Drivetrain.new()
 	modified.configure([0,0,0,0,0,3,3,3])
-	check(modified.peak_horsepower() > starter.peak_horsepower() and modified.nitrous_capacity() == 10.5,"New upgrade categories have no effect")
+	check(modified.peak_horsepower() > starter.peak_horsepower() and modified.nitrous_capacity() == 8.5,"New upgrade categories have no effect")
 	print("WAGERS + DEALERSHIP + SAVE MIGRATION: ","PASS" if failures == 0 else "FAIL (%d)" % failures)
 	quit(0 if failures == 0 else 1)

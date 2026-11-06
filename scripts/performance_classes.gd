@@ -49,5 +49,5 @@ static func advance() -> bool:
 	cache[job.key]=d; jobs.pop_front(); return true
 static func label(profile: DriverProfile) -> String:
 	var current:=request(profile.vehicle_id,profile.stages,profile.hardware)
-	return "FACTORY %s / BUILD %s"%[factory_class(profile.vehicle_id),current.get("class","...")]
+	return "PRICE %s / RACE %s"%[GameCatalog.price_class(profile.vehicle_id),current.get("class","...")]
 

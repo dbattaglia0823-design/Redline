@@ -15,18 +15,18 @@ func run_checks() -> void:
 		for letter in PerformanceClasses.ORDER:
 			await click("shop_class_"+letter)
 			var d: DealershipView=game.menu.dealer
-			check(not d.class_picker and d.filtered().all(func(id): return PerformanceClasses.factory_class(id)==letter),"Wrong class inventory")
+			check(not d.class_picker and d.filtered().all(func(id): return GameCatalog.price_class(id)==letter),"Wrong class inventory")
 			check(not game.buttons.any(func(b):return str(b.id).begins_with("shop_filter_")),"Legacy filter controls remain")
 			var size:=Vector2(600,1300) if phone else Vector2(1200,760)
 			for b in game.buttons: check(Rect2(Vector2.ZERO,size).encloses(b.rect),"Class dealer control clipped: "+b.id)
 			key(KEY_RIGHT); await frame(); var id: String=GameCatalog.CAR_IDS[game.dealer_index]
-			check(PerformanceClasses.factory_class(id)==letter,"Keyboard browsing escaped selected class")
+			check(GameCatalog.price_class(id)==letter,"Keyboard browsing escaped selected class")
 			await click("shop_classes"); await click("shop_class_"+letter)
 			check(GameCatalog.CAR_IDS[game.dealer_index]==id,"Class did not remember selected car")
 			await click("shop_details"); key(KEY_ESCAPE); await frame()
 			check(not d.details and not d.class_picker,"Details back skipped class inventory")
 			key(KEY_ESCAPE); await frame(); check(d.class_picker,"Back did not return to class cards")
-		await click("shop_class_E")
+		await click("shop_class_"+GameCatalog.price_class("civic_si"))
 		if phone:
 			for i in 3:
 				if game.dealer_index==1: break

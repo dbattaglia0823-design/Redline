@@ -97,7 +97,7 @@ func run() -> void:
 	game.profile=DriverProfile.new(); game.profile.vehicle_id="supra"
 	game.profile.garage.supra={"stages":GameCatalog.blank_stages(),"hardware":GameCatalog.factory_build("supra")}
 	game.profile.stages=[3,2,3,1,5,1,1,1]
-	game.profile.hardware=VehicleBench.fixture("drag3",["ecu","billet","fuel_ethanol","turbo_race","boost_control","progressive","converter_race","race_controller","gearset","final_kit","drag_wheels","lsd"])
+	game.profile.hardware=VehicleBench.fixture("drag3",["ecu","billet","fuel_ethanol","turbo_race","boost_control","drag_wheels","lsd"])
 	game.profile.tune_hardware("boost_by_gear",[.3,.7,1.1],false); game.refresh_car(); game.tuning.open()
 	check(game.tuning.last.is_empty(),"Another vehicle's telemetry appeared under this car")
 	game.profile.save_tune_slot("quarter","Quarter-mile setup")

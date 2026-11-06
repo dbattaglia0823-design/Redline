@@ -3,7 +3,7 @@ var failures:=0
 var checks:=0
 var audit: Array=[]
 func parameters(c: Drivetrain) -> Dictionary:
-	return {"hp":c.peak_horsepower(),"peak_nm":GarageHub.peak_torque(c),"mass_kg":c.mass(),"shift_ms":c.shift_duration*1000,"input_nm":c.input_capacity(),"clutch_nm":c.clutch_capacity(),"fuel_nm":c.fuel_torque_capacity(),"engine_nm":c.mechanical_torque_capacity(),"redline_rpm":c.redline_rpm,"mechanical_rpm":c._mechanical_redline,"inertia":c.engine_inertia,"boost_bar":c.boost_target(c.redline_rpm,1),"boost_onset_rpm":UpgradeStudio.boost_onset(c),"spool_s":UpgradeStudio.spool(c),"grip":GarageHub.grip(c),"radius_m":c.tire_radius,"wheel_inertia":c.wheel_inertia,"launch_transfer":c.load_transfer_scale,"rolling_resistance":c.rolling_coefficient,"hop_damping":c.hop_damping,"nitrous_s":c.nitrous_capacity(),"nitrous_ramp_s":c._nitrous_ramp,"controls":c.control_mode,"launch_control":c.launch_control,"stall_rpm":c.converter_stall,"converter_multiplier":c.converter_multiplication}
+	return {"hp":c.peak_horsepower(),"peak_nm":GarageHub.peak_torque(c),"mass_kg":c.mass(),"shift_ms":c.shift_duration*1000,"input_nm":c.input_capacity(),"clutch_nm":c.clutch_capacity(),"fuel_nm":c.fuel_torque_capacity(),"engine_nm":c.mechanical_torque_capacity(),"redline_rpm":c.redline_rpm,"mechanical_rpm":c._mechanical_redline,"inertia":c.engine_inertia,"boost_bar":c.boost_target(c.redline_rpm,1),"boost_onset_rpm":UpgradeStudio.boost_onset(c),"spool_s":UpgradeStudio.spool(c),"grip":GarageHub.grip(c),"radius_m":c.tire_radius,"wheel_inertia":c.wheel_inertia,"launch_transfer":c.load_transfer_scale,"rolling_resistance":c.rolling_coefficient,"hop_damping":c.hop_damping,"nitrous_s":c.nitrous_capacity(),"controls":c.control_mode,"launch_control":c.launch_control,"stall_rpm":c.converter_stall,"converter_multiplier":c.converter_multiplication}
 func check(ok: bool,message: String) -> void:
 	checks+=1
 	if not ok: failures+=1; push_error(message)
@@ -23,7 +23,7 @@ func _initialize() -> void:
 	var fuel:=car("legacy6",["fuel_street"])
 	check(fuel.fuel_torque_capacity()>stock.fuel_torque_capacity() and fuel.peak_horsepower()==stock.peak_horsepower(),"Fuel support is being sold as unconditional horsepower")
 	var ecu:=car("legacy6",["ecu"])
-	check(ecu.launch_control and ecu.peak_horsepower()==stock.peak_horsepower(),"ECU incorrectly adds raw power")
+	check(ecu.launch_control and ecu.peak_horsepower()==stock.peak_horsepower(),"Programmable ECU changed factory power calibration")
 	var forged:=car("legacy6",["forged"])
 	check(forged._mechanical_redline>stock._mechanical_redline and forged.redline_rpm==stock.redline_rpm and forged.engine_inertia<stock.engine_inertia,"Forged headroom and programmable limiter are conflated")
 	var tuned:=car("legacy6",["forged","ecu"],[0,0,0,0,5,0,0,0],{"redline":9000})

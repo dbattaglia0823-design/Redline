@@ -40,7 +40,7 @@ func run() -> void:
 		check(game.menu.dealer.class_picker,"Dealer bypasses class overview")
 		for letter in PerformanceClasses.ORDER:
 			await click("shop_class_"+letter,touch); audit()
-			check(game.menu.dealer.filtered().all(func(id): return PerformanceClasses.factory_class(id)==letter),"Native class inventory is incorrect")
+			check(game.menu.dealer.filtered().all(func(id): return GameCatalog.price_class(id)==letter),"Native class inventory is incorrect")
 			if game.menu.dealer.filtered().size()>4:
 				await click("shop_next",touch); check(game.menu.dealer.page==1,"Dealer next page failed")
 				await click("shop_prev",touch); check(game.menu.dealer.page==0,"Dealer previous page failed")

@@ -58,11 +58,17 @@ func run_checks() -> void:
 		check(game.profile.credits==money-(0 if build.contains('"forged"') else 2800),"Part purchase cost incorrect")
 		await click("hub_back"); await click("hub_category_0")
 		check(game.workshop.mode=="hardware" and game.workshop.selected_hardware=="forged","Back lost selected component")
-		await click("hub_back"); await click("upgrade_system_1"); await click("hub_category_7"); await click("upgrade_section_transmission"); await click("tx_filter_1"); await click("tx_next"); await click("tx_pick_dct7")
+		await click("hub_back"); await click("upgrade_system_1"); await click("hub_category_7")
+		await click("tx_pick_sequential_type")
 		var candidate: Drivetrain=game.menu.hub.studio.transmission_candidate()
 		predicted=JSON.stringify([candidate.mass(),candidate.shift_duration,candidate.input_capacity(),candidate.gear_ratios])
 		await capture("gearbox_comparison"); await click("tx_buy")
 		check(JSON.stringify([game.car.mass(),game.car.shift_duration,game.car.input_capacity(),game.car.gear_ratios])==predicted,"Gearbox preview does not match actual conversion")
+		var factory: String=GameCatalog.factory_build(game.profile.vehicle_id).transmission
+		await click("tx_pick_"+factory)
+		money=game.profile.credits
+		await click("tx_buy")
+		check(game.car.transmission_id==factory and game.profile.credits==money,"Factory gearbox was not available for a free reinstall")
 		await click("hub_back"); await click("upgrade_system_2"); await click("hub_category_14"); await click("stage_pick_1")
 		check(game.menu.hub.preview().mass()<game.car.mass() and game.menu.hub.preview().peak_horsepower()==game.car.peak_horsepower(),"Weight preview fabricates engine power")
 		await capture("weight_comparison")

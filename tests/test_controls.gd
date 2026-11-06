@@ -49,6 +49,8 @@ func run_checks() -> void:
 	game.refresh_car()
 	game.set_process(false)
 	game.set_physics_process(false)
+	game.profile.stages[7]=1
+	game.refresh_car()
 	RosterTest.ready(game); game.start_race()
 	game.countdown = 0.0
 	game.car.running = true
@@ -66,7 +68,7 @@ func run_checks() -> void:
 	for tick in 120: game._physics_process(1.0 / 60.0)
 	print("Free rev telemetry: speed=",game.car.speed," rpm=",game.car.rpm," limiter=",game.car.redline_rpm)
 	check(game.car.speed == 0.0 and game.car.rpm > game.car.redline_rpm * 0.8, "Clutch did not disconnect engine during free rev")
-	check(game.car.nitrous_remaining == Drivetrain.NITROUS_CAPACITY, "Nitrous was consumed with clutch held")
+	check(game.car.nitrous_remaining == game.car.nitrous_capacity(), "Nitrous was consumed with clutch held")
 	key(KEY_W, false)
 	check(game.gas_input() == 0.0 and game.nitrous_input(), "Space incorrectly acts as gas")
 	key(KEY_SPACE, false)
@@ -81,7 +83,7 @@ func run_checks() -> void:
 	key(KEY_W)
 	key(KEY_SPACE)
 	game._physics_process(0.1)
-	check(game.car.nitrous_active and game.car.nitrous_remaining < Drivetrain.NITROUS_CAPACITY, "Space did not activate nitrous in the race simulation")
+	check(game.car.nitrous_active and game.car.nitrous_remaining < game.car.nitrous_capacity(), "Space did not activate nitrous in the race simulation")
 	key(KEY_SPACE, false)
 	key(KEY_W, false)
 	game.car.set_road_state(24.0,3)

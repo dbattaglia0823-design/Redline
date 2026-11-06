@@ -37,13 +37,13 @@ func _initialize() -> void:
 	check(manual.select_manual_gear(3,1.0) == "SHIFT ACCEPTED" and manual.gear == 3,"Manual H gate did not engage")
 	manual.shift_left = 0.0; manual.set_road_state(70.0,5)
 	check(manual.select_manual_gear(1,1.0) == "DOWNSHIFT PROTECTED","H gate allowed overrev")
-	check(vehicle("manual5",["paddles"]).control_mode == "paddle","Paid paddle conversion not applied")
-	check(vehicle("manual5",["selector"]).control_mode == "sequential","Sequential actuator not applied")
+	check(vehicle("legacy6").control_mode == "paddle","Paddle controls missing")
+	check(vehicle("sequential_type").control_mode == "sequential","Sequential controls missing")
 	var automatic := vehicle("auto10")
 	check(automatic.request_shift(1) == "AUTOMATIC CONTROLLER" and automatic.gear == 1,"Factory automatic accepted paddle input")
-	check(vehicle("auto10",["paddles"]).control_mode == "paddle","Paid automatic paddle controller missing")
-	var drag := vehicle("drag3",["transbrake","converter_race"],{"stall":4600.0})
+	var drag := vehicle("drag3")
 	drag.running = true
+	drag.has_transbrake = true
 	for tick in 720: drag.step(1.0/240.0,1.0,0.0,0.0,false,true)
 	check(drag.speed < 0.001 and drag.distance < 0.001 and drag.transbrake_active,"Transbrake did not hold vehicle")
 	check(drag.rpm > 3000.0 and drag.converter_turbine_nm > drag.converter_pump_nm,"Converter launch multiplication missing")
@@ -87,13 +87,14 @@ func _initialize() -> void:
 	hot.transmission_temperature = 115
 	for tick in 720: hot.step(1.0/240.0,0.0,0.0,1.0)
 	check(hot.engine_temperature < 115 and hot.transmission_temperature < 115,"Passive heat dissipation stopped working")
-	var strained := vehicle("manual3",["paddles"],{},0)
+	var strained := vehicle("manual3",[],{},0)
 	strained.base_torque = 1000.0; strained.base_boost = 1.5; strained.running = true
 	for tick in 2400: strained.step(1.0/240.0,1.0)
 	check(strained.component_wear > 0.0 and absf(strained.clutch_torque) <= strained.clutch_capacity()+0.01,"Weak gearbox limits / overload wear disconnected")
 	var voice := EngineVoice.new()
 	for id in ["drag3","dct7","auto10","manual5"]:
-		var c := vehicle(id,["roots","progressive"])
+		var c := vehicle(id,["roots"])
+		c.configure([0,0,0,0,5,0,0,1]); c.reset()
 		c.running = true; c.set_road_state(25.0,2); c.clutch_engagement = 1.0; c.throttle = 1.0
 		c.shift(1)
 		for tick in 120:
@@ -111,17 +112,13 @@ func test_purchases() -> void:
 	check(p.upgrade(4,5) and p.stages[4] == 5,"Pro Race progression blocked")
 	var money := p.credits
 	check(p.install_transmission("manual5").begins_with("Installed") and p.credits == money-3100 and p.stages[4] == 0,"New gearbox inherits free stage upgrades")
-	check(p.install_hardware("paddles").contains("Stage 2"),"Actuator stage requirement bypassed")
 	p.upgrade(4,2)
-	check(p.install_hardware("paddles").begins_with("Installed"),"Paddle hardware purchase failed")
-	money = p.credits; p.install_hardware("paddles")
-	check(p.credits == money,"Owned installed part charged twice")
+	check(p.install_hardware("clutch_twin").begins_with("Installed"),"Clutch purchase failed")
+	money = p.credits
 	p.install_transmission("oem_miata")
-	check(p.stages[4] == 5 and not p.hardware.parts.has("controls"),"Stage ownership / fitment not restored on gearbox swap")
-	p.install_hardware("paddles")
-	check(p.credits == money-3800,"Different gearbox fitment was free")
-	p.install_transmission("manual5"); money = p.credits; p.install_hardware("paddles")
-	check(p.credits == money and p.stages[4] == 2,"Previously bought gearbox/part not retained")
+	check(p.stages[4] == 5 and not p.hardware.parts.has("clutch"),"Incompatible clutch stayed fitted")
+	p.install_transmission("manual5")
+	check(p.credits == money and p.stages[4] == 2 and p.hardware.parts.get("clutch")=="clutch_twin","Previously bought gearbox and clutch not restored")
 	money = p.credits
 	check(not p.install_hardware("stroker").begins_with("Installed") and p.credits == money,"Dependency rejection charged money")
 	p.install_hardware("forged"); p.install_hardware("stroker")
@@ -131,15 +128,14 @@ func test_purchases() -> void:
 	check(p.tune_hardware("redline",9000.0) and p.hardware.tune.redline == 7450.0,"Stored ECU tuning does not match actual forged-engine RPM headroom")
 	check(not p.tune_hardware("redline",NAN) and not p.tune_hardware("stall",INF),"Nonfinite tune accepted")
 	p.install_transmission("drag3"); p.upgrade(4,5)
-	p.install_hardware("converter_race"); p.install_hardware("transbrake"); p.install_hardware("race_controller"); p.install_hardware("gearset")
-	check(p.tune_hardware("stall",10000.0) and p.hardware.tune.stall == 5800.0,"Converter adjustment outside range")
-	check(not p.tune_hardware("ratios",[1.0,2.0,3.0]) and p.tune_hardware("ratios",[2.12,1.42,1.02]),"Invalid ratio cassette allowed / valid blocked")
-	check(p.tune_hardware("shift_rpms",[6500,6800]),"Individual controller shift points blocked")
+	check(not p.tune_hardware("stall",4200.0),"Retired stall setting accepted")
+	check(not p.tune_hardware("ratios",[1.0,2.0,3.0]) and p.tune_hardware("ratios",[2.12,1.42,1.02]),"Invalid ratios allowed / valid ratios blocked")
+	check(p.tune_hardware("shift_rpms",[6500,6800]),"Individual shift points blocked")
 	p.save()
 	var loaded := DriverProfile.new(); loaded.load_profile()
 	check(loaded.hardware == p.hardware and loaded.stages == p.stages and loaded.credits == p.credits,"Transmission/parts/tune save round trip lost data")
 	p.apply_tuning_preset("safe")
-	check(p.hardware.tune.stall == 3200.0 and not p.hardware.tune.has("shift_rpms"),"Preset bypassed converter limit or retained manual map")
+	check(not p.hardware.tune.has("stall") and not p.hardware.tune.has("shift_rpms"),"Preset bypassed converter limit or retained manual map")
 	p.buy_vehicle("civic_si"); money = p.credits
 	check(not p.install_transmission("drag3").begins_with("Installed") and p.credits == money,"Incompatible gearbox charged money")
 	p.select_vehicle("miata")

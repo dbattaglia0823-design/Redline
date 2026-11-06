@@ -7,7 +7,8 @@ const FINAL_DRIVE := 3.85
 const TIRE_RADIUS := 0.315
 const IDLE := 950.0
 const REDLINE := 7600.0
-const NITROUS_CAPACITY := 6.0
+const NITROUS_KIT_CAPACITY := 4.0
+const NITROUS_TORQUE_SCALE := 0.8
 const FIXED_DT := 1.0/240.0
 const MPH_PER_MPS := 2.2369362921
 const RPM_PER_RAD := 60.0/TAU
@@ -25,21 +26,16 @@ var shift_left := 0.0
 var shift_duration := 0.16
 var limiter := false
 var clutch_engagement := 0.0
-var nitrous_remaining := NITROUS_CAPACITY
+var nitrous_remaining := 0.0
 var nitrous_active := false
 var throttle_gamma := 1.0
 var traction_slip_target := 0.0
 var clutch_rate := 1.0
 var boost_rise := 0.0
 var boost_by_gear: Array = []
-var nitrous_auto := false
-var nitrous_min_rpm := 0.0
-var nitrous_min_gear := 1
-var nitrous_throttle := 0.85
 var launch_gear := 1
 var pressure_grip := 1.0
 var pressure_rolling := 1.0
-var converter_lock_ratio := 0.85
 var running := false
 var engine_stage := 0
 var turbo_stage := 0
@@ -150,6 +146,10 @@ var _safe_factor := 1.0
 var _fuel_factor := 1.0
 var _clutch_factor := 1.0
 var _supercharger := ""
+var _pressure_add := 0.0
+var _spool_scale := 1.0
+var _gear_cooling := 1.0
+var _charge_cooling := 1.0
 var _super_pressure := 0.0
 var _boost_extra := 0.0
 var _boost_onset := -1.0
@@ -159,7 +159,6 @@ var _advanced := false
 var _auto_dwell := 0.0
 var _manual_clutch := 0.0
 var nitrous_delivery := 0.0
-var _nitrous_ramp := 0.0
 var _mechanical_redline := 7600.0
 
 func configure(stages: Array) -> void:
@@ -222,7 +221,13 @@ func mass() -> float:
 	return maxf(350.0,base_mass-weight_stage*65.0+trans_mass_delta+extra_mass)
 
 func nitrous_capacity() -> float:
-	return NITROUS_CAPACITY+nitrous_stage*1.5
+	return NITROUS_KIT_CAPACITY+nitrous_stage*1.5 if has_nitrous() else 0.0
+
+func has_nitrous() -> bool:
+	return nitrous_stage>0
+
+func nitrous_torque_gain() -> float:
+	return (0.55+nitrous_stage*0.06)*NITROUS_TORQUE_SCALE if has_nitrous() else 0.0
 
 func clutch_capacity() -> float:
 	var legacy := base_torque*2.0*(1.0+engine_stage*0.14)*(1.0+exhaust_stage*0.06)*(1.0+gearbox_stage*0.15)
@@ -392,10 +397,11 @@ func boost_target(at_rpm: float, opening: float) -> float:
 	if _supercharger != "":
 		var rated_rpm: float=_factory_curve_redline if hardware.parts.has("ecu") else redline_rpm
 		var gain := pow(clampf(at_rpm/rated_rpm,0.0,1.0),2.0) if _supercharger == "centrifugal" else 1.0
-		return _super_pressure*gain*opening
+		return (_super_pressure+_pressure_add)*gain*opening
 	# An assembly replaces the packaged turbo, rather than stacking two compressors.
 	var maximum := base_boost+(_boost_extra if hardware.parts.has("induction") else turbo_stage*0.18)
 	if maximum<=0: return 0.0
+	maximum += _pressure_add
 	if _boost_setting >= 0.0: maximum = minf(maximum+0.35,_boost_setting)
 	return clampf((at_rpm-turbo_onset())/2700.0,0.0,1.0)*opening*maximum
 
@@ -458,7 +464,7 @@ func _substep(dt: float, pedal: float, brake: float, clutch: float, nitrous: boo
 	if limiter and rpm < redline_rpm-160.0: limiter = false
 	if rpm >= redline_rpm: limiter = true
 	var launch_cut := launch_control and gear == launch_gear and (transbrake_active or not running or (speed<1.0 and clutch>.8)) and rpm >= launch_rpm
-	var traditional_manual: bool = control_mode == "hpattern" and not hardware.parts.values().has("ecu")
+	var traditional_manual: bool = control_mode == "hpattern" and not hardware.parts.has("ecu")
 	fuel_cut = limiter or (shifting and not traditional_manual) or launch_cut
 	combustion_fraction = 0.0 if limiter or launch_cut else (shift_retention if shifting and not traditional_manual else 1.0)
 	var target_boost := boost_target(rpm,throttle)
@@ -466,7 +472,7 @@ func _substep(dt: float, pedal: float, brake: float, clutch: float, nitrous: boo
 	var boost_tau: float = [0.32,0.24,0.38,0.55][turbo_stage] if target_boost > boost else 0.09
 	if _spool_override > 0.0 and target_boost > boost: boost_tau = _spool_override
 	if _supercharger != "": boost_tau = 0.045
-	var developed := lerpf(boost,target_boost,1.0-exp(-dt/boost_tau))
+	var developed := lerpf(boost,target_boost,1.0-exp(-dt/(boost_tau*_spool_scale)))
 	boost = minf(developed,boost+boost_rise*dt) if boost_rise>0 and developed>boost else developed
 	# Automatic launch/anti-stall assistance operates a finite-capacity clutch.
 	var target_clutch := 1.0-clutch
@@ -491,20 +497,20 @@ func _substep(dt: float, pedal: float, brake: float, clutch: float, nitrous: boo
 		# Bounded paddle controller: compression/synchronizer drag and throttle blip.
 		sync_torque = clampf((sync_target-omega)*engine_inertia/0.045,-240.0,full_torque)
 		engine_torque += sync_torque
-	nitrous_active = (nitrous or nitrous_auto) and rpm>=nitrous_min_rpm and gear>=nitrous_min_gear and nitrous_remaining > 0.0 and throttle > nitrous_throttle and clutch_engagement > 0.9 and speed > 5.0 and not fuel_cut and gear > 0 and running and brake < 0.1
+	nitrous_active = nitrous and nitrous_remaining > 0.0 and throttle > 0.85 and clutch_engagement > 0.9 and speed > 5.0 and not fuel_cut and gear > 0 and running and brake < 0.1
 	if nitrous_active:
-		nitrous_delivery = move_toward(nitrous_delivery,1.0,dt/_nitrous_ramp) if _nitrous_ramp > 0.0 else 1.0
+		nitrous_delivery = 1.0
 		var used := minf(dt*nitrous_delivery,nitrous_remaining)
 		nitrous_remaining = maxf(0.0,nitrous_remaining-used)
-		engine_torque += full_torque*(0.55+nitrous_stage*0.06)*(used/dt)
+		engine_torque += full_torque*nitrous_torque_gain()*(used/dt)
 	else: nitrous_delivery = 0.0
 	if engine_torque > 0.0: engine_torque = minf(engine_torque,supported_engine_torque())
 	overload = maxf(0.0,absf(engine_torque)/maxf(1.0,input_capacity())-1.0)
-	engine_temperature += (maxf(0.0,engine_torque)*omega*0.000006-(engine_temperature-85.0)*0.08)*dt
+	engine_temperature += (maxf(0.0,engine_torque)*omega*0.000006-(engine_temperature-85.0)*0.08*_charge_cooling)*dt
 	component_wear = minf(0.8,component_wear+dt*(overload*0.001+maxf(0.0,transmission_temperature-115.0)*0.00001))
 	if engine_torque > 0.0: engine_torque *= clampf(1.0-maxf(0.0,engine_temperature-110.0)/100.0-component_wear*0.2,0.55,1.0)
 	# Lump gearbox/bearing efficiency into a power loss, without altering kinematic ratios.
-	if engine_torque > 0.0 and clutch_engagement > 0.0: engine_torque *= 1.0-(0.10 if transmission_id == "legacy6" else 1.0-trans_efficiency)*clutch_engagement
+	if engine_torque > 0.0 and clutch_engagement > 0.0: engine_torque *= 1.0-(1.0-trans_efficiency)*clutch_engagement
 	omega += engine_torque/engine_inertia*dt
 	var pump_omega := omega
 	var coupling_inertia := engine_inertia
@@ -590,7 +596,7 @@ func _substep(dt: float, pedal: float, brake: float, clutch: float, nitrous: boo
 	# Read-only visual phase for the non-driven axle; keep continuity as tire radius changes.
 	rolling_wheel_angle = fposmod(rolling_wheel_angle+(old_speed+speed)*0.5/tire_radius*dt,TAU)
 	clutch_slip_rpm = (turbine_omega*RPM_PER_RAD if has_converter else rpm)-wheel_omega*total_ratio*RPM_PER_RAD
-	transmission_temperature += (absf(clutch_torque*clutch_slip_rpm/RPM_PER_RAD)/80000.0-(transmission_temperature-80.0)*0.06)*dt
+	transmission_temperature += (absf(clutch_torque*clutch_slip_rpm/RPM_PER_RAD)/80000.0-(transmission_temperature-80.0)*0.06*_gear_cooling)*dt
 	slip_ratio = (wheel_omega*tire_radius-speed)/maxf(3.0,speed)
 	wheelspin = clampf(maxf(0.0,slip_ratio),0.0,1.0)
 	var delivered := engine_torque-engine_inertia*(safe_omega-old_engine_omega)/dt if has_converter else clutch_torque
@@ -623,6 +629,10 @@ func reset_modifiers() -> void:
 	_fuel_factor = 1.0
 	_clutch_factor = 1.0
 	_supercharger = ""
+	_pressure_add = 0.0
+	_spool_scale = 1.0
+	_gear_cooling = 1.0
+	_charge_cooling = 1.0
 	_super_pressure = 0.0
 	_boost_extra = 0.0
 	_boost_onset = -1.0
@@ -642,7 +652,6 @@ func reset_modifiers() -> void:
 	launch_control = false
 	shift_firmness = 1.0
 	_advanced = false
-	_nitrous_ramp = 0.0
 	shift_map.clear()
 
 func configure_build(build: Dictionary, vehicle: String = "kaze", plan: bool = true) -> void:
@@ -660,10 +669,11 @@ func configure_build(build: Dictionary, vehicle: String = "kaze", plan: bool = t
 	rated_capacity = float(trans.capacity)
 	shift_duration = TransmissionCatalog.duration(transmission_id,gearbox_stage)
 	shift_retention = 0.60 if transmission_kind == "drag" else (0.35 if transmission_kind == "dct" else (0.25 if has_converter else 0.0))
-	if transmission_id != "legacy6": gear_ratios.assign(trans.ratios)
+	if transmission_id != "legacy6" or hardware.tune.has("gear_count"):
+		gear_ratios.assign(TransmissionCatalog.default_ratios(transmission_id,hardware.tune))
 	converter_stall = 4600.0 if transmission_kind == "drag" else 2700.0
 	converter_multiplication = 1.95 if transmission_kind == "drag" else 1.82
-	_advanced = transmission_id != "legacy6" or not hardware.parts.is_empty()
+	_advanced = transmission_id != "legacy6" or not hardware.parts.is_empty() or not hardware.tune.is_empty()
 	if float(_base_spec.get("factory_super",0))>0 and not hardware.parts.has("induction"):
 		_supercharger="roots"; _super_pressure=float(_base_spec.factory_super)
 	if _base_spec.has("id"): _boost_onset=1200.0
@@ -681,7 +691,6 @@ func configure_build(build: Dictionary, vehicle: String = "kaze", plan: bool = t
 		engine_inertia = maxf(0.08,engine_inertia+float(part.get("inertia",0.0)))
 		_mechanical_redline += float(part.get("redline",0.0))
 		if part.has("shift_scale"): shift_duration = maxf(0.14 if transmission_kind == "manual" else 0.035,shift_duration*float(part.shift_scale))
-		if part.has("nitrous_ramp"): _nitrous_ramp = clampf(float(hardware.tune.get("nitrous_ramp",part.nitrous_ramp)),0.15,1.0)
 		wheel_inertia = maxf(0.5,wheel_inertia+float(part.get("wheel_inertia",0.0)))
 		if part.has("radius"): tire_radius = float(part.radius)
 		if part.has("transfer"): load_transfer_scale = float(part.get("fwd_transfer",0.10)) if drivetrain == "FWD" else float(part.transfer)
@@ -691,10 +700,13 @@ func configure_build(build: Dictionary, vehicle: String = "kaze", plan: bool = t
 		if part.has("super"):
 			_supercharger = str(part.super)
 			_super_pressure = float(part.pressure)
-		if part.has("brake"): has_transbrake = true
+		rated_capacity *= float(part.get("capacity_scale",1.0))
+		trans_efficiency = minf(0.995,trans_efficiency+float(part.get("efficiency_add",0.0)))
+		_gear_cooling *= float(part.get("cooling_scale",1.0))
+		_charge_cooling *= float(part.get("charge_cooling_scale",1.0))
+		_pressure_add += float(part.get("pressure_add",0.0))
+		_spool_scale *= float(part.get("spool_scale",1.0))
 		if part.has("launch"): launch_control = true
-		if part.has("stall_min"): converter_stall = clampf(float(hardware.tune.get("stall",(float(part.stall_min)+float(part.stall_max))*0.5)),float(part.stall_min),float(part.stall_max))
-		if part.has("multiplication"): converter_multiplication = float(part.multiplication)
 	var tire: Dictionary = VehicleParts.PARTS.get(hardware.parts.get("tires",""),{})
 	var suspension: Dictionary = VehicleParts.PARTS.get(hardware.parts.get("suspension",""),{})
 	tire_grip = float(tire.get("grip",0.0))
@@ -706,29 +718,20 @@ func configure_build(build: Dictionary, vehicle: String = "kaze", plan: bool = t
 	suspension_launch_support = float(suspension.get("launch_support",0.0))
 	hop_damping = float(suspension.get("hop_damping",0.0))
 	var fitted: Array = hardware.parts.values()
-	if fitted.has("ecu"):
+	if VehicleParts.can_tune_rpm(hardware):
 		redline_rpm = clampf(float(hardware.tune.get("redline",redline_rpm)),minf(6500.0,_mechanical_redline-500.0),_mechanical_redline)
+	if hardware.parts.has("ecu"):
 		launch_rpm = clampf(float(hardware.tune.get("launch_rpm",3900.0)),2200.0,redline_rpm-400.0)
-	if fitted.has("boost_control"):
-		var installed_boost := base_boost+(_boost_extra if fitted.has("turbo_hybrid") or fitted.has("turbo_race") else turbo_stage*0.18)
+	if _supercharger=="" and hardware.tune.has("boost"):
+		var installed_boost := base_boost+(_boost_extra if hardware.parts.has("induction") else turbo_stage*0.18)+_pressure_add
 		_boost_setting = clampf(float(hardware.tune.get("boost",installed_boost)),0.0,1.5)
-	if fitted.has("final_kit"):
-		var requested := float(hardware.tune.get("final_drive",final_drive))
-		if requested in VehicleParts.FINAL_DRIVES: final_drive = requested
-	if fitted.has("gearset"):
-		var ratios = hardware.tune.get("ratios",[])
-		var valid_ratios: bool = ratios is Array and ratios.size() == gear_ratios.size()
-		if valid_ratios:
-			for i in ratios.size():
-				if not (ratios[i] is float or ratios[i] is int) or not is_finite(float(ratios[i])): valid_ratios = false; break
-				if float(ratios[i]) < gear_ratios[i]*0.88 or float(ratios[i]) > gear_ratios[i]*1.12: valid_ratios = false
-				if i > 0 and float(ratios[i-1]) <= float(ratios[i])*1.025: valid_ratios = false
-		if valid_ratios: gear_ratios.assign(ratios)
+	final_drive = clampf(float(hardware.tune.get("final_drive",final_drive)),2.0,5.5)
+	var ratios = hardware.tune.get("ratios",[])
+	if TransmissionCatalog.valid_ratios(ratios,Array(gear_ratios)): gear_ratios.assign(ratios)
 	shift_firmness = clampf(float(hardware.tune.get("firmness",1.0)),0.5,1.0+gearbox_stage*0.1) if transmission_kind in ["drag","automatic","dct"] else 1.0
-	if transmission_kind == "drag": launch_control = true; launch_rpm = minf(launch_rpm,redline_rpm-400.0)
+	if transmission_kind == "drag": launch_control = true; launch_rpm = clampf(float(hardware.tune.get("launch_rpm",launch_rpm)),2200,redline_rpm-400.0)
 	throttle_gamma=1; traction_slip_target=0; clutch_rate=1; boost_rise=0; boost_by_gear=[]
-	nitrous_auto=false; nitrous_min_rpm=3000 if fitted.has("progressive") else 0; nitrous_min_gear=1; nitrous_throttle=.85
-	launch_gear=1; pressure_grip=1; pressure_rolling=1; converter_lock_ratio=.85
+	launch_gear=1; pressure_grip=1; pressure_rolling=1
 	for key in hardware.tune:
 		if not TuningSetup.EXTRA.has(key) and key!="boost_by_gear": continue
 		var setting: Variant=TuningSetup.clean(key,hardware.tune[key],hardware,gearbox_stage,vehicle,turbo_stage)
@@ -740,12 +743,7 @@ func configure_build(build: Dictionary, vehicle: String = "kaze", plan: bool = t
 			"clutch_rate": clutch_rate=float(setting)
 			"boost_rise": boost_rise=float(setting)
 			"boost_by_gear": boost_by_gear=setting
-			"nitrous_auto": nitrous_auto=float(setting)>.5
-			"nitrous_min_rpm": nitrous_min_rpm=float(setting)
-			"nitrous_min_gear": nitrous_min_gear=int(setting)
-			"nitrous_throttle": nitrous_throttle=float(setting)
 			"launch_gear": launch_gear=int(setting)
-			"converter_lock": converter_lock_ratio=float(setting)
 			"diff_lock": extra_grip-=.055*(1.0-float(setting))/(1.0+tire_stage*.12)
 			"tire_pressure":
 				# Compound-specific straight-line pressure response; nominal setup is 32 psi.
@@ -786,11 +784,10 @@ func full_engine_torque(at_rpm: float) -> float:
 
 func rebuild_shift_map() -> void:
 	shift_map = ShiftPlanner.build(self)
-	if hardware.parts.values().has("race_controller"):
-		var chosen = hardware.tune.get("shift_rpms",[])
-		if chosen is Array and chosen.size() == shift_map.size():
-			for i in chosen.size():
-				if (chosen[i] is float or chosen[i] is int) and is_finite(float(chosen[i])): shift_map[i] = clampf(float(chosen[i]),idle_rpm+1500.0,redline_rpm-50.0)
+	var chosen = hardware.tune.get("shift_rpms",[])
+	if chosen is Array and chosen.size() == shift_map.size():
+		for i in chosen.size():
+			if (chosen[i] is float or chosen[i] is int) and is_finite(float(chosen[i])): shift_map[i] = clampf(float(chosen[i]),idle_rpm+1500.0,redline_rpm-50.0)
 
 func select_manual_gear(target: int, clutch_command: float) -> String:
 	if control_mode != "hpattern": return "H GATE NOT INSTALLED"
@@ -821,7 +818,7 @@ func converter_step(dt: float, pump: float, coupled: bool, shifting: bool) -> fl
 		return pump
 	var sr := clampf(turbine_omega/maxf(pump,1.0),0.0,1.2)
 	var before_energy := 0.5*engine_inertia*pump*pump+0.5*0.12*turbine_omega*turbine_omega
-	var should_lock := transmission_kind != "drag" and gear >= 2 and speed > 12.0 and sr > converter_lock_ratio and not shifting
+	var should_lock := transmission_kind != "drag" and gear >= 2 and speed > 12.0 and sr > 0.85 and not shifting
 	converter_lock = move_toward(converter_lock,1.0 if should_lock else 0.0,dt*5.0)
 	var capacity := base_torque*1.10/pow(converter_stall/RPM_PER_RAD,2.0)
 	var slip := clampf((pump-turbine_omega)/maxf(1.0,pump),-1.0,1.0)

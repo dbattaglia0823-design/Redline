@@ -23,9 +23,12 @@ var cursor := 0
 var drag_pointer := ""
 var graph_rect := Rect2()
 var name_edit: LineEdit
+var gear_slider := Rect2()
+var gear_slider_pointer := ""
+var pending_gear_count := 0
 const SLOTS := ["street","eighth","quarter","custom"]
 const SLOT_NAMES := ["Street","1/8 Mile","1/4 Mile","Custom"]
-const LABELS := {"launch_rpm":"Launch RPM","redline":"Rev limiter","boost":"Maximum boost / bar","boost_gear":"Gear boost cap / bar","nitrous_ramp":"Nitrous delivery ramp / s","firmness":"Shift firmness","stall":"Converter stall RPM","final_drive":"Final drive","ratio":"Gear ratio","shift":"Upshift RPM"}
+const LABELS := {"gear_count":"Forward gears","launch_rpm":"Launch RPM","redline":"Rev limiter","boost":"Maximum boost / bar","boost_gear":"Gear boost cap / bar","firmness":"Shift firmness","final_drive":"Final drive","ratio":"Gear ratio","shift":"Upshift RPM"}
 
 func _init(game: Node2D) -> void: g=game
 func text(s: String,x: float,y: float,n: int = 18,c: Color = GlassPalette.INK) -> void: g.text_at(s,x,y,n,c)
@@ -34,7 +37,8 @@ func rows_per_page() -> int: return 2 if short_layout() else 4
 func button(id: String,s: String,r: Rect2,primary: bool = false,selected: bool = false) -> void:
 	if short_layout(): g.race_hud.control(id,s,r,"",primary,selected,g.action_enabled(id))
 	else: g.button(id,s,r,primary,selected)
-func open() -> void:
+func open(initial_group: int = -1) -> void:
+	if initial_group>=0: group=initial_group; row_page=0; gear=0
 	return_tab=g.tab if g.tab!="tuning" else return_tab
 	last=histories.get(g.profile.vehicle_id+":"+str(length),{}).get("last",{})
 	g.tab="tuning"; page="setup"; g.menu_dirty=true
@@ -52,6 +56,7 @@ func update() -> void:
 		if preview.done: preview_result=preview.result.duplicate(true)
 
 func draw() -> void:
+	gear_slider=Rect2()
 	var p: bool=g.is_portrait()
 	var width := 600 if p else 1200
 	g.draw_header() if not p else g.mobile.header("TUNING & TEST TRACK")
@@ -85,14 +90,14 @@ func draw() -> void:
 func draw_setup(p: bool) -> void:
 	var groups: Array=TuningSetup.GROUPS.keys()
 	for i in groups.size():
-		button("tt_group_%d"%i,(["Launch","Power","N2O","Gears","Clutch","Grip"][i] if short_layout() else str(groups[i])),Rect2(24+(i%3)*188,250+int(i/3)*68,176,60) if p else Rect2(36+(i%2)*102,252+int(i/2)*102,90,90) if short_layout() else Rect2(36,i*54+252,186,46),false,group==i)
+		button("tt_group_%d"%i,(["Launch","Power","Gears","Clutch","Grip"][i] if short_layout() else str(groups[i])),Rect2(24+(i%3)*188,250+int(i/3)*68,176,60) if p else Rect2(36+(i%2)*102,252+int(i/2)*102,90,90) if short_layout() else Rect2(36,i*54+252,186,46),false,group==i)
 	var keys: Array=TuningSetup.GROUPS[groups[group]]
 	row_page=clampi(row_page,0,maxi(0,ceili(keys.size()/float(rows_per_page()))-1))
 	gear=clampi(gear,0,g.car.gear_ratios.size()-1); g.workshop.gear_index=gear
 	var top := 430 if p else 252
 	var x := 24 if p else 250
 	g.box(Rect2(x,top,552 if p else 916,590 if p else 336))
-	if group in [1,3]:
+	if groups[group] in ["Power","Gearbox"]:
 		button("tt_gear_prev","<",Rect2(x+16,top+12,64,60) if p else Rect2(x+530,top+8,90,90) if short_layout() else Rect2(x+530,top+8,64,44))
 		button("tt_gear_next","GEAR %d >"%(gear+1),Rect2(x+96,top+12,190,60) if p else Rect2(x+632,top+8,260,90) if short_layout() else Rect2(x+608,top+8,284,44))
 	else: text(str(groups[group])+" / installed hardware",x+20,top+35,22 if p else 18,g.MUTED)
@@ -104,38 +109,100 @@ func draw_setup(p: bool) -> void:
 		var y:=top+(98+row*112 if p else (130+row*110 if short_layout() else 78+row*61))
 		var label: String=LABELS.get(key,TuningSetup.EXTRA.get(key,[key])[0])
 		text(label,x+20,y,22 if p else 17)
-		var shown: String=display_value(key) if enabled else reason(key)
-		g.fit_text(shown,x+20,y+30,312 if p else 590,18 if p else 14,g.GREEN if enabled else g.MUTED)
+		if key=="gear_count":
+			draw_gear_slider(Rect2(x+158 if p else x+166,y-15,145 if p else 404,62))
+		else:
+			var shown: String=display_value(key) if enabled else reason(key)
+			g.fit_text(shown,x+20,y+30,312 if p else 590,18 if p else 14,g.GREEN if enabled else g.MUTED)
 		var plus:=Rect2(x+432,y-18,96,76) if p else Rect2(x+804,y-23,96,90) if short_layout() else Rect2(x+812,y-23,80,48)
 		var minus:=Rect2(x+324,y-18,96,76) if p else Rect2(x+696,y-23,96,90) if short_layout() else Rect2(x+720,y-23,80,48)
 		button("tt_minus_"+key,"-",minus,false)
 		button("tt_plus_"+key,"+",plus,enabled)
 		for target in ["tt_minus_"+key,"tt_plus_"+key]:
-			g.buttons[-1 if target.begins_with("tt_plus_") else -2].disabled=not enabled
+			g.buttons[-1 if target.begins_with("tt_plus_") else -2].disabled=not g.action_enabled(target)
 	if keys.size()>rows_per_page(): button("tt_rows","Settings %d/%d >"%[row_page+1,ceili(keys.size()/float(rows_per_page()))],Rect2(x+20,top+510,280,60) if p else Rect2(x+280,top+8,230,90 if short_layout() else 44))
+
+func draw_gear_slider(rect: Rect2) -> void:
+	gear_slider=rect
+	var limits:=TransmissionCatalog.gear_range(g.car.transmission_id)
+	var count: int=g.car.gear_ratios.size() if gear_slider_pointer=="" else pending_gear_count
+	var left:=rect.position+Vector2(12,32)
+	var width:=rect.size.x-24
+	var thumb:=left+Vector2(width*inverse_lerp(limits.x,limits.y,clampi(count,limits.x,limits.y)),0)
+	g.draw_line(left,left+Vector2(width,0),Color("344857"),5,true)
+	g.draw_line(left,thumb,GlassPalette.ORANGE,5,true)
+	for step in range(limits.x,limits.y+1):
+		g.draw_circle(left+Vector2(width*inverse_lerp(limits.x,limits.y,step),0),3,GlassPalette.INK)
+	g.draw_circle(thumb,9,GlassPalette.ORANGE)
+	text(str(limits.x),left.x-4,left.y+24,14,g.MUTED)
+	text(str(limits.y),left.x+width-9,left.y+24,14,g.MUTED)
+	text(str(count),thumb.x-5,thumb.y-13,18,GlassPalette.INK)
+
+func set_gear_count(count: int) -> void:
+	if count==g.car.gear_ratios.size(): return
+	if g.profile.tune_hardware("gear_count",count): g.refresh_car()
+	g.menu_dirty=true
+
+func gear_slider_input(event: InputEvent) -> bool:
+	if gear_slider.size==Vector2.ZERO or page!="setup" or g.tab!="tuning" or g.screen!="garage" or name_edit!=null:
+		gear_slider_pointer=""
+		return false
+	var pointer := ""
+	var pressed := false
+	var released := false
+	if event is InputEventScreenTouch:
+		pointer="touch_%d"%event.index
+		pressed=event.pressed and not event.canceled
+		released=not pressed
+	elif event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT:
+		pointer="mouse"
+		pressed=event.pressed
+		released=not pressed
+	elif event is InputEventScreenDrag:
+		pointer="touch_%d"%event.index
+	elif event is InputEventMouseMotion:
+		pointer="mouse"
+	else:
+		return false
+	var point: Vector2=g.to_local(event.position)
+	if pressed and gear_slider.has_point(point): gear_slider_pointer=pointer
+	if gear_slider_pointer!=pointer: return false
+	var limits:=TransmissionCatalog.gear_range(g.car.transmission_id)
+	var fraction:=clampf((point.x-gear_slider.position.x-12)/(gear_slider.size.x-24),0,1)
+	pending_gear_count=roundi(lerpf(limits.x,limits.y,fraction))
+	if released:
+		gear_slider_pointer=""
+		if not (event is InputEventScreenTouch and event.canceled): set_gear_count(pending_gear_count)
+	g.menu_dirty=true
+	g.get_viewport().set_input_as_handled()
+	return true
 
 func reason(key: String) -> String:
 	if TuningSetup.EXTRA.has(key) or key=="boost_gear":
 		var b: Dictionary=g.profile.hardware.duplicate(true); b.turbo_stage=g.car.turbo_stage
 		return TuningSetup.reason(key,b,g.car.gearbox_stage,g.profile.vehicle_id)
-	if key=="launch_rpm" and g.car.transmission_kind=="drag" and g.profile.hardware.parts.values().has("race_controller"): return ""
-	return "" if g.workshop.tuning_enabled(key) else {"ratio":"Ratio cassette required","shift":"Race controller / next gear required","boost":"Turbo + boost controller required","stall":"Adjustable converter required","final_drive":"Final-drive kit required","launch_rpm":"Programmable ECU required","redline":"Programmable ECU required","nitrous_ramp":"Progressive controller required","firmness":"Automatic or DCT required"}.get(key,"Compatible hardware required")
+	if key=="gear_count" or (key=="launch_rpm" and g.car.transmission_kind=="drag"): return ""
+	return "" if g.workshop.tuning_enabled(key) else {"shift":"Select a gear with an upshift","boost":"Turbocharger required","launch_rpm":"ECU required","redline":"Programmable ECU or higher required","firmness":"Automatic or DCT required"}.get(key,"Compatible hardware required")
 
 func value(key: String) -> Variant:
 	var c: Drivetrain=g.car
-	var values := {"launch_rpm":c.launch_rpm,"redline":c.redline_rpm,"boost":c.boost_target(c.redline_rpm,1),"nitrous_ramp":c._nitrous_ramp,"firmness":c.shift_firmness,"stall":c.converter_stall,"final_drive":c.final_drive,"ratio":c.gear_ratios[gear],"shift":c.shift_map[gear] if gear<c.shift_map.size() else 0,"boost_gear":c.boost_by_gear[gear] if gear<c.boost_by_gear.size() else c.boost_target(c.redline_rpm,1)}
+	var values := {"launch_rpm":c.launch_rpm,"redline":c.redline_rpm,"boost":c.boost_target(c.redline_rpm,1),"firmness":c.shift_firmness,"final_drive":c.final_drive,"ratio":c.gear_ratios[gear],"shift":c.shift_map[gear] if gear<c.shift_map.size() else 0,"boost_gear":c.boost_by_gear[gear] if gear<c.boost_by_gear.size() else c.boost_target(c.redline_rpm,1)}
 	if values.has(key): return values[key]
 	return g.profile.hardware.tune.get(key,TuningSetup.EXTRA[key][4])
 
 func display_value(key: String) -> String:
 	var v:=float(value(key))
-	if key in ["launch_enabled","nitrous_auto"]: return "ON" if v>.5 else "OFF"
+	if key=="launch_enabled": return "ON" if v>.5 else "OFF"
 	if key=="tc_slip" and v==0: return "OFF"
-	if key in ["launch_rpm","redline","stall","nitrous_min_rpm","shift"]: return "%.0f RPM"%v
+	if key in ["launch_rpm","redline","shift"]: return "%.0f RPM"%v
 	return "%.2f"%v+ (" "+str(TuningSetup.EXTRA[key][5]) if TuningSetup.EXTRA.has(key) else "")
 
 func change(key: String,dir: float) -> void:
 	if reason(key)!="": return
+	if key=="gear_count":
+		var limits:=TransmissionCatalog.gear_range(g.car.transmission_id)
+		set_gear_count(clampi(g.car.gear_ratios.size()+int(dir),limits.x,limits.y))
+		return
 	if TuningSetup.EXTRA.has(key):
 		var row: Array=TuningSetup.EXTRA[key]
 		g.profile.tune_hardware(key,float(value(key))+dir*float(row[3]))
@@ -251,6 +318,7 @@ func seek(x: float) -> void:
 	cursor=roundi(clampf((x-graph_rect.position.x)/maxf(1,graph_rect.size.x),0,1)*(last.samples.size()-1)); g.menu_dirty=true
 
 func handle_input(event: InputEvent) -> bool:
+	if gear_slider_input(event): return true
 	if name_edit!=null and name_edit.has_focus() and event is InputEventKey:
 		if event.pressed and event.keycode==KEY_ESCAPE: name_edit.queue_free(); name_edit=null; g.menu_dirty=true
 		return true
@@ -314,6 +382,9 @@ func enabled(id: String) -> bool:
 	if id.begins_with("tt_plus_") or id.begins_with("tt_minus_"):
 		var key:=id.trim_prefix("tt_plus_").trim_prefix("tt_minus_")
 		if reason(key)!="": return false
+		if key=="gear_count":
+			var limits:=TransmissionCatalog.gear_range(g.car.transmission_id)
+			return g.car.gear_ratios.size()<limits.y if id.begins_with("tt_plus_") else g.car.gear_ratios.size()>limits.x
 		if TuningSetup.EXTRA.has(key):
 			var row: Array=TuningSetup.EXTRA[key]
 			return float(value(key))<float(row[2])-.0001 if id.begins_with("tt_plus_") else float(value(key))>float(row[1])+.0001

@@ -22,7 +22,8 @@ func factory(id: String) -> Drivetrain:
 func class_ids(letter: String) -> Array[String]:
 	var ids: Array[String]=[]
 	for id in GameCatalog.CAR_IDS:
-		if PerformanceClasses.factory_class(id)==letter: ids.append(id)
+		if GameCatalog.price_class(id)==letter: ids.append(id)
+	ids.sort_custom(func(a,b): return int(RosterData.rows()[a].price)<int(RosterData.rows()[b].price))
 	return ids
 func filtered() -> Array[String]:
 	return class_ids(CLASSES[class_filter]) if class_filter>0 else GameCatalog.CAR_IDS.duplicate()
@@ -38,8 +39,7 @@ func enter_class(letter: String) -> void:
 	var selected: String=remembered.get(letter,ids[0])
 	if not ids.has(selected): selected=ids[0]
 	g.dealer_index=GameCatalog.CAR_IDS.find(selected); page=int(ids.find(selected)/4); age=0
-const CLASS_NAMES := ["Street","Sport","Tuner","Performance","Elite","Hyper / Drag"]
-const CLASS_TIMES := ["15.0s+","14.0–15.0s","13.0–14.0s","12.0–13.0s","10.5–12.0s","Under 10.5s"]
+const CLASS_NAMES := ["Entry","Enthusiast","Sport","Premium","Collector","Exotic"]
 func draw_classes(mobile: bool=false) -> void:
 	for i in 6:
 		var letter: String=CLASSES[i+1]; var ids:=class_ids(letter)
@@ -50,11 +50,9 @@ func draw_classes(mobile: bool=false) -> void:
 		t("%d cars"%ids.size(),r.position.x+80,r.position.y+65,17 if mobile else 13,g.MUTED)
 		if ids.is_empty(): continue
 		var cheapest: String=ids[0]
-		for id in ids:
-			if int(GameCatalog.spec(id).price)<int(GameCatalog.spec(cheapest).price): cheapest=id
 		g.draw_car(r.position+Vector2(12,78 if mobile else 65),1.05 if mobile else 1.4,g.PAINTS[2],0,0,false,cheapest)
 		t("From $%d"%int(GameCatalog.spec(cheapest).price),r.position.x+20,r.end.y-47 if mobile else r.end.y-20,20 if mobile else 15)
-		t(CLASS_TIMES[i]+"  /  1/4 mile",r.position.x+20,r.end.y-20,16,g.MUTED) if mobile else t(CLASS_TIMES[i],r.end.x-122,r.end.y-20,14,g.MUTED)
+		t(GameCatalog.price_band(i),r.position.x+20,r.end.y-20,16,g.MUTED) if mobile else t(GameCatalog.price_band(i),r.end.x-130,r.end.y-20,14,g.MUTED)
 func estimate(id: String) -> Dictionary:
 	return RaceAI.estimate({"model":id,"stages":GameCatalog.blank_stages(),"hardware":GameCatalog.factory_build(id),"reaction":.25,"pedal":1.0,"skill":2,"shift_error":0,"traction_skill":.8})
 func navigate(direction: int) -> void:
@@ -97,7 +95,7 @@ func draw() -> void:
 	t("%d / %d   /   %d CARS" % [page+1,ceili(ids.size()/4.0),ids.size()],255,660,16,g.MUTED)
 	g.box(Rect2(786,246,380,428))
 	g.fit_text(str(s.name),807,281,337,27)
-	t("CLASS "+PerformanceClasses.factory_class(id)+" / "+str(s.engine),808,309,13,g.MUTED)
+	t("PRICE CLASS "+GameCatalog.price_class(id)+" / "+str(s.engine),808,309,13,g.MUTED)
 	t("%d %sHP / %.0f NM" % [c.peak_horsepower(),"ICE " if float(s.get("hybrid_kw",0))>0 else "",GarageHub.peak_torque(c)],808,347,23,g.GREEN)
 	t("%.0f KG / %.2f GRIP" % [c.mass(),GarageHub.grip(c)],808,378,19)
 	t("%s / %d-SPEED %s" % [s.drive,c.gear_ratios.size(),c.transmission_kind.to_upper()],808,411,15,g.MUTED)

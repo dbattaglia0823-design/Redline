@@ -27,13 +27,10 @@ func begin(profile: DriverProfile,length: float) -> void:
 	source=signature(profile); distance=length; best_tune=build.tune.duplicate(true)
 	baseline.clear(); best.clear(); attempts.clear(); parameters.clear(); candidates.clear(); parameter=-1; done=false; cancelled=false
 	var fitted: Array=build.parts.values()
-	if fitted.has("ecu"): parameters.append(["launch_rpm",[2600,3400,4200,5000,5800]])
-	if fitted.has("converter_race") or fitted.has("converter_street"):
-		var part: Dictionary=VehicleParts.PARTS[build.parts.converter]
-		parameters.append(["stall",[part.stall_min,(float(part.stall_min)+float(part.stall_max))*.5,part.stall_max]])
-	if fitted.has("final_kit"): parameters.append(["final_drive",VehicleParts.FINAL_DRIVES.duplicate()])
-	if fitted.has("gearset"): parameters.append(["ratios",[.97,1.03]])
-	if fitted.has("race_controller"): parameters.append(["shift_rpms",[-250,250]])
+	if build.parts.has("ecu"): parameters.append(["launch_rpm",[2600,3400,4200,5000,5800]])
+	parameters.append(["final_drive",VehicleParts.FINAL_DRIVES.duplicate()])
+	parameters.append(["ratios",[.97,1.03]])
+	parameters.append(["shift_rpms",[-250,250]])
 	if fitted.has("boost_control"):
 		var limit:=VehicleParts.boost_control_limit(build,float(GameCatalog.spec(model).get("base_boost",0)),int(stages[1]))
 		if limit>0: parameters.append(["boost",[limit*.65,limit*.85,limit]])

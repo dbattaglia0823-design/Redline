@@ -9,11 +9,12 @@ func configured(p: DriverProfile) -> Drivetrain:
 func equipped() -> DriverProfile:
 	var p:=DriverProfile.new(); p.vehicle_id="supra"; p.garage["supra"]={"stages":GameCatalog.blank_stages(),"hardware":GameCatalog.factory_build("supra")}
 	p.stages=[3,2,3,1,5,1,1,1]
-	p.hardware=VehicleBench.fixture("drag3",["ecu","billet","fuel_ethanol","turbo_race","boost_control","progressive","converter_race","race_controller","gearset","final_kit","drag_wheels","lsd"])
+	p.hardware=VehicleBench.fixture("automatic_type",["ecu","billet","fuel_ethanol","turbo_race","boost_control","drag_wheels","lsd"],{"gear_count":3})
 	return p
 func _initialize() -> void:
 	var stock:=DriverProfile.new()
 	for key in TuningSetup.EXTRA:
+		if key=="launch_gear": continue
 		check(not stock.tune_hardware(key,TuningSetup.EXTRA[key][4],false),"Stock build accepted gated tuning: "+key)
 	var p:=equipped()
 	check(p.tune_hardware("launch_rpm",4600,false),"ECU launch target rejected")
@@ -28,13 +29,12 @@ func _initialize() -> void:
 	check(c.launch_rpm==4600 and absf(c.traction_slip_target-.08)<.0001,"Engine launch/TC settings disconnected")
 	check(c.boost_by_gear==[.3,.7,1.1] and c.throttle_gamma==1.4,"Boost/pedal settings disconnected")
 	p.hardware.tune.erase("launch_gear")
-	p.tune_hardware("nitrous_auto",1,false); p.tune_hardware("nitrous_min_rpm",3500,false); p.tune_hardware("nitrous_min_gear",2,false)
-	c=configured(p); c.running=true; c.set_road_state(15,1,3000)
+	check(not p.tune_hardware("nitrous_auto",1,false),"Retired nitrous setting was accepted")
+	c=configured(p); c.running=true; c.set_road_state(35,2,5000)
 	for i in 100: c.step(1.0/240,1)
-	check(not c.nitrous_active and c.nitrous_remaining==c.nitrous_capacity(),"Nitrous ignored minimum gear")
-	c.set_road_state(45,2,5000)
-	for i in 150: c.step(1.0/240,1)
-	check(c.nitrous_remaining<c.nitrous_capacity(),"Automatic progressive nitrous did not deliver")
+	check(not c.nitrous_active and c.nitrous_remaining==c.nitrous_capacity(),"Nitrous sprayed without driver input")
+	for i in 150: c.step(1.0/240,1,0,0,true)
+	check(c.nitrous_remaining<c.nitrous_capacity(),"Manual nitrous input did not deliver")
 	var original_money:=p.credits
 	p.save_tune_slot("quarter","Quarter baseline"); check(p.tuning_presets().has("quarter"),"Tune not stored")
 	p.tune_hardware("launch_rpm",2800,false); check(p.load_tune_slot("quarter") and p.hardware.tune.launch_rpm==4600,"Tune restore failed")

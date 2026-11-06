@@ -12,6 +12,63 @@ const ORANGE = Color("ff8659")
 static var shared_theme: Theme
 static var glass_styles: Dictionary = {}
 static var soft_light: ImageTexture
+static var action_icons: Dictionary = {}
+
+const ACTION_PATHS := {
+	"garage":"M3 21V9l9-6 9 6v12z M7 21v-9h10v9 M7 16h10",
+	"performance":"M4 17a8 8 0 1 1 16 0 M12 15l4-6 M7 19h10",
+	"style":"M4 20l2-6L17 3l4 4-11 11z M14 6l4 4",
+	"dealer":"M3 17V12l3-2 2-4h8l2 4 3 2v5z M3 14h4m10 0h4 M5 17v3m14-3v3",
+	"races":"M5 22V3m0 0c5-3 9 4 15 1v10c-6 3-10-4-15-1 M10 3v10m5-8v10 M5 8c5-3 9 4 15 1",
+	"track":"M17 4H8C4 4 3 8 5 11l2 3c2 3 1 6 5 6h5c4 0 5-4 2-6l-3-2c-2-2-1-4 1-4 3 0 3-4 0-4z",
+}
+
+static func action_icon(key: String,tint: Color) -> Texture2D:
+	var cache_key:=key+tint.to_html()
+	if not action_icons.has(cache_key):
+		var pixels:=Image.new()
+		pixels.load_svg_from_string('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path d="%s" stroke="#%s" fill="none" stroke-width="1.55" stroke-linejoin="round" stroke-linecap="round"/></svg>'%[ACTION_PATHS[key],tint.to_html(false)])
+		action_icons[cache_key]=ImageTexture.create_from_image(pixels)
+	return action_icons[cache_key]
+
+static func section_mark(parent: Node,title: String,key: String,tint: Color) -> void:
+	var row_control:=row(parent,9)
+	var badge:=TextureRect.new()
+	badge.texture=action_icon(key,tint)
+	badge.custom_minimum_size=Vector2(21,21)
+	badge.expand_mode=TextureRect.EXPAND_IGNORE_SIZE
+	badge.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	badge.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	row_control.add_child(badge)
+	row_control.add_child(label(title,15,tint,true))
+
+class ClassDecal extends Control:
+	var letter: String
+	var tint: Color
+
+	func _draw() -> void:
+		var edge:=size.x
+		var bottom:=size.y
+		if edge<60 or bottom<60: return
+		var wash:=Color(tint,.10)
+		draw_colored_polygon(PackedVector2Array([Vector2(edge,bottom*.22),Vector2(edge,bottom),Vector2(edge*.55,bottom)]),wash)
+		for i in 3:
+			var x:=edge-6-i*7
+			draw_line(Vector2(x,bottom*.57),Vector2(x-bottom*.24,bottom),Color(tint,.18),2,true)
+		var points:=mini(94,roundi(bottom*.6))
+		var position:=Vector2(edge-points*.86,bottom-16)
+		draw_string_outline(DISPLAY,position,letter,HORIZONTAL_ALIGNMENT_LEFT,-1,points,2,Color(tint,.39))
+		draw_string(DISPLAY,position,letter,HORIZONTAL_ALIGNMENT_LEFT,-1,points,Color(.075,.12,.15))
+
+static func class_decal(card: Button,letter: String,index: int) -> void:
+	var decal:=ClassDecal.new()
+	decal.letter=letter
+	decal.tint=Color(["77b4c8","6cc5ac","cfab67","b998da","e1896f","eb746b"][index])
+	decal.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	card.add_child(decal)
+	card.move_child(decal,0)
+	decal.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	decal.resized.connect(decal.queue_redraw)
 
 static func glow(canvas: CanvasItem,bounds: Rect2,tint: Color) -> void:
 	if soft_light == null:
@@ -94,25 +151,6 @@ class TechnicalIcon extends Control:
 	func _draw() -> void:
 		LiquidGlass.new().icon(self,icon_key,Vector2(2,2),icon_size,ink)
 
-static func part_row(parent: Node,title: String,fitted: String,key: String,height: float) -> Button:
-	var entry:=content_card(parent,height)
-	var content: VBoxContainer=entry.get_meta("content")
-	var line:=row(content,10)
-	line.size_flags_vertical=Control.SIZE_EXPAND_FILL
-	var emblem:=TechnicalIcon.new()
-	emblem.icon_key=key
-	emblem.ink=ORANGE
-	emblem.custom_minimum_size=Vector2(30,30)
-	emblem.size_flags_vertical=Control.SIZE_SHRINK_CENTER
-	emblem.mouse_filter=Control.MOUSE_FILTER_IGNORE
-	line.add_child(emblem)
-	var names:=column(line,1)
-	names.size_flags_vertical=Control.SIZE_SHRINK_CENTER
-	names.add_child(label(title,21 if height>=68 else 18))
-	names.add_child(label(fitted,14,MUTED))
-	entry.tooltip_text=title+" / "+fitted
-	return entry
-
 static func surface(fill: Color,edge: Color=Color("294353"),radius: int=14) -> StyleBoxFlat:
 	var s:=StyleBoxFlat.new()
 	s.bg_color=fill; s.border_color=edge; s.set_border_width_all(1)
@@ -130,8 +168,8 @@ static func theme_resource() -> Theme:
 		var primary: bool=variant=="Primary"
 		var navigation: bool=variant=="Navigation"
 		var selection: bool=variant=="Selection"
-		var normal:=surface(ORANGE if primary else (Color("191b1f") if not navigation else Color("0f1014")),Color("303137") if not primary else ORANGE,4)
-		var hover:=surface(Color("ff9d76") if primary else Color("27282e"),Color("51433e"),4)
+		var normal:=surface(ORANGE if primary else (Color("142028") if not navigation else Color("0c151d")),Color("354c57") if not primary else ORANGE,4)
+		var hover:=surface(Color("ff9d76") if primary else Color("213640"),Color("597d8b"),4)
 		var pressed:=surface(Color("dc6c43") if primary else Color("32241f"),Color("7b4736"),4)
 		if navigation or selection:
 			pressed.border_color=ORANGE
@@ -215,12 +253,6 @@ static func comparison(parent: Node,title: String,before: float,after: float,uni
 	var color:=MUTED if absf(delta)<.001 else (Color("91c9ad") if (delta<0 if less_better else delta>0) else Color("eea29b"))
 	var result:=label((format%before)+" → "+(format%after)+" "+unit,17,color,true)
 	result.custom_minimum_size.x=230; result.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT; r.add_child(result)
-
-static func metric_heading(parent: Node) -> void:
-	var header:=row(parent,8)
-	header.add_child(label("MEASURE",12,MUTED,true))
-	for column_name in ["INSTALLED","PREVIEW"]:
-		metric_value(header,column_name,12,MUTED)
 
 static func metric_value(parent: Node,value: String,points: int,color: Color) -> void:
 	var number:=label(value,points,color,true)

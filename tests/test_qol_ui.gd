@@ -37,7 +37,7 @@ func click(id: String) -> void:
 	check(false,"Missing action: "+id)
 func run_checks() -> void:
 	game=load("res://scenes/main.tscn").instantiate(); root.add_child(game); game.set_process(false); game.set_physics_process(false); await frame()
-	game.profile.credits=1000000
+	game.profile.credits=10000000
 	game.profile.xp=100000
 	for id in GameCatalog.CAR_IDS: game.profile.buy_vehicle(id,false)
 	for phone in [false,true]:
@@ -58,7 +58,7 @@ func run_checks() -> void:
 		var active: String=game.profile.vehicle_id; key(KEY_LEFT); await frame()
 		check(game.menu.hub.owned_selection!=active and game.profile.vehicle_id==active,"Owned keyboard preview equipped or failed")
 		game.go_garage(); await frame(); await click("tab_dealer"); await click("shop_class_E"); key(KEY_HOME); await frame()
-		check(game.dealer_index==0,"Dealer Home failed")
+		check(game.dealer_index==GameCatalog.CAR_IDS.find(game.menu.dealer.filtered()[0]),"Dealer Home failed")
 		key(KEY_END); await frame(); check(game.dealer_index==GameCatalog.CAR_IDS.find(game.menu.dealer.filtered()[-1]),"Dealer End failed")
 		await click("shop_classes"); check(game.menu.dealer.class_picker,"Class picker not opened"); capture("dealer_classes")
 		await click("shop_class_S"); check(game.menu.dealer.class_filter==6,"Class selection failed")

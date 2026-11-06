@@ -77,10 +77,18 @@ func _initialize() -> void:
 	var gearbox := Drivetrain.new()
 	gearbox.configure([0,0,0,0,3,0,0,0])
 	check(absf(gearbox.shift_duration-0.055) < 0.00001,"Gearbox upgrade did not shorten torque interruption")
+	var stock_bottle := Drivetrain.new()
+	check(stock_bottle.nitrous_capacity()==0.0 and stock_bottle.nitrous_torque_gain()==0.0,"Stock car has a nitrous kit")
+	for tier in range(1,GameCatalog.max_stage(7)+1):
+		var kit := Drivetrain.new()
+		kit.configure([0,0,0,0,0,0,0,tier])
+		kit.reset()
+		check(is_equal_approx(kit.nitrous_remaining,4.0+1.5*tier),"Incorrect nitrous duration for tier %d"%tier)
+		check(is_equal_approx(kit.nitrous_torque_gain(),(0.55+0.06*tier)*0.8),"Incorrect nitrous torque for tier %d"%tier)
 	var bottle := Drivetrain.new()
 	bottle.configure([0,0,0,0,0,0,0,3])
 	bottle.reset()
-	check(bottle.nitrous_capacity() == 10.5 and bottle.nitrous_remaining == 10.5,"Nitrous upgrade capacity was not reset correctly")
+	check(bottle.nitrous_capacity() == 8.5 and bottle.nitrous_remaining == 8.5,"Nitrous upgrade capacity was not reset correctly")
 	var small_bottle := Drivetrain.new()
 	for c in [bottle,small_bottle]:
 		c.running = true

@@ -53,9 +53,9 @@ func run() -> void:
 	check(equivalent.cost==7000 and equivalent.items.size()==1,"An equivalent fitted fuel system was replaced")
 	check(fixture.commit_upgrade_quote(-1,-1,"induction","turbo_race",JSON.stringify(owned)).begins_with("Build changed"),"A stale quote was accepted")
 	var blocked:=fixture.upgrade_quote(-1,-1,"converter","converter_race")
-	check(blocked.reason=="Converter automatic required","Incompatible converter did not explain its required gearbox")
+	check(blocked.reason=="Unknown component","Retired converter is still available")
 	var supported:=fixture.upgrade_quote(-1,-1,"clutch","clutch_race")
-	check(supported.stages[4]==3 and supported.items.size()==2,"Required gearbox stage was omitted")
+	check(supported.stages[4]==0 and supported.items.size()==1,"Clutch quote still requires a gearbox stage")
 	var old_save:=FileAccess.open(DriverProfile.SAVE_PATH,FileAccess.WRITE)
 	old_save.store_string(JSON.stringify({"roster_version":2,"credits":50000,"vehicle_id":"miata","garage":{
 		"miata":{"stages":[3,0,0,0,3,0,0,0],"hardware":GameCatalog.factory_build("miata")},
@@ -66,9 +66,9 @@ func run() -> void:
 	check(migrated.highest_stage(0)==3 and migrated.highest_stage(4)==3,"Legacy tiers were not migrated to ownership")
 	check(migrated.install_hardware("clutch_race").begins_with("Installed"),"Gearbox downgrade test could not fit the race clutch")
 	var lower:=migrated.upgrade_quote(4,0)
-	check(lower.items.size()==2 and lower.items[1].removal and lower.cost==0,"Downgrade quote did not disclose incompatible clutch removal")
+	check(lower.items.size()==1 and lower.cost==0,"Gearbox downgrade still affects clutch fitment")
 	var funds:=migrated.credits
-	check(migrated.upgrade(4,0) and migrated.hardware.owned_parts.has("clutch_race") and not migrated.hardware.parts.has("clutch"),"Downgrade lost clutch ownership or kept it fitted")
+	check(migrated.upgrade(4,0) and migrated.hardware.owned_parts.has("clutch_race") and migrated.hardware.parts.has("clutch"),"Gearbox downgrade changed clutch fitment")
 	check(migrated.upgrade(4,3) and migrated.install_hardware("clutch_race").begins_with("Installed") and migrated.credits==funds,"Reinstalling gearbox tier and clutch charged again")
 	check(migrated.upgrade(0,0) and migrated.select_vehicle("brz") and migrated.highest_stage(0)==1,"Ownership leaked between vehicles")
 	check(migrated.upgrade(0,0) and migrated.upgrade_cost(0,2)==GameCatalog.PART_COSTS[0]*2,"Buying above ownership charged again for a lower tier")
@@ -156,31 +156,34 @@ func run() -> void:
 		var search: LineEdit=game.native_workshop.search
 		search.grab_focus()
 		search.edit()
-		for character in "large frame":
+		for character in "turbocharger":
 			var typing:=InputEventKey.new(); typing.pressed=true; typing.unicode=character.unicode_at(0)
 			typing.keycode=KEY_SPACE if character==" " else 0
 			root.push_input(typing,true)
 		await frame()
-		check(search.text=="large frame","Catalog search did not accept keyboard input")
+		check(search.text=="turbocharger","Catalog search did not accept keyboard input")
 		check(game.native_workshop.targets.hub_category_5.visible and not game.native_workshop.targets.hub_category_0.visible,"Search did not find the turbo by its part name")
 		search.clear(); search.text_changed.emit(""); search.release_focus(); await frame()
 		root.get_texture().get_image().save_png("res://validation/native_ui/catalog_"+suffix+".png")
-		await click("hub_category_5",phone); await click("hw_pick_turbo_race",phone)
+		await click("hub_category_5",phone); await click("hw_pick_turbo_hybrid",phone)
 		var quote: Dictionary=game.native_workshop.active_quote()
 		var credits: int=game.profile.credits
-		check(quote.cost==8900 and quote.items.size()==2,"Large-frame turbo quote omitted the required fuel kit")
-		check(not game.profile.hardware.parts.has("fuel") and game.profile.credits==credits,"Bundle preview changed installed hardware or credits")
+		check(quote.cost==3200 and quote.items.size()==1,"Turbocharger should be a single purchase")
 		var preview_hp: float=game.menu.hub.preview().peak_horsepower()
-		root.get_texture().get_image().save_png("res://validation/native_ui/turbo_bundle_"+suffix+".png")
-		await click("catalog_purchase",phone)
-		check(game.profile.credits==credits and game.native_workshop.confirm_quote!="","Opening confirmation charged credits")
-		await click("catalog_cancel",phone)
-		check(game.profile.credits==credits and game.native_workshop.confirm_quote=="","Cancelling a bundle changed the profile")
-		await click("catalog_purchase",phone); await click("catalog_purchase",phone)
-		check(game.profile.credits==credits-8900 and game.profile.hardware.parts.get("fuel")=="fuel_street" and game.profile.hardware.parts.get("induction")=="turbo_race","Bundle did not install exactly once")
-		check(is_equal_approx(game.car.peak_horsepower(),preview_hp),"Bundle output differed from its preview")
+		await click("hw_buy",phone)
+		check(game.profile.credits==credits-3200 and game.profile.hardware.parts.get("induction")=="turbo_hybrid","Turbocharger did not install exactly once")
+		check(is_equal_approx(game.car.peak_horsepower(),preview_hp),"Turbocharger output differed from its preview")
 		saved.load_profile()
-		check(saved.hardware.parts.get("induction")=="turbo_race" and saved.credits==credits-8900,"Bundle did not persist")
+		check(saved.hardware.parts.get("induction")=="turbo_hybrid" and saved.credits==credits-3200,"Turbocharger did not persist")
+		var expected := {1:["intake_street","plenum","intake_velocity","intake_race"],3:["fuel_street","fuel_injectors","fuel_ethanol"],4:["ecu_street","ecu","ecu_track","ecu_race"],8:["clutch_street","clutch_twin","clutch_race"]}
+		for category in expected:
+			game.menu.hub.open_upgrade(category)
+			await frame()
+			for id in expected[category]:
+				check(game.native_workshop.targets.has("hw_pick_"+id),"Shop is missing "+id)
+		game.menu.hub.open_upgrade(6)
+		await frame()
+		check(game.native_workshop.targets.has("stage_pick_1") and not game.native_workshop.targets.has("hw_pick_progressive") and not game.native_workshop.targets.has("upgrade_section_tune"),"Nitrous shop still shows controller or tuning")
 		game.go_garage(); await frame()
 	var report:=FileAccess.open("res://validation/native_ui/results.json",FileAccess.WRITE)
 	report.store_string(JSON.stringify({"passed":failures==0,"checks":checks,"actual_viewport_events":true},"  ")); report.close()

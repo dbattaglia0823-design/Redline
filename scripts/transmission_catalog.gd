@@ -4,7 +4,12 @@ extends RefCounted
 const STAGES := ["Stock","Stage 1","Stage 2","Stage 3","Race","Pro Race"]
 # Ratios are sourced/inspired; all masses, costs, limits and fitments are game estimates.
 # name, type, ratios, kg, efficiency, seconds, Nm, cost, required stage, layout
+# Legacy rows remain addressable for existing saves and simulations. Only type_options populates the shop.
 const ROWS := {
+	"manual_type":["Manual","manual",[3.10,1.95,1.34,1.0,0.76],45.0,0.95,0.34,650.0,2600,0,"ALL"],
+	"sequential_type":["Sequential / Paddle","sequential",[3.10,2.20,1.66,1.32,1.09,0.90],48.0,0.96,0.13,850.0,6200,0,"ALL"],
+	"automatic_type":["Automatic","automatic",[4.17,2.34,1.52,1.14,0.87,0.69],82.0,0.92,0.19,800.0,4600,0,"ALL"],
+	"drag_type":["Drag Automatic","drag",[2.10,1.40,1.0],54.0,0.96,0.085,1500.0,9500,0,"LONG"],
 	"legacy6":["Original 6P","paddle",[3.10,2.12,1.53,1.17,0.94,0.78],50.0,0.90,0.16,750.0,2400,0,"ALL"],
 	"manual3":["Classic 3M","manual",[2.85,1.68,1.0],38.0,0.94,0.42,420.0,1400,0,"ALL"],
 	"manual4":["Sport 4M","manual",[2.52,1.88,1.46,1.0],43.0,0.95,0.36,550.0,2200,0,"ALL"],
@@ -37,7 +42,7 @@ static func spec(id: String) -> Dictionary:
 
 static func compatible(id: String, vehicle: String) -> bool:
 	if id.begins_with("oem_"): return id=="oem_"+vehicle and RosterData.rows().has(vehicle)
-	if vehicle=="sf90": return id=="dct8" # Hybrid motor/gearbox integration; no unsupported manual/drag swap.
+	if vehicle=="sf90": return id in ["dct8","sequential_type"] # Hybrid motor/gearbox integration; no unsupported manual/drag swap.
 	return ROWS.has(id) and (spec(id).layout == "ALL" or str(GameCatalog.spec(vehicle).drive) != "FWD")
 
 static func duration(id: String, stage: int) -> float:
@@ -49,3 +54,45 @@ static func duration(id: String, stage: int) -> float:
 
 static func strength(stage: int) -> float:
 	return [1.0,1.15,1.35,1.60,1.95,2.35][clampi(stage,0,5)]
+static func family(id: String) -> String:
+	var kind: String = spec(id).kind
+	return kind if kind in ["manual","automatic","drag"] else "sequential"
+
+const TYPES := {
+	"manual":"Manual",
+	"sequential":"Sequential / Paddle",
+	"automatic":"Automatic",
+	"drag":"Drag Automatic"
+}
+const CONVERSIONS := {"manual":"manual_type","sequential":"sequential_type","automatic":"automatic_type","drag":"drag_type"}
+const GEAR_RANGES := {"manual":Vector2i(3,6),"sequential":Vector2i(5,7),"automatic":Vector2i(3,10),"drag":Vector2i(2,4)}
+
+static func type_options(build: Dictionary) -> Array:
+	var ids := CONVERSIONS.duplicate()
+	for id in build.owned_transmissions:
+		ids[family(id)] = id
+	ids[family(build.transmission)] = build.transmission
+	return TYPES.keys().map(func(kind): return ids[kind])
+
+static func gear_range(id: String) -> Vector2i:
+	var limits: Vector2i = GEAR_RANGES[family(id)]
+	return Vector2i(limits.x,maxi(limits.y,spec(id).ratios.size()))
+
+static func default_ratios(id: String, tune: Dictionary) -> Array:
+	var original: Array = spec(id).ratios
+	if not tune.has("gear_count"): return original
+	var limits := gear_range(id)
+	var count := clampi(int(tune.gear_count),limits.x,limits.y)
+	if count == original.size(): return original
+	var ratios := []
+	for i in count:
+		ratios.append(snappedf(float(original.front())*pow(float(original.back())/float(original.front()),float(i)/(count-1)),0.001))
+	return ratios
+
+static func valid_ratios(value: Variant, defaults: Array) -> bool:
+	if not value is Array or value.size()!=defaults.size(): return false
+	for i in value.size():
+		if not (value[i] is float or value[i] is int) or not is_finite(float(value[i])): return false
+		if float(value[i]) < 0.40 or float(value[i]) > 6.0: return false
+		if i > 0 and float(value[i-1]) <= float(value[i])*1.025: return false
+	return true

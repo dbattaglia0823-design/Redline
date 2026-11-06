@@ -67,17 +67,18 @@ func run_checks() -> void:
 	await click("hub_back"); await click("tab_garage"); check(game.tab == "garage","Upgrade navigation lost garage")
 	await click("race_menu"); await click("bot_0")
 	var repeat_count := 0
-	var purchase_price := int(GameCatalog.spec("civic_si").price)
-	while game.profile.credits < purchase_price and repeat_count < 24:
+	var next_car: String=game.menu.dealer.class_ids("E").filter(func(id): return not game.profile.garage.has(id))[0]
+	var purchase_price := int(GameCatalog.spec(next_car).price)
+	while game.profile.credits < purchase_price and repeat_count < 28:
 		await run_race("race" if repeat_count == 0 else "retry"); repeat_count += 1
 	check(game.profile.credits >= purchase_price,"Recovery races cannot fund another car")
 	await click("garage"); await click("tab_dealer"); await click("shop_class_E")
-	game.dealer_index = GameCatalog.CAR_IDS.find("civic_si"); await frame(); bounds("dealer"); capture("dealer")
-	await click("buy_car"); check(game.profile.garage.has("civic_si") and game.profile.vehicle_id == "civic_si","Earned purchase not in collection")
+	game.dealer_index = GameCatalog.CAR_IDS.find(next_car); await frame(); bounds("dealer"); capture("dealer")
+	await click("buy_car"); check(game.profile.garage.has(next_car) and game.profile.vehicle_id == next_car,"Earned purchase not in collection")
 	await click("tab_garage"); await click("hub_owned"); bounds("owned"); capture("owned")
 	await click("hub_pick_miata"); await click("hub_equip"); check(game.profile.stages[0] == 1,"Switching cars lost purchased upgrade")
 	var restored := DriverProfile.new(); restored.load_profile()
-	check(restored.garage.has("civic_si") and restored.vehicle_id == "miata" and restored.stages[0] == 1,"Fresh gameplay loop did not persist")
+	check(restored.garage.has(next_car) and restored.vehicle_id == "miata" and restored.stages[0] == 1,"Fresh gameplay loop did not persist")
 	game.wager = 10000; game.profile.credits = 37; game.tab = "races"; await frame(); check(game.wager == 37,"Visible wager exceeds current funds")
 	game.profile.credits = 100000; game.profile.xp = 20000; game.wager = 0
 	game.action("recommend_rival"); game.action("bot_0"); game._process(1.0/60)
@@ -97,7 +98,6 @@ func run_checks() -> void:
 	capture("safe_area"); game.safe_insets = Vector4.ZERO
 	for trans in ["manual5","seq5","dct6","auto10","drag3"]:
 		game.profile.hardware = VehicleBench.fixture(trans); game.profile.stages[4] = 5; game.refresh_car(); game.screen = "garage"
-		if trans == "drag3": game.profile.install_hardware("transbrake"); game.refresh_car()
 		RosterTest.ready(game); game.start_race(); await frame(); bounds("race "+trans); capture("race_"+trans)
 		var state: Dictionary = game.car.telemetry()
 		await click("pause"); await click("telemetry"); await click("resume")

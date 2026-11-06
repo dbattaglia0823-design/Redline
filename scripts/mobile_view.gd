@@ -57,10 +57,10 @@ func owned() -> void:
 	if not g.profile.garage.has(h.owned_selection): h.owned_selection = g.profile.vehicle_id
 	header("CHANGE CAR")
 	b("hub_back","< Garage",Rect2(24,76,172,68))
-	b("owned_filter","Class "+("All" if h.owned_filter==0 else PerformanceClasses.ORDER[h.owned_filter-1]),Rect2(208,76,172,68))
+	b("owned_filter","Price "+("All" if h.owned_filter==0 else GameCatalog.PRICE_CLASSES[h.owned_filter-1]),Rect2(208,76,172,68))
 	b("owned_sort","Quickest" if h.owned_sort else "Order",Rect2(392,76,184,68))
 	var ids: Array=h.owned_ids()
-	if ids.is_empty(): t("No measured builds in class",24,230,23); return
+	if ids.is_empty(): t("No owned cars in this price class",24,230,23); return
 	if not ids.has(h.owned_selection): h.owned_selection=str(ids[0])
 	h.owned_page = clampi(h.owned_page,0,maxi(0,ceili(ids.size()/4.0)-1))
 	preview(h.owned_selection,162,h.vehicle(h.owned_selection))
@@ -137,12 +137,12 @@ func tuning() -> void:
 	w.gear_index = clampi(w.gear_index,0,g.car.gear_ratios.size()-1)
 	if g.menu.hub.selected == 7:
 		b("tune_gear_prev","< GEAR",Rect2(24,354,264,68)); b("tune_gear_next","GEAR %d >" % (w.gear_index+1),Rect2(312,354,264,68))
-	var values := {"launch_rpm":g.car.launch_rpm,"redline":g.car.redline_rpm,"boost":g.car.boost_target(g.car.redline_rpm,1),"nitrous_ramp":g.car._nitrous_ramp,"firmness":g.car.shift_firmness,"stall":g.car.converter_stall,"final_drive":g.car.final_drive,"ratio":g.car.gear_ratios[w.gear_index],"shift":g.car.shift_map[w.gear_index] if w.gear_index < g.car.shift_map.size() else 0}
-	var labels := {"launch_rpm":"Launch RPM","redline":"Rev limiter","boost":"Boost / bar","nitrous_ramp":"Nitrous ramp / sec","firmness":"Shift firmness","stall":"Converter stall RPM","final_drive":"Final drive","ratio":"Gear ratio","shift":"Upshift RPM"}
+	var values := {"launch_rpm":g.car.launch_rpm,"redline":g.car.redline_rpm,"boost":g.car.boost_target(g.car.redline_rpm,1),"firmness":g.car.shift_firmness,"final_drive":g.car.final_drive,"ratio":g.car.gear_ratios[w.gear_index],"shift":g.car.shift_map[w.gear_index] if w.gear_index < g.car.shift_map.size() else 0}
+	var labels := {"launch_rpm":"Launch RPM","redline":"Rev limiter","boost":"Boost / bar","firmness":"Shift firmness","final_drive":"Final drive","ratio":"Gear ratio","shift":"Upshift RPM"}
 	for i in keys.size():
 		var key: String = keys[i]; var y := 454+i*124
 		var enabled := w.tuning_enabled(key)
-		var needs := {"launch_rpm":"Requires ECU","redline":"Requires ECU","boost":"Boost controller","nitrous_ramp":"Progressive kit","stall":"Converter kit","final_drive":"Final-drive kit","ratio":"Ratio cassette kit","shift":"Race controller","firmness":"Auto / DCT only"}
+		var needs := {"launch_rpm":"Requires ECU","redline":"Requires ECU","boost":"Boost controller","firmness":"Auto / DCT only"}
 		if key=="boost" and g.profile.hardware.parts.values().has("boost_control") and not enabled: needs.boost="Inactive for belt drive" if g.car._supercharger!="" else "Turbo source required"
 		var fallback: String=TuningSetup.reason(key,g.profile.hardware,int(g.profile.stages[4]),g.profile.vehicle_id) if TuningSetup.EXTRA.has(key) else "Hardware required"
 		t(str(labels.get(key,TuningSetup.EXTRA.get(key,[""])[0])),24,y+24,23)
@@ -172,7 +172,7 @@ func dealer() -> void:
 	d.page = int(ids.find(id)/4)
 	var s := GameCatalog.spec(id); var c := d.factory(id)
 	preview(id,246,c,VehicleAppearance.normalize({},2,0))
-	g.fit_text(str(s.name),24,515,552,28); g.fit_text("CLASS "+PerformanceClasses.factory_class(id)+" / "+str(s.year)+" / "+str(s.engine),24,551,552,21,g.MUTED)
+	g.fit_text(str(s.name),24,515,552,28); g.fit_text("PRICE CLASS "+GameCatalog.price_class(id)+" / "+str(s.year)+" / "+str(s.engine),24,551,552,21,g.MUTED)
 	stats(c,576)
 	b("shop_car_prev","<",Rect2(24,756,120,68)); b("shop_car_next",">",Rect2(456,756,120,68))
 	b("shop_details","LESS" if d.details else "DETAILS",Rect2(168,756,264,68))

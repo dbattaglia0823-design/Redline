@@ -133,7 +133,7 @@ func race_touch_layout() -> bool:
 
 func sync_menu_size() -> void:
 	var target := race_view_size() if screen == "race" else (Vector2i(600,1300) if is_portrait() else Vector2i(1200,760))
-	var catalog: bool=tab=="performance" and not menu.hub.dyno_open and (menu.hub.categories or workshop.mode in ["basic","hardware"])
+	var catalog: bool=tab=="performance" and not menu.hub.dyno_open and (menu.hub.categories or workshop.mode in ["basic","hardware","transmission"])
 	if (screen=="results" or (screen=="garage" and (catalog or tab in ["garage","dealer","owned","style","races"]))) and not glass.legacy and not is_portrait() and get_window().size.y<500:
 		target=race_view_size()
 	if get_window().content_scale_size != target:
@@ -233,9 +233,8 @@ func nitrous_input() -> bool:
 	return nitrous_lock_reason()=="" and input_override.x<0.0 and controls.value("nitrous")>0.0
 
 func nitrous_lock_reason() -> String:
-	if screen!="race" or practice_mode or not active_contract.has("id"): return ""
-	if active_contract.get("rule","")=="motor_only": return "MOTOR ONLY"
-	if car.nitrous_stage==0 and not car.hardware.parts.values().has("progressive"): return "NO KIT"
+	if screen=="race" and not practice_mode and active_contract.get("rule","")=="motor_only": return "MOTOR ONLY"
+	if not car.has_nitrous(): return "NO KIT"
 	return ""
 
 func set_race_paused(value: bool) -> void:
@@ -414,7 +413,6 @@ func start_race() -> void:
 	active_stake = stake
 	refresh_car()
 	car.reset()
-	if career_board.active and (contract.get("rule","")=="motor_only" or (car.nitrous_stage==0 and not car.hardware.parts.values().has("progressive"))): car.nitrous_auto=false
 	RaceAI.configure(rival,active_contract)
 	staging.reset(car,rival)
 	run_telemetry.begin(car,active_distance)
@@ -632,6 +630,8 @@ func activate_at(pos: Vector2, pointer: String, allow_menu: bool = true) -> void
 			return
 
 func action(id: String) -> void:
+	if id=="garage_upgrades": id="tab_performance"
+	if id=="garage_customize": id="tab_style"
 	if native_workshop!=null and native_workshop.catalog_action(id):
 		menu_dirty=true
 		glass.focused=""
@@ -817,7 +817,7 @@ func action_enabled(id: String) -> bool:
 		return not profile.garage.has(vehicle) and profile.credits >= int(spec.price) and profile.level() >= int(spec.get("unlock_level",1))
 	if id == "tx_buy":
 		var spec := TransmissionCatalog.spec(workshop.selected_trans)
-		return workshop.selected_trans != str(profile.hardware.transmission) and TransmissionCatalog.compatible(workshop.selected_trans,profile.vehicle_id) and profile.transmission_unlock_stage() >= int(spec.stage) and (profile.hardware.owned_transmissions.has(workshop.selected_trans) or profile.credits >= int(spec.cost))
+		return workshop.selected_trans != str(profile.hardware.transmission) and TransmissionCatalog.compatible(workshop.selected_trans,profile.vehicle_id) and (profile.hardware.owned_transmissions.has(workshop.selected_trans) or (profile.transmission_unlock_stage() >= int(spec.stage) and profile.credits >= int(spec.cost)))
 	if id == "tx_prev": return workshop.page > 0
 	if id == "tx_next": return (workshop.page+1)*4 < workshop.available_transmissions().size()
 	if id == "hw_prev": return workshop.parts_page > 0
@@ -843,12 +843,8 @@ func action_enabled(id: String) -> bool:
 			return value<float(setting[2])-.0001 if plus else value>float(setting[1])+.0001
 		if key=="shift" and workshop.gear_index>=car.gear_ratios.size()-1: return false
 		if key=="launch_rpm": return car.launch_rpm<6000 if plus else car.launch_rpm>2200
-		if key=="nitrous_ramp": return car._nitrous_ramp<.9999 if plus else car._nitrous_ramp>.1501
 		if key=="firmness": return car.shift_firmness<1+int(profile.stages[4])*.1-.0001 if plus else car.shift_firmness>.5001
-		if key=="final_drive": return car.final_drive<float(VehicleParts.FINAL_DRIVES[-1])-.0001 if plus else car.final_drive>float(VehicleParts.FINAL_DRIVES[0])+.0001
-		if key=="stall":
-			var part: Dictionary=VehicleParts.PARTS.get(str(profile.hardware.parts.get("converter","")),{})
-			return car.converter_stall<float(part.get("stall_max",car.converter_stall)) if plus else car.converter_stall>float(part.get("stall_min",car.converter_stall))
+		if key=="final_drive": return car.final_drive<5.5-.0001 if plus else car.final_drive>2.0+.0001
 		if key=="boost": return car.boost_target(car.redline_rpm,1)<VehicleParts.boost_control_limit(profile.hardware,car.base_boost,car.turbo_stage)-.0001 if plus else car.boost_target(car.redline_rpm,1)>.0001
 		if key=="redline": return car.redline_rpm<car._mechanical_redline-.01 if plus else car.redline_rpm>minf(6500,car._mechanical_redline-500)+.01
 		return true

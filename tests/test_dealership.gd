@@ -42,21 +42,23 @@ func run_checks() -> void:
 	for id in GameCatalog.CAR_IDS:
 		restored.select_vehicle(id)
 		check(restored.hardware.parts.get("ecu") == "ecu","Per-car parts lost: "+id)
-	var locked := DriverProfile.new(); locked.credits = 1000000
-	check(not locked.buy_vehicle("chiron") and locked.credits == 1000000,"Progression lock bypassed")
+	var locked := DriverProfile.new(); locked.credits = 4000000
+	check(not locked.buy_vehicle("chiron") and locked.credits == 4000000,"Progression lock bypassed")
+	check(GameCatalog.price_class("supra_gr")=="B" and GameCatalog.price_class("mustang")=="C" and GameCatalog.price_class("camaro")=="C","GR Supra must be priced a class above the Mustang GT and Camaro SS")
+	check(GameCatalog.spec("supra_gr").price==49990 and GameCatalog.spec("mustang").price==42495 and GameCatalog.spec("camaro").price==37295,"Reference trim prices changed")
 	var seen: Array=[]
 	for letter in PerformanceClasses.ORDER:
 		showroom.enter_class(letter)
 		check(not showroom.filtered().is_empty(),"Empty class: "+letter)
-		check(showroom.filtered().all(func(id): return PerformanceClasses.factory_class(id)==letter),"Wrong cars in class: "+letter)
+		check(showroom.filtered().all(func(id): return GameCatalog.price_class(id)==letter),"Wrong cars in class: "+letter)
 		seen.append_array(showroom.filtered())
 	check(seen.size()==30,"Class selection omitted cars")
 	var competitive := VehicleBench.run(GameCatalog.spec("gr86"),[3,3,3,3,3,3,3,0],GameCatalog.factory_build("gr86"))
 	var exotic := VehicleBench.run(GameCatalog.spec("r8"),GameCatalog.blank_stages(),GameCatalog.factory_build("r8"))
 	check(float(competitive.quarter_s) < float(exotic.quarter_s),"Affordable upgraded car cannot compete with stock premium car")
-	showroom.enter_class("E"); game.dealer_index = 0; showroom.navigate(1)
-	check(game.dealer_index == 1,"Keyboard-style browsing failed")
-	showroom.enter_class("C"); game.tab = "dealer"; game.dealer_index = 8; showroom.page = 0
+	showroom.enter_class("E"); showroom.select_edge(false); showroom.navigate(1)
+	check(GameCatalog.CAR_IDS[game.dealer_index]==showroom.filtered()[1],"Keyboard-style browsing failed")
+	showroom.enter_class("D"); game.tab = "dealer"; game.dealer_index = GameCatalog.CAR_IDS.find("gr86"); showroom.page = 0
 	await frame(); DirAccess.make_dir_recursive_absolute("res://.qa"); root.get_texture().get_image().save_png("res://.qa/dealership_redesign.png")
 	showroom.details = true; await frame(); root.get_texture().get_image().save_png("res://.qa/dealership_details.png")
 	var key := InputEventKey.new(); key.physical_keycode = KEY_ESCAPE; key.pressed = true; game._input(key)

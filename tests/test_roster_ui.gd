@@ -7,7 +7,7 @@ func run_checks() -> void:
 		if not game.profile.garage.has(id): check(game.profile.buy_vehicle(id,false),"Purchase "+id)
 		game.profile.select_vehicle(id); game.refresh_car(); game.go_garage(); await frame()
 		check(game.car.transmission_id=="oem_"+id,"Factory configuration "+id)
-		game.action("tab_dealer"); game.menu.dealer.enter_class(PerformanceClasses.factory_class(id)); game.dealer_index=RosterData.IDS.find(id); await frame()
+		game.action("tab_dealer"); game.menu.dealer.enter_class(GameCatalog.price_class(id)); game.dealer_index=RosterData.IDS.find(id); await frame()
 		root.get_texture().get_image().save_png("res://validation/roster_art/"+id+".png")
 		for item in game.buttons: check(Rect2(0,0,1200,760).encloses(item.rect),"Dealer control clipped "+id)
 	for phone in [false,true]:

@@ -36,7 +36,7 @@
     "grip": 0.68,
     "drag_area": 0.68,
     "inertia": 0.18,
-    "price": 0,
+    "price": 9500,
     "unlock_level": 1,
     "torque_curve": [
       [
@@ -121,7 +121,7 @@
     "grip": 0.68,
     "drag_area": 0.68,
     "inertia": 0.18,
-    "price": 5200,
+    "price": 18500,
     "unlock_level": 1,
     "torque_curve": [
       [
@@ -206,7 +206,7 @@
     "grip": 0.68,
     "drag_area": 0.68,
     "inertia": 0.18,
-    "price": 6000,
+    "price": 8500,
     "unlock_level": 1,
     "torque_curve": [
       [
@@ -292,7 +292,7 @@
     "grip": 0.68,
     "drag_area": 0.68,
     "inertia": 0.18,
-    "price": 8500,
+    "price": 14000,
     "unlock_level": 1,
     "torque_curve": [
       [
@@ -382,7 +382,7 @@
     "grip": 0.68,
     "drag_area": 0.68,
     "inertia": 0.18,
-    "price": 10500,
+    "price": 12000,
     "unlock_level": 1,
     "torque_curve": [
       [
@@ -468,7 +468,7 @@
     "grip": 0.68,
     "drag_area": 0.68,
     "inertia": 0.18,
-    "price": 15000,
+    "price": 45000,
     "unlock_level": 1,
     "torque_curve": [
       [
@@ -554,7 +554,7 @@
     "grip": 0.68,
     "drag_area": 0.68,
     "inertia": 0.18,
-    "price": 12000,
+    "price": 8000,
     "unlock_level": 1,
     "torque_curve": [
       [
@@ -653,7 +653,7 @@
     "grip": 0.68,
     "drag_area": 0.68,
     "inertia": 0.18,
-    "price": 19000,
+    "price": 30000,
     "unlock_level": 1,
     "torque_curve": [
       [
@@ -750,7 +750,7 @@
     "grip": 0.68,
     "drag_area": 0.68,
     "inertia": 0.18,
-    "price": 18000,
+    "price": 27700,
     "unlock_level": 1,
     "torque_curve": [
       [
@@ -837,7 +837,7 @@
     "grip": 0.68,
     "drag_area": 0.68,
     "inertia": 0.26,
-    "price": 15000,
+    "price": 12500,
     "unlock_level": 1,
     "torque_curve": [
       [
@@ -923,7 +923,7 @@
     "grip": 0.68,
     "drag_area": 0.68,
     "inertia": 0.26,
-    "price": 33000,
+    "price": 107500,
     "unlock_level": 2,
     "torque_curve": [
       [
@@ -1009,7 +1009,7 @@
     "grip": 0.68,
     "drag_area": 0.68,
     "inertia": 0.26,
-    "price": 26000,
+    "price": 32000,
     "unlock_level": 2,
     "torque_curve": [
       [
@@ -1095,7 +1095,7 @@
     "grip": 1.0,
     "drag_area": 0.68,
     "inertia": 0.26,
-    "price": 25000,
+    "price": 28000,
     "unlock_level": 2,
     "torque_curve": [
       [
@@ -1181,7 +1181,7 @@
     "grip": 1.0,
     "drag_area": 0.68,
     "inertia": 0.26,
-    "price": 24000,
+    "price": 34000,
     "unlock_level": 2,
     "torque_curve": [
       [
@@ -1267,7 +1267,7 @@
     "grip": 0.68,
     "drag_area": 0.68,
     "inertia": 0.26,
-    "price": 28000,
+    "price": 35700,
     "unlock_level": 2,
     "torque_curve": [
       [
@@ -1357,7 +1357,7 @@
     "grip": 0.68,
     "drag_area": 0.68,
     "inertia": 0.26,
-    "price": 35000,
+    "price": 42495,
     "unlock_level": 3,
     "torque_curve": [
       [
@@ -1445,7 +1445,7 @@
     "grip": 0.68,
     "drag_area": 0.68,
     "inertia": 0.26,
-    "price": 36000,
+    "price": 49990,
     "unlock_level": 3,
     "torque_curve": [
       [
@@ -1537,7 +1537,7 @@
     "grip": 0.68,
     "drag_area": 0.68,
     "inertia": 0.26,
-    "price": 32000,
+    "price": 37295,
     "unlock_level": 3,
     "torque_curve": [
       [
@@ -1624,7 +1624,7 @@
     "grip": 1.0,
     "drag_area": 0.68,
     "inertia": 0.26,
-    "price": 30000,
+    "price": 41000,
     "unlock_level": 3,
     "torque_curve": [
       [
@@ -1730,7 +1730,7 @@
     "grip": 0.68,
     "drag_area": 0.68,
     "inertia": 0.26,
-    "price": 37000,
+    "price": 50990,
     "unlock_level": 3,
     "torque_curve": [
       [
@@ -1822,7 +1822,7 @@
     "grip": 0.8,
     "drag_area": 0.62,
     "inertia": 0.35,
-    "price": 85000,
+    "price": 105000,
     "unlock_level": 4,
     "torque_curve": [
       [
@@ -1908,7 +1908,7 @@
     "grip": 1.0,
     "drag_area": 0.62,
     "inertia": 0.35,
-    "price": 100000,
+    "price": 210740,
     "unlock_level": 4,
     "torque_curve": [
       [
@@ -1995,7 +1995,7 @@
     "grip": 1.0,
     "drag_area": 0.62,
     "inertia": 0.35,
-    "price": 105000,
+    "price": 195900,
     "unlock_level": 4,
     "torque_curve": [
       [
@@ -2082,7 +2082,7 @@
     "grip": 0.8,
     "drag_area": 0.62,
     "inertia": 0.35,
-    "price": 75000,
+    "price": 70300,
     "unlock_level": 4,
     "torque_curve": [
       [
@@ -2170,7 +2170,7 @@
     "grip": 0.8,
     "drag_area": 0.62,
     "inertia": 0.35,
-    "price": 68000,
+    "price": 69945,
     "unlock_level": 4,
     "torque_curve": [
       [
@@ -2258,7 +2258,7 @@
     "grip": 1.0,
     "drag_area": 0.62,
     "inertia": 0.35,
-    "price": 145000,
+    "price": 203500,
     "unlock_level": 5,
     "torque_curve": [
       [
@@ -2346,7 +2346,7 @@
     "grip": 0.8,
     "drag_area": 0.62,
     "inertia": 0.35,
-    "price": 190000,
+    "price": 358000,
     "unlock_level": 5,
     "torque_curve": [
       [
@@ -2434,7 +2434,7 @@
     "grip": 1.0,
     "drag_area": 0.62,
     "inertia": 0.35,
-    "price": 240000,
+    "price": 511250,
     "unlock_level": 5,
     "torque_curve": [
       [
@@ -2522,7 +2522,7 @@
     "grip": 1.25,
     "drag_area": 0.62,
     "inertia": 0.35,
-    "price": 115000,
+    "price": 96666,
     "unlock_level": 5,
     "torque_curve": [
       [
@@ -2605,7 +2605,7 @@
     "grip": 1.0,
     "drag_area": 0.62,
     "inertia": 0.35,
-    "price": 500000,
+    "price": 2998000,
     "unlock_level": 5,
     "torque_curve": [
       [

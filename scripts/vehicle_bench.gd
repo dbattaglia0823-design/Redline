@@ -81,7 +81,7 @@ func step_budget(count: int = 480) -> void:
 		if car.control_mode == "hpattern" and car.shift_left > 0.0: manual_clutch = 1.0
 		var shifting_manual:=manual_clutch>0
 		if not shifting_manual and car._base_spec.has("id"): manual_clutch=RaceAI.launch_clutch(car)
-		car.step(H,0.0 if shifting_manual else 1.0,0.0,manual_clutch,car.nitrous_stage>0 or car.hardware.parts.values().has("progressive"))
+		car.step(H,0.0 if shifting_manual else 1.0,0.0,manual_clutch,car.has_nitrous())
 		beams.observe(0,before_d,car.distance,before_t,H)
 		timing.observe(car,before_d,before_v,before_t,H,beams)
 		if car.shift_serial != _shift_serial:

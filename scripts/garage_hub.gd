@@ -13,11 +13,11 @@ var show_hp := true
 var show_torque := true
 var _cars: Dictionary = {}
 var studio: UpgradeStudio
-const CATEGORY_SLOTS := [["internals","displacement","compression"],["intake"],["exhaust"],["fuel"],["ecu"],["induction","boost"],["nitrous"],["controls","gearset","transbrake"],["clutch","converter"],["differential","final_drive"],["tires"],["suspension"],[],["wheels"],[]]
+const CATEGORY_SLOTS := [["internals","displacement","compression"],["intake"],["exhaust"],["fuel"],["ecu"],["induction","charge_pressure","charge_response","charge_airflow","charge_cooling","boost"],[],VehicleParts.TRANSMISSION_UPGRADES,["clutch"],["differential"],["tires"],["suspension"],[],["wheels"],[]]
 const STAGE_CATEGORIES := [0,2,5,6,7,12,14]
-const TUNE_KEYS := {4:["launch_rpm","redline"],5:["boost"],6:["nitrous_ramp"],7:["firmness","ratio","shift"],8:["stall"],9:["final_drive"],10:["tire_pressure"],11:["launch_damping"]}
-const CATEGORIES := [["Engine internals",0,0],["Intake",0,3],["Exhaust",5,0],["Fuel system",0,4],["ECU / electronics",0,5],["Forced induction",1,0],["Nitrous",7,0],["Transmission",4,-1],["Clutch / converter",4,1],["Differential / gearing",2,1],["Tires",2,0],["Suspension",3,0],["Brakes",6,-1],["Wheels",2,1],["Weight reduction",3,-1]]
-const SHORT_NAMES := ["Engine", "Intake", "Exhaust", "Fuel system", "Electronics", "Induction", "Nitrous", "Transmission", "Clutch / converter", "Differential", "Tires", "Suspension", "Brakes", "Wheels", "Weight"]
+const TUNE_KEYS := {4:["launch_rpm","redline"],5:["boost"],7:["firmness","ratio","shift","final_drive"],8:["clutch_rate"],10:["tire_pressure"],11:["launch_damping"]}
+const CATEGORIES := [["Engine internals",0,0],["Intake",0,3],["Exhaust",5,0],["Fuel system",0,4],["ECU",0,5],["Forced induction",1,0],["Nitrous",7,0],["Transmission",4,-1],["Clutch",4,1],["Differential / gearing",2,1],["Tires",2,0],["Suspension",3,0],["Brakes",6,-1],["Wheels",2,1],["Weight reduction",3,-1]]
+const SHORT_NAMES := ["Engine", "Intake", "Exhaust", "Fuel system", "ECU", "Induction", "Nitrous", "Transmission", "Clutch", "Differential", "Tires", "Suspension", "Brakes", "Wheels", "Weight"]
 func _init(game: Node2D) -> void:
 	g = game; studio=UpgradeStudio.new(game)
 func t(s: String,x: float,y: float,size: int = 18,c: Color = Color("f2eee4")) -> void: g.text_at(s,x,y,size,c)
@@ -85,21 +85,23 @@ func owned_ids() -> Array:
 	var ids: Array=[]; var times: Dictionary={}
 	for id in GameCatalog.CAR_IDS:
 		if not g.profile.garage.has(id): continue
+		if owned_filter>0 and GameCatalog.price_class(id)!=GameCatalog.PRICE_CLASSES[owned_filter-1]: continue
+		ids.append(id)
+		if not owned_sort: continue
 		var entry: Dictionary=g.profile.garage[id]
 		var build: Dictionary=g.profile.hardware if id==g.profile.vehicle_id else entry.get("hardware",GameCatalog.factory_build(id))
 		var levels: Array=g.profile.stages if id==g.profile.vehicle_id else entry.stages
 		var measured:=PerformanceClasses.request(id,levels,build)
-		if owned_filter>0 and str(measured.get("class","?"))!=PerformanceClasses.ORDER[owned_filter-1]: continue
-		ids.append(id); times[id]=float(measured.get("quarter_s",99))
+		times[id]=float(measured.get("quarter_s",99))
 	if owned_sort: ids.sort_custom(func(a,b): return times[a]<times[b])
 	return ids
 
 func draw_owned() -> void:
 	if owned_selection == "" or not g.profile.garage.has(owned_selection): owned_selection = g.profile.vehicle_id
 	var ids:=owned_ids()
-	b("owned_filter","Class: "+("All" if owned_filter==0 else PerformanceClasses.ORDER[owned_filter-1]),Rect2(36,112,236,48))
+	b("owned_filter","Price class: "+("All" if owned_filter==0 else GameCatalog.PRICE_CLASSES[owned_filter-1]),Rect2(36,112,236,48))
 	b("owned_sort","Quickest first" if owned_sort else "Collection order",Rect2(284,112,236,48))
-	if ids.is_empty(): t("No measured builds in this class",36,230,22); b("hub_back","< GARAGE",Rect2(962,103,204,48)); return
+	if ids.is_empty(): t("No owned cars in this price class",36,230,22); b("hub_back","< GARAGE",Rect2(962,103,204,48)); return
 	if not ids.has(owned_selection): owned_selection=str(ids[0])
 	owned_page = clampi(owned_page,0,maxi(0,ceili(ids.size()/4.0)-1))
 	for i in mini(4,ids.size()-owned_page*4):
@@ -149,6 +151,11 @@ func open_upgrade(index: int) -> void:
 	g.workshop.selected_trans = str(g.profile.hardware.transmission)
 	g.workshop.selected_hardware = str(g.profile.hardware.parts.get(g.workshop.current_slot(),"")) if not g.workshop.category_slots.is_empty() else ""
 	studio.restore(selected)
+	if selected in [5,7]:
+		g.workshop.mode = "hardware" if selected==5 else "transmission"
+		g.workshop.slot_index = 0
+		g.workshop.selected_trans = str(g.profile.hardware.transmission)
+		g.workshop.selected_hardware = str(g.profile.hardware.parts.get("induction","")) if selected==5 else ""
 	if g.native_workshop!=null and g.native_workshop.supports():
 		# The native sheet uses a tint, not a screen-copy blur. Avoid GPU readback.
 		g.glass.backdrop=null; g.glass.sheet_age=1.0

@@ -31,15 +31,16 @@ func _initialize() -> void:
 	var losses_to_engine := ceili(700.0/(int(first.purse)*.4))
 	check(losses_to_engine == 7,"Recovery race economics unexpectedly changed")
 	var progress: Array = []
-	for race_index in 8:
+	var next_car: String=DealershipView.new(null).class_ids("E").filter(func(id): return not p.garage.has(id))[0]
+	for race_index in 12:
 		var bot := GameCatalog.opponent(0,mini(race_index,4))
 		var win_pay := int(bot.purse); p.credits += win_pay; p.xp += 180
 		p.career_wins[0] = mini(5,race_index+1)
 		progress.append({"wins":race_index+1,"credits":p.credits,"level":p.level()})
 		if race_index == 3: check(p.credits >= int(GameCatalog.spec("mika").price),"Starter collection goal requires excessive wins after the first upgrade")
-	check(p.level() >= 3 and p.credits >= int(GameCatalog.spec("civic_si").price),"Eight early wins do not support meaningful progression")
-	check(p.buy_vehicle("civic_si") and p.garage.has("miata"),"Earning a new car erased the starter build")
-	var output := {"passed":failures==0,"sliced_matches_direct":comparisons,"stock_quarter":stock,"engine_stage1_quarter":upgraded,"early_progression":progress,"losses_from_zero_to_first_engine_upgrade":losses_to_engine,"note":"Assisted-driver estimates and modeled win/finish payouts, not guaranteed human win rates. Prices and purses were retained."}
+	check(p.level() >= 3 and p.credits >= int(GameCatalog.spec(next_car).price),"Twelve early wins cannot fund the cheapest available car")
+	check(p.buy_vehicle(next_car) and p.garage.has("miata"),"Earning a new car erased the starter build")
+	var output := {"passed":failures==0,"sliced_matches_direct":comparisons,"stock_quarter":stock,"engine_stage1_quarter":upgraded,"early_progression":progress,"losses_from_zero_to_first_engine_upgrade":losses_to_engine,"note":"Assisted-driver estimates and modeled win/finish payouts with the revised catalog prices."}
 	var f := FileAccess.open("res://validation/quality_model_results.json",FileAccess.WRITE); f.store_string(JSON.stringify(output)); f.close()
 	print("SLICED AI ESTIMATES / EARLY UPGRADE / RECOVERY ECONOMY: ","PASS" if failures==0 else "FAIL")
 	quit(0 if failures==0 else 1)

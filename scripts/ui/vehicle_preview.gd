@@ -55,7 +55,7 @@ func configure(g: Node2D,id: String,vehicle: Drivetrain,appearance: Dictionary,b
 			scene_tint=Color(.56,.59,.62)
 		else:
 			scene_texture=game.showroom_texture
-			if game.tab=="performance": scene_tint=Color(.68,.64,.62)
+			if game.tab=="performance": scene_tint=Color(.81,.88,.96)
 			elif game.tab=="dealer": scene_tint=Color(.92,.93,.91)
 	clip_contents=true; mouse_filter=Control.MOUSE_FILTER_IGNORE
 	custom_minimum_size.y=height; size_flags_horizontal=Control.SIZE_EXPAND_FILL

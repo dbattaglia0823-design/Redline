@@ -53,13 +53,13 @@ func run() -> void:
 		for turbo in [1,2,3]:
 			for spray in [1,3]: add_candidate(pool,seen,id,[3,turbo,3,3,5,3,0,spray],GameCatalog.factory_build(id))
 	for id in ["supra","camaro"]:
-		var drag:=VehicleBench.fixture("drag3",["billet","fuel_ethanol","turbo_race","converter_race","race_controller","transbrake","ecu","drag_wheels"],{"launch_rpm":4800,"stall":4600})
+		var drag:=VehicleBench.fixture("drag3",["billet","fuel_ethanol","turbo_race","ecu","drag_wheels"],{"launch_rpm":4800})
 		add_candidate(pool,seen,id,[3,3,3,3,5,3,0,3],drag)
 	# A player-owned Demon can beat the Crown without buying its Chiron.
 	for spray in [0,1,3]:
 		add_candidate(pool,seen,"demon",[3,2,3,1,5,3,0,spray],GameCatalog.factory_build("demon"))
 	var tuned:=DriverProfile.new(); tuned.vehicle_id="camaro"; tuned.stages=[3,3,3,3,5,3,0,3]
-	tuned.hardware=VehicleBench.fixture("drag3",["billet","fuel_ethanol","turbo_race","converter_race","race_controller","transbrake","ecu","drag_wheels","gearset","final_kit","boost_control"],{"launch_rpm":4800,"stall":4600})
+	tuned.hardware=VehicleBench.fixture("drag3",["billet","fuel_ethanol","turbo_race","ecu","drag_wheels","boost_control"],{"launch_rpm":4800})
 	var search:=TuneOptimizer.new(); search.begin(tuned,402.336)
 	for trial in 1200:
 		if search.done: break

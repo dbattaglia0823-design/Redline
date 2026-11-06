@@ -6,6 +6,16 @@ var wager_label: Label
 var preview_build: Drivetrain
 var preview_key := ""
 
+class EventPhoto extends Control:
+	var texture: Texture2D
+	var tint: Color
+
+	func _draw() -> void:
+		var bounds:=Rect2(size.x*.58,5,size.x*.42-6,size.y-14)
+		if not bounds.has_area(): return
+		LiquidGlass.draw_cover(self,texture,bounds,Color(.69,.76,.82,.62))
+		draw_rect(Rect2(bounds.position,Vector2(2,bounds.size.y)),Color(tint,.70))
+
 func racing_menu() -> bool:
 	return game.screen=="results" or (game.screen=="garage" and game.tab=="races")
 
@@ -78,7 +88,7 @@ func championship_picker(body: VBoxContainer) -> void:
 	var summary:=AutomotiveUI.column(heading,1)
 	var crowned:=Championships.trophies(game.profile)
 	add_label(summary,"REDLINE Champion" if crowned==6 else "Championship ladder",32)
-	add_label(summary,"%02d / %d races   ·   %d / 6 trophies"%[Championships.completed(game.profile),Championships.TOTAL_RACES,crowned],17,Championships.TROPHY,true)
+	AutomotiveUI.section_mark(summary,"%02d / %d RACES   ·   %d / 6 TROPHIES"%[Championships.completed(game.profile),Championships.TOTAL_RACES,crowned],"races",Championships.TROPHY)
 	small_action(heading,"cb_back","Street series")
 	var cards:=grid(body,2 if portrait else 3,12)
 	for index in Championships.CLASSES.size():
@@ -87,6 +97,7 @@ func championship_picker(body: VBoxContainer) -> void:
 		var reason:=Championships.unlock_reason(game.profile,letter)
 		var state:="Locked" if reason!="" else ("Trophy earned" if wins==Championships.ROUNDS else "Available")
 		var card:=AutomotiveUI.content_card(cards,194 if portrait else 172,game.career_board.series==letter)
+		AutomotiveUI.class_decal(card,letter,index)
 		bind(card,"cb_class_"+letter)
 		var content: VBoxContainer=card.get_meta("content")
 		var class_heading:=AutomotiveUI.row(content,4)
@@ -126,7 +137,7 @@ func estimates(contract: Dictionary) -> Dictionary:
 	var player:=RaceAI.player_contract(game.profile)
 	if game.career_board.active:
 		player.driver_model=2
-		player.nitrous=contract.get("rule","")!="motor_only" and (game.profile.stages[7]>0 or game.profile.hardware.parts.values().has("progressive"))
+		player.nitrous=contract.get("rule","")!="motor_only" and game.car.has_nitrous()
 	return {"rival":RaceAI.request_estimate(contract,distance),"player":RaceAI.request_estimate(player,distance)}
 
 func opponent_build(contract: Dictionary) -> Drivetrain:
@@ -219,6 +230,16 @@ func street_events(parent: Node) -> void:
 		var locked: bool=game.profile.level()<GameCatalog.CAREER_LEVELS[index]
 		var next:=GameCatalog.opponent(index,mini(4,wins),game.profile)
 		var card:=AutomotiveUI.content_card(parent,136 if portrait else 118,index==game.event_index)
+		if not portrait:
+			var track:=TrackPresentation.spec(index)
+			var photo:=EventPhoto.new()
+			photo.texture=load("res://assets/strip/"+str(track.art)+"_panorama.png")
+			photo.tint=Color(str(track.accent))
+			photo.mouse_filter=Control.MOUSE_FILTER_IGNORE
+			card.add_child(photo)
+			card.move_child(photo,0)
+			photo.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+			photo.resized.connect(photo.queue_redraw)
 		bind(card,"event_%d"%index)
 		var content: VBoxContainer=card.get_meta("content")
 		add_label(content,"Level %d"%GameCatalog.CAREER_LEVELS[index] if locked else ("Completed" if wins>=5 else "Available"),15,AutomotiveUI.ORANGE if locked else GlassPalette.GREEN)
@@ -258,9 +279,13 @@ func rival_buttons(parent: Node) -> void:
 
 func wager_controls(parent: Node,contract: Dictionary) -> void:
 	if contract.get("rule","")=="motor_only": return
-	var column:=AutomotiveUI.column(parent,4)
-	wager_label=add_label(column,"",17,AutomotiveUI.MUTED,true)
-	var row:=AutomotiveUI.row(column,8)
+	var area: BoxContainer=AutomotiveUI.row(parent,10) if compact_landscape() else AutomotiveUI.column(parent,4)
+	wager_label=add_label(area,"",17,AutomotiveUI.MUTED,true)
+	if compact_landscape():
+		wager_label.custom_minimum_size.x=236
+		wager_label.size_flags_horizontal=Control.SIZE_FILL
+		wager_label.size_flags_vertical=Control.SIZE_SHRINK_CENTER
+	var row:=AutomotiveUI.row(area,8)
 	small_action(row,"bet_less","−")
 	wager_slider=HSlider.new()
 	wager_slider.max_value=mini(game.profile.credits,int(contract.get("max_bet",0)))

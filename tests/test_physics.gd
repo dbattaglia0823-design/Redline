@@ -178,6 +178,7 @@ func _initialize() -> void:
 	for tick in 1200: c.step(H,0.0,1.0,1.0)
 	check(c.speed < 0.05 and c.speed >= 0.0,"Braking did not stop the car without reversing")
 	var boosted := vehicle()
+	boosted.configure([0,0,0,0,0,0,0,1]); boosted.reset(); boosted.running=true
 	var baseline := vehicle()
 	for item in [boosted,baseline]:
 		item.set_road_state(40.0,4)
@@ -185,8 +186,9 @@ func _initialize() -> void:
 		item.throttle = 1.0
 	for tick in 240:
 		boosted.step(H,1.0,0.0,0.0,true)
-		baseline.step(H,1.0)
-	check(boosted.speed > baseline.speed+0.3 and boosted.nitrous_remaining < 5.1,"Nitrous does not add physical torque")
+		baseline.step(H,1.0,0.0,0.0,true)
+	check(not baseline.nitrous_active and baseline.nitrous_remaining==0.0,"Stock car can spray nitrous")
+	check(boosted.speed > baseline.speed+0.3 and boosted.nitrous_remaining < boosted.nitrous_capacity(),"Nitrous does not add physical torque")
 	var remaining := boosted.nitrous_remaining
 	boosted.step(0.1,1.0,0.0,1.0,true)
 	check(boosted.nitrous_remaining == remaining and not boosted.nitrous_active,"Nitrous sprays with clutch disengaged")

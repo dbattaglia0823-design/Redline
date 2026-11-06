@@ -80,6 +80,7 @@ func load_profile() -> void:
 		if not FileAccess.file_exists(SAVE_PATH+".pre_traction"):
 			DirAccess.copy_absolute(ProjectSettings.globalize_path(SAVE_PATH),ProjectSettings.globalize_path(SAVE_PATH+".pre_traction"))
 		migrate_traction(data)
+	migrate_retired_parts(data)
 	retired_garage = data.get("retired_garage",{}).duplicate(true)
 	credits = maxi(0, int(data.get("credits", 2400)))
 	xp = maxi(0, int(data.get("xp", 0)))
@@ -167,6 +168,36 @@ static func migrate_traction(data: Dictionary) -> void:
 		build.parts=parts; build.owned_parts=owned; entry.hardware=build
 		levels[2]=0; owned_levels[2]=0
 		entry.stages=levels; entry.owned_stages=owned_levels
+
+static func migrate_retired_parts(data: Dictionary) -> void:
+	var entries: Variant = data.get("garage",{})
+	if not entries is Dictionary: return
+	for entry in entries.values():
+		if not entry is Dictionary or not entry.get("hardware") is Dictionary: continue
+		var build: Dictionary=entry.hardware
+		var owned: Variant=build.get("owned_parts",[])
+		var fitted: Variant=build.get("parts",{})
+		if owned is Array:
+			var fitments: Variant=build.get("fitments",{})
+			for id in VehicleParts.RETIRED_CONVERTER_COSTS:
+				if not owned.has(id): continue
+				var recorded: Variant=fitments.get(id,[]) if fitments is Dictionary else []
+				var gearbox_count:=1
+				if recorded is Array:
+					var unique := {}
+					var owned_gearboxes: Variant=build.get("owned_transmissions",[])
+					for gearbox in recorded:
+						if owned_gearboxes is Array and owned_gearboxes.has(gearbox): unique[gearbox]=true
+					gearbox_count=maxi(gearbox_count,unique.size())
+				data.credits=int(data.get("credits",2400))+gearbox_count*int(VehicleParts.RETIRED_CONVERTER_COSTS[id])
+		var had_controller: bool=fitted is Dictionary and fitted.get("nitrous")=="progressive"
+		if had_controller or (owned is Array and owned.has("progressive")):
+			var levels:=GameCatalog.normalize_stages(entry.get("stages",[]))
+			var purchased:=GameCatalog.normalize_stages(entry.get("owned_stages",[]))
+			if had_controller: levels[7]=maxi(1,int(levels[7]))
+			purchased[7]=maxi(1,int(purchased[7]))
+			entry.stages=levels
+			entry.owned_stages=purchased
 
 func apply_vehicle(id: String) -> void:
 	vehicle_id = id
@@ -262,8 +293,8 @@ func upgrade_cost(index: int, target: int = -1) -> int:
 	for tier in range(highest_stage(index) + 1, mini(target, GameCatalog.max_stage(index)) + 1): cost += GameCatalog.PART_COSTS[index] * tier
 	return cost
 
-func upgrade_reason(index: int) -> String:
-	if index==1 and float(GameCatalog.spec(vehicle_id).get("factory_super",0))>0 and str(hardware.parts.get("induction","")) not in ["turbo_hybrid","turbo_race"]: return "Fit a turbo assembly before buying turbo packages"
+func upgrade_reason(_index: int) -> String:
+
 	return ""
 
 # The quote owns copies of the build. Only commit_upgrade_quote writes the profile.
@@ -276,7 +307,6 @@ func upgrade_quote(index: int, tier: int, slot: String="", id: String="") -> Dic
 		if tier==int(stages[index]):
 			quote.equipped=true
 			return quote
-		if tier>0 and upgrade_reason(index)!="": quote_part(quote,"turbo_hybrid",true,[])
 		quote_stage(quote,index,tier,false)
 	else:
 		if not VehicleParts.SLOTS.has(slot) or (id!="" and VehicleParts.PARTS.get(id,{}).get("slot")!=slot):
@@ -284,6 +314,9 @@ func upgrade_quote(index: int, tier: int, slot: String="", id: String="") -> Dic
 			return quote
 		if str(hardware.parts.get(slot,""))==id:
 			quote.equipped=true
+			return quote
+		if id in ["charge_pressure","charge_response"] and not has_forced_induction():
+			quote.reason="Forced induction required"
 			return quote
 		if id=="":
 			quote.build.parts.erase(slot)
@@ -405,28 +438,39 @@ func install_transmission(id: String) -> String:
 	if not pending_wager.is_empty(): return "Finish your race first"
 	if not TransmissionCatalog.compatible(id,vehicle_id): return "Not compatible with this drivetrain"
 	var spec := TransmissionCatalog.spec(id)
-	if transmission_unlock_stage() < int(spec.stage): return TransmissionCatalog.STAGES[int(spec.stage)]+" build required"
+	if not hardware.owned_transmissions.has(id) and transmission_unlock_stage() < int(spec.stage): return TransmissionCatalog.STAGES[int(spec.stage)]+" build required"
 	var cost := 0 if hardware.owned_transmissions.has(id) else int(spec.cost)
 	if credits < cost: return "Not enough credits"
 	var candidate := hardware.duplicate(true)
 	candidate.performance_stages[candidate.transmission] = int(stages[4])
 	candidate.get_or_add("owned_performance_stages",{})[candidate.transmission]=highest_stage(4)
-	candidate.transmission = id
-	# Different gearbox families cannot retain physically incompatible internals.
-	if id != str(hardware.transmission):
-		for slot in VehicleParts.TRANSMISSION_SLOTS: candidate.parts.erase(slot)
-		for key in ["ratios","shift_rpms","stall","firmness"]: candidate.tune.erase(key)
+	VehicleParts.switch_transmission(candidate,id)
+	var before_build := hardware
+	var before_stages := stages.duplicate()
+	var before_owned := owned_stages.duplicate()
+	var before_garage := garage.duplicate(true)
 	credits -= cost
-	if not candidate.owned_transmissions.has(id): candidate.owned_transmissions.append(id)
 	stages[4] = int(candidate.performance_stages.get(id,0))
 	owned_stages[4] = maxi(int(stages[4]),int(candidate.owned_performance_stages.get(id,0)))
 	hardware = candidate
 	save()
+	if save_error!="":
+		hardware=before_build
+		stages=before_stages
+		owned_stages=before_owned
+		garage=before_garage
+		credits+=cost
+		return save_error
 	return "Installed "+str(spec.name)
+
+func has_forced_induction() -> bool:
+	var spec := GameCatalog.spec(vehicle_id)
+	return hardware.parts.has("induction") or int(stages[1])>0 or float(spec.get("base_boost",0))>0 or float(spec.get("factory_super",0))>0
 
 func install_hardware(id: String) -> String:
 	if not pending_wager.is_empty(): return "Finish your race first"
 	if not VehicleParts.PARTS.has(id): return "Unknown part"
+	if id in ["charge_pressure","charge_response"] and not has_forced_induction(): return "Forced induction required"
 	var candidate := hardware.duplicate(true)
 	var part: Dictionary = VehicleParts.PARTS[id]
 	candidate.parts[part.slot] = id
@@ -476,38 +520,31 @@ func tune_hardware(key: String, value: Variant, persist: bool = true) -> bool:
 		if persist: save()
 		return true
 	match key:
-		"stall":
-			var id := str(hardware.parts.get("converter",""))
-			if not VehicleParts.PARTS.has(id): return false
-			var part: Dictionary = VehicleParts.PARTS[id]
-			hardware.tune[key] = clampf(number,float(part.stall_min),float(part.stall_max))
 		"launch_rpm":
-			if not fitted.has("ecu") and not (fitted.has("race_controller") and TransmissionCatalog.spec(str(hardware.transmission)).kind=="drag"): return false
+			if not hardware.parts.has("ecu") and TransmissionCatalog.spec(str(hardware.transmission)).kind!="drag": return false
 			hardware.tune[key] = clampf(number,2200.0,minf(6000,float(GameCatalog.spec(vehicle_id).get("redline",7600))-400))
 		"redline":
-			if not fitted.has("ecu"): return false
+			if not VehicleParts.can_tune_rpm(hardware): return false
 			var factory_limit := float(GameCatalog.spec(vehicle_id).get("redline",7600.0))
 			var headroom:=0.0
 			for id in fitted: headroom+=float(VehicleParts.PARTS[id].get("redline",0))
 			var mechanical_limit:=factory_limit+headroom
 			hardware.tune[key] = clampf(number,minf(6500.0,mechanical_limit-500.0),mechanical_limit)
 		"boost":
-			if not fitted.has("boost_control"): return false
-			var base:=float(GameCatalog.spec(vehicle_id).get("base_boost",.45))
+			var spec := GameCatalog.spec(vehicle_id)
+			if float(spec.get("factory_super",0))>0 and not hardware.parts.has("induction"): return false
+			var base:=float(spec.get("base_boost",.45))
 			if VehicleParts.boost_control_reason(hardware,base,int(stages[1]))!="": return false
 			hardware.tune[key] = clampf(number,0.0,VehicleParts.boost_control_limit(hardware,base,int(stages[1])))
 		"final_drive":
-			if not fitted.has("final_kit") or number not in VehicleParts.FINAL_DRIVES: return false
+			if number<2.0 or number>5.5: return false
 			hardware.tune[key] = number
 		"firmness":
 			if str(TransmissionCatalog.spec(str(hardware.transmission)).kind) not in ["drag","automatic","dct"]: return false
 			hardware.tune[key] = clampf(number,0.5,1.0+int(stages[4])*0.1)
-		"nitrous_ramp":
-			if not fitted.has("progressive"): return false
-			hardware.tune[key] = clampf(number,0.15,1.0)
 		"shift_rpms":
-			if not fitted.has("race_controller") or not value is Array: return false
-			var count: int = TransmissionCatalog.spec(str(hardware.transmission)).ratios.size()-1
+			if not value is Array: return false
+			var count: int = TransmissionCatalog.default_ratios(hardware.transmission,hardware.tune).size()-1
 			if value.size() != count: return false
 			var clean: Array = []
 			for rpm in value:
@@ -515,17 +552,17 @@ func tune_hardware(key: String, value: Variant, persist: bool = true) -> bool:
 				var factory_limit:=float(GameCatalog.spec(vehicle_id).get("redline",7600))
 				var ceiling:=factory_limit
 				for id in fitted: ceiling+=float(VehicleParts.PARTS[id].get("redline",0))
-				if fitted.has("ecu"): ceiling=clampf(float(hardware.tune.get("redline",factory_limit)),minf(6500,ceiling-500),ceiling)
+				if VehicleParts.can_tune_rpm(hardware): ceiling=clampf(float(hardware.tune.get("redline",factory_limit)),minf(6500,ceiling-500),ceiling)
 				clean.append(clampf(float(rpm),maxf(3500,float(GameCatalog.spec(vehicle_id).get("idle",950))+1500),ceiling-50))
 			hardware.tune[key] = clean
+		"gear_count":
+			var limits := TransmissionCatalog.gear_range(hardware.transmission)
+			if number!=roundf(number) or number<limits.x or number>limits.y: return false
+			if int(number)!=TransmissionCatalog.default_ratios(hardware.transmission,hardware.tune).size():
+				for dependent in ["ratios","shift_rpms","boost_by_gear"]: hardware.tune.erase(dependent)
+			hardware.tune[key] = int(number)
 		"ratios":
-			if not fitted.has("gearset") or not value is Array: return false
-			var original: Array = TransmissionCatalog.spec(str(hardware.transmission)).ratios
-			if value.size() != original.size(): return false
-			for i in value.size():
-				if not (value[i] is int or value[i] is float) or not is_finite(float(value[i])): return false
-				if float(value[i]) < float(original[i])*0.88 or float(value[i]) > float(original[i])*1.12: return false
-				if i > 0 and float(value[i-1]) <= float(value[i])*1.025: return false
+			if not TransmissionCatalog.valid_ratios(value,TransmissionCatalog.default_ratios(hardware.transmission,hardware.tune)): return false
 			hardware.tune[key] = value.duplicate()
 		_: return false
 	if persist: save()
@@ -534,9 +571,9 @@ func tune_hardware(key: String, value: Variant, persist: bool = true) -> bool:
 func apply_tuning_preset(name: String, keys: Array = []) -> void:
 	if not pending_wager.is_empty(): return
 	var presets := {
-		"street":{"launch_rpm":3000.0,"stall":2800.0,"redline":7400.0,"boost":0.65,"firmness":0.85,"final_drive":3.55,"nitrous_ramp":0.7},
-		"drag":{"launch_rpm":4200.0,"stall":4400.0,"redline":8000.0,"boost":1.5,"firmness":1.35,"final_drive":4.10,"nitrous_ramp":0.35},
-		"safe":{"launch_rpm":2800.0,"stall":2600.0,"redline":7000.0,"boost":0.45,"firmness":0.75,"final_drive":3.85,"nitrous_ramp":1.0}}
+		"street":{"launch_rpm":3000.0,"redline":7400.0,"boost":0.65,"firmness":0.85,"final_drive":3.55},
+		"drag":{"launch_rpm":4200.0,"redline":8000.0,"boost":1.5,"firmness":1.35,"final_drive":4.10},
+		"safe":{"launch_rpm":2800.0,"redline":7000.0,"boost":0.45,"firmness":0.75,"final_drive":3.85}}
 	if not presets.has(name): return
 	for key in presets[name]:
 		if keys.is_empty() or keys.has(key): tune_hardware(key,presets[name][key],false)
@@ -562,7 +599,9 @@ func tune_slot_reason(slot: String) -> String:
 	if not preset.get("tune") is Dictionary: return "Invalid preset"
 	var copy:=DriverProfile.new(); copy.vehicle_id=vehicle_id; copy.stages=stages.duplicate(); copy.hardware=hardware.duplicate(true)
 	copy.hardware.tune.clear()
+	if preset.tune.has("gear_count") and not copy.tune_hardware("gear_count",preset.tune.gear_count,false): return "Invalid gear count"
 	for key in preset.tune:
+		if key=="gear_count": continue
 		if not copy.tune_hardware(str(key),preset.tune[key],false): return "Missing compatible hardware for "+str(key).replace("_"," ")
 	return ""
 
@@ -585,7 +624,7 @@ static func normalize_tune_presets(value: Variant) -> Dictionary:
 		if not row is Dictionary or not row.get("tune") is Dictionary: continue
 		var tune: Dictionary={}
 		for key in row.tune:
-			if key not in ["stall","launch_rpm","redline","boost","final_drive","firmness","nitrous_ramp","ratios","shift_rpms","boost_by_gear"]+TuningSetup.EXTRA.keys(): continue
+			if key not in ["gear_count","launch_rpm","redline","boost","final_drive","firmness","ratios","shift_rpms","boost_by_gear"]+TuningSetup.EXTRA.keys(): continue
 			var v: Variant=row.tune[key]
 			if (v is int or v is float) and is_finite(float(v)): tune[key]=v
 			elif v is Array and v.size()<=10:

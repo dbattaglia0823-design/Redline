@@ -33,7 +33,7 @@ var rear_compression := 0.0
 var front_compression := 0.0
 
 static func backfire_capable(car: Drivetrain) -> bool:
-	return car.exhaust_stage > 0 or car.hardware.parts.has("exhaust") or car.hardware.parts.values().has("ecu")
+	return car.exhaust_stage > 0 or car.hardware.parts.has("exhaust") or car.hardware.parts.has("ecu")
 
 # A presentation spring, not a new force in the drivetrain solver. Small fixed
 # integration steps keep recovery stable across render rates and long frames.

@@ -3759,14 +3759,10 @@
     "distance": 804.672,
     "driver_model": 2,
     "driver_seed": 60,
-    "event_name": "Bottle & Converter",
+    "event_name": "Bottle & Drag Gearing",
     "hardware": {
       "fitments": {},
       "owned_parts": [
-        "converter_race",
-        "race_controller",
-        "transbrake",
-        "progressive",
         "ecu"
       ],
       "owned_transmissions": [
@@ -3774,17 +3770,12 @@
         "drag3"
       ],
       "parts": {
-        "controls": "race_controller",
-        "converter": "converter_race",
-        "ecu": "ecu",
-        "nitrous": "progressive",
-        "transbrake": "transbrake"
+        "ecu": "ecu"
       },
       "performance_stages": {},
       "transmission": "drag3",
       "tune": {
-        "launch_rpm": 4200,
-        "stall": 4400
+        "launch_rpm": 4200
       }
     },
     "id": "open_3",

@@ -105,7 +105,7 @@ func open_lab(source: Drivetrain=null,simple: bool=false) -> void:
 		var old_parts: Dictionary=game.car.hardware.get("parts",{})
 		var new_parts: Dictionary=source.hardware.get("parts",{})
 		var drivetrain_changed: bool=source.gearbox_stage!=game.car.gearbox_stage or source.hardware.get("transmission","")!=game.car.hardware.get("transmission","")
-		for slot in ["clutch","converter","controls","gearset","transbrake"]:
+		for slot in VehicleParts.TRANSMISSION_SLOTS:
 			if old_parts.get(slot,"")!=new_parts.get(slot,""): drivetrain_changed=true
 		if drivetrain_changed or source.nitrous_stage!=game.car.nitrous_stage or old_parts.get("nitrous","")!=new_parts.get("nitrous",""): mode_picker.selected=2
 	build_picker.set_item_disabled(2,compact); mode_picker.visible=not compact
@@ -181,7 +181,7 @@ func _process(dt: float) -> void:
 			while physics_accumulator+1e-10>=1.0/240.0:
 				if mode_picker.selected==2:
 					if preview.shift_map.is_empty(): preview.rebuild_shift_map()
-					var has_nitrous: bool=preview.nitrous_stage>0 or preview.hardware.parts.values().has("progressive")
+					var has_nitrous: bool=preview.has_nitrous()
 					var contract: Dictionary={"reaction":.25,"pedal":1.0,"skill":2,"shift_error":0,"traction_skill":.8,"driver_model":2 if has_nitrous else 1,"nitrous":has_nitrous}
 					RaceAI.step(preview,contract,1.0/240.0)
 				else:

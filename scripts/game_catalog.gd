@@ -31,6 +31,8 @@ const PART_TIERS := [
 const PART_EFFECTS: Array[String] = ["+14% engine torque per tier", "+0.18 bar peak boost per tier", "+0.095 traction coefficient per tier", "-65 kg per tier", "-35 ms shift time per tier", "+6% engine torque per tier", "+18% braking force per tier", "+1.5 s spray / +6% power per tier"]
 const CAREER_NAMES: Array[String] = ["DOCKSIDE RUN", "MIDNIGHT CLUB", "CITY FINALS"]
 const CAREER_LEVELS: Array[int] = [1,3,5]
+const PRICE_CLASSES := ["E","D","C","B","A","S"]
+const PRICE_FLOORS := [0,15000,30000,47000,85000,180000]
 const BOT_NAMES := [
 	["Dockhand Dex", "Neon Nia", "Spanner Sol", "Late-shift Leo", "Harbor Quinn"],
 	["Vinyl Vera", "Boost Benji", "Night Owl", "Slick Sora", "Midnight Mara"],
@@ -51,6 +53,18 @@ static func spec(id: String) -> Dictionary:
 
 static func blank_stages() -> Array:
 	return [0,0,0,0,0,0,0,0]
+
+static func price_class(id: String) -> String:
+	var price := int(RosterData.rows()[id].price) if RosterData.rows().has(id) else int(spec(id).price)
+	for index in range(PRICE_FLOORS.size()-1,0,-1):
+		if price>=PRICE_FLOORS[index]: return PRICE_CLASSES[index]
+	return PRICE_CLASSES[0]
+
+static func price_band(index: int) -> String:
+	if index==0: return "Under $%dk"%(PRICE_FLOORS[1]/1000)
+	var minimum := "$%dk"%(PRICE_FLOORS[index]/1000)
+	if index==PRICE_FLOORS.size()-1: return minimum+"+"
+	return "%s to <$%dk"%[minimum,PRICE_FLOORS[index+1]/1000]
 
 static func part_effect(index: int, tier: int) -> String:
 	match index:

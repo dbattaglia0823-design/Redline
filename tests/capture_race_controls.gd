@@ -28,11 +28,12 @@ func capture(label: String) -> void:
 	image.blit_rect(rendered,Rect2i(Vector2i.ZERO,rendered.get_size()),(root.size-rendered.get_size())/2)
 	check(image.save_png("%s/%s_%dx%d.png"%[OUTPUT,label,root.size.x,root.size.y])==OK,"Capture failed: "+label)
 
-func prepare(hardware: String) -> void:
+func prepare(hardware: String, nitrous_stage: int = 0) -> void:
 	game.go_garage()
 	game.profile=DriverProfile.new()
 	game.profile.hardware=VehicleBench.fixture(hardware)
 	game.profile.stages[4]=5
+	game.profile.stages[7]=nitrous_stage
 	game.start_practice()
 	game.countdown=0
 	game.car.running=true
@@ -73,7 +74,7 @@ func run() -> void:
 	check(game.glass.states.up.pulse>0,"Keyboard shift did not animate the paddle")
 	game.controls.hold("pedal","gas")
 	await capture("pressed")
-	prepare("auto10")
+	prepare("auto10",1)
 	var car: Drivetrain=game.car
 	car.set_road_state(30,3)
 	car.clutch_engagement=1

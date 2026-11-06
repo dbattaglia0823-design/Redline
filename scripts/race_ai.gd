@@ -67,7 +67,6 @@ static func configure(car: Drivetrain,contract: Dictionary) -> void:
 	car.configure_build(contract.get("hardware",GameCatalog.factory_build(str(contract.model))),str(contract.model))
 	if car.shift_map.is_empty(): car.rebuild_shift_map()
 	car.reset()
-	if contract.get("rule","")=="motor_only": car.nitrous_auto=false
 
 static func live_contract(contract: Dictionary,run_index: int,opponent_index: int) -> Dictionary:
 	var live := contract.duplicate(true)

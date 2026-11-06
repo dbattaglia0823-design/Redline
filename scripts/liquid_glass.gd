@@ -118,14 +118,21 @@ func background(g: Node2D,size: Vector2) -> void:
 	if not legacy and g.screen!="race":
 		var section: String=g.tab if g.screen=="garage" else "races"
 		var sheet: bool=g.menu.hub.dyno_open
-		var tex:=menu_scene(g,section,true,sheet)
+		var tex:=menu_scene(g,section,section!="performance" or sheet,sheet)
 		if tex!=null:
 			draw_cover(g,tex,Rect2(Vector2.ZERO,size))
-			g.draw_rect(Rect2(Vector2.ZERO,size),Color(.039,.034,.040,.86 if section=="performance" else .73))
-			var shade:=Color(.031,.028,.034,.55)
+			var warm: bool=section=="races" or section=="style"
+			var shade:=Color(.075,.039,.055,.68) if warm else Color(.025,.047,.063,.65)
+			g.draw_rect(Rect2(Vector2.ZERO,size),shade)
+			shade=Color(.018,.025,.036,.76)
 			g.draw_polygon(PackedVector2Array([Vector2(0,size.y*.42),size*Vector2(1,.42),size,Vector2(0,size.y)]),PackedColorArray([Color.TRANSPARENT,Color.TRANSPARENT,shade,shade]))
+			var streak:=Color(.97,.42,.32,.17) if warm else Color(.49,.78,.87,.16)
+			for index in 3:
+				var x:=size.x*(.75+index*.031)
+				g.draw_line(Vector2(x,0),Vector2(x-size.x*.12,size.y*.46),streak,1.0,true)
 			if g.profile.effects_quality>0:
-				AutomotiveUI.glow(g,Rect2(size*Vector2(-.29,-.42),size*Vector2(.99,1.20)),Color(.66,.29,.18,.16))
+				var light:=Color(.68,.25,.34,.24) if warm else Color(.25,.56,.68,.23)
+				AutomotiveUI.glow(g,Rect2(size*Vector2(-.29,-.42),size*Vector2(.99,1.20)),light)
 			return
 	for i in 9:
 		var x := size.x*float(i)/8
@@ -206,7 +213,7 @@ func icon(g: CanvasItem,key: String,p: Vector2,s: float,color: Color) -> void:
 		"Fuel system", "Nitrous":
 			g.draw_polyline(PackedVector2Array([p+Vector2(s*.35,s*.1),p+Vector2(s*.65,s*.1),p+Vector2(s*.65,s*.23),p+Vector2(s*.8,s*.38),p+Vector2(s*.8,s*.9),p+Vector2(s*.2,s*.9),p+Vector2(s*.2,s*.38),p+Vector2(s*.35,s*.23),p+Vector2(s*.35,s*.1)]),color,w,true)
 			g.draw_line(p+Vector2(s*.36,s*.52),p+Vector2(s*.64,s*.52),color,w,true)
-		"ECU / electronics":
+		"ECU":
 			g.draw_rect(Rect2(p+Vector2(s*.25,s*.25),Vector2(s*.5,s*.5)),color,false,w)
 			for i in 3:
 				var at := s*(.32+i*.18)
@@ -237,7 +244,7 @@ func icon(g: CanvasItem,key: String,p: Vector2,s: float,color: Color) -> void:
 		"Brakes":
 			g.draw_arc(c,radius,.7,TAU-.7,20,color,w,true); g.draw_circle(c,s*.09,color,true,-1,true)
 			g.draw_line(p+Vector2(s*.8,s*.23),p+Vector2(s*.8,s*.76),color,w*2,true)
-		"Transmission", "Clutch / converter", "Wheels":
+		"Transmission", "Clutch", "Wheels":
 			g.draw_circle(c,radius,color,false,w,true); g.draw_circle(c,radius*.35,color,false,w,true)
 			for i in 5:
 				var angle := TAU*i/5; var direction := Vector2(cos(angle),sin(angle))

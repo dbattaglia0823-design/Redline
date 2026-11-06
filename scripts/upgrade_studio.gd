@@ -13,20 +13,16 @@ const EXPLAIN := {
  "intake":"Improves high-RPM breathing; does not replace the engine build.",
  "exhaust":"The manifold complements the separate downstream exhaust package.",
  "fuel":"Fuel-flow headroom. No gain below the fuel limit.",
- "ecu":"Unlocks launch and rev-limit tuning. No instant power.",
+ "ecu":"Street unlocks launch tuning. Programmable and higher add rev-limit tuning. Track and Motorsport improve power.",
  "induction":"Replaces package boost, spool and onset.",
  "boost":"Adjusts pressure within the installed assembly's supported range.",
- "nitrous":"Ramps spray delivery for a gentler traction transition.",
- "controls":"Changes the actual shift mechanism and available race controls.",
  "clutch":"More coupling capacity; gearbox internals remain the upper limit.",
- "converter":"Stall RPM and multiplication change launch slip and wheel torque.",
  "differential":"Improves driven-axle traction, with a small mass tradeoff.",
  "final_drive":"Unlocks matched gearing sets; shorter gearing trades speed for torque.",
  "wheels":"Changes wheel mass and rotational inertia independently of tire compound.",
  "tires":"Softer compounds put more torque down at launch. Drag rubber adds rolling drag and rotating mass.",
  "suspension":"Transfers load to the driven axle and controls wheel hop. Adjustable setups unlock launch damping.",
- "transbrake":"Locks a compatible drag automatic for a loaded launch.",
- "gearset":"Unlocks individual ratio cassettes within mechanical fitment limits."}
+}
 var g: Node2D
 var system := 0
 var remembered: Dictionary = {}
@@ -294,12 +290,9 @@ func metrics(a: Drivetrain,b: Drivetrain,index: int,slot: String) -> Array[Strin
 	match slot:
 		"internals": rows.append(metric("Engine support",a.mechanical_torque_capacity(),b.mechanical_torque_capacity(),"Nm")); rows.append(metric("RPM headroom",a._mechanical_redline,b._mechanical_redline,"rpm")); rows.append(metric("Usable torque",a.supported_engine_torque(),b.supported_engine_torque(),"Nm"))
 		"fuel": rows.append(metric("Fuel support",a.fuel_torque_capacity(),b.fuel_torque_capacity(),"Nm")); rows.append(metric("Usable torque limit",a.supported_engine_torque(),b.supported_engine_torque(),"Nm"))
-		"ecu": rows.append(metric("Rev limiter",a.redline_rpm,b.redline_rpm,"rpm")); rows.append("Launch / RPM tuning: "+("Unlocked" if b.launch_control else "Factory"))
+		"ecu": rows.append(metric("Rev limiter",a.redline_rpm,b.redline_rpm,"rpm")); rows.append("Launch tuning: "+("Unlocked" if b.hardware.parts.has("ecu") else "Factory")); rows.append("Rev-limit tuning: "+("Unlocked" if VehicleParts.can_tune_rpm(b.hardware) else "Factory"))
 		"induction","boost": rows.append(metric("Boost",a.boost_target(a.redline_rpm,1),b.boost_target(b.redline_rpm,1),"bar",2)); rows.append(metric("Boost onset",boost_onset(a),boost_onset(b),"rpm"))
 		"clutch": rows.append(metric("Clutch capacity",a.clutch_capacity(),b.clutch_capacity(),"Nm")); rows.append(metric("Gearbox rating",a.input_capacity(),b.input_capacity(),"Nm"))
-		"converter": rows.append(metric("Stall speed",a.converter_stall,b.converter_stall,"rpm")); rows.append(metric("Multiplication",a.converter_multiplication,b.converter_multiplication,"x",2))
-		"nitrous": rows.append(metric("Spray ramp",a._nitrous_ramp,b._nitrous_ramp,"s",2))
-		"controls": rows.append(a.control_mode.capitalize()+" > "+b.control_mode.capitalize()); rows.append(metric("Shift time",a.shift_duration*1000,b.shift_duration*1000,"ms"))
 		"differential": rows.append(metric("Grip",GarageHub.grip(a),GarageHub.grip(b),"",2)); rows.append(metric("Mass",a.mass(),b.mass(),"kg"))
 		"tires":
 			rows.append(metric("Road grip",a.effective_grip(),b.effective_grip(),"",2))
@@ -314,8 +307,6 @@ func metrics(a: Drivetrain,b: Drivetrain,index: int,slot: String) -> Array[Strin
 		"wheels":
 			rows.append(metric("Mass",a.mass(),b.mass(),"kg"))
 		"final_drive": rows.append(metric("Final drive",a.final_drive,b.final_drive,"",2)); rows.append("Matched ratio tuning: "+("Unlocked" if b.hardware.parts.has("final_drive") else "Factory"))
-		"gearset": rows.append("Ratio cassettes: "+("Unlocked" if b.hardware.parts.has("gearset") else "Factory")); rows.append("Current gears: "+str(b.gear_ratios.size()))
-		"transbrake": rows.append("Launch lock: "+("Enabled" if b.has_transbrake else "Not installed"))
 	if slot=="":
 		match index:
 			5:
@@ -323,7 +314,7 @@ func metrics(a: Drivetrain,b: Drivetrain,index: int,slot: String) -> Array[Strin
 				rows.append(metric("Boost onset",boost_onset(a),boost_onset(b),"rpm"))
 				rows.append(metric("Spool response",spool(a),spool(b),"s",2))
 				if b.hardware.parts.has("induction"): rows.append("Fitted assembly controls the boost curve")
-			6: rows.append(metric("Spray capacity",a.nitrous_capacity(),b.nitrous_capacity(),"s",1)); rows.append(metric("Nozzle request",55+a.nitrous_stage*6,55+b.nitrous_stage*6,"%")); rows.append(metric("Torque ceiling",a.supported_engine_torque(),b.supported_engine_torque(),"Nm"))
+			6: rows.append(metric("Spray capacity",a.nitrous_capacity(),b.nitrous_capacity(),"s",1)); rows.append(metric("Nozzle request",a.nitrous_torque_gain()*100,b.nitrous_torque_gain()*100,"%",1)); rows.append(metric("Torque ceiling",a.supported_engine_torque(),b.supported_engine_torque(),"Nm"))
 			7: rows.append(metric("Shift time",a.shift_duration*1000,b.shift_duration*1000,"ms")); rows.append(metric("Input rating",a.input_capacity(),b.input_capacity(),"Nm")); rows.append(metric("Clutch capacity",a.clutch_capacity(),b.clutch_capacity(),"Nm"))
 			10: rows.append(metric("Grip",GarageHub.grip(a),GarageHub.grip(b),"",2))
 			12: rows.append(metric("Brake limit",brake_limit(a),brake_limit(b),"m/s2",2))
@@ -349,7 +340,7 @@ func package_description(index: int) -> String:
 		0: return "Base airflow calibration; internals and ECU are separate."
 		2: return "Downstream exhaust system; the manifold is a separate component."
 		5: return "Base turbo package. A fitted assembly replaces its boost curve."
-		6: return "Bottle / nozzle package; the progressive controller is separate."
+		6: return "Bottle and nozzle packages add manually activated spray."
 		7: return "Internal strength and shift execution; the gearbox is bought separately."
 		10: return "Rubber compound; wheel mass and dimensions are separate."
 		12: return "Braking hardware, capped by tire-road grip."
@@ -359,11 +350,15 @@ func package_details(index: int) -> Array:
 	var c:=candidate()
 	return [package_description(index),"Purchased tiers and all lower levels can be equipped free.","Parts remain individually owned and reinstallable.","Engine limiter %.0f rpm / mass %.0f kg"%[c.redline_rpm,c.mass()]]
 
-func traction_projection(c: Drivetrain) -> Array[String]:
+func build_runs(c: Drivetrain) -> Array[Dictionary]:
 	var results: Array[Dictionary] = []
 	for car in [g.car,c]:
 		var stages := [car.engine_stage,car.turbo_stage,car.tire_stage,car.weight_stage,car.gearbox_stage,car.exhaust_stage,car.brake_stage,car.nitrous_stage]
 		results.append(PerformanceClasses.request(g.profile.vehicle_id,stages,car.hardware))
+	return results
+
+func traction_projection(c: Drivetrain) -> Array[String]:
+	var results:=build_runs(c)
 	var rows: Array[String] = []
 	if results[0].is_empty() or results[1].is_empty():
 		rows.append("Measuring launches and quarter-mile runs…")
@@ -388,11 +383,7 @@ func transmission_candidate() -> Drivetrain:
 	tx_key=key
 	var build: Dictionary=g.profile.hardware.duplicate(true); var levels: Array=g.profile.stages.duplicate()
 	build.performance_stages[build.transmission]=int(levels[4])
-	if build.transmission!=w.selected_trans:
-		for slot in VehicleParts.TRANSMISSION_SLOTS: build.parts.erase(slot)
-		for setting in ["ratios","shift_rpms","stall","firmness"]: build.tune.erase(setting)
-	build.transmission=w.selected_trans
-	if not build.owned_transmissions.has(w.selected_trans): build.owned_transmissions.append(w.selected_trans)
+	VehicleParts.switch_transmission(build,w.selected_trans)
 	levels[4]=int(build.performance_stages.get(w.selected_trans,0))
 	tx_car=Drivetrain.new(); tx_car.configure_vehicle(GameCatalog.spec(g.profile.vehicle_id)); tx_car.configure(levels); tx_car.configure_build(build,g.profile.vehicle_id,false)
 	return tx_car

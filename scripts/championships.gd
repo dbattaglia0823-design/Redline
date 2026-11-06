@@ -64,7 +64,7 @@ static func eligibility(profile: DriverProfile,contract: Dictionary) -> String:
 		if int(contract.round)>wins(profile,series): return "Beat the previous rival first"
 		var measured:=PerformanceClasses.request(profile.vehicle_id,profile.stages,profile.hardware)
 		if measured.is_empty(): return "Measuring current build..."
-		if str(measured.get("class","?"))!=series: return "Class %s build required / current %s"%[series,measured.get("class","?")]
+		if str(measured.get("class","?"))!=series: return "Race class %s required / current %s"%[series,measured.get("class","?")]
 	if str(contract.get("vehicle_rule",""))!="" and profile.vehicle_id!=str(contract.vehicle_rule): return GameCatalog.spec(str(contract.vehicle_rule)).name+" required"
 	return ""
 static func sanitize_wins(value: Variant,limit: int = ROUNDS) -> Dictionary:

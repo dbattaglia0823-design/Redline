@@ -21,8 +21,8 @@ var lab_result: Dictionary = {}
 var lab_build := ""
 var _preview: Drivetrain
 var _preview_key := ""
-const GROUPS := [["internals","displacement","compression","intake","fuel","ecu"],["induction","boost"],["tires","wheels","differential"],["suspension"],["controls","clutch","converter","transbrake","gearset","final_drive"],["exhaust","intake"],["suspension"],["nitrous","fuel"]]
-const TITLES := {"internals":"Internals","displacement":"Displacement","compression":"Compression","intake":"Intake","fuel":"Fuel delivery","ecu":"ECU","induction":"Turbo / supercharger","boost":"Boost control","clutch":"Clutch packs","converter":"Converter","controls":"Shift hardware","differential":"Differential","final_drive":"Final drive","wheels":"Wheels","tires":"Tires","suspension":"Suspension","transbrake":"Transbrake","gearset":"Ratio cassettes","exhaust":"Exhaust","nitrous":"Nitrous control"}
+const GROUPS := [["internals","displacement","compression","intake","fuel","ecu"],["induction","boost"],["tires","wheels","differential"],["suspension"],["clutch"],["exhaust","intake"],["suspension"],[]]
+const TITLES := {"gear_strength":"Hardened internals","gear_efficiency":"Low-friction bearings","gear_cooling":"Thermal protection","gear_response":"Shift calibration","charge_pressure":"Pressure upgrade","charge_response":"Response calibration","charge_airflow":"High-flow charge piping","charge_cooling":"Charge cooling","internals":"Internals","displacement":"Displacement","compression":"Compression","intake":"Intake","fuel":"Fuel delivery","ecu":"ECU","induction":"Turbo / supercharger","boost":"Boost control","clutch":"Clutch packs","differential":"Differential","final_drive":"Final drive","wheels":"Wheels","tires":"Tires","suspension":"Suspension","exhaust":"Exhaust"}
 
 func _init(game: Node2D) -> void: g = game
 func t(value: String,x: float,y: float,size: int = 16,color: Color = Color("f2eee4")) -> void: g.text_at(value,x,y,size,color)
@@ -68,6 +68,7 @@ func draw_trans_summary() -> void:
 
 func current_slot() -> String:
 	var group: Array = category_slots if not category_slots.is_empty() else GROUPS[g.selected_part]
+	if group.is_empty(): return ""
 	slot_index = clampi(slot_index,0,group.size()-1)
 	return str(group[slot_index])
 
@@ -76,7 +77,7 @@ func draw_parts() -> void:
 
 func part_details(part: Dictionary) -> Array[String]:
 	var rows: Array[String] = []
-	var labels := {"torque":"Displacement / torque factor","flow":"High-RPM flow gain","safe":"Engine torque support","inertia":"Rotating inertia change","redline":"Mechanical RPM headroom","clutch":"Clutch capacity factor","mass":"Mass change, kg","grip":"Effective tire grip gain","radius":"Rolling radius, m","wheel_inertia":"Wheel inertia change","onset":"Turbo onset, RPM","spool":"Spool constant, sec","boost_add":"Extra boost capacity, bar","fuel":"Fuel-flow support factor","pressure":"Supercharger boost, bar","multiplication":"Stall torque multiplication","nitrous_ramp":"Progressive spray, sec","transfer":"Weight-transfer response","shift_scale":"Actuator time factor"}
+	var labels := {"torque":"Engine torque factor","flow":"High-RPM flow gain","safe":"Engine torque support","inertia":"Rotating inertia change","redline":"Mechanical RPM headroom","clutch":"Clutch capacity factor","mass":"Mass change, kg","grip":"Effective tire grip gain","radius":"Rolling radius, m","wheel_inertia":"Wheel inertia change","onset":"Turbo onset, RPM","spool":"Spool constant, sec","boost_add":"Extra boost capacity, bar","fuel":"Fuel-flow support factor","pressure":"Supercharger boost, bar","transfer":"Weight-transfer response","shift_scale":"Actuator time factor"}
 	for key in labels:
 		if not part.has(key): continue
 		var value:=float(part[key])
@@ -85,9 +86,9 @@ func part_details(part: Dictionary) -> Array[String]:
 		elif key=="onset": rows.append("Boost onset: %.0f RPM"%value)
 		elif key=="redline": rows.append("Mechanical RPM headroom: +%.0f RPM"%value)
 		else: rows.append("%s: %+.3f"%[labels[key],value])
-	if part.has("stall_min"): rows.append("Stall range %.0f - %.0f RPM" % [part.stall_min,part.stall_max])
 	if part.has("super"): rows.append("Belt drive / replaces turbo assembly")
-	if part.has("launch"): rows.append("Programmable launch / rev limiter")
+	if part.has("launch"): rows.append("Programmable launch control")
+	if part.get("rpm_tune",false): rows.append("Adjustable rev limiter and pedal response")
 	if part.has("boost_tune"): rows.append("Adjust pressure within turbo limits")
 	if part.has("fine_shift"): rows.append("Individual build-based shift overrides")
 	if part.has("ratio_tune"): rows.append("Replaceable ratios within +/-12%")
@@ -98,7 +99,7 @@ func part_details(part: Dictionary) -> Array[String]:
 
 func tune_row(label: String, value: String, key: String, y: float, enabled: bool) -> void:
 	t(label,57,y+20,15,g.MUTED)
-	var needs := {"stall":"Converter kit","launch_rpm":"Programmable ECU","redline":"Programmable ECU","boost":"Boost controller","ratio":"Ratio cassette kit","shift":"Race controller","final_drive":"Final-drive kit","nitrous_ramp":"Progressive kit","firmness":"Auto / DCT hardware"}
+	var needs := {"launch_rpm":"ECU","redline":"ECU","boost":"Boost controller","firmness":"Auto / DCT hardware"}
 	if key=="boost" and g.profile.hardware.parts.values().has("boost_control") and not enabled: needs.boost="Inactive for belt drive" if g.car._supercharger!="" else "Turbo source required"
 	t(value if enabled else str(needs.get(key,"Hardware required")),270,y+22,16,g.INK if enabled else g.MUTED)
 	b("tune_minus_"+key,"-",Rect2(495,y-8,77,46),false)
@@ -140,15 +141,15 @@ func draw_scoped_tuning() -> void:
 	box(Rect2(36,247,1130,408))
 	var keys: Array = GarageHub.TUNE_KEYS.get(g.menu.hub.selected,[])
 	var fitted: Array = g.profile.hardware.parts.values()
-	var labels := {"launch_rpm":"Launch RPM","redline":"Rev limiter","boost":"Boost target / bar","nitrous_ramp":"Nitrous ramp / sec","firmness":"Shift firmness","stall":"Converter stall RPM","final_drive":"Final drive","ratio":"Gear ratio","shift":"Upshift RPM"}
-	var enabled := {"launch_rpm":fitted.has("ecu"),"redline":fitted.has("ecu"),"boost":fitted.has("boost_control"),"nitrous_ramp":fitted.has("progressive"),"firmness":g.car.transmission_kind in ["drag","automatic","dct"],"stall":g.car.hardware.parts.has("converter"),"final_drive":fitted.has("final_kit"),"ratio":fitted.has("gearset"),"shift":fitted.has("race_controller")}
+	var labels := {"launch_rpm":"Launch RPM","redline":"Rev limiter","boost":"Boost target / bar","firmness":"Shift firmness","final_drive":"Final drive","ratio":"Gear ratio","shift":"Upshift RPM"}
+	var enabled := {"launch_rpm":g.car.hardware.parts.has("ecu") or g.car.transmission_kind=="drag","redline":VehicleParts.can_tune_rpm(g.car.hardware),"boost":fitted.has("boost_control"),"firmness":g.car.transmission_kind in ["drag","automatic","dct"],"final_drive":true,"ratio":true,"shift":true}
 	gear_index = clampi(gear_index,0,g.car.gear_ratios.size()-1)
 	if g.menu.hub.selected == 7:
 		b("tune_gear_prev","< GEAR",Rect2(741,273,170,48)); b("tune_gear_next","GEAR >",Rect2(971,273,174,48))
 		t("GEAR %d" % (gear_index+1),745,356,24)
 	for i in keys.size():
 		var key: String = keys[i]
-		var values := {"launch_rpm":g.car.launch_rpm,"redline":g.car.redline_rpm,"boost":g.car.boost_target(g.car.redline_rpm,1),"nitrous_ramp":g.car._nitrous_ramp,"firmness":g.car.shift_firmness,"stall":g.car.converter_stall,"final_drive":g.car.final_drive,"ratio":g.car.gear_ratios[gear_index],"shift":g.car.shift_map[gear_index] if gear_index < g.car.shift_map.size() else 0}
+		var values := {"launch_rpm":g.car.launch_rpm,"redline":g.car.redline_rpm,"boost":g.car.boost_target(g.car.redline_rpm,1),"firmness":g.car.shift_firmness,"final_drive":g.car.final_drive,"ratio":g.car.gear_ratios[gear_index],"shift":g.car.shift_map[gear_index] if gear_index < g.car.shift_map.size() else 0}
 		tune_row(str(labels.get(key,TuningSetup.EXTRA.get(key,[""])[0])),tune_value(key,float(values.get(key,tune_default(key)))),key,300+i*85,tuning_enabled(key))
 	t("Applies to installed hardware",744,470,16,g.MUTED)
 	b("open_tuning","Saved setups / test track",Rect2(743,479,402,44))
@@ -163,9 +164,8 @@ func tune_value(key: String,value: float) -> String:
 	if key=="tire_pressure": return "%.0f psi"%value
 	if key=="launch_damping": return "%.2fx"%value
 	if key=="shift" and gear_index>=g.car.gear_ratios.size()-1: return "Top gear / no upshift"
-	if key in ["launch_rpm","redline","stall","shift"]: return "%.0f RPM"%value
+	if key in ["launch_rpm","redline","shift"]: return "%.0f RPM"%value
 	if key=="boost": return "%.2f bar"%value
-	if key=="nitrous_ramp": return "%.2f s"%value
 	return "%.3f"%value if key=="ratio" else "%.2f"%value
 
 func action(id: String) -> bool:
@@ -216,25 +216,15 @@ func change_tune(key: String, direction: float) -> void:
 	var value: Variant
 	var tune: Dictionary = g.profile.hardware.tune
 	match key:
-		"stall": value = g.car.converter_stall+direction*200.0
 		"launch_rpm": value = g.car.launch_rpm+direction*200.0
 		"redline": value = g.car.redline_rpm+direction*100.0
 		"boost": value = g.car.boost_target(g.car.redline_rpm,1.0)+direction*0.10
 		"firmness": value = g.car.shift_firmness+direction*0.1
-		"nitrous_ramp": value = g.car._nitrous_ramp+direction*0.1
 		"ratio": value = g.car.gear_ratios.duplicate(); value[gear_index] += direction*0.025; key = "ratios"
 		"shift":
 			if gear_index >= g.car.shift_map.size(): return
 			value = g.car.shift_map.duplicate(); value[gear_index] += direction*100.0; key = "shift_rpms"
-		"final_drive":
-			var options := VehicleParts.FINAL_DRIVES
-			value = g.car.final_drive
-			if direction>0:
-				for candidate in options:
-					if float(candidate)>g.car.final_drive+.0001: value=candidate; break
-			else:
-				for i in range(options.size()-1,-1,-1):
-					if float(options[i])<g.car.final_drive-.0001: value=options[i]; break
+		"final_drive": value = clampf(snappedf(g.car.final_drive+direction*0.05,0.01),2.0,5.5)
 		_:
 			if not TuningSetup.EXTRA.has(key): return
 			value = tune_default(key)+direction*float(TuningSetup.EXTRA[key][3])
@@ -297,23 +287,17 @@ static func comparison_rows(a: Drivetrain,b: Drivetrain) -> Array[String]:
 	if absf(a.engine_inertia-b.engine_inertia) > .001: rows.append("Rev inertia %.3f > %.3f" % [a.engine_inertia,b.engine_inertia])
 	if a.launch_control != b.launch_control: rows.append("Launch RPM control enabled" if b.launch_control else "Factory launch control")
 	if a.has_transbrake != b.has_transbrake: rows.append("Transbrake launch enabled" if b.has_transbrake else "Factory launch hardware")
-	if absf(a._nitrous_ramp-b._nitrous_ramp) > .001: rows.append("Nitrous ramp %.2f > %.2f sec" % [a._nitrous_ramp,b._nitrous_ramp])
 	if absf(a.converter_multiplication-b.converter_multiplication) > .001: rows.append("Launch multiplier %.2f > %.2f" % [a.converter_multiplication,b.converter_multiplication])
-	for entry in [["boost","Boost tuning"],["gearset","Gear ratio tuning"],["final_drive","Final-drive tuning"]]:
-		if a.hardware.parts.has(entry[0]) != b.hardware.parts.has(entry[0]): rows.append(entry[1]+(" unlocked" if b.hardware.parts.has(entry[0]) else " removed"))
+	if a.hardware.parts.has("boost") != b.hardware.parts.has("boost"): rows.append("Boost controller fitted" if b.hardware.parts.has("boost") else "Boost controller removed")
 	if rows.is_empty(): rows.append("Engine output unchanged / see details")
 	return rows
 
 func available_transmissions() -> Array:
-	var ids: Array = []
-	for id in TransmissionCatalog.ROWS:
-		var kind: String = TransmissionCatalog.spec(id).kind
-		if (filter_index == 0 and kind == "manual") or (filter_index == 1 and kind in ["paddle","sequential","dct"]) or (filter_index == 2 and kind == "automatic") or (filter_index == 3 and kind == "drag"): ids.append(id)
-	return ids
+	return TransmissionCatalog.type_options(g.profile.hardware)
 
 func tuning_enabled(key: String) -> bool:
 	if TuningSetup.EXTRA.has(key): return TuningSetup.reason(key,g.profile.hardware,int(g.profile.stages[4]),g.profile.vehicle_id)==""
-	if key=="boost" and VehicleParts.boost_control_reason(g.profile.hardware,g.car.base_boost,g.car.turbo_stage)!="": return false
+	if key=="boost": return g.car._supercharger=="" and VehicleParts.boost_control_reason(g.profile.hardware,g.car.base_boost,g.car.turbo_stage)==""
 	var fitted: Array = g.profile.hardware.parts.values()
-	var enabled := {"launch_rpm":fitted.has("ecu"),"redline":fitted.has("ecu"),"boost":fitted.has("boost_control"),"nitrous_ramp":fitted.has("progressive"),"firmness":g.car.transmission_kind in ["drag","automatic","dct"],"stall":g.car.hardware.parts.has("converter"),"final_drive":fitted.has("final_kit"),"ratio":fitted.has("gearset"),"shift":fitted.has("race_controller") and gear_index < g.car.shift_map.size()}
+	var enabled := {"launch_rpm":g.car.hardware.parts.has("ecu") or g.car.transmission_kind=="drag","redline":VehicleParts.can_tune_rpm(g.car.hardware),"boost":fitted.has("boost_control"),"firmness":g.car.transmission_kind in ["drag","automatic","dct"],"final_drive":true,"ratio":true,"shift":gear_index < g.car.shift_map.size()}
 	return bool(enabled.get(key,false))
