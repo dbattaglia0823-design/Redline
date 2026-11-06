@@ -27,7 +27,7 @@ func run() -> void:
 		root.size=window
 		for hardware in ["manual5","manual6","seq6","legacy6","dct8","auto10","drag3","drag4"]:
 			game.go_garage(); game.profile=DriverProfile.new(); game.profile.hardware=VehicleBench.fixture(hardware)
-			game.profile.stages[4]=5; game.refresh_car(); RosterTest.ready(game); game.start_race()
+			game.profile.stages[4]=5; game.refresh_car(); game.career_board.select_series("OPEN"); RosterTest.ready(game); game.start_race()
 			await frame()
 			var limit := Rect2(Vector2.ZERO,Vector2(game.race_view_size()))
 			for i in game.buttons.size():

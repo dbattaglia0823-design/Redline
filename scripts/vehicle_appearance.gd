@@ -6,17 +6,18 @@ const CATEGORIES := ["paint","finish","design","rim","sidewall","caliper","tint"
 const LABELS := ["Paint","Finish","Wheel design","Wheel color","Sidewalls","Calipers","Window tint","Ride height","Spoiler","Headlights","Taillights","Livery"]
 const OPTIONS := {
 	"paint":["Ember","Seafoam","Bone","Indigo","Saffron","Orchid"],
-	"finish":["Gloss","Matte","Metallic"],"design":["Split five","Six spoke","Mesh"],
+	"finish":["Gloss","Matte","Metallic"],"design":["Split five","Six spoke","Mesh","Forged ten","Deep dish"],
 	"rim":["Silver","Bronze","Graphite"],"sidewall":["Blackwall","White ring","Track marks"],
 	"caliper":["Copper","Red","Yellow","Silver"],"tint":["Factory","Smoke","Deep"],
 	"stance":["Factory","Street low","Raised"],"spoiler":["Factory","Clean deck","Track wing"],
 	"headlight":["Factory","Ice","Amber"],"taillight":["Factory","Ruby","Smoked"],"decal":["Clean","Side stripes","Number 71"]}
-const PRICES := {"paint":[0,0,0,0,0,0],"finish":[0,250,450],"design":[0,400,650],"rim":[0,0,0],"sidewall":[0,100,150],"caliper":[0,120,120,120],"tint":[0,120,180],"stance":[0,200,200],"spoiler":[0,100,550],"headlight":[0,140,140],"taillight":[0,140,140],"decal":[0,200,300]}
+const PRICES := {"paint":[0,0,0,0,0,0],"finish":[0,250,450],"design":[0,400,650,850,1100],"rim":[0,0,0],"sidewall":[0,100,150],"caliper":[0,120,120,120],"tint":[0,120,180],"stance":[0,200,200],"spoiler":[0,100,550],"headlight":[0,140,140],"taillight":[0,140,140],"decal":[0,200,300]}
 static var _manifest: Dictionary = {}
 static var _textures: Dictionary = {}
 static var _frame_textures: Dictionary = {}
 static var _texture_frame := -1
 const CACHE_BYTES := 32*1024*1024
+const MOBILE_CACHE_BYTES := 20*1024*1024
 
 static func texture_bytes(tex: Texture2D) -> int:
 	return tex.get_width()*tex.get_height()*4
@@ -62,7 +63,8 @@ static func texture(path: String) -> Texture2D:
 		var tex: Texture2D = load(path)
 		var bytes := texture_bytes(tex)
 		var retained := cached_bytes()
-		while not _textures.is_empty() and (_textures.size()>=32 or retained+bytes>CACHE_BYTES):
+		var limit := MOBILE_CACHE_BYTES if OS.has_feature("mobile") else CACHE_BYTES
+		while not _textures.is_empty() and (_textures.size()>=32 or retained+bytes>limit):
 			var oldest: String = _textures.keys()[0]
 			retained -= texture_bytes(_textures[oldest]); _textures.erase(oldest)
 		_textures[path] = tex

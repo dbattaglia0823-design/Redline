@@ -10,7 +10,7 @@ func _initialize() -> void:
 	p.garage.civic_si={"stages":GameCatalog.blank_stages(),"hardware":GameCatalog.factory_build("civic_si")}
 	p.save_tune_slot("street","Old street tune"); p.save()
 	var raw: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(DriverProfile.SAVE_PATH))
-	for key in ["career_version","championship_wins","career_claims","event_records","career_serial"]: raw.erase(key)
+	for key in ["save_format","integrity","career_version","championship_wins","career_claims","event_records","career_serial"]: raw.erase(key)
 	var file:=FileAccess.open(DriverProfile.SAVE_PATH,FileAccess.WRITE); file.store_string(JSON.stringify(raw)); file.close()
 	var restored:=DriverProfile.new(); restored.load_profile()
 	check(restored.credits==9543 and restored.xp==2100 and restored.wins==8 and restored.races==14,"Migration reset player totals")

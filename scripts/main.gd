@@ -33,6 +33,9 @@ var rival_trap_speed := 0.0
 var rival_finish := 0.0
 var result_win := false
 var result_record := false
+var result_improvement := 0.0
+var recovery_prompted := false
+var rival_telemetry := RunTelemetry.new()
 var result_bonus := 0
 var result_reward := 0
 var result_xp := 0
@@ -74,7 +77,6 @@ var shift_notice_left := 0.0
 var seen_shift_request := 0
 var finish_hold_left := 0.0
 var shutting_down := false
-var recommend_pending := false
 var race_start_pending := false
 var menu_dirty := true
 var navigation_key := ""
@@ -120,6 +122,30 @@ func _ready() -> void:
 	RenderingServer.set_default_clear_color(glass.PALETTE.background)
 	get_window().size_changed.connect(sync_menu_size)
 	get_tree().auto_accept_quit = false
+	call_deferred("show_save_recovery")
+
+func show_save_recovery() -> void:
+	if not profile.save_blocked or recovery_prompted: return
+	recovery_prompted=true
+	var dialog := ConfirmationDialog.new()
+	dialog.title="Progress recovery"
+	dialog.exclusive=true
+	dialog.dialog_text="The progress file could not be read. Restore the last verified backup?" if profile.recovery_available else "The progress file could not be read. Saving is paused to protect it."
+	dialog.ok_button_text="Restore backup" if profile.recovery_available else "Close"
+	dialog.cancel_button_text="Continue without saving"
+	add_child(dialog)
+	dialog.confirmed.connect(func():
+		if profile.recovery_available:
+			if profile.recover_backup():
+				refresh_car()
+				sound.enabled=not profile.muted
+				glass.reduced_motion=profile.reduced_motion
+				show_toast("Progress restored",true)
+			else: show_toast("Backup restore failed. Progress file protected.")
+		dialog.queue_free())
+	dialog.canceled.connect(dialog.queue_free)
+	dialog.get_label().autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	dialog.popup_centered(Vector2i(mini(460,get_window().size.x-24),160))
 
 func is_portrait() -> bool: return get_window().size.x < get_window().size.y*.85
 
@@ -134,7 +160,7 @@ func race_touch_layout() -> bool:
 func sync_menu_size() -> void:
 	var target := race_view_size() if screen == "race" else (Vector2i(600,1300) if is_portrait() else Vector2i(1200,760))
 	var catalog: bool=tab=="performance" and not menu.hub.dyno_open and (menu.hub.categories or workshop.mode in ["basic","hardware","transmission"])
-	if (screen=="results" or (screen=="garage" and (catalog or tab in ["garage","dealer","owned","style","races"]))) and not glass.legacy and not is_portrait() and get_window().size.y<500:
+	if (screen=="results" or (screen=="garage" and (catalog or tab in ["garage","dealer","owned","style","races"]))) and (not glass.legacy or screen=="results" or tab in ["races","style"]) and not is_portrait() and get_window().size.y<500:
 		target=race_view_size()
 	if get_window().content_scale_size != target:
 		get_window().content_scale_size = target
@@ -144,12 +170,18 @@ func sync_menu_size() -> void:
 	if OS.has_feature("mobile"):
 		var area := DisplayServer.get_display_safe_area()
 		var pixels := Vector2(get_window().size)
-		if area.has_area():
+		if area.has_area() and pixels.x>0 and pixels.y>0:
 			insets = Vector4(maxf(0,area.position.x),maxf(0,area.position.y),maxf(0,pixels.x-area.end.x),maxf(0,pixels.y-area.end.y))
 			insets *= Vector4(target.x/pixels.x,target.y/pixels.y,target.x/pixels.x,target.y/pixels.y)
 	var factor := minf((target.x-insets.x-insets.z)/target.x,(target.y-insets.y-insets.w)/target.y)
-	scale = Vector2.ONE*maxf(.5,factor)
-	position = Vector2(insets.x,insets.y)+(Vector2(target)-Vector2(insets.x+insets.z,insets.y+insets.w)-Vector2(target)*scale)*.5
+	var next_scale := Vector2.ONE*maxf(.5,factor)
+	var next_position := Vector2(insets.x,insets.y)+(Vector2(target)-Vector2(insets.x+insets.z,insets.y+insets.w)-Vector2(target)*next_scale)*.5
+	if scale!=next_scale or position!=next_position:
+		scale=next_scale
+		position=next_position
+		controls.clear()
+		dragging_wager=""
+		menu_dirty=true
 
 func race_track_index() -> int:
 	return clampi(int(active_contract.get("track_index",event_index)),0,2) if screen=="race" else event_index
@@ -167,7 +199,7 @@ func race_origins() -> Array[Vector2]:
 	return [player,rival_origin]
 
 func current_contract() -> Dictionary:
-	return career_board.contract() if career_board!=null and career_board.active else GameCatalog.opponent(event_index,selected_opponent,profile)
+	return career_board.contract() if career_board!=null else {}
 
 func normalize_wager() -> void:
 	wager = clampi(wager,0,mini(profile.credits,int(current_contract().get("max_bet",0))))
@@ -180,7 +212,7 @@ func launch_guidance() -> String:
 	return "Hold gas; tap + when the shift light turns green"
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_APPLICATION_FOCUS_OUT:
+	if what in [NOTIFICATION_APPLICATION_FOCUS_OUT,NOTIFICATION_APPLICATION_PAUSED]:
 		controls.clear()
 		car.cancel_shift_request()
 		dragging_wager = ""
@@ -245,6 +277,7 @@ func set_race_paused(value: bool) -> void:
 	dragging_wager = ""
 
 func _process(dt: float) -> void:
+	show_save_recovery()
 	sync_menu_size()
 	clock += dt
 	glass.reduced_motion = profile.reduced_motion
@@ -263,14 +296,10 @@ func _process(dt: float) -> void:
 	navigation_age = 1.0 if glass.reduced_motion else minf(1,navigation_age+dt/maxf(.01,glass.PALETTE.motion_seconds))
 	if screen == "garage":
 		normalize_wager()
-		if tab != "races": recommend_pending = false
 		if RaceAI.advance_estimates(): menu_dirty = true
 		if PerformanceClasses.advance(): menu_dirty = true
 		if race_start_pending and not PerformanceClasses.request(profile.vehicle_id,profile.stages,profile.hardware).is_empty():
 			race_start_pending=false; start_race()
-		if recommend_pending:
-			var match_index := RaceAI.recommended_ready(profile,event_index)
-			if match_index >= 0: selected_opponent = match_index; wager = 0; recommend_pending = false; menu_dirty = true
 	if not paused_race:
 		shift_flash = maxf(0.0, shift_flash - dt)
 		shift_notice_left = maxf(0.0,shift_notice_left-dt)
@@ -383,32 +412,22 @@ func toast_reveal() -> float:
 
 func start_race() -> void:
 	if screen=="practice_results": screen="garage"
-	if PerformanceClasses.request(profile.vehicle_id,profile.stages,profile.hardware).is_empty():
+	if career_board.series!="OPEN" and PerformanceClasses.request(profile.vehicle_id,profile.stages,profile.hardware).is_empty():
 		race_start_pending=true; show_toast("Preparing race / measuring build"); return
 	menu_dirty = true
-	recommend_pending = false
-	if screen == "race": return
-	if not career_board.active and profile.level() < EVENT_LEVELS[event_index]:
-		show_toast("Unlocks at driver level %d" % EVENT_LEVELS[event_index])
-		return
-	if not career_board.active and selected_opponent > mini(4,int(profile.career_wins[event_index])):
-		show_toast("Beat the previous rival first")
-		return
+	if screen=="race": return
 	var contract := current_contract()
-	if career_board.active:
-		var reason:=Championships.eligibility(profile,contract)
-		if reason!="": show_toast(reason); return
-	else:
-		contract.legacy_career=event_index; contract.legacy_rival=selected_opponent
+	var reason:=Championships.eligibility(profile,contract)
+	if reason!="": show_toast(reason); return
 	var stake := clampi(wager,0,mini(profile.credits,int(contract.max_bet)))
 	wager = stake
 	if not profile.begin_wager(stake,contract):
-		show_toast("Not enough credits / lower your wager")
+		show_toast(profile.save_error if profile.save_error!="" else "Race entry could not be saved / check your wager")
 		return
 	toast_left = 0
 	practice_mode=false; manual_tree_armed=true
 	active_contract = RaceAI.live_contract(contract,profile.races,selected_opponent)
-	active_distance = float(contract.distance) if career_board.active else maxf(FINISH,float(contract.distance))
+	active_distance = float(contract.distance)
 	active_contract.distance = active_distance
 	active_stake = stake
 	refresh_car()
@@ -416,6 +435,7 @@ func start_race() -> void:
 	RaceAI.configure(rival,active_contract)
 	staging.reset(car,rival)
 	run_telemetry.begin(car,active_distance)
+	rival_telemetry.begin(rival,active_distance)
 	rival_shift_delay = 0.0
 	audio_shift_serial = car.shift_serial
 	player_reaction = -1.0
@@ -466,6 +486,7 @@ func complete_race() -> void:
 	var elapsed := staging.elapsed(player_finish)
 	var quarter_record := active_distance>400 and active_distance<500 and (profile.best==0 or player_finish<profile.best)
 	var event_record: Dictionary = profile.event_records.get(event_id,{})
+	result_improvement=maxf(0.0,float(event_record.get("last_et",elapsed))-elapsed) if not staging.red_light else 0.0
 	result_record = not staging.red_light and (quarter_record or (event_id!="" and elapsed<float(event_record.get("best_et",INF))))
 	if not staging.red_light and quarter_record: profile.best=player_finish
 	var payout:=profile.award_race(active_contract,result_win,staging.red_light,staging.elapsed(player_finish),player_reaction,finish_speed,int(active_contract.get("legacy_career",event_index)),int(active_contract.get("legacy_rival",selected_opponent)))
@@ -533,7 +554,9 @@ func handle_key_input(event: InputEventKey) -> void:
 		menu.dealer.navigate(-1 if code == KEY_LEFT else 1)
 		return
 	if code==KEY_ESCAPE and screen=="garage" and tab=="races" and career_board.active:
-		career_board.action("cb_back"); return
+		if career_board.picker: go_garage()
+		else: career_board.action("cb_back")
+		return
 	if code==KEY_ESCAPE and ((screen=="garage" and tab=="tuning") or screen=="practice_results"):
 		tuning.action("tt_back"); return
 	if code == KEY_ESCAPE and screen == "garage" and tab == "dealer":
@@ -636,7 +659,7 @@ func action(id: String) -> void:
 		menu_dirty=true
 		glass.focused=""
 		return
-	if id=="open_championships": career_board.open(); return
+	if id=="open_championships": tab="races"; career_board.open(); return
 	if id.begins_with("cb_"): career_board.action(id); return
 	if id=="open_tuning": tuning.open(); return
 	if id.begins_with("tt_"): tuning.action(id); return
@@ -665,11 +688,6 @@ func action(id: String) -> void:
 		feedback.set_quality(profile.effects_quality); rival_feedback.set_quality(profile.effects_quality)
 		profile.save()
 		return
-	if id == "recommend_rival":
-		recommend_pending = true
-		RaceAI.recommended_ready(profile,event_index)
-		wager = 0
-		return
 	if menu != null and menu.customize.action(id): return
 	if menu != null and menu.dealer.action(id): return
 	if menu != null and menu.hub.action(id): return
@@ -680,6 +698,7 @@ func action(id: String) -> void:
 	if id.begins_with("tab_"):
 		tab = id.trim_prefix("tab_")
 		if tab=="dealer": menu.dealer.open()
+		if tab=="races": career_board.open()
 		if tab == "performance": menu.hub.categories = true
 	elif id.begins_with("part_"):
 		selected_part = int(id.trim_prefix("part_"))
@@ -696,24 +715,12 @@ func action(id: String) -> void:
 	elif id.begins_with("wheel_"):
 		profile.wheels = int(id.trim_prefix("wheel_"))
 		profile.save()
-	elif id.begins_with("event_"):
-		recommend_pending = false
-		event_index = int(id.trim_prefix("event_"))
-		selected_opponent = mini(4,int(profile.career_wins[event_index]))
-		wager = mini(wager,int(current_contract().get("max_bet",0)))
-	elif id.begins_with("bot_"):
-		recommend_pending = false
-		var index := int(id.trim_prefix("bot_"))
-		if index <= mini(4,int(profile.career_wins[event_index])):
-			selected_opponent = index
-			wager = mini(wager,int(current_contract().get("max_bet",0)))
-		else: show_toast("Win the previous race to unlock this rival")
 	elif id.begins_with("dealer_"):
 		dealer_index = int(id.trim_prefix("dealer_"))
 	else:
 		match id:
 			"race", "retry": start_race()
-			"race_menu": tab = "races"
+			"race_menu": tab = "races"; career_board.open()
 			"next_rival":
 				go_garage()
 				tab = "races"
@@ -796,11 +803,12 @@ func action_enabled(id: String) -> bool:
 		return false
 	if id == "bet_clear": return wager > 0
 	if id == "custom_discard": return menu.customize.has_preview()
+	if id == "custom_zoom_in": return menu.customize.zoom_step<2
+	if id == "custom_zoom_out": return menu.customize.zoom_step>-1
 	if id.begins_with("shop_class_"): return not menu.dealer.class_ids(id.trim_prefix("shop_class_")).is_empty()
-	if id == "race":
-		if career_board.active: return Championships.eligibility(profile,current_contract())==""
-		return profile.level() >= EVENT_LEVELS[event_index] and selected_opponent <= mini(4,int(profile.career_wins[event_index]))
-	if id.begins_with("bot_"): return int(id.trim_prefix("bot_")) <= mini(4,int(profile.career_wins[event_index]))
+	if id in ["race","retry"]:
+		if profile.save_blocked: return false
+		return Championships.eligibility(profile,current_contract())==""
 	if id == "bet_less": return wager > 0
 	if id == "bet_more": return wager < mini(profile.credits,int(current_contract().get("max_bet",0)))
 	if id.begins_with("install_"):
@@ -848,7 +856,9 @@ func action_enabled(id: String) -> bool:
 		if key=="boost": return car.boost_target(car.redline_rpm,1)<VehicleParts.boost_control_limit(profile.hardware,car.base_boost,car.turbo_stage)-.0001 if plus else car.boost_target(car.redline_rpm,1)>.0001
 		if key=="redline": return car.redline_rpm<car._mechanical_redline-.01 if plus else car.redline_rpm>minf(6500,car._mechanical_redline-500)+.01
 		return true
+	if id == "custom_reset": return not profile.save_blocked and profile.pending_wager.is_empty()
 	if id == "custom_install":
+		if profile.save_blocked or not profile.pending_wager.is_empty(): return false
 		var key: String = menu.customize.category; var choice: int = int(menu.customize.candidate.get(key,0))
 		var cost := 0 if profile.owned_appearance.has(key+":"+str(choice)) else int(VehicleAppearance.PRICES[key][choice])
 		return choice != int(profile.appearance_for(profile.vehicle_id)[key]) and VehicleAppearance.compatible(profile.vehicle_id,key,choice) and profile.credits >= cost
@@ -918,7 +928,7 @@ func draw_garage() -> void:
 
 
 func draw_style() -> void:
-	menu.customize.draw()
+	native_workshop.sync()
 
 func draw_driver() -> void:
 	button("reduced_motion","MOTION: REDUCED" if profile.reduced_motion else "MOTION: FULL",Rect2(738,103,210,48))
@@ -1073,6 +1083,7 @@ func step_rival(dt: float) -> void:
 	var before_speed := rival.speed
 	RaceAI.step(rival,active_contract,dt)
 	staging.observe(1,before,rival.distance,rival.elapsed-dt,dt)
+	rival_telemetry.observe(rival,before,before_speed,rival.elapsed-dt,dt,staging,1)
 	if rival_finish == 0 and before < active_distance and rival.distance >= active_distance:
 		var fraction := clampf((active_distance-before)/maxf(.000001,rival.distance-before),0,1)
 		rival_finish = rival.elapsed-dt+dt*fraction

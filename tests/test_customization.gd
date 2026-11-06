@@ -36,7 +36,7 @@ func _initialize() -> void:
 	for i in 1200:
 		a.step(1.0/240,1); b.step(1.0/240,1)
 	check(a.telemetry() == b.telemetry(),"Cosmetic save affected simulation")
-	check(VehicleAppearance.normalize({"design":99,"tint":-5}).design == 2,"Malformed appearance normalization")
+	check(VehicleAppearance.normalize({"design":99,"tint":-5}).design == VehicleAppearance.OPTIONS.design.size()-1,"Malformed appearance normalization")
 	var original := VehicleAppearance.definition("miata").duplicate(true)
 	VehicleAppearance._manifest.miata.rear = [1200,274]
 	check(not VehicleAppearance.validate("miata").is_empty(),"Invalid anchor was not detected")

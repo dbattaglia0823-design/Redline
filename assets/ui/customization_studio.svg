@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="800" viewBox="0 0 1440 800">
+  <defs>
+    <linearGradient id="wall" x2="0" y2="100%"><stop stop-color="#0b1119"/><stop offset=".55" stop-color="#222f3d"/><stop offset="1" stop-color="#111c28"/></linearGradient>
+    <linearGradient id="floor" x2="0" y2="100%"><stop stop-color="#47525b"/><stop offset=".18" stop-color="#263644"/><stop offset="1" stop-color="#080e16"/></linearGradient>
+    <radialGradient id="pool"><stop stop-color="#a7c2d1" stop-opacity=".38"/><stop offset="1" stop-color="#466b88" stop-opacity="0"/></radialGradient>
+    <linearGradient id="line"><stop stop-color="#d59b71" stop-opacity="0"/><stop offset=".25" stop-color="#ffe5bf"/><stop offset=".75" stop-color="#c1e2fa"/><stop offset="1" stop-color="#638cb1" stop-opacity="0"/></linearGradient>
+    <pattern id="panels" width="145" height="120" patternUnits="userSpaceOnUse"><path d="M0 0h145v120H0z" fill="none" stroke="#586a7b" stroke-opacity=".25"/><path d="M5 5h135" stroke="#768b9b" stroke-opacity=".12"/></pattern>
+    <radialGradient id="shade" r=".74"><stop offset=".45" stop-color="#080e16" stop-opacity="0"/><stop offset="1" stop-color="#080e16" stop-opacity=".68"/></radialGradient>
+  </defs>
+  <path d="M0 0h1440v800H0z" fill="url(#wall)"/>
+  <path d="M0 0h1440v134l-216 103H216L0 134z" fill="#0b131e"/>
+  <path d="M0 128l216 108h1008l216-108M175 0l197 236M1265 0l-197 236" fill="none" stroke="#354658" stroke-width="5"/>
+  <path d="M120 193h1200v325H120z" fill="#1d2936"/>
+  <path d="M155 202h1130v316H155z" fill="url(#panels)"/>
+  <path d="M118 196h1204M118 515h1204" stroke="#697f8f" stroke-opacity=".36" stroke-width="5"/>
+  <path d="M0 137l123 60v323L0 618zm1440 0-123 60v323l123 98z" fill="#101b26"/>
+  <path d="M140 207v300m1160-300v300" stroke="#657a88" stroke-width="4"/>
+  <path d="M140 222v217m1160-217v217" stroke="#e3c19a" stroke-width="3"/>
+  <path d="M261 111h918l-46 15H307zm130 63h658l-30 8H421z" fill="url(#line)"/>
+  <path d="M0 518h1440v282H0z" fill="url(#floor)"/>
+  <ellipse cx="720" cy="589" rx="698" ry="205" fill="url(#pool)"/>
+  <path d="M477 518 239 800m384-282-67 282m262-282 68 282m78-282 239 282M0 554h1440M0 625h1440M0 745h1440" fill="none" stroke="#9bb1bf" stroke-opacity=".20"/>
+  <path d="M191 555h1058" stroke="url(#line)" stroke-opacity=".68"/>
+  <path d="M0 0h1440v800H0z" fill="url(#shade)"/>
+</svg>

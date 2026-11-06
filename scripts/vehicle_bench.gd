@@ -16,6 +16,8 @@ var _shift_serial := 0
 var _cut_time := 0.0
 var _shift_time := 0.0
 var _spin_time := 0.0
+var _clutch_slip_time := 0.0
+var _gearbox_slip_time := 0.0
 var _rpm_integral := 0.0
 var _rpm_min := INF
 var _rpm_max := 0.0
@@ -53,6 +55,8 @@ func begin(spec: Dictionary, stages: Array, build: Dictionary, policy: String = 
 	_cut_time = 0.0
 	_shift_time = 0.0
 	_spin_time = 0.0
+	_clutch_slip_time = 0.0
+	_gearbox_slip_time = 0.0
 	_rpm_integral = 0.0
 	_rpm_min = INF
 	_rpm_max = 0.0
@@ -95,6 +99,8 @@ func step_budget(count: int = 480) -> void:
 			_cut_time += H*(1.0-car.shift_retention)
 			_shift_time += H
 		if car.wheelspin > 0.10: _spin_time += H
+		if car.clutch_overloaded: _clutch_slip_time += H
+		if car.transmission_slipping: _gearbox_slip_time += H
 		_rpm_integral += car.rpm*H
 		_rpm_min = minf(_rpm_min,car.rpm)
 		_rpm_max = maxf(_rpm_max,car.rpm)
@@ -116,7 +122,7 @@ func step_budget(count: int = 480) -> void:
 		if (result.quarter_s != null and result.zero_100_s != null) or car.elapsed >= 40.0:
 			done = true
 			result.merge({"reaction_s":timing.result.reaction_s,"quarter_et_s":timing.result.quarter_s,"eighth_et_s":timing.result.eighth_s,"sixty_ft_s":timing.result.sixty_ft_s})
-			result.merge({"shift_count":shifts.size(),"shifts":shifts.duplicate(true),"shift_time_s":_shift_time,"effective_shift_loss_s":_cut_time,"wheelspin_s":_spin_time,"rpm_min":_rpm_min,"rpm_max":_rpm_max,"rpm_mean":_rpm_integral/car.elapsed,"engine_c":car.engine_temperature,"transmission_c":car.transmission_temperature,"wear":car.component_wear,"safety_clamps":car.safety_clamps})
+			result.merge({"shift_count":shifts.size(),"shifts":shifts.duplicate(true),"shift_time_s":_shift_time,"effective_shift_loss_s":_cut_time,"wheelspin_s":_spin_time,"clutch_slip_s":_clutch_slip_time,"gearbox_slip_s":_gearbox_slip_time,"rpm_min":_rpm_min,"rpm_max":_rpm_max,"rpm_mean":_rpm_integral/car.elapsed,"engine_c":car.engine_temperature,"transmission_c":car.transmission_temperature,"wear":car.component_wear,"safety_clamps":car.safety_clamps})
 			break
 
 static func run(spec: Dictionary, stages: Array, build: Dictionary, policy: String = "optimized", fixed: float = 7000.0) -> Dictionary:

@@ -81,7 +81,8 @@ static func part_effect(index: int, tier: int) -> String:
 static func normalize_stages(value: Variant) -> Array:
 	var stages := blank_stages()
 	if value is Array:
-		for i in mini(value.size(), stages.size()): stages[i] = clampi(int(value[i]), 0, max_stage(i))
+		for i in mini(value.size(), stages.size()):
+			if (value[i] is int or value[i] is float) and is_finite(float(value[i])): stages[i] = clampi(int(value[i]), 0, max_stage(i))
 	return stages
 
 # Fixed career builds: upgrading the player's car never upgrades an already-known rival.

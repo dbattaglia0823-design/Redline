@@ -7,6 +7,9 @@ const DIM := GlassPalette.MUTED
 const WHITE := GlassPalette.INK
 const ORANGE := GlassPalette.ORANGE
 const GREEN := GlassPalette.GREEN
+const RED := Color("ff6d69")
+const CLUTCH_AMBER := Color("ffca79")
+const GEARBOX_VIOLET := Color("efa0ed")
 const SPLITS := {402.336:"1/4 MI",304.8:"1000 FT",201.168:"1/8 MI",100.0:"100 M",18.288:"60 FT"}
 const CONTROL_ART := {
 	"gas":preload("res://assets/ui/race_controls/throttle.svg"),
@@ -339,15 +342,24 @@ func tach(center: Vector2,width: float,p: bool) -> void:
 	centered("%04d RPM"%roundi(c.rpm),center+Vector2(0,39),31,ORANGE if c.limiter else WHITE,true)
 	var hint := "RPM × 1000"
 	var tint := DIM
-	if c.limiter: hint="REV LIMITER"; tint=ORANGE
+	var f: RaceFeedback = g.feedback
+	if f.grind_notice>0: hint="GEAR GRIND · HOLD CLUTCH"; tint=RED
+	elif f.gearbox_warning>.10: hint="TRANSMISSION SLIPPING"; tint=GEARBOX_VIOLET
+	elif f.clutch_warning>.10: hint="CLUTCH SLIP"; tint=CLUTCH_AMBER
+	elif f.traction_lost: hint="WHEELSPIN"; tint=ORANGE
+	elif f.traction_recovered>0: hint="GRIP RECOVERED"; tint=GREEN
+	elif c.limiter: hint="REV LIMITER"; tint=ORANGE
 	elif g.shift_notice_left>0: hint=g.shift_notice; tint=ORANGE
 	elif g.shift_flash>0 and c.shift_message!="":
 		hint=c.shift_message; tint=GREEN if hint=="PERFECT SHIFT" else BLUE
-	elif c.wheelspin>.15 and c.throttle>.1: hint="WHEELSPIN"; tint=ORANGE
 	elif capable and c.shift_recommended() and g.show_shift_guide: hint="SHIFT WINDOW"; tint=GREEN
-	if hint=="PERFECT SHIFT" and not g.profile.reduced_motion and g.profile.effects_quality>0:
-		AutomotiveUI.glow(g,Rect2(center+Vector2(-112,43),Vector2(224,31)),Color(GREEN,g.feedback.shift_pulse*.36))
-	centered(hint.left(29),center+Vector2(0,61),14,tint,true)
+	centered(hint,center+Vector2(0,61),18 if p or g.race_touch_layout() else 15,tint,true)
+	if f.traction_lost or f.traction_recovered>0:
+		var level := clampi(ceili(c.wheelspin*5.0),1,5) if f.traction_lost else 5
+		var pulse := .75+.25*sin(g.clock*16) if f.traction_lost and not g.profile.reduced_motion else 1.0
+		for i in 5:
+			var ink := ORANGE if f.traction_lost else GREEN
+			g.draw_rect(Rect2(center+Vector2(-42+i*17,69),Vector2(14,4)),Color(ink,pulse if i<level else .19))
 
 func dashboard(w: float,p: bool) -> void:
 	var c: Drivetrain = g.car
@@ -361,12 +373,16 @@ func dashboard(w: float,p: bool) -> void:
 	tach(Vector2(cx,dial_y),width,p)
 	var gear_pos := Vector2(cx-(204 if p else 218),dial_y+12)
 	var speed_pos := Vector2(cx+(204 if p else 218),dial_y+12)
-	var gear_color := ORANGE if c.shift_left>0 else (GREEN if g.shift_flash>0 and c.shift_message=="PERFECT SHIFT" else WHITE)
-	centered(str(readings.gear),gear_pos,52,gear_color,true)
+	var perfect: bool = g.shift_flash>0 and c.shift_message=="PERFECT SHIFT"
+	var gear_color := GREEN if perfect else (BLUE if c.shift_left>0 else WHITE)
+	var offset: float = 0.0 if g.profile.reduced_motion else 7.0*c.shift_direction*g.feedback.shift_pulse
+	centered(str(readings.gear),gear_pos+Vector2(0,offset),52,gear_color,true)
 	centered("GEAR",gear_pos+Vector2(0,24),15,DIM)
 	var mode := "AUTO" if c.control_mode=="automatic" else c.transmission_kind.to_upper()
-	var gear_status := "ENGAGING" if c.shift_left>0 else ("QUEUED "+("+" if c.queued_shift>0 else "−") if c.queued_shift!=0 else mode)
-	centered(gear_status,gear_pos+Vector2(0,45),13,gear_color if c.shift_left>0 else DIM)
+	var gear_status := mode
+	if g.shift_flash>.46 and c.shift_message not in ["NEUTRAL","DRIVE"]: gear_status="↑ UPSHIFT" if c.shift_direction>0 else "↓ DOWNSHIFT"
+	elif c.queued_shift!=0: gear_status="QUEUED "+("+" if c.queued_shift>0 else "−")
+	centered(gear_status,gear_pos+Vector2(0,45),13,gear_color if g.shift_flash>.46 or perfect else DIM)
 	var speed: float = readings.speed if g.profile.reduced_motion else g.feedback.visual_mph*(1.609344 if g.profile.metric_speed else 1.0)
 	centered("%03d"%roundi(speed),speed_pos,44,WHITE,true)
 	centered("KM/H" if g.profile.metric_speed else "MPH",speed_pos+Vector2(0,24),15,BLUE)

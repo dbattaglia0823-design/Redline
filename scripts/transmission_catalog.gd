@@ -53,7 +53,7 @@ static func duration(id: String, stage: int) -> float:
 	return maxf(minimum,float(s.shift)*scale)
 
 static func strength(stage: int) -> float:
-	return [1.0,1.15,1.35,1.60,1.95,2.35][clampi(stage,0,5)]
+	return [1.0,1.19,1.42,1.72,2.08,2.45][clampi(stage,0,5)]
 static func family(id: String) -> String:
 	var kind: String = spec(id).kind
 	return kind if kind in ["manual","automatic","drag"] else "sequential"

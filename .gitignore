@@ -12,3 +12,5 @@
 reference/
 *.zip
 *.log
+
+/builds/

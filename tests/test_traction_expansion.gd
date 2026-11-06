@@ -37,7 +37,7 @@ func run() -> void:
 	var counts: Dictionary={"tires":1,"suspension":1}
 	for part in VehicleParts.PARTS.values():
 		if counts.has(part.slot): counts[part.slot]+=1
-	check(counts.tires==6 and counts.suspension==6,"Missing tire or suspension options")
+	check(counts.tires==8 and counts.suspension==7,"Missing tire or suspension options")
 	var stock:=GameCatalog.blank_stages()
 	var civic:=benchmark("civic_si",stock,[])
 	var civic_street:=benchmark("civic_si",stock,["street_tires","street_susp"])
@@ -67,7 +67,7 @@ func run() -> void:
 	p.owned_stages=[0,0,3,0,0,0,0,0]
 	p.save()
 	var saved: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(DriverProfile.SAVE_PATH))
-	saved.erase("traction_version")
+	saved.erase("traction_version"); saved.erase("save_format"); saved.erase("integrity")
 	var file:=FileAccess.open(DriverProfile.SAVE_PATH,FileAccess.WRITE)
 	file.store_string(JSON.stringify(saved)); file.close()
 	p=DriverProfile.new(); p.load_profile()

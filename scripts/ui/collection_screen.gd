@@ -10,21 +10,21 @@ var touch_scroll: ScrollContainer
 func handle_scroll_touch(event: InputEvent) -> bool:
 	# Defer option taps until release so a swipe cannot select an option, and
 	# consume the event once through the same existing action dispatcher.
-	if not visible or game.screen!="garage" or game.tab!="style" or not compact_landscape():
+	if not visible or game.screen!="garage" or game.tab!="style":
 		scroll_pointer=-1; touch_scroll=null; return super.handle_scroll_touch(event)
 	if event is InputEventScreenTouch and event.canceled and event.index==scroll_pointer:
 		scroll_pointer=-1; touch_scroll=null; return true
-	if event is InputEventScreenTouch and event.pressed and not event.canceled and visible and compact_landscape() and game.tab=="style":
-		var scroll: ScrollContainer=find_child("LandscapeOptions",true,false)
+	if event is InputEventScreenTouch and event.pressed and not event.canceled:
+		var scroll: ScrollContainer=find_child("StudioOptions",true,false)
 		if scroll==null or not scroll.get_global_rect().has_point(event.position): return false
 		if scroll_pointer>=0: return true
-		scroll_pointer=event.index; touch_scroll=scroll; scroll_start=event.position; scroll_offset=scroll.scroll_horizontal; scroll_moved=false
+		scroll_pointer=event.index; touch_scroll=scroll; scroll_start=event.position; scroll_offset=scroll.scroll_vertical; scroll_moved=false
 		return true
 	if event is InputEventScreenDrag and event.index==scroll_pointer:
 		if is_instance_valid(touch_scroll):
-			var delta: float=event.position.x-scroll_start.x
-			if absf(delta)>12: scroll_moved=true
-			if scroll_moved: touch_scroll.scroll_horizontal=scroll_offset-roundi(delta/game.scale.x)
+			var delta: float=event.position.y-scroll_start.y
+			if absf(delta)>8: scroll_moved=true
+			if scroll_moved: touch_scroll.scroll_vertical=scroll_offset-roundi(delta/game.scale.y)
 		return true
 	if event is InputEventScreenTouch and not event.pressed and event.index==scroll_pointer:
 		scroll_pointer=-1
@@ -54,7 +54,7 @@ func sync() -> void:
 
 # Phase 2 composes the established native surface; the existing models own state.
 func supports() -> bool:
-	if not game.glass.legacy and game.screen=="garage" and not game.menu.hub.dyno_open and game.tab in ["dealer","owned","style"]: return true
+	if (not game.glass.legacy or game.tab=="style") and game.screen=="garage" and not game.menu.hub.dyno_open and game.tab in ["dealer","owned","style"]: return true
 	return super.supports()
 
 func state_key() -> String:
@@ -69,21 +69,30 @@ func state_key() -> String:
 		for id in game.profile.garage:
 			var entry: Dictionary=game.profile.garage[id]
 			measurements.append(PerformanceClasses.request(id,game.profile.stages if id==game.profile.vehicle_id else entry.stages,game.profile.hardware if id==game.profile.vehicle_id else entry.get("hardware",GameCatalog.factory_build(id))))
-	return JSON.stringify([size,game.tab,game.profile.vehicle_id,game.profile.garage,game.profile.stages,game.profile.hardware,game.profile.credits,game.profile.xp,game.profile.appearance_for(game.profile.vehicle_id),game.profile.owned_appearance,game.profile.effects_quality,game.profile.muted,d.class_picker,d.class_filter,d.page,d.details,d.equip,game.dealer_index,h.owned_selection,h.owned_page,h.owned_filter,h.owned_sort,custom.category,custom.candidate,custom.compare,measurements])
+	return JSON.stringify([size,game.tab,game.profile.vehicle_id,game.profile.garage,game.profile.stages,game.profile.hardware,game.profile.credits,game.profile.xp,game.profile.appearance_for(game.profile.vehicle_id),game.profile.owned_appearance,game.profile.effects_quality,game.profile.save_blocked,game.profile.muted,d.class_picker,d.class_filter,d.page,d.details,d.equip,game.dealer_index,h.owned_selection,h.owned_page,h.owned_filter,h.owned_sort,custom.category,custom.candidate,custom.compare,custom.focus_override,custom.zoom_step,custom.trim_open,measurements])
 
 func build() -> void:
 	if game.tab not in ["dealer","owned","style"]: super.build(); return
-	if compact_landscape():
+	if compact_landscape() and game.tab!="style":
 		CollectionLandscape.new(self).build(); build_notice(); return
-	var body:=container(Rect2(24,20,552,1100) if portrait else Rect2(36,20,1128,638))
+	var body:=container(Rect2(24,20,552,1116) if portrait else (Rect2(24,14,size.x-48,612) if compact_landscape() else Rect2(36,20,1128,638)))
 	body.add_theme_constant_override("separation",10 if portrait else 12)
-	header(body)
+	if game.tab!="style": header(body)
 	match game.tab:
 		"dealer":
 			if game.menu.dealer.class_picker: classes(body)
 			else: dealer(body)
 		"owned": collection(body)
-		"style": customize(body)
+		"style":
+			var stage:=customize(body)
+			build_notice()
+			notice.reparent(stage,false)
+			notice.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+			notice.offset_left=12
+			notice.offset_right=-12
+			notice.offset_top=-56
+			notice.offset_bottom=-12
+			return
 	build_notice()
 
 func grid(parent: Node,columns: int,gap: int=10) -> GridContainer:
@@ -238,42 +247,135 @@ func collection(body: VBoxContainer) -> void:
 	page_controls(list,true)
 	button(body,"hub_equip","Currently equipped" if selected==game.profile.vehicle_id else "Drive this car",true)
 
-func customize(body: VBoxContainer) -> void:
-	var custom: CustomizationView=game.menu.customize; var id: String=game.profile.vehicle_id
-	var top:=AutomotiveUI.row(body); top.add_child(AutomotiveUI.label("Paint & trim",30)); button(top,"custom_compare","Show preview" if custom.compare else "Show installed"); button(top,"custom_back","Garage")
-	var look: Dictionary=game.profile.appearance_for(id) if custom.compare else custom.candidate
-	var hero:=vehicle(body,id,game.car,look,160 if portrait else 210)
-	hero.size_flags_vertical=Control.SIZE_EXPAND_FILL
-	var viewing:=AutomotiveUI.label("Installed view" if custom.compare else ("Preview" if custom.has_preview() else "Installed"),14,AutomotiveUI.BLUE)
-	hero.add_child(viewing); viewing.position=Vector2(16,12); viewing.size=Vector2(170,22)
-	var cats:=grid(body,3 if portrait else 6,8)
-	for key in VehicleAppearance.definition(id).compatible:
-		var b:=button(cats,"custom_category_"+key,VehicleAppearance.LABELS[VehicleAppearance.CATEGORIES.find(key)])
-		b.theme_type_variation="Navigation"; b.toggle_mode=true; b.set_pressed_no_signal(custom.category==key)
-	var options:=grid(body,3 if portrait else 6,8)
-	var installed: Dictionary=game.profile.appearance_for(id); var current: int=installed[custom.category]
-	for i in VehicleAppearance.OPTIONS[custom.category].size():
-		if not VehicleAppearance.compatible(id,custom.category,i): continue
-		var owned: bool=game.profile.owned_appearance.has(custom.category+":"+str(i)) or int(VehicleAppearance.PRICES[custom.category][i])==0
-		var b:=AutomotiveUI.content_card(options,112,int(custom.candidate[custom.category])==i); bind(b,"custom_pick_%d"%i)
-		var content: VBoxContainer=b.get_meta("content")
-		if custom.category in ["tint","stance","spoiler","decal"]:
-			var sample: Dictionary=custom.candidate.duplicate(true); sample[custom.category]=i
-			vehicle(content,id,game.car,sample,42,false)
-		else:
-			var swatch:=CosmeticSwatch.new(); content.add_child(swatch); swatch.configure(game,custom.category,i)
-		var name: String=cosmetic_name(custom.category,i,custom.candidate)
-		content.add_child(AutomotiveUI.label(name,16))
-		content.add_child(AutomotiveUI.label("Installed" if current==i else ("Owned" if owned else "$%s"%VehicleAppearance.PRICES[custom.category][i]),14,GlassPalette.GREEN if current==i else AutomotiveUI.MUTED))
+func studio_button(parent: Node,id: String,label: String,selected: bool=false,primary: bool=false) -> Button:
+	var control:=button(parent,id,label,primary)
+	control.custom_minimum_size.y=86 if compact_landscape() else (68 if portrait else 43)
+	control.add_theme_font_size_override("font_size",20 if compact_landscape() else (18 if portrait else 16))
+	if id.begins_with("custom_group_") or id.begins_with("custom_category_") or id=="custom_trim":
+		control.theme_type_variation="Navigation"
+		control.toggle_mode=true
+		control.set_pressed_no_signal(selected)
+	return control
+
+func customize(body: VBoxContainer) -> CustomizationStage:
+	var custom: CustomizationView=game.menu.customize
+	var id: String=game.profile.vehicle_id
+	var header_row:=AutomotiveUI.row(body,12)
+	var identity:=AutomotiveUI.column(header_row,2)
+	identity.add_child(AutomotiveUI.label("REDLINE  /  DESIGN STUDIO",14,AutomotiveUI.ORANGE,true))
+	identity.add_child(AutomotiveUI.label(str(GameCatalog.spec(id).name),32 if not compact_landscape() else 30))
+	var wallet:=AutomotiveUI.label("$%d"%game.profile.credits,18,AutomotiveUI.MUTED,true)
+	wallet.custom_minimum_size.x=100
+	wallet.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT
+	wallet.size_flags_horizontal=Control.SIZE_SHRINK_END
+	wallet.size_flags_vertical=Control.SIZE_SHRINK_CENTER
+	header_row.add_child(wallet)
+	var back:=studio_button(header_row,"custom_back","Garage")
+	back.size_flags_horizontal=Control.SIZE_SHRINK_END
+	back.custom_minimum_size.x=114
+	var middle: BoxContainer=AutomotiveUI.column(body,10) if portrait else AutomotiveUI.row(body,18)
+	middle.size_flags_vertical=Control.SIZE_EXPAND_FILL
+	var bay:=AutomotiveUI.column(middle,6)
+	bay.size_flags_vertical=Control.SIZE_EXPAND_FILL
+	bay.size_flags_stretch_ratio=1.70 if not portrait else 1.0
+	var installed: Dictionary=game.profile.appearance_for(id)
+	var stage:=CustomizationStage.new()
+	bay.add_child(stage)
+	stage.configure(game,installed if custom.compare else custom.candidate,350 if portrait else (290 if compact_landscape() else 360))
+	studio_badge(stage,"WHEEL DETAIL" if custom.camera_target().x>.5 else "FULL CAR",false)
+	studio_badge(stage,"INSTALLED" if custom.compare or not custom.has_preview() else "LIVE PREVIEW",true)
+	var camera:=AutomotiveUI.row(bay,6)
+	studio_button(camera,"custom_camera","Full car" if custom.camera_target().x>.5 else "Wheel view")
+	for action in ["out","in"]:
+		var zoom:=studio_button(camera,"custom_zoom_"+action,"−" if action=="out" else "+")
+		zoom.tooltip_text="Zoom out" if action=="out" else "Zoom in"
+		zoom.size_flags_horizontal=Control.SIZE_FILL
+		zoom.custom_minimum_size.x=68 if portrait or compact_landscape() else 44
+	studio_button(camera,"custom_compare","Show preview" if custom.compare else "Show installed")
+	var controls:=AutomotiveUI.column(middle,7)
+	if not portrait: controls.custom_minimum_size.x=440 if not compact_landscape() else 520
+	var categories:=AutomotiveUI.row(controls,6)
+	for group in CustomizationView.GROUPS:
+		studio_button(categories,"custom_group_"+group,CustomizationView.GROUP_LABELS[group],custom.primary()==group)
+	studio_subcategories(controls,custom,id)
+	studio_options(controls,custom,id,installed)
+	var footer:=AutomotiveUI.row(body,8)
+	studio_button(footer,"custom_reset","Factory")
+	studio_button(footer,"custom_discard","Discard")
 	var choice: int=custom.candidate[custom.category]
-	var cost: int=0 if game.profile.owned_appearance.has(custom.category+":"+str(choice)) else VehicleAppearance.PRICES[custom.category][choice]
-	var status:=AutomotiveUI.row(body)
-	status.add_child(AutomotiveUI.label("Preview: "+cosmetic_name(custom.category,choice,custom.candidate) if custom.has_preview() else "Installed appearance",17,AutomotiveUI.BLUE))
-	status.add_child(AutomotiveUI.label("Installed: "+cosmetic_name(custom.category,current,installed),16,AutomotiveUI.MUTED))
-	var footer:=AutomotiveUI.row(body)
-	button(footer,"custom_reset","Restore factory")
-	button(footer,"custom_discard","Discard preview")
-	button(footer,"custom_install","Installed" if current==choice else (game.missing_credits(cost) if cost>game.profile.credits else ("Install owned" if cost==0 else "Purchase / $%s"%cost)),true)
+	var cost:=studio_price(custom.category,choice)
+	var equipped: bool=int(installed[custom.category])==choice
+	var label: String = "Equipped" if equipped else (game.missing_credits(cost) if cost>game.profile.credits else ("Equip free" if cost==0 else "Buy / $%d"%cost))
+	var purchase:=studio_button(footer,"custom_install",label,false,true)
+	purchase.size_flags_stretch_ratio=1.7
+	return stage
+
+func studio_badge(stage: Control,value: String,right: bool) -> void:
+	var badge:=PanelContainer.new()
+	var skin:=AutomotiveUI.surface(Color(.04,.075,.11,.86),Color(.51,.66,.76,.5),6)
+	skin.content_margin_left=8
+	skin.content_margin_right=8
+	skin.content_margin_top=5
+	skin.content_margin_bottom=5
+	badge.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	badge.add_theme_stylebox_override("panel",skin)
+	var label:=AutomotiveUI.label(value,13,AutomotiveUI.ORANGE if right else AutomotiveUI.BLUE,true)
+	label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+	badge.add_child(label)
+	stage.add_child(badge)
+	badge.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT if right else Control.PRESET_TOP_LEFT)
+	badge.offset_left=-144 if right else 12
+	badge.offset_right=-12 if right else 144
+	badge.offset_top=12
+
+func studio_subcategories(parent: Node,custom: CustomizationView,id: String) -> void:
+	var group:=custom.primary()
+	if group not in ["paint","wheels"]: return
+	var sections:=AutomotiveUI.row(parent,5)
+	var labels := {"paint":"Color","finish":"Finish","design":"Design","rim":"Metal","sidewall":"Sidewall"}
+	for key in (["paint","finish"] if group=="paint" else CustomizationView.GROUPS.wheels):
+		if VehicleAppearance.definition(id).compatible.has(key):
+			studio_button(sections,"custom_category_"+key,labels[key],custom.category==key)
+	if group!="paint": return
+	var trim:=CustomizationView.TRIM.filter(func(key): return VehicleAppearance.definition(id).compatible.has(key))
+	if trim.is_empty(): return
+	studio_button(sections,"custom_trim","Trim",custom.trim_open)
+	if custom.trim_open:
+		var extra:=grid(parent,3 if portrait else trim.size(),5)
+		var trim_labels:={"stance":"Height","spoiler":"Spoiler","headlight":"Lamps","taillight":"Tail lamps","decal":"Livery"}
+		for key in trim:
+			studio_button(extra,"custom_category_"+key,trim_labels[key],custom.category==key)
+
+func studio_price(key: String,choice: int) -> int:
+	return 0 if game.profile.owned_appearance.has(key+":"+str(choice)) else int(VehicleAppearance.PRICES[key][choice])
+
+func studio_options(parent: Node,custom: CustomizationView,id: String,installed: Dictionary) -> void:
+	var scroll:=catalog_scroll(parent,"StudioOptions",0)
+	scroll.follow_focus=true
+	scroll.custom_minimum_size.y=(130 if custom.trim_open else 246) if portrait else (136 if compact_landscape() else 246)
+	var options:=grid(scroll,3,7)
+	var key:=custom.category
+	for choice in VehicleAppearance.OPTIONS[key].size():
+		if not VehicleAppearance.compatible(id,key,choice): continue
+		var card:=AutomotiveUI.content_card(options,120 if not compact_landscape() else 108,int(custom.candidate[key])==choice)
+		bind(card,"custom_pick_%d"%choice)
+		var content: VBoxContainer=card.get_meta("content")
+		if key in CustomizationView.TRIM:
+			var sample: Dictionary=custom.candidate.duplicate(true)
+			sample[key]=choice
+			vehicle(content,id,game.car,sample,45,false)
+		else:
+			var swatch:=CosmeticSwatch.new()
+			content.add_child(swatch)
+			swatch.configure(game,key,choice)
+			swatch.custom_minimum_size.y=42 if compact_landscape() else 56
+		var cost:=studio_price(key,choice)
+		var equipped: bool=int(installed[key])==choice
+		var status:="Equipped" if equipped else ("Owned" if cost==0 else "$%d"%cost)
+		var title_text:=cosmetic_name(key,choice,custom.candidate)
+		content.add_child(AutomotiveUI.label(title_text,17 if compact_landscape() else 16))
+		content.add_child(AutomotiveUI.label(status,15,GlassPalette.GREEN if equipped else AutomotiveUI.MUTED,true))
+		card.tooltip_text=title_text+" / "+status
 
 func cosmetic_name(key: String,index: int,look: Dictionary) -> String:
 	if key=="design" and index==0 and int(look.rim)==0 and int(look.caliper)==0 and int(look.sidewall)==0 and VehicleAppearance.definition(game.profile.vehicle_id).has("stock_wheels"): return "Factory wheel"

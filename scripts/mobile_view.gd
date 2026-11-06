@@ -25,7 +25,7 @@ func stats(car: Drivetrain,y: float) -> void:
 func draw() -> void:
 	if g.screen == "race": race(); return
 	if g.screen == "results": results(); return
-	if g.tab == "style": g.menu.customize.draw_portrait(); return
+	if g.tab == "style": g.draw_style(); return
 	if g.menu.hub.dyno_open: dyno(); return
 	if g.tab == "performance" and not g.menu.hub.categories: upgrade(); return
 	match g.tab:
@@ -187,35 +187,8 @@ func dealer() -> void:
 	b("drive_car" if owned else "buy_car",label,Rect2(24,936,552,76),not locked and (owned or g.profile.credits >= int(s.price)))
 	if not owned: b("shop_equip","EQUIP ON PURCHASE: "+("YES" if d.equip else "NO"),Rect2(24,1030,552,68))
 func races() -> void:
-	header("RACE BOARD")
-	for i in 3:
-		var x := 24+i*184
-		var locked: bool = g.profile.level() < GameCatalog.CAREER_LEVELS[i]
-		b("event_%d" % i,"",Rect2(x,80,172,80),false,g.event_index == i)
-		t(["DOCKSIDE","MIDNIGHT","FINALS"][i],x+12,109,18,g.MUTED if locked else g.INK)
-		t("LEVEL %d" % GameCatalog.CAREER_LEVELS[i] if locked else "%d / 5 WINS" % g.profile.career_wins[i],x+12,141,16,g.MUTED)
-	var bot := GameCatalog.opponent(g.event_index,g.selected_opponent,g.profile)
-	preview(str(bot.model),176,null,VehicleAppearance.normalize({},(g.event_index+g.selected_opponent+3)%6,2))
-	t(str(bot.name),24,451,30)
-	t(str(GameCatalog.spec(str(bot.model)).name),24,487,23,g.MUTED)
-	var measured := RaceAI.request_estimate(bot)
-	t("%d HP / 1/4 %.2f S" % [measured.hp,measured.time] if not measured.is_empty() else "MEASURING...",24,530,25,g.GREEN)
-	g.fit_text(str(bot.get("race_class","OPEN"))+" / "+g.distance_label(float(bot.distance))+" / WIN $%d / FINISH $%d" % [bot.purse,int(float(bot.purse)*.4)],24,570,552,21)
-	for i in 5: b("bot_%d" % i,str(i+1) if i <= mini(4,int(g.profile.career_wins[g.event_index])) else "-",Rect2(24+i*112,600,104,68),false,i == g.selected_opponent)
-	b("recommend_rival","FINDING..." if g.recommend_pending else "FIND MATCH",Rect2(24,692,264,68))
-	b("open_championships","CLASS CAREER",Rect2(312,692,264,68),true)
-	t("WAGER  $%d" % g.wager,24,812,30)
-	b("bet_less","-",Rect2(312,774,120,68)); b("bet_more","+",Rect2(456,774,120,68))
-	var maximum := mini(g.profile.credits,int(bot.max_bet))
-	var fraction := float(g.wager)/maxf(1,maximum)
-	g.draw_rect(Rect2(38,897,524,4),g.EDGE); g.draw_rect(Rect2(38,897,524*fraction,4),g.ORANGE)
-	g.draw_circle(Vector2(38+524*fraction,899),11,g.INK)
-	g.buttons.append({"id":"bet_slider","rect":Rect2(24,852,552,64),"range":Vector2(38,562)})
-	t("WIN +$%d" % g.wager,24,941,21,g.GREEN)
-	t("LOSE -$%d" % g.wager,24,976,21,g.MUTED)
-	b("bet_clear","No wager",Rect2(312,928,264,64))
-	var locked: bool = g.profile.level() < GameCatalog.CAREER_LEVELS[g.event_index]
-	b("race","LEVEL %d REQUIRED" % GameCatalog.CAREER_LEVELS[g.event_index] if locked else "Race  >",Rect2(24,1000,552,88),not locked)
+	g.career_board.draw()
+
 func driver() -> void:
 	header("DRIVER")
 	t("LEVEL %02d" % g.profile.level(),24,177,46,g.GREEN)

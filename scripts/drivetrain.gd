@@ -126,6 +126,10 @@ var engine_temperature := 88.0
 var transmission_temperature := 80.0
 var component_wear := 0.0
 var overload := 0.0
+var clutch_overloaded := false
+var transmission_slipping := false
+var grind_serial := 0
+var shift_direction := 0
 var combustion_fraction := 1.0
 var extra_grip := 0.0
 var extra_mass := 0.0
@@ -230,11 +234,11 @@ func nitrous_torque_gain() -> float:
 	return (0.55+nitrous_stage*0.06)*NITROUS_TORQUE_SCALE if has_nitrous() else 0.0
 
 func clutch_capacity() -> float:
-	var legacy := base_torque*2.0*(1.0+engine_stage*0.14)*(1.0+exhaust_stage*0.06)*(1.0+gearbox_stage*0.15)
+	var legacy := base_torque*2.35*(1.0+engine_stage*0.14)*(1.0+exhaust_stage*0.06)*(1.0+gearbox_stage*0.15)
 	if transmission_id == "legacy6": return legacy*_clutch_factor
 	# Packs approach the gearbox rating; twin and race packs must not both hit
 	# the same cap. The gearbox internals remain the upper mechanical limit.
-	return minf(input_capacity(),input_capacity()*(0.80+(_clutch_factor-1.0)*0.35))*maxf(0.6,1.0-component_wear*0.25)
+	return minf(input_capacity(),input_capacity()*(0.86+(_clutch_factor-1.0)*0.145))*maxf(0.6,1.0-component_wear*0.25)
 
 func good_shift_min() -> float:
 	if _advanced and gear >= 1 and gear <= shift_map.size(): return maxf(idle_rpm+1500.0,float(shift_map[gear-1])-180.0)
@@ -324,6 +328,10 @@ func reset() -> void:
 	nitrous_delivery = 0.0
 	combustion_fraction = 1.0
 	overload = 0.0
+	clutch_overloaded = false
+	transmission_slipping = false
+	grind_serial = 0
+	shift_direction = 0
 	_auto_dwell = 0.0
 
 func shift(direction: int) -> bool:
@@ -346,6 +354,7 @@ func shift(direction: int) -> bool:
 	else: shift_message = "REV MATCH"
 	last_shift_rpm = rpm
 	last_shift_load = engine_load
+	shift_direction = signi(next-gear)
 	gear = next
 	shift_left = shift_duration
 	shift_serial += 1
@@ -481,7 +490,7 @@ func _substep(dt: float, pedal: float, brake: float, clutch: float, nitrous: boo
 	elif shifting: target_clutch = shift_retention
 	elif has_converter: target_clutch = 1.0
 	elif speed < 8.0:
-		target_clutch *= clampf(maxf((rpm-idle_rpm)/4200.0,wheel_rpm(gear)/3000.0),0.0,1.0)
+		target_clutch = minf(target_clutch,clampf(maxf((rpm-idle_rpm)/4200.0,wheel_rpm(gear)/3000.0),0.0,1.0))
 	elif wheel_rpm(gear) < idle_rpm:
 		target_clutch *= clampf((wheel_rpm(gear)-idle_rpm*0.5)/(idle_rpm*0.5),0,1)
 	clutch_engagement = 0.0 if (clutch > 0.99 and not has_converter) or target_clutch == 0.0 else move_toward(clutch_engagement,target_clutch,dt*(8.0+gearbox_stage*2.0)*shift_firmness*clutch_rate)
@@ -505,7 +514,14 @@ func _substep(dt: float, pedal: float, brake: float, clutch: float, nitrous: boo
 		engine_torque += full_torque*nitrous_torque_gain()*(used/dt)
 	else: nitrous_delivery = 0.0
 	if engine_torque > 0.0: engine_torque = minf(engine_torque,supported_engine_torque())
-	overload = maxf(0.0,absf(engine_torque)/maxf(1.0,input_capacity())-1.0)
+	var loaded := running and not shifting and gear>0 and clutch_engagement>.94 and throttle>.35 and not transbrake_active
+	var capacity := input_capacity()
+	overload = maxf(0.0,engine_torque/maxf(1.0,capacity)-1.0) if loaded else 0.0
+	# Only load above the rating is shed. The converter can still multiply
+	# torque normally, and the coupling solver limits its output separately.
+	if overload>0.0: engine_torque = capacity
+	clutch_overloaded = false
+	transmission_slipping = loaded and overload>.025
 	engine_temperature += (maxf(0.0,engine_torque)*omega*0.000006-(engine_temperature-85.0)*0.08*_charge_cooling)*dt
 	component_wear = minf(0.8,component_wear+dt*(overload*0.001+maxf(0.0,transmission_temperature-115.0)*0.00001))
 	if engine_torque > 0.0: engine_torque *= clampf(1.0-maxf(0.0,engine_temperature-110.0)/100.0-component_wear*0.2,0.55,1.0)
@@ -539,7 +555,7 @@ func _substep(dt: float, pedal: float, brake: float, clutch: float, nitrous: boo
 		var launch_window := 1.0-smoothstep(3.0,21.0,speed)
 		if tire_slip_loss>0 or suspension_launch_support>0:
 			var hop_target := .10*wheelspin*launch_window*(1.0-hop_damping)
-			wheel_hop = lerpf(wheel_hop,hop_target,1.0-exp(-dt*14.0))
+			wheel_hop = lerpf(wheel_hop,hop_target,1.0-exp(-dt*lerpf(14.0,30.0,hop_damping)))
 		var hop_unload := wheel_hop*maxf(0.0,sin(_sim_time*TAU*10.0))
 		available_traction = m*9.81*maxf(.05,traction_grip(acceleration,launch_window,wheelspin)-hop_unload)
 		var tire_limit := available_traction*dt
@@ -552,7 +568,8 @@ func _substep(dt: float, pedal: float, brake: float, clutch: float, nitrous: boo
 			force=hybrid_power_w/maxf(5.0,speed)
 			wheel_omega+=force*tire_radius/wheel_inertia*dt
 			hybrid_energy_j=maxf(0,hybrid_energy_j-hybrid_power_w/.94*dt)
-		var clutch_limit := clutch_capacity()*clutch_engagement*dt
+		var pack_capacity := clutch_capacity()
+		var clutch_limit := pack_capacity*clutch_engagement*dt
 		# Two coupled impulses solve engine-clutch-wheel and tire-road constraints.
 		# Saturation produces real clutch slip and driven-wheel spin.
 		var a11 := 1.0/coupling_inertia+total_ratio*total_ratio/wheel_inertia
@@ -571,6 +588,12 @@ func _substep(dt: float, pedal: float, brake: float, clutch: float, nitrous: boo
 		wheel_omega += (total_ratio*jc-tire_radius*jt)/wheel_inertia
 		speed = maxf(0.0,free_v+jt/m)
 		clutch_torque = jc/dt
+		var coupling_slip := (omega-total_ratio*wheel_omega)*RPM_PER_RAD
+		var pack_saturated := loaded and coupling_slip>150.0 and jc>=clutch_limit*.99
+		if has_converter:
+			transmission_slipping = transmission_slipping or (pack_saturated and speed>8.0)
+		else:
+			clutch_overloaded = pack_saturated and speed>3.0
 		traction_force = jt/dt
 		acceleration = (speed-old_speed)/dt
 		if transbrake_active:
@@ -608,10 +631,10 @@ func _substep(dt: float, pedal: float, brake: float, clutch: float, nitrous: boo
 	engine_load = clampf(maxf(0.0,delivered)/maxf(1.0,full_torque),0.0,1.5)
 
 func telemetry() -> Dictionary:
-	return {"time":elapsed,"rpm":rpm,"gear":gear,"mph":speed*MPH_PER_MPS,"distance_m":distance,"engine_nm":engine_torque,"clutch_nm":clutch_torque,"load":engine_load,"clutch":clutch_engagement,"clutch_slip_rpm":clutch_slip_rpm,"wheel_rad_s":wheel_omega,"slip_ratio":slip_ratio,"tire_force_n":traction_force,"traction_limit_n":available_traction,"acceleration_mps2":acceleration,"boost_bar":boost,"nitrous_s":nitrous_remaining,"fuel_cut":fuel_cut,"limiter":limiter,"shift_s":shift_left,"sync_nm":sync_torque,"converter_slip":converter_slip,"converter_pump_nm":converter_pump_nm,"converter_turbine_nm":converter_turbine_nm,"converter_input_w":converter_input_w,"converter_output_w":converter_output_w,"converter_lock":converter_lock,"transbrake":transbrake_active,"engine_c":engine_temperature,"transmission_c":transmission_temperature,"wear":component_wear,"overload":overload,"transmission":transmission_id,"control_mode":control_mode}
+	return {"time":elapsed,"rpm":rpm,"gear":gear,"mph":speed*MPH_PER_MPS,"distance_m":distance,"engine_nm":engine_torque,"clutch_nm":clutch_torque,"load":engine_load,"clutch":clutch_engagement,"clutch_slip_rpm":clutch_slip_rpm,"wheel_rad_s":wheel_omega,"slip_ratio":slip_ratio,"tire_force_n":traction_force,"traction_limit_n":available_traction,"acceleration_mps2":acceleration,"boost_bar":boost,"nitrous_s":nitrous_remaining,"fuel_cut":fuel_cut,"limiter":limiter,"shift_s":shift_left,"sync_nm":sync_torque,"converter_slip":converter_slip,"converter_pump_nm":converter_pump_nm,"converter_turbine_nm":converter_turbine_nm,"converter_input_w":converter_input_w,"converter_output_w":converter_output_w,"converter_lock":converter_lock,"transbrake":transbrake_active,"engine_c":engine_temperature,"transmission_c":transmission_temperature,"wear":component_wear,"overload":overload,"clutch_overloaded":clutch_overloaded,"transmission_slipping":transmission_slipping,"transmission":transmission_id,"control_mode":control_mode}
 
 func effective_grip() -> float:
-	return (grip_coefficient+extra_grip+(tire_grip if tire_grip>0 else tire_stage*.095))*pressure_grip
+	return (grip_coefficient*1.16+extra_grip+(tire_grip if tire_grip>0 else tire_stage*.115))*pressure_grip
 
 func brake_grip() -> float:
 	return 1.05+(tire_grip*.60 if tire_grip>0 else tire_stage*.06)
@@ -620,7 +643,7 @@ func traction_grip(at_acceleration: float,launch_window: float,spin: float) -> f
 	var transfer := load_transfer_scale*clampf(at_acceleration,-8.0,8.0)/9.81
 	if drivetrain=="FWD": transfer = -transfer
 	elif drivetrain=="AWD": transfer = 0.0
-	return effective_grip()+transfer+(tire_launch_bite+suspension_launch_support*(1.0-.5*spin))*launch_window-tire_slip_loss*smoothstep(.12,1.0,spin)
+	return effective_grip()+transfer+(tire_launch_bite+suspension_launch_support*(1.0-.22*spin))*launch_window-tire_slip_loss*smoothstep(.12,1.0,spin)
 
 func reset_modifiers() -> void:
 	_torque_factor = 1.0
@@ -748,17 +771,17 @@ func configure_build(build: Dictionary, vehicle: String = "kaze", plan: bool = t
 			"tire_pressure":
 				# Compound-specific straight-line pressure response; nominal setup is 32 psi.
 				var peak := float(tire.get("pressure_peak",26.0))
-				var nominal := 1.0-.0015*pow(32.0-peak,2)
-				pressure_grip=clampf((1.0-.0015*pow(float(setting)-peak,2))/nominal,.70,1.06 if tire.is_empty() else 1.12)
+				var nominal := 1.0-.0018*pow(32.0-peak,2)
+				pressure_grip=clampf((1.0-.0018*pow(float(setting)-peak,2))/nominal,.68,1.06 if tire.is_empty() else 1.20)
 				pressure_rolling=1.0+maxf(0,32-float(setting))*.018
 			"launch_damping":
 				hop_damping=clampf(hop_damping*float(setting),0,.95)
-				suspension_launch_support *= 1.0-.65*maxf(0,float(setting)-1.0)
+				suspension_launch_support *= 1.0+.32*(float(setting)-1.0)
 	gear = clampi(gear,0,gear_ratios.size())
 	if _advanced and plan: rebuild_shift_map()
 
 func input_capacity() -> float:
-	return rated_capacity*TransmissionCatalog.strength(gearbox_stage)
+	return rated_capacity*1.23*TransmissionCatalog.strength(gearbox_stage)
 
 func power_torque(at_rpm: float, pressure: float) -> float:
 	var value := torque_at(at_rpm)*(1.0+pressure*0.8)
@@ -791,7 +814,10 @@ func rebuild_shift_map() -> void:
 
 func select_manual_gear(target: int, clutch_command: float) -> String:
 	if control_mode != "hpattern": return "H GATE NOT INSTALLED"
-	if clutch_command < 0.8: return "HOLD CLUTCH"
+	if clutch_command < 0.8:
+		if target!=gear and target>=0 and target<=gear_ratios.size() and running:
+			grind_serial += 1
+		return "HOLD CLUTCH"
 	if shift_left > 0.0: return "GEAR ENGAGING"
 	if target < 0 or target > gear_ratios.size(): return "GEAR LIMIT"
 	if target == gear: return "ALREADY SELECTED"
@@ -799,10 +825,12 @@ func select_manual_gear(target: int, clutch_command: float) -> String:
 	if target > 0 and proposed > redline_rpm+180.0: rejected_serial += 1; return "DOWNSHIFT PROTECTED"
 	last_shift_rpm = rpm
 	last_shift_load = engine_load
+	var perfect := gear>0 and target==gear+1 and rpm>=good_shift_min() and rpm<=good_shift_max() and wheelspin<0.10
+	shift_direction = signi(target-gear)
+	shift_message = "NEUTRAL" if target==0 else ("PERFECT SHIFT" if perfect else "MANUAL SHIFT")
 	gear = target
 	shift_left = shift_duration
 	shift_serial += 1
-	shift_message = ("PERFECT SHIFT" if rpm >= good_shift_min() and rpm <= good_shift_max() and wheelspin < 0.1 else "MANUAL SHIFT") if gear > 0 else "NEUTRAL"
 	cancel_shift_request()
 	return "SHIFT ACCEPTED"
 

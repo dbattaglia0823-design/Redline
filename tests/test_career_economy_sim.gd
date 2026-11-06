@@ -33,6 +33,13 @@ func cost(p: DriverProfile,c: Dictionary) -> int:
 func driver(c: Dictionary,event: Dictionary) -> Dictionary:
 	return {"model":c.model,"stages":c.stages,"hardware":c.hardware,"driver_model":2,"reaction":.12,"pedal":1.0,"skill":3,"shift_error":0,"traction_skill":.95,"nitrous":event.get("rule","")!="motor_only" and int(c.stages[7])>0,"nitrous_gear":1,"driver_seed":0}
 func run() -> void:
+	var replay:=DriverProfile.new()
+	replay.credits=0
+	var rival:=Championships.event("open_0")
+	for attempt in 2:
+		check(replay.begin_wager(0,rival),"Zero-credit replay was locked")
+		var payout:=replay.award_race(rival,attempt==1,false,17.0,.24,88.0,0,0)
+		check(not payout.is_empty() and payout.reward>0 and Championships.completed(replay)==0,"Rival replay did not earn cash independently")
 	var pool: Array=[]; var seen: Dictionary={}
 	for id in Championships.catalog():
 		var c:=Championships.event(id)
@@ -90,7 +97,7 @@ func run() -> void:
 			while p.credits<price and extra_runs<30:
 				var current:={"model":p.vehicle_id,"stages":p.stages,"hardware":p.hardware}
 				var recovery: Dictionary={}; var a: Dictionary={}; var b: Dictionary={}; var pay:=0
-				for candidate_id in Championships.catalog():
+				for candidate_id in Championships.ids("OPEN"):
 					var available:=Championships.event(candidate_id)
 					if Championships.eligibility(p,available)!="" or int(available.purse)<=pay: continue
 					var player:=RaceAI.estimate(driver(current,available),float(available.distance)); var opponent:=RaceAI.estimate(available,float(available.distance))
@@ -99,7 +106,9 @@ func run() -> void:
 				if recovery.is_empty(): break
 				check(a.time<b.time,"Recovery race is not winnable")
 				check(p.begin_wager(0,recovery),"Recovery race entry failed")
+				var before_progress:=Championships.completed(p)
 				p.award_race(recovery,true,false,float(a.time),.18,float(a.mph),0,0); extra_runs+=1
+				check(Championships.completed(p)==before_progress,"Rival Challenge advanced championship progress")
 			check(p.credits>=price,"Excessive grind before "+id)
 			if p.credits<price: break
 			p.snapshot_vehicle(); p.credits-=price

@@ -14,10 +14,10 @@ func begin(car: Drivetrain,length: float = 402.336) -> void:
 	distance=length; frozen=false; serial=car.shift_serial; next_sample=0; samples.clear(); shifts.clear()
 	result={"reaction_s":null,"sixty_ft_s":null,"eighth_s":null,"eighth_mph":null,"quarter_s":null,"trap_mph":null,"zero_60_s":null,"total_s":null,"red_light":false,"distance":length}
 
-func observe(car: Drivetrain,before_d: float,before_v: float,before_t: float,dt: float,stage: RaceStaging) -> void:
+func observe(car: Drivetrain,before_d: float,before_v: float,before_t: float,dt: float,stage: RaceStaging,lane: int = 0) -> void:
 	if frozen: return
-	if stage.released[0]: result.reaction_s=stage.reactions[0]
-	result.red_light=stage.red_light
+	if stage.released[lane]: result.reaction_s=stage.reactions[lane]
+	result.red_light=lane==0 and stage.red_light
 	var reaction: float=maxf(0,float(result.reaction_s)) if result.reaction_s!=null else 0.0
 	for marker in [18.288,201.168,402.336]:
 		var key: String="sixty_ft_s" if marker<20 else ("eighth_s" if marker<300 else "quarter_s")
@@ -28,10 +28,10 @@ func observe(car: Drivetrain,before_d: float,before_v: float,before_t: float,dt:
 	var sixty:=60/Drivetrain.MPH_PER_MPS
 	if result.zero_60_s==null and before_v<sixty and car.speed>=sixty:
 		result.zero_60_s=maxf(0,before_t+dt*(sixty-before_v)/maxf(.000001,car.speed-before_v)-reaction)
-	if car.shift_serial!=serial:
+	if lane==0 and car.shift_serial!=serial:
 		serial=car.shift_serial
 		shifts.append({"time":car.elapsed,"rpm":car.last_shift_rpm,"gear":car.gear,"duration":car.shift_duration})
-	if car.elapsed>=next_sample:
+	if lane==0 and car.elapsed>=next_sample:
 		next_sample=car.elapsed+.05
 		if samples.size()<2000: samples.append({"time":car.elapsed,"rpm":car.rpm,"speed":car.speed*Drivetrain.MPH_PER_MPS,"gear":car.gear,"throttle":car.throttle,"clutch":car.clutch_engagement,"wheelspin":car.wheelspin,"boost":car.boost,"distance":car.distance,"acceleration":car.acceleration})
 	if car.distance>=distance:

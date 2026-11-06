@@ -77,7 +77,7 @@ func draw_stat_strip(r: Rect2,columns: int = 4) -> void:
 func draw_race_action(r: Rect2) -> void:
 	g.button("race_menu","",r,true)
 	t("Find a race",r.position.x+24,r.position.y+40,25 if g.is_portrait() else 21)
-	t("Career & rivals",r.position.x+24,r.position.y+64,18 if g.is_portrait() else 12,Color("f3f5f7cc"))
+	t("Championships & rivals",r.position.x+24,r.position.y+64,18 if g.is_portrait() else 12,Color("f3f5f7cc"))
 	var center := Vector2(r.end.x-36,r.get_center().y)
 	g.draw_line(center-Vector2(13,0),center+Vector2(6,0),g.INK,1.7,true)
 	g.draw_polyline(PackedVector2Array([center+Vector2(0,-6),center+Vector2(6,0),center+Vector2(0,6)]),g.INK,1.7,true)

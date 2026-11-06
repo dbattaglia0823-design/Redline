@@ -4,19 +4,20 @@ extends RefCounted
 const RETIRED_COOLING_COSTS := {"radiator":1800,"race_cooling":3900}
 const RETIRED_CONVERTER_COSTS := {"converter_street":2600,"converter_race":5400}
 const TIRE_LADDER := ["","street_tires","uhp_tires","street_radial","competition_radial","drag_slicks"]
-const TRANSMISSION_UPGRADES := ["gear_strength","gear_efficiency","gear_cooling","gear_response"]
+const TRANSMISSION_UPGRADES := ["gear_strength","gear_efficiency","gear_cooling","gear_response","gear_pro"]
 const INDUCTION_UPGRADES := ["charge_pressure","charge_response","charge_airflow","charge_cooling"]
 const INDUCTION_TYPES := ["","turbo_hybrid","roots","centrifugal"]
 const TRANSMISSION_TUNE := ["gear_count","ratios","shift_rpms","final_drive","firmness","launch_rpm","launch_gear","clutch_rate","boost_by_gear"]
 const TRANSMISSION_SLOTS := ["clutch"]
-const SLOTS := ["internals","displacement","compression","intake","fuel","ecu","induction","boost","clutch","differential","wheels","tires","suspension","exhaust","gear_strength","gear_efficiency","gear_cooling","gear_response","charge_pressure","charge_response","charge_airflow","charge_cooling"]
+const SLOTS := ["internals","displacement","compression","intake","fuel","ecu","induction","boost","clutch","differential","wheels","tires","suspension","exhaust","gear_strength","gear_efficiency","gear_cooling","gear_response","gear_pro","charge_pressure","charge_response","charge_airflow","charge_cooling"]
 const FINAL_DRIVES := [2.73,3.0,3.20,3.55,3.85,4.10,4.30]
 # One installed item per slot; previously bought items remain owned per car.
 const PARTS := {
-	"gear_strength":{"slot":"gear_strength","name":"Hardened internals","cost":3600,"stage":0,"capacity_scale":1.35,"mass":2.0},
-	"gear_efficiency":{"slot":"gear_efficiency","name":"Low-friction bearings","cost":2100,"stage":0,"efficiency_add":0.025},
-	"gear_cooling":{"slot":"gear_cooling","name":"Thermal protection","cost":2800,"stage":0,"cooling_scale":1.8},
-	"gear_response":{"slot":"gear_response","name":"Shift calibration","cost":3200,"stage":0,"shift_scale":0.78},
+	"gear_strength":{"slot":"gear_strength","name":"Hardened internals","cost":3600,"stage":0,"capacity_scale":1.52,"mass":2.0},
+	"gear_efficiency":{"slot":"gear_efficiency","name":"Low-friction bearings","cost":2100,"stage":0,"efficiency_add":0.036},
+	"gear_cooling":{"slot":"gear_cooling","name":"Thermal protection","cost":2800,"stage":0,"cooling_scale":2.1},
+	"gear_response":{"slot":"gear_response","name":"Shift calibration","cost":3200,"stage":0,"shift_scale":0.73},
+	"gear_pro":{"slot":"gear_pro","name":"Billet gearset and case","cost":8200,"stage":0,"capacity_scale":1.35,"cooling_scale":1.15,"mass":3.0},
 	"charge_pressure":{"slot":"charge_pressure","name":"Pressure upgrade","cost":3400,"stage":0,"pressure_add":0.22},
 	"charge_response":{"slot":"charge_response","name":"Response calibration","cost":2600,"stage":0,"spool_scale":0.72},
 	"charge_airflow":{"slot":"charge_airflow","name":"High-flow charge piping","cost":2300,"stage":0,"flow":0.045},
@@ -41,23 +42,27 @@ const PARTS := {
 	"roots":{"slot":"induction","name":"Roots supercharger","cost":6300,"stage":0,"super":"roots","pressure":0.62,"mass":22.0},
 	"centrifugal":{"slot":"induction","name":"Centrifugal supercharger","cost":7200,"stage":0,"super":"centrifugal","pressure":0.88,"mass":16.0},
 	"boost_control":{"slot":"boost","name":"Electronic boost controller","cost":1700,"stage":0,"boost_tune":true},
-	"clutch_street":{"slot":"clutch","name":"Heavy-duty clutch pack","cost":1450,"stage":0,"clutch":1.14},
-	"clutch_twin":{"slot":"clutch","name":"Twin-plate clutch pack","cost":2750,"stage":0,"clutch":1.28},
-	"clutch_race":{"slot":"clutch","name":"Race clutch / internal packs","cost":4600,"stage":0,"clutch":1.55},
+	"clutch_street":{"slot":"clutch","name":"Heavy-duty clutch pack","cost":1450,"stage":0,"clutch":1.2},
+	"clutch_twin":{"slot":"clutch","name":"Twin-plate clutch pack","cost":2750,"stage":0,"clutch":1.4},
+	"clutch_race":{"slot":"clutch","name":"Race clutch / internal packs","cost":4600,"stage":0,"clutch":1.65},
+	"clutch_carbon":{"slot":"clutch","name":"Carbon triple-disc clutch","cost":7800,"stage":0,"clutch":1.95},
 	"lsd":{"slot":"differential","name":"Limited-slip differential","cost":2100,"stage":0,"grip":0.055,"mass":3.0},
 	"spool":{"slot":"differential","name":"Straight-line locked differential","cost":3000,"stage":2,"grip":0.085,"mass":1.0},
 	"light_wheels":{"slot":"wheels","name":"Lightweight road wheel set","cost":1600,"stage":0,"wheel_inertia":-0.5,"mass":-8.0},
 	"drag_wheels":{"slot":"wheels","name":"Tall drag wheel set","cost":3300,"stage":2,"radius":0.335,"wheel_inertia":0.4,"mass":4.0},
-	"street_tires":{"slot":"tires","name":"Performance street tires","cost":850,"stage":0,"grip":.095,"rolling":.99,"mass":1.0,"wheel_inertia":.03,"launch_bite":.015,"slip_loss":.080,"pressure_peak":32.0},
-	"uhp_tires":{"slot":"tires","name":"Ultra-high-performance tires","cost":1750,"stage":0,"grip":.19,"rolling":1.04,"mass":2.0,"wheel_inertia":.07,"launch_bite":.022,"slip_loss":.065,"pressure_peak":30.0},
-	"street_radial":{"slot":"tires","name":"Street drag radials","cost":2800,"stage":0,"grip":.285,"rolling":1.12,"mass":4.0,"wheel_inertia":.14,"launch_bite":.035,"slip_loss":.055,"pressure_peak":27.0,"radius_scale":1.012,"sidewall_mark":1},
-	"competition_radial":{"slot":"tires","name":"Competition drag radials","cost":4450,"stage":0,"grip":.35,"rolling":1.18,"mass":6.0,"wheel_inertia":.21,"launch_bite":.058,"slip_loss":.040,"pressure_peak":25.0,"radius_scale":1.025,"sidewall_mark":2},
-	"drag_slicks":{"slot":"tires","name":"Full drag slicks","cost":6300,"stage":0,"grip":.41,"rolling":1.25,"mass":7.0,"wheel_inertia":.28,"launch_bite":.085,"slip_loss":.055,"pressure_peak":23.0,"radius_scale":1.036,"sidewall_mark":3},
-	"street_susp":{"slot":"suspension","name":"Sport suspension","cost":1700,"stage":0,"transfer":.14,"fwd_transfer":.12,"mass":-3.0,"frequency":18.0,"hop_damping":.22,"launch_support":.012},
-	"coilovers":{"slot":"suspension","name":"Adjustable coilovers","cost":2600,"stage":0,"transfer":.19,"fwd_transfer":.10,"mass":-4.0,"frequency":16.0,"hop_damping":.38,"launch_support":.022,"adjustable":true},
-	"drag_susp":{"slot":"suspension","name":"Performance drag suspension","cost":3700,"stage":2,"transfer":.25,"fwd_transfer":.08,"mass":-5.0,"frequency":11.0,"hop_damping":.49,"launch_support":.036},
-	"competition_shocks":{"slot":"suspension","name":"Competition drag shocks and springs","cost":5350,"stage":0,"transfer":.30,"fwd_transfer":.055,"mass":-3.0,"frequency":12.0,"hop_damping":.65,"launch_support":.050,"adjustable":true},
-	"pro_drag_susp":{"slot":"suspension","name":"Professional drag racing suspension","cost":7400,"stage":0,"transfer":.34,"fwd_transfer":.035,"mass":1.0,"frequency":13.0,"hop_damping":.78,"launch_support":.068,"adjustable":true},
+	"street_tires":{"slot":"tires","name":"Performance street tires","cost":850,"stage":0,"grip":0.12,"rolling":.99,"mass":1.0,"wheel_inertia":.03,"launch_bite":0.025,"slip_loss":0.054,"pressure_peak":32.0},
+	"uhp_tires":{"slot":"tires","name":"Ultra-high-performance tires","cost":1750,"stage":0,"grip":0.23,"rolling":1.04,"mass":2.0,"wheel_inertia":.07,"launch_bite":0.037,"slip_loss":0.043,"pressure_peak":30.0},
+	"street_radial":{"slot":"tires","name":"Street drag radials","cost":2800,"stage":0,"grip":0.36,"rolling":1.12,"mass":4.0,"wheel_inertia":.14,"launch_bite":0.065,"slip_loss":0.038,"pressure_peak":27.0,"radius_scale":1.012,"sidewall_mark":1},
+	"competition_radial":{"slot":"tires","name":"Competition drag radials","cost":4450,"stage":0,"grip":0.45,"rolling":1.18,"mass":6.0,"wheel_inertia":.21,"launch_bite":0.1,"slip_loss":0.031,"pressure_peak":25.0,"radius_scale":1.025,"sidewall_mark":2},
+	"drag_slicks":{"slot":"tires","name":"Full drag slicks","cost":6300,"stage":0,"grip":0.54,"rolling":1.25,"mass":7.0,"wheel_inertia":.28,"launch_bite":0.145,"slip_loss":0.032,"pressure_peak":23.0,"radius_scale":1.036,"sidewall_mark":3},
+	"pro_drag_radial":{"slot":"tires","name":"Pro drag radials","cost":7900,"stage":0,"grip":.58,"rolling":1.19,"mass":7.0,"wheel_inertia":.25,"launch_bite":.12,"slip_loss":.025,"pressure_peak":24.0,"radius_scale":1.028,"sidewall_mark":2},
+	"pro_drag_slicks":{"slot":"tires","name":"Pro soft-compound slicks","cost":9900,"stage":0,"grip":.66,"rolling":1.29,"mass":8.0,"wheel_inertia":.31,"launch_bite":.185,"slip_loss":.020,"pressure_peak":21.0,"radius_scale":1.04,"sidewall_mark":3},
+	"street_susp":{"slot":"suspension","name":"Sport suspension","cost":1700,"stage":0,"transfer":0.16,"fwd_transfer":0.1,"mass":-3.0,"frequency":18.0,"hop_damping":0.3,"launch_support":0.023},
+	"coilovers":{"slot":"suspension","name":"Adjustable coilovers","cost":2600,"stage":0,"transfer":0.22,"fwd_transfer":0.08,"mass":-4.0,"frequency":16.0,"hop_damping":0.48,"launch_support":0.044,"adjustable":true},
+	"drag_susp":{"slot":"suspension","name":"Performance drag suspension","cost":3700,"stage":2,"transfer":0.28,"fwd_transfer":0.065,"mass":-5.0,"frequency":11.0,"hop_damping":0.6,"launch_support":0.069},
+	"competition_shocks":{"slot":"suspension","name":"Competition drag shocks and springs","cost":5350,"stage":0,"transfer":0.34,"fwd_transfer":0.042,"mass":-3.0,"frequency":12.0,"hop_damping":0.75,"launch_support":0.1,"adjustable":true},
+	"pro_drag_susp":{"slot":"suspension","name":"Professional drag racing suspension","cost":7400,"stage":0,"transfer":0.39,"fwd_transfer":0.024,"mass":1.0,"frequency":13.0,"hop_damping":0.86,"launch_support":0.14,"adjustable":true},
+	"active_drag_susp":{"slot":"suspension","name":"Pro four-way drag suspension","cost":10500,"stage":0,"transfer":.43,"fwd_transfer":.016,"mass":1.5,"frequency":14.0,"hop_damping":.93,"launch_support":.18,"adjustable":true},
 	"headers":{"slot":"exhaust","name":"Tuned exhaust manifold","cost":2100,"stage":0,"flow":0.045,"mass":-3.0},
 }
 

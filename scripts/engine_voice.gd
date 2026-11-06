@@ -60,6 +60,9 @@ var last_sample := 0.0
 var peak_jump := 0.0
 var samples_generated := 0
 var last_shift_serial := -1
+var last_grind_serial := -1
+var grind_left := 0.0
+var grind_phase := 0.0
 var _blowoff_armed := false
 var _overrun_armed := false
 # bass, upper-harmonic balance, firing-pulse modulation, intake resonance
@@ -89,6 +92,11 @@ static func band_weights(at_rpm: float, idle: float = 950.0, redline: float = 76
 	return Vector4(1.0-a,a*(1.0-b),a*b*(1.0-c),a*b*c)
 
 func set_from_vehicle(car: Drivetrain, audible: bool = true) -> void:
+	if last_grind_serial>=0 and car.grind_serial>last_grind_serial and audible:
+		grind_left=.19
+		grind_phase=0.0
+	last_grind_serial=car.grind_serial
+	if not audible: grind_left=0.0
 	target_rpm = car.rpm
 	target_throttle = car.throttle
 	target_load = car.engine_load
@@ -216,11 +224,19 @@ func next_sample() -> float:
 	pop *= 0.9990
 	blowoff *= 0.9996
 	shift_tick *= 0.9965
-	var sample := tanh(((filtered*amplitude+overrun)*engine_mix+induction*induction_mix+tire*tire_mix+gear_whine*mechanical_mix+transient+nitro)*gain)
+	var sample := tanh(((filtered*amplitude+overrun)*engine_mix+induction*induction_mix+tire*tire_mix+gear_whine*mechanical_mix+transient+nitro+grind_sample())*gain)
 	peak_jump = maxf(peak_jump,absf(sample-last_sample))
 	last_sample = sample
 	samples_generated += 1
 	return sample
+
+func grind_sample() -> float:
+	if grind_left<=0.0: return 0.0
+	var age := .19-grind_left
+	var envelope := minf(age/.012,1.0)*pow(grind_left/.19,1.4)
+	grind_left=maxf(0.0,grind_left-1.0/RATE)
+	grind_phase=fposmod(grind_phase+(720.0+grind_left*2000.0)/RATE,1.0)
+	return envelope*(.24*filtered_noise+.10*sin(grind_phase*TAU)+.045*sin(grind_phase*TAU*2.0))*mechanical_mix
 
 func next_effect_sample() -> float:
 	# Lightweight runtime effects when native loop voices provide the main engine.
@@ -252,7 +268,7 @@ func next_effect_sample() -> float:
 	var transients:=filtered_noise*(pop_gain*.21*exhaust_fx_mix+blowoff_gain*.24*induction_mix)+noise*shift_tick_gain*.025*mechanical_mix
 	var electric:=sin(_hybrid_phase*TAU)*clampf(hybrid_power/162000,0,1)*.009*mechanical_mix if hybrid_power>1 else 0.0
 	pop*=.9990; blowoff*=.9996; shift_tick*=.9965
-	var value:=tanh((induction+tire+whine*mechanical_mix+transients+intake_filter*.07*nitro_gain*nitro_mix+electric)*gain)
+	var value:=tanh((induction+tire+whine*mechanical_mix+transients+intake_filter*.07*nitro_gain*nitro_mix+electric+grind_sample())*gain)
 	peak_jump=maxf(peak_jump,absf(value-last_sample)); last_sample=value; samples_generated+=1
 	return value
 

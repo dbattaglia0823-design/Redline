@@ -332,7 +332,7 @@ func metric_color(value: String) -> Color:
 	if is_equal_approx(before,after): return g.MUTED
 	for neutral in ["radius","inertia","transfer","Final drive","Nozzle","Stall","Multiplication","Forward gears"]:
 		if value.contains(neutral): return g.INK
-	var less_good:=value.contains("Mass") or value.contains("mass") or value.contains("Shift") or value.contains("ramp") or value.contains("onset") or value.contains("Spool") or value.contains("1/4 est") or value.begins_with("Rolling resistance") or value.begins_with("60-foot ET") or value.begins_with("0–60 mph") or value.begins_with("1/4-mile ET") or value.begins_with("Time in wheelspin")
+	var less_good:=value.contains("Mass") or value.contains("mass") or value.contains("Shift") or value.contains("ramp") or value.contains("onset") or value.contains("Spool") or value.contains("1/4 est") or value.begins_with("Rolling resistance") or value.begins_with("60-foot ET") or value.begins_with("0–60 mph") or value.begins_with("1/4-mile ET") or value.begins_with("Time in wheelspin") or value.begins_with("Clutch slip time") or value.begins_with("Gearbox slip time")
 	return g.GREEN if (after<before if less_good else after>before) else Color("eea29b")
 
 func package_description(index: int) -> String:
@@ -363,7 +363,7 @@ func traction_projection(c: Drivetrain) -> Array[String]:
 	if results[0].is_empty() or results[1].is_empty():
 		rows.append("Measuring launches and quarter-mile runs…")
 		return rows
-	for row in [["60-foot ET","sixty_ft_s"],["0–60 mph","zero_60_s"],["1/4-mile ET","quarter_et_s"],["Time in wheelspin","wheelspin_s"]]:
+	for row in [["60-foot ET","sixty_ft_s"],["0–60 mph","zero_60_s"],["1/4-mile ET","quarter_et_s"],["Time in wheelspin","wheelspin_s"],["Clutch slip time","clutch_slip_s"],["Gearbox slip time","gearbox_slip_s"]]:
 		var before: Variant=results[0].get(row[1])
 		var after: Variant=results[1].get(row[1])
 		if before!=null and after!=null: rows.append(metric(row[0],float(before),float(after),"s",2))

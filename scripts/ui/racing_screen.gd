@@ -6,21 +6,11 @@ var wager_label: Label
 var preview_build: Drivetrain
 var preview_key := ""
 
-class EventPhoto extends Control:
-	var texture: Texture2D
-	var tint: Color
-
-	func _draw() -> void:
-		var bounds:=Rect2(size.x*.58,5,size.x*.42-6,size.y-14)
-		if not bounds.has_area(): return
-		LiquidGlass.draw_cover(self,texture,bounds,Color(.69,.76,.82,.62))
-		draw_rect(Rect2(bounds.position,Vector2(2,bounds.size.y)),Color(tint,.70))
-
 func racing_menu() -> bool:
 	return game.screen=="results" or (game.screen=="garage" and game.tab=="races")
 
 func supports() -> bool:
-	return (not game.glass.legacy and racing_menu()) or super.supports()
+	return racing_menu() or super.supports()
 
 func compact_landscape() -> bool:
 	return (racing_menu() and not game.is_portrait() and game.get_window().size.y<500) or super.compact_landscape()
@@ -40,7 +30,7 @@ func state_key() -> String:
 	var contract: Dictionary=game.current_contract()
 	var estimate := {} if board.active and board.picker else estimates(contract)
 	var reason := Championships.eligibility(game.profile,contract) if board.active and not board.picker else ""
-	return JSON.stringify([size,game.tab,game.profile.vehicle_id,game.profile.credits,game.profile.xp,game.profile.career_wins,game.profile.championship_wins,game.profile.legacy_class_access,board.active,board.picker,board.series,game.event_index,game.selected_opponent,contract,estimate,reason,game.recommend_pending,game.race_start_pending,game.profile.muted])
+	return JSON.stringify([size,game.tab,game.profile.vehicle_id,game.profile.credits,game.profile.xp,game.profile.career_wins,game.profile.championship_wins,game.profile.legacy_class_access,board.active,board.picker,board.series,game.event_index,game.selected_opponent,contract,estimate,reason,game.race_start_pending,game.profile.muted])
 
 func publish_targets() -> void:
 	if is_instance_valid(wager_slider) and wager_slider.is_visible_in_tree():
@@ -89,7 +79,7 @@ func championship_picker(body: VBoxContainer) -> void:
 	var crowned:=Championships.trophies(game.profile)
 	add_label(summary,"REDLINE Champion" if crowned==6 else "Championship ladder",32)
 	AutomotiveUI.section_mark(summary,"%02d / %d RACES   ·   %d / 6 TROPHIES"%[Championships.completed(game.profile),Championships.TOTAL_RACES,crowned],"races",Championships.TROPHY)
-	small_action(heading,"cb_back","Street series")
+	small_action(heading,"cb_open","Rival Challenges")
 	var cards:=grid(body,2 if portrait else 3,12)
 	for index in Championships.CLASSES.size():
 		var letter: String=Championships.CLASSES[index]
@@ -111,7 +101,7 @@ func championship_picker(body: VBoxContainer) -> void:
 		detail.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 		detail.text_overrun_behavior=TextServer.OVERRUN_NO_TRIMMING
 		detail.custom_minimum_size.y=40
-	button(body,"cb_open","Open class · Rival challenges",true)
+	add_label(body,"Rival Challenges pay for every clean finish and can be replayed freely.",18,AutomotiveUI.MUTED)
 
 func trophy_icon(color: Color) -> Control:
 	var icon:=AutomotiveUI.TechnicalIcon.new()
@@ -133,7 +123,7 @@ func progress_bar(parent: Node,wins: int,total: int=Championships.ROUNDS) -> voi
 
 func estimates(contract: Dictionary) -> Dictionary:
 	if contract.is_empty(): return {}
-	var distance: float=contract.distance if game.career_board.active else maxf(game.FINISH,float(contract.distance))
+	var distance: float=contract.distance
 	var player:=RaceAI.player_contract(game.profile)
 	if game.career_board.active:
 		player.driver_model=2
@@ -153,31 +143,24 @@ func race_board(body: VBoxContainer) -> void:
 	var contract: Dictionary=game.current_contract()
 	if contract.is_empty(): return
 	var heading:=AutomotiveUI.row(body)
-	add_label(heading,("Street series" if portrait else "Street series / Matchmaking") if not board.active else ("Open class rivals" if board.series=="OPEN" else "Class "+board.series+" / "+Championships.TITLES[Championships.CLASSES.find(board.series)]),29)
-	if board.active: small_action(heading,"cb_back","Championships")
-	else:
-		small_action(heading,"open_championships","Championships")
-		if compact_landscape(): small_action(heading,"recommend_rival","Find match")
+	add_label(heading,"Rival Challenges" if board.series=="OPEN" else "Class "+board.series+" / "+Championships.TITLES[Championships.CLASSES.find(board.series)],29)
+	small_action(heading,"cb_back","Championships")
+	if board.series!="OPEN": small_action(heading,"cb_open","Rivals")
 	var content: BoxContainer
 	if portrait: content=AutomotiveUI.column(body,10)
 	else: content=AutomotiveUI.row(body,18)
 	content.size_flags_vertical=Control.SIZE_EXPAND_FILL
-	var choices: Container
-	if board.active: choices=grid(content,5 if portrait else (3 if compact_landscape() else 2),7)
-	elif portrait: choices=AutomotiveUI.row(content,8)
-	else: choices=AutomotiveUI.column(content,8)
+	var choices:=grid(content,5 if portrait else (3 if compact_landscape() else 2),7)
 	if not portrait:
-		choices.custom_minimum_size.x=480 if board.active and compact_landscape() else (360 if board.active else 330)
+		choices.custom_minimum_size.x=480 if compact_landscape() else 360
 		choices.size_flags_horizontal=Control.SIZE_FILL
-	if board.active: championship_rivals(choices)
-	else: street_events(choices)
+	championship_rivals(choices)
 	var hero:=AutomotiveUI.column(content,7)
 	hero.size_flags_vertical=Control.SIZE_EXPAND_FILL
 	add_label(hero,"RIVAL PROFILE  /  "+game.distance_label(float(contract.distance) if board.active else game.FINISH),14,AutomotiveUI.ORANGE,true)
 	var description:=AutomotiveUI.row(hero)
 	add_label(description,str(contract.name),29)
-	if not board.active and not compact_landscape(): small_action(description,"recommend_rival","Finding…" if game.recommend_pending else "Find match")
-	if board.active and board.series!="OPEN":
+	if board.series!="OPEN":
 		var wins:=Championships.wins(game.profile,board.series)
 		var boss:=bool(contract.get("boss",false))
 		add_label(hero,("CHAMPIONSHIP BOSS" if boss else "ROUND %02d / %d"%[int(contract.round)+1,Championships.ROUNDS])+"   ·   %d CLEARED"%wins,17,Championships.TROPHY if boss else AutomotiveUI.BLUE,true)
@@ -204,18 +187,14 @@ func race_board(body: VBoxContainer) -> void:
 	add_label(hero,comparison,19,AutomotiveUI.BLUE)
 	if not compact_landscape() and not bool(contract.get("boss",false)) and not str(contract.get("tradeoff","")).is_empty():
 		add_label(hero,str(contract.tradeoff),17,AutomotiveUI.MUTED)
-	if not board.active: rival_buttons(hero)
-	var distance: float=contract.distance if board.active else maxf(game.FINISH,float(contract.distance))
+	var distance: float=contract.distance
 	var reward:=" %s   ·   $%d win   /   $%d finish"%[game.distance_label(distance),contract.purse,int(float(contract.purse)*.4)]
 	if int(contract.get("completion_bonus",0))>0:
 		reward+="   ·   "+("Bonus earned" if game.profile.career_claims.has(str(contract.id)) else "$%d first win bonus"%contract.completion_bonus)
 	add_label(hero,reward,17,GlassPalette.GREEN)
-	var reason:=""
-	if board.active: reason=Championships.eligibility(game.profile,contract)
-	elif game.profile.level()<GameCatalog.CAREER_LEVELS[game.event_index]:
-		reason="Unlocks at driver level %d"%GameCatalog.CAREER_LEVELS[game.event_index]
-	elif game.selected_opponent>mini(4,int(game.profile.career_wins[game.event_index])):
-		reason="Beat the previous rival first"
+	if board.series=="OPEN": add_label(hero,"Replay any rival · zero wager is free",16,AutomotiveUI.MUTED)
+	var reason:=Championships.eligibility(game.profile,contract)
+	if game.profile.save_blocked: reason="Restore progress to enter a race"
 	if reason!="": add_label(body,reason,18,AutomotiveUI.ORANGE)
 	var footer: BoxContainer=AutomotiveUI.column(body,8) if portrait else AutomotiveUI.row(body,18)
 	wager_controls(footer,contract)
@@ -224,39 +203,12 @@ func race_board(body: VBoxContainer) -> void:
 		race.custom_minimum_size.x=220
 		race.size_flags_horizontal=Control.SIZE_SHRINK_END
 
-func street_events(parent: Node) -> void:
-	for index in GameCatalog.CAREER_NAMES.size():
-		var wins: int=game.profile.career_wins[index]
-		var locked: bool=game.profile.level()<GameCatalog.CAREER_LEVELS[index]
-		var next:=GameCatalog.opponent(index,mini(4,wins),game.profile)
-		var card:=AutomotiveUI.content_card(parent,136 if portrait else 118,index==game.event_index)
-		if not portrait:
-			var track:=TrackPresentation.spec(index)
-			var photo:=EventPhoto.new()
-			photo.texture=load("res://assets/strip/"+str(track.art)+"_panorama.png")
-			photo.tint=Color(str(track.accent))
-			photo.mouse_filter=Control.MOUSE_FILTER_IGNORE
-			card.add_child(photo)
-			card.move_child(photo,0)
-			photo.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-			photo.resized.connect(photo.queue_redraw)
-		bind(card,"event_%d"%index)
-		var content: VBoxContainer=card.get_meta("content")
-		add_label(content,"Level %d"%GameCatalog.CAREER_LEVELS[index] if locked else ("Completed" if wins>=5 else "Available"),15,AutomotiveUI.ORANGE if locked else GlassPalette.GREEN)
-		var name:=add_label(content,GameCatalog.CAREER_NAMES[index].capitalize(),19 if portrait else 23)
-		if portrait:
-			name.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
-			name.custom_minimum_size.y=44
-		add_label(content,"%d / 5 wins"%wins,16,AutomotiveUI.MUTED)
-		add_label(content,"$%d · %s"%[next.purse,game.distance_label(maxf(game.FINISH,float(next.distance)))],14,AutomotiveUI.MUTED)
-		progress_bar(content,wins,5)
-
 func championship_rivals(parent: Node) -> void:
 	var board: CareerBoard=game.career_board
 	var options:=Championships.ids(board.series)
 	for index in options.size():
 		var contract:=Championships.event(str(options[index]))
-		var state:=board.rung_state(contract)
+		var state:=("$%d win"%int(contract.purse)) if board.series=="OPEN" else board.rung_state(contract)
 		var boss:=bool(contract.get("boss",false))
 		var card:=AutomotiveUI.content_card(parent,92 if portrait or compact_landscape() else 79,board.selected==contract.id)
 		bind(card,"cb_rival_"+str(contract.id))
@@ -266,16 +218,6 @@ func championship_rivals(parent: Node) -> void:
 		var ink:=GlassPalette.GREEN if state=="Cleared" else (AutomotiveUI.BLUE if state=="Next up" else AutomotiveUI.MUTED)
 		add_label(content,state,14,ink)
 		card.tooltip_text=str(contract.name)+" / "+state
-
-func rival_buttons(parent: Node) -> void:
-	var row:=AutomotiveUI.row(parent,8)
-	for index in 5:
-		var wins: int=game.profile.career_wins[game.event_index]
-		var button_text:="Rival %d"%(index+1) if index<=wins else "%d · Locked"%(index+1)
-		var control:=button(row,"bot_%d"%index,button_text if not portrait else str(index+1))
-		control.toggle_mode=true
-		control.set_pressed_no_signal(index==game.selected_opponent)
-		control.tooltip_text=button_text
 
 func wager_controls(parent: Node,contract: Dictionary) -> void:
 	if contract.get("rule","")=="motor_only": return
@@ -321,15 +263,27 @@ func results(body: VBoxContainer) -> void:
 	add_label(visuals,str(game.active_contract.get("name","Rival"))+" · "+str(GameCatalog.spec(model).name),19,AutomotiveUI.MUTED)
 	var opponent:=vehicle(visuals,model,game.rival,game.rival_appearance(),124 if portrait else 110)
 	opponent.size_flags_vertical=Control.SIZE_EXPAND_FILL
-	var slip:=AutomotiveUI.panel(content)
-	if portrait: content.move_child(slip.get_parent(),0)
+	var slip_scroll:=catalog_scroll(content,"TimeSlip",0)
+	if portrait: content.move_child(slip_scroll,0)
+	slip_scroll.custom_minimum_size.y=485 if portrait else 0
+	var slip:=AutomotiveUI.panel(slip_scroll)
 	slip.add_theme_constant_override("separation",8)
 	add_label(slip,"REDLINE / TIME SLIP",26,AutomotiveUI.BLUE,true)
 	slip_line(slip,game.distance_label(game.active_distance),"YOU","RIVAL",AutomotiveUI.MUTED,17)
 	slip_line(slip,"Elapsed","%.3f s"%game.staging.elapsed(game.player_finish),"%.3f s"%game.staging.elapsed(game.rival_finish,1) if game.rival_finish>0 else "DNF",AutomotiveUI.INK,26)
 	slip_line(slip,"Reaction","%.3f s"%game.player_reaction if game.staging.released[0] else "—","%.3f s"%game.staging.reactions[1] if game.staging.released[1] else "—")
-	slip_line(slip,"Trap speed","%.1f mph"%game.finish_speed,"%.1f mph"%game.rival_trap_speed if game.rival_finish>0 else "—")
+	for split in [[18.288,"60 ft","sixty_ft_s"],[201.168,"1/8 mile","eighth_s"],[402.336,"1/4 mile","quarter_s"]]:
+		if game.active_distance+0.001<float(split[0]): continue
+		slip_line(slip,split[1],time_value(game.run_telemetry.result.get(split[2])),time_value(game.rival_telemetry.result.get(split[2])))
+	var units: String="km/h" if game.profile.metric_speed else "mph"
+	var factor: float=1.609344 if game.profile.metric_speed else 1.0
+	slip_line(slip,"Trap speed","%.1f %s"%[game.finish_speed*factor,units],"%.1f %s"%[game.rival_trap_speed*factor,units] if game.rival_finish>0 else "—")
 	slip_line(slip,"Total","%.3f s"%game.player_finish,"%.3f s"%game.rival_finish if game.rival_finish>0 else "—")
+	if game.rival_finish>0 and not game.staging.red_light:
+		var gap: float=absf(game.player_finish-game.rival_finish)
+		add_label(slip,"Margin %.3f s"%gap,17,GlassPalette.GREEN if game.result_win else AutomotiveUI.ORANGE,true)
+	if game.result_improvement>0.0005:
+		add_label(slip,"%.3f s quicker than your last run here"%game.result_improvement,16,GlassPalette.GREEN)
 	slip.add_child(HSeparator.new())
 	var net: int=game.result_reward-game.active_stake
 	add_label(slip,"NET %s$%d    +%d XP"%["+" if net>=0 else "−",absi(net),game.result_xp],27,GlassPalette.GREEN if net>=0 else AutomotiveUI.ORANGE,true)
@@ -345,15 +299,17 @@ func results(body: VBoxContainer) -> void:
 		var wins:=Championships.wins(game.profile,series)
 		add_label(slip,"Class %s   /   %d of %d cleared"%[series,wins,Championships.ROUNDS],19,AutomotiveUI.BLUE)
 		progress_bar(slip,wins)
-	elif series!="OPEN":
-		var wins: int=game.profile.career_wins[game.event_index]
-		add_label(slip,"%s   /   %d of 5 wins"%[GameCatalog.CAREER_NAMES[game.event_index].capitalize(),wins],18,AutomotiveUI.BLUE)
+	elif series=="OPEN":
+		add_label(slip,"Rival Challenge · replay for cash",18,AutomotiveUI.BLUE)
 	add_label(slip,"Driver level %d%s"%[game.profile.level()," · Level up" if game.profile.level()>game.previous_level else ""],16,AutomotiveUI.MUTED)
 	var actions:=grid(body,2 if portrait else 4,10)
 	button(actions,"garage","Garage")
 	button(actions,"results_upgrades","Upgrades")
 	button(actions,"retry","Retry")
-	button(actions,"next_rival","Career overview" if trophy_earned and Championships.trophies(game.profile)==6 else "Next race",true)
+	button(actions,"next_rival","Career overview" if trophy_earned and Championships.trophies(game.profile)==6 else ("Next rival" if series=="OPEN" else "Next race"),true)
+
+func time_value(value: Variant) -> String:
+	return "—" if value==null else "%.3f s"%float(value)
 
 func slip_line(parent: Node,metric: String,player: String,rival: String,color: Color=AutomotiveUI.INK,points: int=21) -> void:
 	var row:=AutomotiveUI.row(parent,8)

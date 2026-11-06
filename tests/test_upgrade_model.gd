@@ -46,7 +46,7 @@ func _initialize() -> void:
 	var super_b:=car("legacy6",["forged","ecu","centrifugal"],[0,0,0,0,5,0,0,0],{"redline":7850})
 	check(absf(super_a.boost_target(6000,1)-super_b.boost_target(6000,1))<.0001,"ECU limiter changes centrifugal pulley behavior")
 	var front:=Drivetrain.new(); front.configure_vehicle(GameCatalog.spec("nori")); front.configure([0,0,0,0,5,0,0,0]); front.configure_build(VehicleBench.fixture("legacy6",["drag_susp"]),"nori",false)
-	check(front.load_transfer_scale==.08,"Front-drive drag suspension still unloads the front axle excessively")
+	check(front.load_transfer_scale==float(VehicleParts.PARTS.drag_susp.fwd_transfer),"Front-drive drag suspension still unloads the front axle excessively")
 	for id in VehicleParts.PARTS:
 		var parts: Array=[id]; var trans: String="legacy6"; var slot: String=VehicleParts.PARTS[id].slot
 		if id=="stroker": parts.append("forged")

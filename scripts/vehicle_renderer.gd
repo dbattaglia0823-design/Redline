@@ -5,7 +5,7 @@ static func layer(g: Node2D,path: String,pivot: Vector2,scale: float,modulate: C
 	var tex := VehicleAppearance.texture(path)
 	if tex: g.draw_texture_rect(tex,Rect2(-pivot,Vector2(1000,360)*scale),false,modulate)
 
-static func draw(g: Node2D,origin: Vector2,size: float,model: String,look: Dictionary,car: Drivetrain,animate: bool,offset: Vector2,pitch: float,flame: bool,quality: int,night: bool = false,braking: bool = false,effects: RaceFeedback = null,reveal: float = 1.0) -> void:
+static func draw(g: Node2D,origin: Vector2,size: float,model: String,look: Dictionary,car: Drivetrain,animate: bool,offset: Vector2,pitch: float,flame: bool,quality: int,night: bool = false,braking: bool = false,effects: RaceFeedback = null,reveal: float = 1.0,studio: bool = false) -> void:
 	var d := VehicleAppearance.definition(model)
 	if d.is_empty(): return
 	var s := size*.232
@@ -26,7 +26,7 @@ static func draw(g: Node2D,origin: Vector2,size: float,model: String,look: Dicti
 	# Tires are unsprung. Draw the authored wheels behind the sprung body so
 	# stance, launch squat and pitch cannot drag a wheel across its fender.
 	contact_shadow(g,base,d,s,radius_factor,quality)
-	draw_wheels(g,base,size,s,model,d,look,car,animate,quality,light,false)
+	draw_wheels(g,base,size,s,model,d,look,car,animate,quality,light,false,studio)
 	g.draw_set_transform(body+pivot,pitch)
 	layer(g,str(d.body) % [int(look.paint),["gloss","matte","metallic"][int(look.finish)]],pivot,s,light)
 	if int(look.decal) > 0: layer(g,str(d.layers[["stripe","number"][int(look.decal)-1]]),pivot,s,light)
@@ -58,7 +58,7 @@ static func draw(g: Node2D,origin: Vector2,size: float,model: String,look: Dicti
 			g.draw_colored_polygon(PackedVector2Array([tail+Vector2(0,-2),tail+Vector2(-length,-1),tail+Vector2(-length*.5,3),tail+Vector2(0,2)]),Color(1,.45,.18,flash))
 			g.draw_line(tail,tail-Vector2(length*.45,0),Color(.7,.85,1,flash),1.5,true)
 	g.draw_set_transform(Vector2.ZERO)
-	draw_wheels(g,base,size,s,model,d,look,car,animate,quality,light,true)
+	draw_wheels(g,base,size,s,model,d,look,car,animate,quality,light,true,studio)
 
 static func contact_shadow(g: Node2D,base: Vector2,d: Dictionary,s: float,radius_factor: float,quality: int) -> void:
 	var rear := VehicleAppearance.point(d.rear)
@@ -80,7 +80,7 @@ static func showroom_light(g: Node2D,bounds: Rect2,quality: int) -> void:
 	AutomotiveUI.glow(g,Rect2(bounds.position+area*Vector2(.04,.13),area*Vector2(.92,.88)),Color(.24,.49,.74,.22))
 	AutomotiveUI.glow(g,Rect2(bounds.position+area*Vector2(.09,.60),area*Vector2(.82,.34)),Color(.36,.65,.86,.19))
 
-static func draw_wheels(g: Node2D,base: Vector2,size: float,s: float,model: String,d: Dictionary,look: Dictionary,car: Drivetrain,animate: bool,quality: int,light: Color,reflections_only: bool) -> void:
+static func draw_wheels(g: Node2D,base: Vector2,size: float,s: float,model: String,d: Dictionary,look: Dictionary,car: Drivetrain,animate: bool,quality: int,light: Color,reflections_only: bool,studio: bool = false) -> void:
 	var spec := GameCatalog.spec(model)
 	var radius_factor := WheelVisuals.radius_scale(car,spec) if car != null else 1.0
 	var radii: Array=d.get("wheel_radii",[d.radius,d.radius])
@@ -100,7 +100,7 @@ static func draw_wheels(g: Node2D,base: Vector2,size: float,s: float,model: Stri
 				# original tire into the cutout, and never rotate its baked lighting.
 				var extent := radius+2*s*radius_factor
 				g.draw_texture_rect(texture,Rect2(center-Vector2.ONE*extent,Vector2.ONE*extent*2),false,light)
-		elif not reflections_only: WheelVisuals.draw_wheel(g,center,radius,size,int(look.rim),state,quality,look)
+		elif not reflections_only: WheelVisuals.draw_wheel(g,center,radius,size,int(look.rim),state,quality,look,studio)
 		if not reflections_only and car!=null and car.tire_sidewall_mark>0 and int(look.sidewall)==0:
 			WheelVisuals.draw_compound_mark(g,center,radius,car.tire_sidewall_mark,state,light)
 

@@ -18,6 +18,12 @@ var smoke: Array[Dictionary] = []
 var _emission := 0.0
 var _particle_serial := 0
 var _last_shift := 0
+var _last_grind := 0
+var grind_notice := 0.0
+var traction_recovered := 0.0
+var traction_lost := false
+var clutch_warning := 0.0
+var gearbox_warning := 0.0
 var _shock := 0.0
 var _pitch_velocity := 0.0
 var _heave := 0.0
@@ -81,15 +87,36 @@ func reset(car: Drivetrain) -> void:
 	_particle_serial = 0
 	_shock = 0.0
 	_last_shift = car.shift_serial
+	_last_grind = car.grind_serial
+	grind_notice = 0.0
+	traction_recovered = 0.0
+	traction_lost = false
+	clutch_warning = 0.0
+	gearbox_warning = 0.0
 	_pitch_velocity = 0; _heave = 0; _heave_velocity = 0
 	_last_slip = car.wheelspin; _lift_armed = car.throttle>.7
 	_backfire_cooldown = 0; _combustion_phase = 0
 	exhaust_pulse = 0; boost_haze = 0; nitrous_glow = 0
 	rear_compression = 0; front_compression = 0
 
+func update_driving_cues(dt: float, car: Drivetrain) -> void:
+	grind_notice = maxf(0.0,grind_notice-dt)
+	traction_recovered = maxf(0.0,traction_recovered-dt)
+	if car.grind_serial>_last_grind: grind_notice = 0.8
+	_last_grind = car.grind_serial
+	clutch_warning = clampf(clutch_warning+(dt if car.clutch_overloaded else -dt*1.5),0.0,.25)
+	gearbox_warning = clampf(gearbox_warning+(dt if car.transmission_slipping else -dt*1.5),0.0,.25)
+	if car.running and car.wheelspin>.14 and car.throttle>.25:
+		traction_lost = true
+		traction_recovered = 0.0
+	elif traction_lost and (car.wheelspin<.07 or not car.running):
+		traction_lost = false
+		if car.running and car.speed>2.0: traction_recovered = .65
+
 func update(dt: float, car: Drivetrain, paused: bool, spec: Dictionary, origin: Vector2 = Vector2(210,410), reduced_motion: bool = false, pixels_per_meter: float = 12.0) -> void:
 	if paused: return
 	dt = clampf(dt,0.0,0.1)
+	update_driving_cues(dt,car)
 	visual_rpm = lerpf(visual_rpm,car.rpm,1.0-exp(-dt/0.022))
 	visual_mph = lerpf(visual_mph,car.speed*Drivetrain.MPH_PER_MPS,1.0-exp(-dt/0.035))
 	visual_distance = lerpf(visual_distance,car.distance,1.0-exp(-dt/0.024))

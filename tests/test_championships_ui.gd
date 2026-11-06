@@ -28,31 +28,27 @@ func bounds(label: String) -> void:
 	for i in game.buttons.size():
 		check(region.encloses(game.buttons[i].rect),"Offscreen "+label+" / "+str(game.buttons[i].id))
 		for j in range(i+1,game.buttons.size()): check(not game.buttons[i].rect.intersects(game.buttons[j].rect),"Overlapping "+label+" / "+str(game.buttons[i].id)+" / "+str(game.buttons[j].id))
-func race_player() -> void:
+func race_player(spray: bool = false) -> void:
 	for i in 384: game._physics_process(1.0/120)
 	key(KEY_W)
+	if spray: key(KEY_SPACE)
 	for i in 10000:
 		if game.car.upshift_ready():
 			if game.car.control_mode=="hpattern": key(KEY_SHIFT); key(KEY_0+game.car.gear+1); key(KEY_SHIFT,false)
 			elif game.car.control_mode!="automatic": key(KEY_E); key(KEY_E,false)
 		game._physics_process(1.0/120)
 		if game.screen in ["results","practice_results"]: break
-	key(KEY_W,false); await frame()
+	key(KEY_W,false); key(KEY_SPACE,false); await frame()
 func run() -> void:
 	game=load("res://scenes/main.tscn").instantiate(); root.add_child(game)
 	game.set_process(false); game.set_physics_process(false); game.profile=DriverProfile.new(); game.refresh_car()
 	DirAccess.make_dir_recursive_absolute("res://.qa/class_career_expanded")
 	for phone in [false,true]:
 		root.size=Vector2i(390,844) if phone else Vector2i(1200,760)
-		game.go_garage(); game.tab="races"; game.career_board.active=false
-		game.event_index=0; game.selected_opponent=0
-		RaceAI.request_estimate(game.current_contract(),game.FINISH)
-		RaceAI.request_estimate(RaceAI.player_contract(game.profile),game.FINISH)
-		for step in 40: RaceAI.advance_estimates(1200)
+		game.go_garage()
 		await frame()
-		bounds("street series")
-		root.get_texture().get_image().save_png("res://.qa/class_career_expanded/street_"+("phone" if phone else "desktop")+".png")
-		await click("open_championships")
+		await click("tab_races")
+		check(game.career_board.active and game.career_board.picker,"Race did not open directly to Championships")
 		bounds("class picker")
 		root.get_texture().get_image().save_png("res://.qa/class_career_expanded/classes_"+("phone" if phone else "desktop")+".png")
 		for letter in Championships.CLASSES:
@@ -64,17 +60,22 @@ func run() -> void:
 		for step in 40: RaceAI.advance_estimates(1200)
 		await frame()
 		root.get_texture().get_image().save_png("res://.qa/class_career_expanded/rival_"+("phone" if phone else "desktop")+".png")
-		await click("cb_back"); await click("cb_back")
-		check(not game.career_board.active,"Back failed to restore original street series")
+		await click("cb_back")
+		check(game.career_board.picker,"Back did not restore Championships")
 	# A brand-new stock starter must be able to beat the first class rival.
-	root.size=Vector2i(1200,760); game.profile=DriverProfile.new(); game.refresh_car(); game.career_board.open(); game.career_board.select_series("E")
+	root.size=Vector2i(1200,760); game.profile=DriverProfile.new(); game.refresh_car(); game.tab="races"; game.career_board.open(); game.career_board.select_series("E")
 	RosterTest.ready(game); await frame(); await click("race")
 	check(game.screen=="race" and not game.profile.pending_wager.is_empty(),"Class race failed to start")
 	await race_player()
 	check(game.screen=="results" and game.result_win and game.profile.championship_wins.get("E",0)==1,"Stock starter cannot beat first class racer")
+	check(game.run_telemetry.result.sixty_ft_s!=null and game.rival_telemetry.result.quarter_s!=null,"Both lanes did not record splits")
 	var money: int=game.profile.credits; game.complete_race(); check(game.profile.credits==money,"Results granted duplicate class reward")
 	root.get_texture().get_image().save_png("res://.qa/class_career_expanded/first_victory.png")
-	root.size=Vector2i(390,844); await frame(); bounds("phone time slip")
+	root.size=Vector2i(390,844); game.safe_insets=Vector4(16,42,16,32); await frame(); bounds("phone time slip")
+	for item in game.buttons:
+		var actual:=Rect2(game.to_global(item.rect.position),item.rect.size*game.scale)
+		check(Rect2(16,42,568,1226).encloses(actual),"Time slip action crossed the safe area: "+str(item.id))
+	game.safe_insets=Vector4.ZERO
 	root.get_texture().get_image().save_png("res://.qa/class_career_expanded/results_phone.png")
 	root.size=Vector2i(844,390); await frame(); bounds("landscape time slip")
 	root.size=Vector2i(1200,760); await frame(); bounds("desktop time slip")
@@ -82,8 +83,10 @@ func run() -> void:
 	check(game.active_distance==201.168,"Championship eighth-mile heat was forced to a quarter mile")
 	await race_player(); check(game.screen=="results" and game.player_finish>0 and game.profile.championship_wins.E==(2 if game.result_win else 1),"Short championship timing or progression failed")
 	game.go_garage(); game.tab="races"; game.career_board.select_series("OPEN"); game.career_board.selected="open_3"
+	var championship_progress: int=Championships.completed(game.profile)
 	await frame(); await click("race"); check(game.active_distance==804.672,"Open half-mile distance not honored")
 	await race_player(); check(game.screen=="results" and game.player_finish>0,"Long open race did not finish")
+	check(Championships.completed(game.profile)==championship_progress,"Rival Challenge advanced the ladder")
 	check(not game.profile.career_claims.has("open_3"),"Losing long race claimed a first-win bonus")
 	await click("next_rival")
 	check(game.career_board.selected=="open_4","Next Race did not advance to the next open-class rival")
@@ -127,7 +130,9 @@ func run() -> void:
 	game.profile.xp=100000
 	game.profile.championship_wins={"E":10,"D":10,"C":10,"B":10,"A":10,"S":9}
 	check(game.profile.buy_vehicle("demon"),"Boss test could not purchase a legal S car")
-	game.profile.stages=[3,2,3,1,5,3,0,1]
+	game.profile.stages=[3,2,3,1,5,3,0,3]
+	for part in ["pro_drag_slicks","active_drag_susp","gear_strength","gear_pro","billet","fuel_ethanol","ecu_race"]:
+		check(game.profile.install_hardware(part).begins_with("Installed"),"Boss test could not equip "+part)
 	game.refresh_car()
 	game.career_board.select_series("S")
 	for window in [Vector2i(1200,760),Vector2i(390,844),Vector2i(844,390)]:
@@ -151,7 +156,7 @@ func run() -> void:
 	await frame(); await click("race")
 	check(game.screen=="race" and game.active_contract.get("boss",false),"Boss race did not start")
 	root.get_texture().get_image().save_png("res://.qa/class_career_expanded/boss_intro.png")
-	await race_player()
+	await race_player(true)
 	check(game.screen=="results" and game.result_win and Championships.trophies(game.profile)==6,"Final boss battle did not award the sixth trophy")
 	check(game.result_bonus==Championships.BONUSES[-1],"Final boss battle paid the wrong bonus")
 	check(game.result_base_pay==int(game.active_contract.purse),"Time slip included the trophy bonus in base pay")

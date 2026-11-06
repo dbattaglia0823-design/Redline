@@ -2,6 +2,8 @@ class_name DriverProfile
 extends RefCounted
 
 const SAVE_PATH := "user://driver_v1.json"
+const BACKUP_PATH := SAVE_PATH+".bak"
+const SAVE_FORMAT := 1
 var credits := 2400
 var xp := 0
 var wins := 0
@@ -18,6 +20,8 @@ var effects_quality := 2
 var reduced_motion := false
 var metric_speed := false
 var save_error := ""
+var save_blocked := false
+var recovery_available := false
 var vehicle_id := "miata"
 var garage: Dictionary = {"miata":{"paint":0,"wheels":0,"stages":[0,0,0,0,0,0,0,0],"hardware":{"transmission":"oem_miata","owned_transmissions":["oem_miata"]}}}
 var career_wins: Array = [0,0,0]
@@ -45,10 +49,44 @@ func snapshot_vehicle() -> void:
 	entry.merge({"paint":paint,"wheels":wheels,"appearance":appearance.duplicate(true),"owned_appearance":owned_appearance.duplicate(),"stages":GameCatalog.normalize_stages(stages),"owned_stages":owned_stages.duplicate(),"hardware":hardware.duplicate(true)},true)
 	garage[vehicle_id] = entry
 
+static func valid_number(value: Variant) -> bool:
+	return (value is int or value is float) and is_finite(float(value))
+
+static func read_save(path: String) -> Dictionary:
+	var file := FileAccess.open(path,FileAccess.READ)
+	if file==null or file.get_length()>4*1024*1024: return {}
+	var parser:=JSON.new()
+	if parser.parse(file.get_as_text())!=OK: return {}
+	var data: Variant=parser.data
+	if not data is Dictionary or not valid_number(data.get("credits")) or float(data.credits)<0: return {}
+	if data.has("save_format"):
+		if data.save_format!=SAVE_FORMAT or not data.get("integrity") is String: return {}
+		var digest: String=data.integrity
+		data.erase("integrity")
+		if JSON.stringify(data,"",true,true).sha256_text()!=digest: return {}
+	elif data.has("integrity") or (not data.get("garage") is Dictionary and not data.get("stages") is Array): return {}
+	for key in ["xp","wins","races","best","paint","wheels","career_version","roster_version","traction_version","effects_quality"]:
+		if data.has(key) and not valid_number(data[key]): return {}
+	for key in ["garage","retired_garage"]:
+		if data.has(key) and not data[key] is Dictionary: return {}
+	for entry in data.get("garage",{}).values():
+		if not entry is Dictionary or not entry.get("stages",[]) is Array or not entry.get("hardware",{}) is Dictionary: return {}
+	return data
+
+func lock_save() -> void:
+	save_blocked=true
+	recovery_available=not read_save(BACKUP_PATH).is_empty()
+	save_error="Progress file is unreadable. Saving is paused."
+
 func load_profile() -> void:
-	if not FileAccess.file_exists(SAVE_PATH): return
-	var data = JSON.parse_string(FileAccess.get_file_as_string(SAVE_PATH))
-	if not data is Dictionary: return
+	if not FileAccess.file_exists(SAVE_PATH):
+		if FileAccess.file_exists(BACKUP_PATH) or DirAccess.dir_exists_absolute(SAVE_PATH): lock_save()
+		return
+	var data := read_save(SAVE_PATH)
+	if data.is_empty(): lock_save(); return
+	save_blocked=false
+	recovery_available=false
+	save_error=""
 	if int(data.get("roster_version",0))<2 and not FileAccess.file_exists(SAVE_PATH+".pre_roster_v2"):
 		DirAccess.copy_absolute(ProjectSettings.globalize_path(SAVE_PATH),ProjectSettings.globalize_path(SAVE_PATH+".pre_roster_v2"))
 	if int(data.get("career_version",0))<1 and not FileAccess.file_exists(SAVE_PATH+".pre_championships"):
@@ -232,21 +270,38 @@ static func normalize_cosmetic_ownership(raw: Variant, look: Dictionary) -> Arra
 	return clean
 
 func install_appearance(key: String,index: int) -> String:
+	if save_blocked: return save_error
 	if not pending_wager.is_empty(): return "Finish your race first"
 	if not VehicleAppearance.compatible(vehicle_id,key,index): return "Unavailable for this car"
 	var part := key+":"+str(index)
-	var cost := 0 if owned_appearance.has(part) else int(VehicleAppearance.PRICES[key][index])
+	var owned:=owned_appearance.has(part)
+	var cost := 0 if owned else int(VehicleAppearance.PRICES[key][index])
 	if credits < cost: return "Not enough credits"
+	var previous:=appearance_for(vehicle_id)
+	var entry: Dictionary=garage.get(vehicle_id,{}).duplicate(true)
 	credits -= cost
-	if not owned_appearance.has(part): owned_appearance.append(part)
+	if not owned: owned_appearance.append(part)
 	appearance[key] = index; paint = int(appearance.paint); wheels = int(appearance.rim)
 	save()
+	if save_error!="":
+		credits+=cost
+		if not owned: owned_appearance.erase(part)
+		appearance=previous
+		paint=int(previous.paint); wheels=int(previous.rim)
+		garage[vehicle_id]=entry
+		return save_error
 	return "Installed "+str(VehicleAppearance.OPTIONS[key][index])
 
 func restore_appearance() -> void:
-	if not pending_wager.is_empty(): return
+	if save_blocked or not pending_wager.is_empty(): return
+	var previous:=appearance_for(vehicle_id)
+	var entry: Dictionary=garage.get(vehicle_id,{}).duplicate(true)
 	appearance = VehicleAppearance.normalize({}); paint = 0; wheels = 0
 	save()
+	if save_error!="":
+		appearance=previous
+		paint=int(previous.paint); wheels=int(previous.rim)
+		garage[vehicle_id]=entry
 
 func appearance_for(id: String) -> Dictionary:
 	if id == vehicle_id:
@@ -267,19 +322,51 @@ func buy_vehicle(id: String, equip: bool = true) -> bool:
 	save()
 	return true
 
+func publish_copy(source: String,destination: String) -> bool:
+	var temporary:=destination+".copy"
+	if DirAccess.copy_absolute(source,temporary)!=OK: return false
+	if read_save(temporary).is_empty(): return false
+	return DirAccess.rename_absolute(temporary,destination)==OK
+
+func recover_backup() -> bool:
+	if not save_blocked or read_save(BACKUP_PATH).is_empty(): return false
+	if FileAccess.file_exists(SAVE_PATH):
+		var archive:=SAVE_PATH+".corrupt."+str(Time.get_ticks_usec())
+		if DirAccess.copy_absolute(SAVE_PATH,archive)!=OK: return false
+	if not publish_copy(BACKUP_PATH,SAVE_PATH): return false
+	load_profile()
+	return not save_blocked
+
 func save() -> void:
-	snapshot_vehicle()
-	var file := FileAccess.open(SAVE_PATH+".tmp", FileAccess.WRITE)
-	if file == null:
-		save_error = "Could not save progress"
+	if save_blocked: return
+	var primary_exists:=FileAccess.file_exists(SAVE_PATH)
+	if primary_exists and read_save(SAVE_PATH).is_empty():
+		lock_save()
 		return
-	file.store_string(JSON.stringify({"career_version":2,"legacy_class_access":legacy_class_access,"championship_wins":championship_wins,"career_claims":career_claims,"career_serial":career_serial,"event_records":event_records,"roster_version":2,"traction_version":1,"retired_garage":retired_garage,"credits":credits,"xp":xp,"wins":wins,"races":races,"best":best,"paint":paint,"wheels":wheels,"stages":stages,"owned_stages":owned_stages,"muted":muted,"effects_quality":effects_quality,"reduced_motion":reduced_motion,"metric_speed":metric_speed,"vehicle_id":vehicle_id,"garage":garage,"career_wins":career_wins,"pending_wager":pending_wager}))
+	if not primary_exists and (FileAccess.file_exists(BACKUP_PATH) or DirAccess.dir_exists_absolute(SAVE_PATH)):
+		lock_save()
+		return
+	snapshot_vehicle()
+	var temporary:=SAVE_PATH+".tmp"
+	var file:=FileAccess.open(temporary,FileAccess.WRITE)
+	if file==null:
+		save_error="Could not save progress"
+		return
+	var payload: Dictionary={"career_version":3,"legacy_class_access":legacy_class_access,"championship_wins":championship_wins,"career_claims":career_claims,"career_serial":career_serial,"event_records":event_records,"roster_version":2,"traction_version":1,"retired_garage":retired_garage,"credits":credits,"xp":xp,"wins":wins,"races":races,"best":best,"paint":paint,"wheels":wheels,"stages":stages,"owned_stages":owned_stages,"muted":muted,"effects_quality":effects_quality,"reduced_motion":reduced_motion,"metric_speed":metric_speed,"vehicle_id":vehicle_id,"garage":garage,"career_wins":career_wins,"pending_wager":pending_wager}
+	payload.save_format=SAVE_FORMAT
+	# Canonicalize JSON numbers before hashing so the reader hashes the same values.
+	payload=JSON.parse_string(JSON.stringify(payload,"",true,true))
+	payload.integrity=JSON.stringify(payload,"",true,true).sha256_text()
+	file.store_string(JSON.stringify(payload,"",true,true))
 	file.flush()
 	file.close()
-	if DirAccess.rename_absolute(ProjectSettings.globalize_path(SAVE_PATH+".tmp"),ProjectSettings.globalize_path(SAVE_PATH)) != OK:
-		save_error = "Could not commit progress"
+	if read_save(temporary).is_empty() or not publish_copy(SAVE_PATH if primary_exists else temporary,BACKUP_PATH):
+		save_error="Could not validate progress or update its backup"
 		return
-	save_error = ""
+	if DirAccess.rename_absolute(temporary,SAVE_PATH)!=OK:
+		save_error="Could not commit progress"
+		return
+	save_error=""
 
 func highest_stage(index: int) -> int:
 	if index==4: return maxi(int(stages[4]),int(hardware.get("owned_performance_stages",{}).get(hardware.transmission,0)))
@@ -412,7 +499,7 @@ func upgrade(index: int, target: int = -1) -> bool:
 	return commit_upgrade_quote(index,target,"","",JSON.stringify(quote)).begins_with("Installed ")
 
 func begin_wager(amount: int,contract: Dictionary = {}) -> bool:
-	if amount < 0 or amount > credits or not pending_wager.is_empty(): return false
+	if save_blocked or amount < 0 or amount > credits or not pending_wager.is_empty(): return false
 	var bound:=contract.duplicate(true)
 	if contract.has("id"):
 		bound=Championships.event(str(contract.id))
@@ -420,6 +507,11 @@ func begin_wager(amount: int,contract: Dictionary = {}) -> bool:
 	credits -= amount; career_serial+=1
 	pending_wager = {"amount":amount,"contract":bound,"serial":career_serial}
 	save()
+	if save_error!="":
+		credits+=amount
+		career_serial-=1
+		pending_wager.clear()
+		return false
 	return true
 
 func settle_wager(won: bool) -> int:
@@ -657,7 +749,8 @@ func award_race(contract: Dictionary,won: bool,red: bool,et: float,reaction: flo
 		var record: Dictionary=event_records.get(id,{})
 		record.finishes=int(record.get("finishes",0))+1
 		record.wins=int(record.get("wins",0))+(1 if won else 0)
-		record.last_et=et; record.last_rt=reaction; record.trap_mph=trap
+		if not red: record.last_et=et
+		record.last_rt=reaction; record.trap_mph=trap
 		if not red and (not record.has("best_et") or et<float(record.best_et)): record.best_et=et
 		event_records[id]=record
 	elif won and legacy_career>=0 and legacy_career<3 and legacy_rival==int(career_wins[legacy_career]):

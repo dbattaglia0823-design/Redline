@@ -61,7 +61,7 @@ func set_vehicle(car: Drivetrain, audible: bool=true, gain_value: float=1) -> vo
 	if bank.is_empty() and FileAccess.file_exists("res://assets/audio/engines/bank.json"):
 		var raw=JSON.parse_string(FileAccess.get_file_as_string("res://assets/audio/engines/bank.json"))
 		if raw is Dictionary: bank=raw.get("families",{}); vehicle_banks=raw.get("vehicles",{})
-	var selected_id: String=str(p.id) if not car._base_spec.has("audio_family_override") else ""
+	var selected_id: String=str(p.id) if not OS.has_feature("mobile") and not car._base_spec.has("audio_family_override") else ""
 	if family!=p.family or voice_id!=selected_id:
 		family=p.family; voice_id=selected_id; streams.clear()
 		ready_bank=bank.has(family)

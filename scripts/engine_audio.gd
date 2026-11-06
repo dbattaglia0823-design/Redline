@@ -43,6 +43,7 @@ func update_vehicle(car: Drivetrain,paused: bool=false) -> void:
 	var id:=str(source._base_spec.get("id",source.engine_layout))
 	if id!=_last_vehicle or source.get_instance_id()!=_last_source_id:
 		voice.last_shift_serial=source.shift_serial
+		voice.last_grind_serial=source.grind_serial; voice.grind_left=0.0
 		voice._blowoff_armed=false; voice._overrun_armed=false
 		voice.pop=0; voice.blowoff=0; voice.shift_tick=0
 		_last_vehicle=id

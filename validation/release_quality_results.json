@@ -1,0 +1,40 @@
+{
+  "engine": "Godot 4.6.3",
+  "host": "Windows",
+  "checks": {
+    "import": "pass",
+    "test_save_recovery": "pass",
+    "test_career_save_migration": "pass",
+    "test_championships": "pass",
+    "test_career_economy_sim": "pass",
+    "test_roster": "pass",
+    "test_physics": "pass",
+    "test_traction_expansion": "pass",
+    "test_driving_feedback": "pass",
+    "test_transmissions": "pass",
+    "test_parts_lineup": "pass",
+    "test_upgrade_model": "pass",
+    "test_advanced_tuning": "pass",
+    "benchmark_launch_balance": "pass",
+    "test_championships_ui": "pass",
+    "test_race_hud": "pass",
+    "test_upgrade_redesign": "pass",
+    "test_native_workshop": "pass",
+    "test_save_recovery_ui": "pass"
+  },
+  "championship_heats_simulated": 60,
+  "extra_rival_runs_needed_by_simulation": 0,
+  "rival_replay_test": "Two zero-wager entries at starting balance zero. Both paid cash and left championship progress unchanged.",
+  "hud_window_sizes": [
+    "1200x760",
+    "1920x1080",
+    "390x844",
+    "667x375",
+    "844x390"
+  ],
+  "synthetic_safe_area": "pass",
+  "android_resource_pack_bytes": 308867300,
+  "android_resource_pack_headless_boot": "pass",
+  "physical_devices_tested": false,
+  "signed_mobile_builds_tested": false
+}

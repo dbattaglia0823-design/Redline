@@ -1,0 +1,33 @@
+name: Godot regressions
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  godot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Godot 4.6.3
+        run: |
+          curl --fail --location --retry 3 https://github.com/godotengine/godot/releases/download/4.6.3-stable/Godot_v4.6.3-stable_linux.x86_64.zip -o "$RUNNER_TEMP/godot.zip"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+      - name: Run headless regressions
+        run: python3 tools/run_regressions.py --godot "$RUNNER_TEMP/godot/Godot_v4.6.3-stable_linux.x86_64" --output .qa/ci
+      - name: Upload regression reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: godot-regressions
+          path: |
+            .qa/ci
+            .qa/career_economy_progression.json
+            .qa/traction_after.json
+          include-hidden-files: true
+          if-no-files-found: warn

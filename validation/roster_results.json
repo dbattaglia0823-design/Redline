@@ -2,152 +2,152 @@
   "builds": {
     "brz": {
       "factory": "D",
-      "quarter_s": 12.3070793347107,
-      "upgraded": "B"
+      "quarter_s": 11.211862566232,
+      "upgraded": "A"
     },
     "camaro": {
       "factory": "A",
-      "quarter_s": 10.9541526969089,
-      "upgraded": "A"
+      "quarter_s": 10.0687100646977,
+      "upgraded": "S"
     },
     "chiron": {
       "factory": "S",
-      "quarter_s": 8.66782660170249,
+      "quarter_s": 7.90299085580272,
       "upgraded": "S"
     },
     "civic_si": {
       "factory": "E",
-      "quarter_s": 12.1687977198112,
-      "upgraded": "B"
+      "quarter_s": 11.5686150934606,
+      "upgraded": "A"
     },
     "demon": {
       "factory": "S",
-      "quarter_s": 9.04820964683997,
+      "quarter_s": 8.25281688981858,
       "upgraded": "S"
     },
     "evo": {
       "factory": "C",
-      "quarter_s": 12.0073926246407,
-      "upgraded": "B"
+      "quarter_s": 10.8633951557037,
+      "upgraded": "A"
     },
     "golf_r": {
       "factory": "B",
-      "quarter_s": 11.6318502763311,
+      "quarter_s": 10.5927059038376,
       "upgraded": "A"
     },
     "gr86": {
       "factory": "C",
-      "quarter_s": 12.277454243544,
-      "upgraded": "B"
+      "quarter_s": 11.2775320927705,
+      "upgraded": "A"
     },
     "gt500": {
-      "factory": "A",
-      "quarter_s": 9.69988189561977,
+      "factory": "S",
+      "quarter_s": 8.70883945531409,
       "upgraded": "S"
     },
     "gti": {
       "factory": "D",
-      "quarter_s": 13.1412843050765,
-      "upgraded": "C"
+      "quarter_s": 11.8373827473135,
+      "upgraded": "A"
     },
     "gti_vr6": {
-      "factory": "E",
-      "quarter_s": 13.1797400224009,
-      "upgraded": "C"
+      "factory": "D",
+      "quarter_s": 12.0324955417356,
+      "upgraded": "B"
     },
     "gtr": {
       "factory": "A",
-      "quarter_s": 10.2309352753154,
+      "quarter_s": 9.32915591339124,
       "upgraded": "S"
     },
     "integra": {
       "factory": "D",
-      "quarter_s": 12.2040670081359,
-      "upgraded": "B"
+      "quarter_s": 11.0829948566693,
+      "upgraded": "A"
     },
     "m3": {
       "factory": "B",
-      "quarter_s": 11.9021288784883,
+      "quarter_s": 10.9394248162029,
       "upgraded": "A"
     },
     "mclaren": {
       "factory": "S",
-      "quarter_s": 8.96688797111609,
+      "quarter_s": 8.2720514284114,
       "upgraded": "S"
     },
     "miata": {
       "factory": "E",
-      "quarter_s": 11.610002815049,
+      "quarter_s": 11.3922359062047,
       "upgraded": "A"
     },
     "mustang": {
       "factory": "A",
-      "quarter_s": 10.9069380157171,
-      "upgraded": "A"
+      "quarter_s": 10.0328033017258,
+      "upgraded": "S"
     },
     "r8": {
       "factory": "A",
-      "quarter_s": 10.0153032048604,
+      "quarter_s": 9.15818475686885,
       "upgraded": "S"
     },
     "redeye": {
       "factory": "A",
-      "quarter_s": 10.2004284152492,
+      "quarter_s": 9.38985599825174,
       "upgraded": "S"
     },
     "rsx": {
       "factory": "D",
-      "quarter_s": 12.49902619096,
-      "upgraded": "B"
+      "quarter_s": 11.2166008150273,
+      "upgraded": "A"
     },
     "s2000": {
       "factory": "C",
-      "quarter_s": 12.0421362873336,
-      "upgraded": "B"
+      "quarter_s": 11.1342792187571,
+      "upgraded": "A"
     },
     "sf90": {
       "factory": "S",
-      "quarter_s": 8.91885939605764,
+      "quarter_s": 8.26205432426488,
       "upgraded": "S"
     },
     "sti": {
       "factory": "C",
-      "quarter_s": 11.7039217092295,
+      "quarter_s": 10.6234089912492,
       "upgraded": "A"
     },
     "supra": {
-      "factory": "C",
-      "quarter_s": 11.7957950029817,
+      "factory": "B",
+      "quarter_s": 10.8488165329447,
       "upgraded": "A"
     },
     "supra_gr": {
       "factory": "B",
-      "quarter_s": 11.1661462204127,
-      "upgraded": "A"
+      "quarter_s": 9.89374718520063,
+      "upgraded": "S"
     },
     "turbo_s": {
       "factory": "S",
-      "quarter_s": 9.54677001314821,
+      "quarter_s": 8.73061051574546,
       "upgraded": "S"
     },
     "type_r": {
       "factory": "C",
-      "quarter_s": 12.1712947191821,
-      "upgraded": "B"
+      "quarter_s": 11.1516087033598,
+      "upgraded": "A"
     },
     "z06": {
-      "factory": "A",
-      "quarter_s": 9.82552011941957,
+      "factory": "S",
+      "quarter_s": 8.97438249920744,
       "upgraded": "S"
     },
     "z350": {
       "factory": "C",
-      "quarter_s": 12.1635226157692,
-      "upgraded": "B"
+      "quarter_s": 11.1996231854049,
+      "upgraded": "A"
     },
     "z400": {
-      "factory": "B",
-      "quarter_s": 11.4877387448873,
+      "factory": "A",
+      "quarter_s": 10.524088465943,
       "upgraded": "A"
     }
   },

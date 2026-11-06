@@ -1,14 +1,17 @@
 class_name CareerBoard
 extends RefCounted
 var g: Node2D
-var active := false
+var active := true
 var picker := true
 var series := "E"
 var selected := "class_E_0"
 
 func _init(game: Node2D) -> void: g=game
 func contract() -> Dictionary: return Championships.event(selected)
-func open() -> void: active=true; picker=true; g.menu_dirty=true
+func open() -> void:
+	active=true; picker=true
+	if series=="OPEN": series="E"
+	g.wager=0; g.menu_dirty=true
 func text(value: String,x: float,y: float,size: int=18,c: Color=GlassPalette.INK) -> void: g.text_at(value,x,y,size,c)
 func button(id: String,label: String,r: Rect2,primary: bool=false,chosen: bool=false) -> void:
 	if g.race_touch_layout() and not g.is_portrait(): g.race_hud.control(id,label,r,"",primary,chosen,g.action_enabled(id))
@@ -44,7 +47,7 @@ func draw() -> void:
 	var p: bool=g.is_portrait()
 	if p: g.mobile.header("CLASS CAREER")
 	else: g.draw_header(); text("Class championships",36,127,28)
-	button("cb_back","Street series" if picker else "< Championships",Rect2(24,80,264,68) if p else Rect2(952,92,214,90) if g.race_touch_layout() else Rect2(952,103,214,48))
+	if not picker: button("cb_back","Championships",Rect2(24,80,264,68) if p else Rect2(952,92,214,90) if g.race_touch_layout() else Rect2(952,103,214,48))
 	var current:=PerformanceClasses.request(g.profile.vehicle_id,g.profile.stages,g.profile.hardware)
 	g.fit_text("Price %s / Race %s"%[GameCatalog.price_class(g.profile.vehicle_id),current.get("class","...")],312 if p else 38,121 if p else 157,264 if p else 870,19 if p else 15,g.MUTED)
 	if picker: draw_classes(p)
@@ -60,7 +63,7 @@ func draw_classes(p: bool) -> void:
 		text(Championships.TITLES[i],r.position.x+18,r.position.y+88,22 if p else 21)
 		text("%d / %d wins"%[Championships.wins(g.profile,letter),Championships.ROUNDS],r.position.x+18,r.position.y+120,20 if p else 15,g.GREEN)
 		g.fit_text(("TROPHY EARNED" if Championships.wins(g.profile,letter)==Championships.ROUNDS else "Boss bonus $%d"%Championships.BONUSES[i]) if locked=="" else locked,r.position.x+18,r.position.y+151,r.size.x-36,18 if p else 14,g.MUTED)
-	button("cb_open","OPEN CLASS / RECOVERY & RIVAL CHALLENGES",Rect2(24,876,552,88) if p else Rect2(36,562,1130,90) if g.race_touch_layout() else Rect2(36,600,1130,54),true)
+	button("cb_open","RIVAL CHALLENGES / REPLAY FOR CASH",Rect2(24,876,552,88) if p else Rect2(36,562,1130,90) if g.race_touch_layout() else Rect2(36,600,1130,54),true)
 func draw_rival(p: bool) -> void:
 	var c:=contract()
 	if c.is_empty(): return
@@ -113,10 +116,9 @@ func draw_rival(p: bool) -> void:
 	g.fit_text(reason if reason!="" else "Installed nitrous kit required for spray",224 if p else 390,1045 if p else (548 if short else 641),352 if p else 550,18 if p else 13,g.ORANGE if reason!="" else g.MUTED)
 	button("race","RACE" if reason=="" else ("MEASURING" if reason.begins_with("Measuring") else "LOCKED"),Rect2(24,1086,552,68) if p else Rect2(960,560,184,90) if short else Rect2(962,568,184,48),reason=="")
 func action(id: String) -> void:
-	g.race_start_pending=false; g.recommend_pending=false
+	g.race_start_pending=false
 	if id=="cb_back":
-		if picker: active=false
-		else: picker=true
+		open()
 	elif id=="cb_open": select_series("OPEN")
 	elif id.begins_with("cb_class_"): select_series(id.trim_prefix("cb_class_"))
 	elif id.begins_with("cb_rival_"):

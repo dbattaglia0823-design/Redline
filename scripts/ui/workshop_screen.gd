@@ -30,7 +30,7 @@ var install_flash_pending:=false
 
 const PART_FAMILIES := ["engine","intake","exhaust","fuel","ecu","turbo","bottle","gearbox","clutch","differential","tire","suspension","brake","wheel","carbon"]
 const PART_ACCENTS := ["78b7dc","95c8ac","bfa5e7","e8b876","73c3d2","f0ad72","65cdea","8fabe6","b7a7d1","93c8c6","d5bd7e","9cbea8","df958f","aabed7","83c2b5"]
-const PART_ART := {"internals":"rotating","displacement":"rotating","compression":"rotating","boost":"ecu","roots":"roots","street_radial":"radial","competition_radial":"radial","drag_slicks":"slick"}
+const PART_ART := {"fuel_injectors":"fuel_rail","fuel_ethanol":"fuel_rail","clutch_carbon":"carbon_clutch","gear_pro":"gearset_billet","ecu_track":"ecu_track","ecu_race":"ecu_track","internals":"rotating","displacement":"rotating","compression":"rotating","boost":"ecu","roots":"roots","street_radial":"radial","competition_radial":"radial","drag_slicks":"slick","pro_drag_slicks":"slick","pro_drag_radial":"radial"}
 
 class PartPlate extends Control:
 	var texture: Texture2D
@@ -72,6 +72,29 @@ class InstallSweep extends Control:
 		AutomotiveUI.glow(self,Rect2(x-size.x*.19,0,size.x*.38,size.y),Color(.37,.95,.77,.48*alpha))
 		draw_line(Vector2(x+size.y*.18,0),Vector2(x,size.y),Color(.63,1,.84,.60*alpha),2,true)
 		draw_rect(Rect2(Vector2.ZERO,size),Color(.47,.94,.78,.52*alpha),false,2)
+
+class BoostPlot extends Control:
+	var current: Drivetrain
+	var candidate: Drivetrain
+
+	func _draw() -> void:
+		var area:=Rect2(30,7,size.x-42,size.y-27)
+		if not area.has_area(): return
+		var rpm_max:=maxf(current.redline_rpm,candidate.redline_rpm)
+		var pressure_max:=maxf(.25,maxf(current.boost_target(rpm_max,1),candidate.boost_target(rpm_max,1)))*1.1
+		for line in 3:
+			var y:=area.end.y-area.size.y*line/2.0
+			draw_line(Vector2(area.position.x,y),Vector2(area.end.x,y),Color("344657"))
+			draw_string(AutomotiveUI.NUMBERS,Vector2(0,y+4),"%.1f"%(pressure_max*line/2.0),HORIZONTAL_ALIGNMENT_LEFT,-1,11,AutomotiveUI.MUTED)
+		draw_string(AutomotiveUI.NUMBERS,Vector2(area.position.x,area.end.y+16),"0 RPM",HORIZONTAL_ALIGNMENT_LEFT,-1,11,AutomotiveUI.MUTED)
+		draw_string(AutomotiveUI.NUMBERS,Vector2(area.end.x-62,area.end.y+16),"%d RPM"%int(rpm_max),HORIZONTAL_ALIGNMENT_LEFT,-1,11,AutomotiveUI.MUTED)
+		for car in [current,candidate]:
+			var points:=PackedVector2Array()
+			for sample in 49:
+				var fraction:=sample/48.0
+				var pressure: float=car.boost_target(rpm_max*fraction,1)
+				points.append(Vector2(area.position.x+area.size.x*fraction,area.end.y-area.size.y*pressure/pressure_max))
+			draw_polyline(points,AutomotiveUI.ORANGE if car==candidate else AutomotiveUI.BLUE,2.0,true)
 
 class DynoPlot extends Control:
 	var current: Drivetrain
@@ -164,7 +187,8 @@ func editing_catalog(event: InputEventKey) -> bool:
 	return true
 
 func handle_scroll_touch(event: InputEvent) -> bool:
-	if not visible or game.tab!="performance" or game.screen!="garage" or not supports():
+	var results: bool=game.screen=="results"
+	if not visible or (not results and (game.tab!="performance" or game.screen!="garage")) or not supports():
 		upgrade_pointer=-1
 		return false
 	if event is InputEventScreenTouch and event.pressed and not event.canceled:
@@ -172,7 +196,7 @@ func handle_scroll_touch(event: InputEvent) -> bool:
 			search.grab_focus()
 			search.edit()
 			return true
-		for name in ["CatalogList","UpgradeOptions","UpgradeDetails"]:
+		for name in (["TimeSlip"] if results else ["CatalogList","UpgradeOptions","UpgradeDetails"]):
 			var scroll: ScrollContainer=find_child(name,true,false)
 			if not is_instance_valid(scroll) or scroll.is_queued_for_deletion() or not scroll.get_global_rect().has_point(event.position): continue
 			if upgrade_pointer>=0: return true
@@ -185,7 +209,7 @@ func handle_scroll_touch(event: InputEvent) -> bool:
 	if event is InputEventScreenDrag and event.index==upgrade_pointer:
 		if is_instance_valid(upgrade_scroll):
 			var delta: float=event.position.y-upgrade_touch_origin.y
-			if absf(delta)>12: upgrade_swipe=true
+			if absf(delta)>8: upgrade_swipe=true
 			if upgrade_swipe: upgrade_scroll.scroll_vertical=upgrade_scroll_origin-roundi(delta/game.scale.y)
 		return true
 	if event is InputEventScreenTouch and not event.pressed and event.index==upgrade_pointer:
@@ -307,7 +331,8 @@ func publish_targets() -> void:
 			if ancestor is ScrollContainer:
 				r=r.intersection(Rect2(game.to_local(ancestor.global_position),ancestor.size))
 			ancestor=ancestor.get_parent()
-		if not r.has_area() or r.size.y<minf(b.size.y,70 if portrait else 40): continue
+		var target_height:=86 if game.tab=="style" and short_catalog() else (70 if portrait else 40)
+		if not r.has_area() or r.size.y<minf(b.size.y,target_height): continue
 		game.buttons.append({"id":id,"rect":r,"disabled":b.disabled,"native_control":b,"native_owner":self})
 		if game.glass.focused==id and not b.disabled and not b.has_focus(): b.grab_focus()
 
@@ -621,6 +646,7 @@ func detail_workspace(body: VBoxContainer) -> void:
 	var part_name:=AutomotiveUI.label(name,25)
 	part_name.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	part_name.max_lines_visible=2
+	part_name.custom_minimum_size.y=42
 	labels.add_child(part_name)
 	labels.add_child(AutomotiveUI.label("Fitted  /  "+installed_name,16,AutomotiveUI.MUTED))
 	if quote.reason!="": wrapped(details,quote.reason,AutomotiveUI.ORANGE)
@@ -647,9 +673,10 @@ func detail_workspace(body: VBoxContainer) -> void:
 		for metric in specs:
 			if metric.begins_with("Power  ") or metric.begins_with("Torque  ") or metric.begins_with("Mass  ") or metric.begins_with("Vehicle mass  ") or metric.begins_with("Grip  ") or metric.begins_with("Road grip  "): continue
 			AutomotiveUI.metric_row(details,metric,studio.metric_color(metric))
-		if slot in ["tires","suspension","wheels"]:
+		if slot in ["tires","suspension","wheels","clutch"]:
 			for row in studio.traction_projection(candidate):
-				if not row.begins_with("60-foot ET") and not row.begins_with("Time in wheelspin"): continue
+				if slot=="clutch" and not row.begins_with("Clutch slip time"): continue
+				if slot!="clutch" and not row.begins_with("60-foot ET") and not row.begins_with("Time in wheelspin"): continue
 				AutomotiveUI.metric_row(details,row,studio.metric_color(row))
 	wrapped(details,UpgradeStudio.EXPLAIN.get(slot,studio.package_description(h.selected)),AutomotiveUI.MUTED)
 	if w.details:
@@ -716,7 +743,7 @@ func system_shop(body: VBoxContainer, transmission: bool) -> void:
 	if not portrait: inventory.custom_minimum_size.x=430
 	inventory.add_child(AutomotiveUI.label("PERFORMANCE UPGRADES",14,AutomotiveUI.ORANGE,true))
 	var upgrades:=system_grid(inventory,2)
-	var descriptions := ["Torque capacity","Drivetrain efficiency","Durability under load","Faster shifts"] if transmission else ["Higher boost","Faster boost response","Improved airflow","Power and thermal headroom"]
+	var descriptions := ["Torque capacity","Drivetrain efficiency","Durability under load","Faster shifts","Extreme torque capacity"] if transmission else ["Higher boost","Faster boost response","Improved airflow","Power and thermal headroom"]
 	for id in (VehicleParts.TRANSMISSION_UPGRADES if transmission else VehicleParts.INDUCTION_UPGRADES):
 		var part: Dictionary=VehicleParts.PARTS[id]
 		var equipped: bool=profile.hardware.parts.get(id,"")==id
@@ -740,11 +767,21 @@ func system_shop(body: VBoxContainer, transmission: bool) -> void:
 		UpgradeStudio.metric("Peak boost",installed.boost_target(installed.redline_rpm,1),candidate.boost_target(candidate.redline_rpm,1),"bar",2)]
 	if transmission:
 		metrics.append(UpgradeStudio.metric("Torque capacity",installed.input_capacity(),candidate.input_capacity(),"Nm"))
+		metrics.append(UpgradeStudio.metric("Clutch capacity",installed.clutch_capacity(),candidate.clutch_capacity(),"Nm"))
 		metrics.append(UpgradeStudio.metric("Efficiency",installed.trans_efficiency*100,candidate.trans_efficiency*100,"%",1))
 		metrics.append(UpgradeStudio.metric("Cooling rate",installed._gear_cooling,candidate._gear_cooling,"×",2))
 	elif installed.boost_target(installed.redline_rpm,1)>0 and candidate.boost_target(candidate.redline_rpm,1)>0:
 		metrics.append(UpgradeStudio.metric("Boost response",candidate_spool(installed),candidate_spool(candidate),"s",2))
 	for metric in metrics: AutomotiveUI.metric_row(details,metric,studio.metric_color(metric))
+	if not transmission:
+		details.add_child(AutomotiveUI.label("BOOST CURVE  /  INSTALLED + PREVIEW  /  BAR",12,AutomotiveUI.BLUE,true))
+		var boost_graph:=BoostPlot.new()
+		boost_graph.current=installed
+		boost_graph.candidate=candidate
+		boost_graph.custom_minimum_size.y=94
+		boost_graph.mouse_filter=Control.MOUSE_FILTER_IGNORE
+		boost_graph.resized.connect(boost_graph.queue_redraw)
+		details.add_child(boost_graph)
 	if confirm_quote!="" and not quote.is_empty():
 		for item in quote.items:
 			wrapped(details,("Remove " if item.get("removal",false) else "Install ")+str(item.name),AutomotiveUI.MUTED)
@@ -792,7 +829,7 @@ func system_card(parent: Node,title: String,state: String,category: int,slot: St
 	var content: VBoxContainer=card.get_meta("content")
 	var row:=AutomotiveUI.row(content,6)
 	row.size_flags_vertical=Control.SIZE_EXPAND_FILL
-	if large: row.add_child(component_art(category,slot,id,Vector2(58,48)))
+	if large or id=="gear_pro": row.add_child(component_art(category,slot,id,Vector2(58,48)))
 	var labels:=AutomotiveUI.column(row,3)
 	labels.size_flags_vertical=Control.SIZE_SHRINK_CENTER
 	var display_name:=title.replace(" / Paddle"," /\nPaddle").replace(" supercharger","\nsupercharger") if large else title
@@ -856,6 +893,7 @@ func part_card(parent: Node,title: String,state: String,category: int,slot: Stri
 	if not category_card:
 		name.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 		name.max_lines_visible=2
+		name.custom_minimum_size.y=42
 	labels.add_child(name)
 	labels.add_child(AutomotiveUI.label(state,16 if short_catalog() else 13,ink))
 	card.tooltip_text=title+" / "+state

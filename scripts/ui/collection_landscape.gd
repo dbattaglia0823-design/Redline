@@ -21,14 +21,13 @@ func build() -> void:
 				if child is Label: child.add_theme_font_size_override("font_size",22)
 		return
 	var top:=AutomotiveUI.row(body); top.custom_minimum_size.y=86
-	text(top,{"dealer":"Showroom","owned":"Your collection","style":"Customize"}[g.tab],32)
+	text(top,{"dealer":"Showroom","owned":"Your collection"}[g.tab],32)
 	text(top,"$%d"%g.profile.credits,26,AutomotiveUI.MUTED)
 	if g.tab=="dealer":
 		ui.button(top,"shop_classes","Classes"); ui.button(top,"shop_details","Showroom" if g.menu.dealer.details else "Details")
 	elif g.tab=="owned":
 		ui.button(top,"owned_filter","Price class: "+("All" if g.menu.hub.owned_filter==0 else GameCatalog.PRICE_CLASSES[g.menu.hub.owned_filter-1]))
 		ui.button(top,"owned_sort","Quickest" if g.menu.hub.owned_sort else "Collection order"); ui.button(top,"hub_back","Garage")
-	else: ui.button(top,"custom_compare","Show preview" if g.menu.customize.compare else "Show installed"); ui.button(top,"custom_back","Garage")
 	var main:=AutomotiveUI.row(body,24); main.size_flags_vertical=Control.SIZE_EXPAND_FILL
 	var left:=AutomotiveUI.column(main,8); left.size_flags_stretch_ratio=1.15
 	var right:=AutomotiveUI.column(main,8)
@@ -36,7 +35,6 @@ func build() -> void:
 	match g.tab:
 		"dealer": dealer(left,right,footer)
 		"owned": owned(left,right,footer)
-		"style": customize(left,right,footer)
 func hero(parent: Node,id: String,c: Drivetrain,look: Dictionary) -> void:
 	text(parent,str(GameCatalog.spec(id).name),30)
 	var view:=ui.vehicle(parent,id,c,look,220); view.size_flags_vertical=Control.SIZE_EXPAND_FILL
@@ -89,29 +87,3 @@ func owned(left: Node,right: Node,footer: Node) -> void:
 	text(footer,"Vs active %+.0f hp / %+.0f kg"%[c.peak_horsepower()-g.car.peak_horsepower(),c.mass()-g.car.mass()],24,AutomotiveUI.MUTED)
 	if ids.size()>4: ui.button(footer,"hub_owned_prev","‹ Page"); ui.button(footer,"hub_owned_next","Page ›")
 	ui.button(footer,"hub_equip","Equipped" if id==g.profile.vehicle_id else "Drive this car",true)
-func customize(left: Node,right: Node,footer: Node) -> void:
-	var custom: CustomizationView=g.menu.customize; var id: String=g.profile.vehicle_id
-	hero(left,id,g.car,g.profile.appearance_for(id) if custom.compare else custom.candidate)
-	var installed: Dictionary=g.profile.appearance_for(id)
-	text(left,"Installed view" if custom.compare else ("Preview: "+ui.cosmetic_name(custom.category,int(custom.candidate[custom.category]),custom.candidate)+" / Installed: "+ui.cosmetic_name(custom.category,int(installed[custom.category]),installed) if custom.has_preview() else "Installed appearance"),24,AutomotiveUI.BLUE)
-	var cats:=ui.grid(right,3,8)
-	for key in VehicleAppearance.definition(id).compatible:
-		var b:=ui.button(cats,"custom_category_"+key,VehicleAppearance.LABELS[VehicleAppearance.CATEGORIES.find(key)]); b.toggle_mode=true; b.set_pressed_no_signal(custom.category==key)
-	var scroll:=ScrollContainer.new(); scroll.name="LandscapeOptions"; scroll.custom_minimum_size.y=140; scroll.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED; scroll.follow_focus=true; right.add_child(scroll)
-	var options:=AutomotiveUI.row(scroll,8)
-	for i in VehicleAppearance.OPTIONS[custom.category].size():
-		if not VehicleAppearance.compatible(id,custom.category,i): continue
-		var b:=AutomotiveUI.content_card(options,120,int(custom.candidate[custom.category])==i); b.custom_minimum_size.x=166; ui.bind(b,"custom_pick_%d"%i)
-		var content: VBoxContainer=b.get_meta("content")
-		if custom.category in ["tint","stance","spoiler","decal"]:
-			var look: Dictionary=custom.candidate.duplicate(true); look[custom.category]=i; ui.vehicle(content,id,g.car,look,48,false)
-		else:
-			var swatch:=CosmeticSwatch.new(); content.add_child(swatch); swatch.configure(g,custom.category,i)
-		text(content,ui.cosmetic_name(custom.category,i,custom.candidate),24)
-		var owned: bool=g.profile.owned_appearance.has(custom.category+":"+str(i)) or int(VehicleAppearance.PRICES[custom.category][i])==0
-		text(content,"Installed" if int(installed[custom.category])==i else ("Owned" if owned else "$%d"%VehicleAppearance.PRICES[custom.category][i]),20,AutomotiveUI.MUTED)
-	var choice: int=custom.candidate[custom.category]
-	scroll.ensure_control_visible.call_deferred(ui.targets["custom_pick_%d"%choice])
-	var price: int=0 if g.profile.owned_appearance.has(custom.category+":"+str(choice)) else VehicleAppearance.PRICES[custom.category][choice]
-	ui.button(footer,"custom_reset","Restore factory"); ui.button(footer,"custom_discard","Discard preview")
-	ui.button(footer,"custom_install","Installed" if int(installed[custom.category])==choice else (g.missing_credits(price) if g.profile.credits<price else ("Install owned" if price==0 else "Purchase / $%d"%price)),true)

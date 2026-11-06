@@ -120,7 +120,7 @@ func check_ui() -> void:
 		await frame()
 		var targets: Dictionary=game.native_workshop.targets
 		check(targets.keys().filter(func(id): return id.begins_with("tx_pick_")).size()==4,"Transmission UI did not expose four type cards")
-		check(targets.keys().filter(func(id): return id.begins_with("system_pick_")).size()==4,"Transmission UI did not expose four upgrade cards")
+		check(targets.keys().filter(func(id): return id.begins_with("system_pick_")).size()==VehicleParts.TRANSMISSION_UPGRADES.size(),"Transmission UI omitted upgrade cards")
 		await click("tx_pick_automatic_type")
 		await click("tx_buy")
 		check(game.profile.hardware.transmission=="automatic_type","UI did not buy automatic")
