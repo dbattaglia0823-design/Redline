@@ -23,9 +23,7 @@ var cursor := 0
 var drag_pointer := ""
 var graph_rect := Rect2()
 var name_edit: LineEdit
-var gear_slider := Rect2()
-var gear_slider_pointer := ""
-var pending_gear_count := 0
+var gearbox_panel: GearboxTuningPanel
 const SLOTS := ["street","eighth","quarter","custom"]
 const SLOT_NAMES := ["Street","1/8 Mile","1/4 Mile","Custom"]
 const LABELS := {"gear_count":"Forward gears","launch_rpm":"Launch RPM","redline":"Rev limiter","boost":"Maximum boost / bar","boost_gear":"Gear boost cap / bar","firmness":"Shift firmness","final_drive":"Final drive","ratio":"Gear ratio","shift":"Upshift RPM"}
@@ -56,7 +54,6 @@ func update() -> void:
 		if preview.done: preview_result=preview.result.duplicate(true)
 
 func draw() -> void:
-	gear_slider=Rect2()
 	var p: bool=g.is_portrait()
 	var width := 600 if p else 1200
 	g.draw_header() if not p else g.mobile.header("TUNING & TEST TRACK")
@@ -73,7 +70,7 @@ func draw() -> void:
 		"optimize": draw_optimizer(p)
 		"results": draw_results(p)
 	if g.screen!="practice_results":
-		var y := 1050 if p else (650 if short_layout() and page=="results" and details else 612)
+		var y := 1050 if p else (690 if page=="setup" and TuningSetup.GROUPS.keys()[group]=="Gearbox" and not short_layout() else (650 if short_layout() and page=="results" and details else 612))
 		button("tt_distance","1/8 MILE" if length<300 else "1/4 MILE",Rect2(24,y,188,76) if p else Rect2(36,y,174,90 if short_layout() else 52))
 		button("tt_drive","DRIVE TEST TRACK",Rect2(224,y,352,76) if p else Rect2(224,y,350,90 if short_layout() else 52),true)
 		if not p: text("Practice only / no wagers, rewards or career changes",600,y+33,15,g.MUTED)
@@ -91,6 +88,11 @@ func draw_setup(p: bool) -> void:
 	var groups: Array=TuningSetup.GROUPS.keys()
 	for i in groups.size():
 		button("tt_group_%d"%i,(["Launch","Power","Gears","Clutch","Grip"][i] if short_layout() else str(groups[i])),Rect2(24+(i%3)*188,250+int(i/3)*68,176,60) if p else Rect2(36+(i%2)*102,252+int(i/2)*102,90,90) if short_layout() else Rect2(36,i*54+252,186,46),false,group==i)
+	if groups[group]=="Gearbox":
+		if gearbox_panel==null:
+			gearbox_panel=GearboxTuningPanel.new(); g.add_child(gearbox_panel); gearbox_panel.setup(self)
+		gearbox_panel.visible=true; gearbox_panel.sync()
+		return
 	var keys: Array=TuningSetup.GROUPS[groups[group]]
 	row_page=clampi(row_page,0,maxi(0,ceili(keys.size()/float(rows_per_page()))-1))
 	gear=clampi(gear,0,g.car.gear_ratios.size()-1); g.workshop.gear_index=gear
@@ -109,11 +111,8 @@ func draw_setup(p: bool) -> void:
 		var y:=top+(98+row*112 if p else (130+row*110 if short_layout() else 78+row*61))
 		var label: String=LABELS.get(key,TuningSetup.EXTRA.get(key,[key])[0])
 		text(label,x+20,y,22 if p else 17)
-		if key=="gear_count":
-			draw_gear_slider(Rect2(x+158 if p else x+166,y-15,145 if p else 404,62))
-		else:
-			var shown: String=display_value(key) if enabled else reason(key)
-			g.fit_text(shown,x+20,y+30,312 if p else 590,18 if p else 14,g.GREEN if enabled else g.MUTED)
+		var shown: String=display_value(key) if enabled else reason(key)
+		g.fit_text(shown,x+20,y+30,312 if p else 590,18 if p else 14,g.GREEN if enabled else g.MUTED)
 		var plus:=Rect2(x+432,y-18,96,76) if p else Rect2(x+804,y-23,96,90) if short_layout() else Rect2(x+812,y-23,80,48)
 		var minus:=Rect2(x+324,y-18,96,76) if p else Rect2(x+696,y-23,96,90) if short_layout() else Rect2(x+720,y-23,80,48)
 		button("tt_minus_"+key,"-",minus,false)
@@ -122,60 +121,8 @@ func draw_setup(p: bool) -> void:
 			g.buttons[-1 if target.begins_with("tt_plus_") else -2].disabled=not g.action_enabled(target)
 	if keys.size()>rows_per_page(): button("tt_rows","Settings %d/%d >"%[row_page+1,ceili(keys.size()/float(rows_per_page()))],Rect2(x+20,top+510,280,60) if p else Rect2(x+280,top+8,230,90 if short_layout() else 44))
 
-func draw_gear_slider(rect: Rect2) -> void:
-	gear_slider=rect
-	var limits:=TransmissionCatalog.gear_range(g.car.transmission_id)
-	var count: int=g.car.gear_ratios.size() if gear_slider_pointer=="" else pending_gear_count
-	var left:=rect.position+Vector2(12,32)
-	var width:=rect.size.x-24
-	var thumb:=left+Vector2(width*inverse_lerp(limits.x,limits.y,clampi(count,limits.x,limits.y)),0)
-	g.draw_line(left,left+Vector2(width,0),Color("344857"),5,true)
-	g.draw_line(left,thumb,GlassPalette.ORANGE,5,true)
-	for step in range(limits.x,limits.y+1):
-		g.draw_circle(left+Vector2(width*inverse_lerp(limits.x,limits.y,step),0),3,GlassPalette.INK)
-	g.draw_circle(thumb,9,GlassPalette.ORANGE)
-	text(str(limits.x),left.x-4,left.y+24,14,g.MUTED)
-	text(str(limits.y),left.x+width-9,left.y+24,14,g.MUTED)
-	text(str(count),thumb.x-5,thumb.y-13,18,GlassPalette.INK)
-
 func set_gear_count(count: int) -> void:
-	if count==g.car.gear_ratios.size(): return
-	if g.profile.tune_hardware("gear_count",count): g.refresh_car()
-	g.menu_dirty=true
-
-func gear_slider_input(event: InputEvent) -> bool:
-	if gear_slider.size==Vector2.ZERO or page!="setup" or g.tab!="tuning" or g.screen!="garage" or name_edit!=null:
-		gear_slider_pointer=""
-		return false
-	var pointer := ""
-	var pressed := false
-	var released := false
-	if event is InputEventScreenTouch:
-		pointer="touch_%d"%event.index
-		pressed=event.pressed and not event.canceled
-		released=not pressed
-	elif event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT:
-		pointer="mouse"
-		pressed=event.pressed
-		released=not pressed
-	elif event is InputEventScreenDrag:
-		pointer="touch_%d"%event.index
-	elif event is InputEventMouseMotion:
-		pointer="mouse"
-	else:
-		return false
-	var point: Vector2=g.to_local(event.position)
-	if pressed and gear_slider.has_point(point): gear_slider_pointer=pointer
-	if gear_slider_pointer!=pointer: return false
-	var limits:=TransmissionCatalog.gear_range(g.car.transmission_id)
-	var fraction:=clampf((point.x-gear_slider.position.x-12)/(gear_slider.size.x-24),0,1)
-	pending_gear_count=roundi(lerpf(limits.x,limits.y,fraction))
-	if released:
-		gear_slider_pointer=""
-		if not (event is InputEventScreenTouch and event.canceled): set_gear_count(pending_gear_count)
-	g.menu_dirty=true
-	g.get_viewport().set_input_as_handled()
-	return true
+	if g.profile.tune_hardware("gear_count",count): g.refresh_car(); g.menu_dirty=true
 
 func reason(key: String) -> String:
 	if TuningSetup.EXTRA.has(key) or key=="boost_gear":
@@ -318,7 +265,7 @@ func seek(x: float) -> void:
 	cursor=roundi(clampf((x-graph_rect.position.x)/maxf(1,graph_rect.size.x),0,1)*(last.samples.size()-1)); g.menu_dirty=true
 
 func handle_input(event: InputEvent) -> bool:
-	if gear_slider_input(event): return true
+	if gearbox_panel!=null and gearbox_panel.route_input(event): return true
 	if name_edit!=null and name_edit.has_focus() and event is InputEventKey:
 		if event.pressed and event.keycode==KEY_ESCAPE: name_edit.queue_free(); name_edit=null; g.menu_dirty=true
 		return true

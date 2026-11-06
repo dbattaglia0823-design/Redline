@@ -648,11 +648,20 @@ func tune_hardware(key: String, value: Variant, persist: bool = true) -> bool:
 				clean.append(clampf(float(rpm),maxf(3500,float(GameCatalog.spec(vehicle_id).get("idle",950))+1500),ceiling-50))
 			hardware.tune[key] = clean
 		"gear_count":
-			var limits := TransmissionCatalog.gear_range(hardware.transmission)
+			var limits := TransmissionCatalog.count_limits(str(hardware.transmission))
 			if number!=roundf(number) or number<limits.x or number>limits.y: return false
-			if int(number)!=TransmissionCatalog.default_ratios(hardware.transmission,hardware.tune).size():
-				for dependent in ["ratios","shift_rpms","boost_by_gear"]: hardware.tune.erase(dependent)
-			hardware.tune[key] = int(number)
+			var current: Array = hardware.tune.get("ratios",TransmissionCatalog.default_ratios(str(hardware.transmission),hardware.tune))
+			if not TransmissionCatalog.valid_ratios(str(hardware.transmission),current,TransmissionCatalog.gear_count(hardware)): current=TransmissionCatalog.spec(str(hardware.transmission)).ratios
+			hardware.tune.ratios = TransmissionCatalog.resized_ratios(current,int(number))
+			hardware.tune.gear_count = int(number)
+			for dependent in ["launch_gear"]:
+				if hardware.tune.has(dependent): hardware.tune[dependent]=mini(int(hardware.tune[dependent]),int(number))
+			for per_gear in ["shift_rpms","boost_by_gear"]:
+				if not hardware.tune.has(per_gear): continue
+				var count := int(number)-(1 if per_gear=="shift_rpms" else 0)
+				var resized: Array = hardware.tune[per_gear].slice(0,count)
+				while resized.size()<count: resized.append(resized[-1] if not resized.is_empty() else (float(GameCatalog.spec(vehicle_id).get("redline",7600))-500 if per_gear=="shift_rpms" else 1.0))
+				hardware.tune[per_gear]=resized
 		"ratios":
 			if not TransmissionCatalog.valid_ratios(value,TransmissionCatalog.default_ratios(hardware.transmission,hardware.tune)): return false
 			hardware.tune[key] = value.duplicate()

@@ -224,7 +224,7 @@ func change_tune(key: String, direction: float) -> void:
 		"shift":
 			if gear_index >= g.car.shift_map.size(): return
 			value = g.car.shift_map.duplicate(); value[gear_index] += direction*100.0; key = "shift_rpms"
-		"final_drive": value = clampf(snappedf(g.car.final_drive+direction*0.05,0.01),2.0,5.5)
+		"final_drive": value = clampf(snappedf(g.car.final_drive+direction*.01,.001),TransmissionCatalog.FINAL_MIN,TransmissionCatalog.FINAL_MAX)
 		_:
 			if not TuningSetup.EXTRA.has(key): return
 			value = tune_default(key)+direction*float(TuningSetup.EXTRA[key][3])

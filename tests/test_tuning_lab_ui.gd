@@ -70,7 +70,7 @@ func run() -> void:
 		check(game.tab=="tuning","Garage tuning action failed")
 		for group in TuningSetup.GROUPS.size():
 			await click("tt_group_%d"%group); bounds("tuning group")
-			if TuningSetup.GROUPS[TuningSetup.GROUPS.keys()[group]].size()>4: await click("tt_rows"); bounds("more tuning")
+			if TuningSetup.GROUPS.keys()[group]!="Gearbox" and TuningSetup.GROUPS[TuningSetup.GROUPS.keys()[group]].size()>4: await click("tt_rows"); bounds("more tuning")
 		root.get_texture().get_image().save_png("res://validation/tuning/setup_"+("phone" if phone else "desktop")+".png")
 		await click("tt_page_presets"); await click("tt_save"); await click("tt_rename")
 		bounds("rename modal"); check(game.buttons.size()==2,"Rename modal leaked background actions")

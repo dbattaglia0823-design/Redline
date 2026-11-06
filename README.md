@@ -174,3 +174,9 @@ See [the environment overhaul and screenshot review](validation/TRACK_ENVIRONMEN
 Sprung-body motion now follows acceleration, braking, weight, drivetrain and suspension hardware, with restrained shift/traction recovery. Tire smoke uses driven-axle contact anchors and slip speed; rim highlights and faint blur follow actual wheel phase while preserving the original wheel art. Exhaust pulses follow RPM/cylinder count, boost and nitrous affect subtle plume presentation, and short backfires are limited to eligible upgraded builds at hot loaded events. Nitrous alone does not create flames.
 
 See [the motion review, screenshots, clips and test results](validation/VEHICLE_MOTION_OVERHAUL.md). `tests/test_motion_feedback.gd` checks the mechanical responses; graphical `tests/test_motion_rendering.gd` captures four vehicle classes, with optional `-- --record` gameplay frames. Low quality and Reduced Motion remain available. Physical-phone performance is unverified.
+
+## Unified gearbox tuning
+
+Tuning & Test Track → Tune → Gearbox shows Number of Gears, Final Drive Ratio and every individual ratio in one scrolling list, with minus/slider/plus controls and live speeds at the RPM limit. Transmission-specific count limits, valid descending ratios, fine final-drive adjustments, existing tuning access rules and per-vehicle/transmission saving use the shared tuning system. Mouse, touch, keyboard and mobile scrolling are supported.
+
+See [the gearbox tuning review and desktop/mobile screenshots](validation/UNIFIED_GEARBOX_TUNING.md). Run `tests/test_unified_gearing.gd` for shared model/save checks and graphical `tests/test_unified_gearing_ui.gd` for input and layout validation.

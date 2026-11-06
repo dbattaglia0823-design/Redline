@@ -1014,12 +1014,12 @@ func draw_car(origin: Vector2, scale_value: float, paint: Color, _travel: float,
 		effects = feedback if vehicle==car else (rival_feedback if vehicle==rival else null)
 	VehicleRenderer.draw(self,origin,scale_value,model,look,vehicle,driven_angle >= 0,body_offset,pitch,flame,profile.effects_quality,night,braking,effects,reveal)
 
-func refresh_car() -> void:
+func refresh_car(plan: bool = true) -> void:
 	menu_dirty = true
 	if workshop != null: workshop.invalidate_test()
 	car.configure_vehicle(GameCatalog.spec(profile.vehicle_id))
 	car.configure(profile.stages)
-	car.configure_build(profile.hardware,profile.vehicle_id)
+	car.configure_build(profile.hardware,profile.vehicle_id,plan)
 
 func install_part(index: int, tier: int = -1) -> void:
 	if profile.upgrade(index,tier):

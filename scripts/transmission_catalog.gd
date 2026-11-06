@@ -89,10 +89,48 @@ static func default_ratios(id: String, tune: Dictionary) -> Array:
 		ratios.append(snappedf(float(original.front())*pow(float(original.back())/float(original.front()),float(i)/(count-1)),0.001))
 	return ratios
 
-static func valid_ratios(value: Variant, defaults: Array) -> bool:
-	if not value is Array or value.size()!=defaults.size(): return false
-	for i in value.size():
-		if not (value[i] is float or value[i] is int) or not is_finite(float(value[i])): return false
-		if float(value[i]) < 0.40 or float(value[i]) > 6.0: return false
-		if i > 0 and float(value[i-1]) <= float(value[i])*1.025: return false
+const MIN_RATIO := .30
+const MAX_RATIO := 6.0
+const GEAR_GAP := .03
+const FINAL_MIN := 2.0
+const FINAL_MAX := 5.5
+
+static func count_limits(id: String) -> Vector2i: return gear_range(id)
+static func gear_count(build: Dictionary) -> int: return default_ratios(str(build.transmission),build.tune).size()
+
+# Accept the existing (ratios, defaults) API and the explicit catalog/count API.
+static func valid_ratios(first: Variant,second: Variant,count: int = -1) -> bool:
+	var ratios: Variant=second if count>=0 else first
+	var expected: int=count if count>=0 else (second.size() if second is Array else 0)
+	var defaults: Array=spec(str(first)).ratios if count>=0 else (second if second is Array else [])
+	if count>=0:
+		var limits:=count_limits(str(first))
+		if count<limits.x or count>limits.y: return false
+	if not ratios is Array or ratios.size()!=expected: return false
+	for i in ratios.size():
+		if not (ratios[i] is float or ratios[i] is int) or not is_finite(float(ratios[i])): return false
+		if float(ratios[i])<MIN_RATIO or float(ratios[i])>MAX_RATIO: return false
+		if i>0:
+			if float(ratios[i-1])<=float(ratios[i]): return false
+			var tight: bool=float(ratios[i-1])-float(ratios[i])<GEAR_GAP-.000001 or float(ratios[i-1])<float(ratios[i])*1.025-.000001
+			# Preserve authored close factory pairs when tuning another gear.
+			# Once this pair is edited, normal cassette spacing applies.
+			if tight and not (i<defaults.size() and absf(float(ratios[i-1])-float(defaults[i-1]))<.000001 and absf(float(ratios[i])-float(defaults[i]))<.000001): return false
 	return true
+
+static func resized_ratios(current: Array,count: int) -> Array:
+	var out := current.slice(0,mini(count,current.size()))
+	while out.size()<count:
+		var previous: float = float(out[-1]) if not out.is_empty() else 3.1
+		out.append(maxf(MIN_RATIO,previous*.80))
+	# Reserve space below each retained gear. Only very tightly packed low
+	# ratios need to move when new overdrive gears are appended.
+	for i in range(count-1,-1,-1):
+		out[i]=clampf(float(out[i]),MIN_RATIO+(count-1-i)*GEAR_GAP,MAX_RATIO-i*GEAR_GAP)
+		if i<count-1: out[i]=maxf(float(out[i]),maxf(float(out[i+1])+GEAR_GAP,float(out[i+1])*1.025))
+	return out
+
+static func ratio_bounds(ratios: Array,index: int) -> Vector2:
+	var lower := MIN_RATIO if index==ratios.size()-1 else maxf(float(ratios[index+1])+GEAR_GAP,float(ratios[index+1])*1.025)
+	var upper := MAX_RATIO if index==0 else minf(float(ratios[index-1])-GEAR_GAP,float(ratios[index-1])/1.025)
+	return Vector2(lower,upper)
