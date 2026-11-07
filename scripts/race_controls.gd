@@ -9,6 +9,7 @@ const KEY_ACTIONS := {
 }
 var keys: Dictionary = {}
 var pointers: Dictionary = {}
+var joy: Dictionary = {}
 
 static func key_code(event: InputEventKey) -> Key:
 	# Virtual/remote Windows keyboards may report an unrelated scan code.
@@ -34,9 +35,10 @@ func value(action: String) -> float:
 	if pointers.values().has(action): return 1.0
 	for code in keys:
 		if KEY_ACTIONS.get(code, "") == action: return 1.0
-	return 0.0
+	return float(joy.get(action,0.0))
 
 func clear() -> void:
 	keys.clear()
 	pointers.clear()
+	joy.clear()
 

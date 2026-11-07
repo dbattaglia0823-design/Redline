@@ -159,9 +159,11 @@ def install(model,d,config):
             wheels &= body[:,:,3]==0
             integrated[wheels]=original[wheels]
             save(integrated,folder/f'race_body_{paint}_{finish}.png')
+    prior_radii=d.get('wheel_radii',[d['radius'],d['radius']])
+    rim_fractions=[metal/tire for metal,tire in zip(d.get('rim_radius',[tire*.74 for tire in prior_radii]),prior_radii)]
     d.pop('wheel_radii',None)
     d.update(anchors)
-    d['rim_radius']=[round(wheel_radius*.69,2) for wheel_radius in radii]
+    d['rim_radius']=[round(tire*fraction,3) for tire,fraction in zip(radii,rim_fractions)]
     d['art_pipeline_version']=2
     d['texture_size']=[body.shape[1],body.shape[0]]
     d['master']=f'res://assets/vehicles/{model}/master.png'

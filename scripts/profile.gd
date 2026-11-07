@@ -66,7 +66,7 @@ static func read_save(path: String) -> Dictionary:
 		data.erase("integrity")
 		if JSON.stringify(data,"",true,true).sha256_text()!=digest: return {}
 	elif data.has("integrity") or (not data.get("garage") is Dictionary and not data.get("stages") is Array): return {}
-	for key in ["xp","wins","races","best","paint","wheels","career_version","roster_version","traction_version","effects_quality"]:
+	for key in ["xp","wins","races","best","paint","wheels","career_version","roster_version","traction_version","wheel_default_version","effects_quality"]:
 		if data.has(key) and not valid_number(data[key]): return {}
 	for key in ["garage","retired_garage"]:
 		if data.has(key) and not data[key] is Dictionary: return {}
@@ -144,7 +144,7 @@ func load_profile() -> void:
 				garage[id] = {"paint":clampi(int(entry.get("paint",0)),0,5),"wheels":clampi(int(entry.get("wheels",0)),0,VehicleAppearance.OPTIONS.rim.size()-1),"stages":GameCatalog.normalize_stages(entry.get("stages",[])),"hardware":VehicleParts.normalize(entry.get("hardware",{}),id)}
 				garage[id].owned_stages = GameCatalog.normalize_stages(entry.get("owned_stages",[]))
 				garage[id].tuning_presets = normalize_tune_presets(entry.get("tuning_presets",{}))
-				garage[id].appearance = VehicleAppearance.normalize(entry.get("appearance",{}),int(garage[id].paint),int(garage[id].wheels))
+				garage[id].appearance = VehicleAppearance.normalize(entry.get("appearance",{}),int(garage[id].paint),int(garage[id].wheels),int(data.get("wheel_default_version",0))<1)
 				garage[id].owned_appearance = normalize_cosmetic_ownership(entry.get("owned_appearance",[]),garage[id].appearance)
 	vehicle_id = str(data.get("vehicle_id", "miata"))
 	if not garage.has(vehicle_id): vehicle_id = "miata"
@@ -355,6 +355,7 @@ func save() -> void:
 		save_error="Could not save progress"
 		return
 	var payload: Dictionary={"test_runs":RunArchive.pack(test_runs),"career_version":3,"legacy_class_access":legacy_class_access,"championship_wins":championship_wins,"career_claims":career_claims,"career_serial":career_serial,"event_records":event_records,"roster_version":2,"traction_version":1,"retired_garage":retired_garage,"credits":credits,"xp":xp,"wins":wins,"races":races,"best":best,"paint":paint,"wheels":wheels,"stages":stages,"owned_stages":owned_stages,"muted":muted,"effects_quality":effects_quality,"reduced_motion":reduced_motion,"metric_speed":metric_speed,"vehicle_id":vehicle_id,"garage":garage,"career_wins":career_wins,"pending_wager":pending_wager}
+	payload.wheel_default_version=1
 	payload.save_format=SAVE_FORMAT
 	# Canonicalize JSON numbers before hashing so the reader hashes the same values.
 	payload=JSON.parse_string(JSON.stringify(payload,"",true,true))

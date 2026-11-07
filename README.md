@@ -16,6 +16,23 @@ See `validation/LIQUID_GLASS_REPORT.md` and `validation/ui_before`, `validation/
 
 ## Controls
 
+PlayStation (DualShock / DualSense) and Xbox controllers use Godot's standard gamepad mapping. Connect over USB or a supported Bluetooth connection, then press a button to take control. Keyboard and touch remain available. The pause screen shows labels for the active controller family.
+
+| Action | Xbox | PlayStation |
+| --- | --- | --- |
+| Throttle / brake (analog) | RT / LT | R2 / L2 |
+| Clutch / transbrake (hold) | LB / RB | L1 / R1 |
+| Upshift / downshift | B / X | Circle / Square |
+| Neutral (H manual) | Y | Triangle |
+| Nitrous (hold, requires kit) | A | Cross |
+| Pause / resume | Menu | Options |
+| Navigate menus | D-pad or left stick | D-pad or left stick |
+| Select / back (menus) | A / B | Cross / Circle |
+
+For H manuals, hold the clutch while stepping through gears; clutch and over-rev protections still apply. Automatic gearboxes retain their automatic shifting behavior. In Tuning, up/down moves between controls and left/right adjusts the selected slider. Held directions repeat after a short delay. Disconnecting the active controller pauses a race and releases its pedals; reconnect and press Menu / Options to resume. Only one controller drives a race at a time.
+
+Controller regression checks inject mapped button and axis events through the real input pipeline, including purchasing, tuning, manual shifts, deadzones, pause and disconnect recovery. Physical USB/Bluetooth pairing, OS drivers and device-specific mappings still require testing with real PlayStation and Xbox controllers.
+
 | Action | Keyboard | Mouse / touch |
 | --- | --- | --- |
 | Gas | W or Up, hold | Hold GAS |

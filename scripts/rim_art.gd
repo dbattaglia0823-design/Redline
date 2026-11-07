@@ -18,7 +18,14 @@ const SPOKES := [
 	"M-30-35 C-46-88-74-158-94-188 L-30-213 C-19-158 20-88 30-35 Z",
 	"M-15-40 C-15-99-34-160-29-209 L29-209 C34-160 15-99 15-40 Z"]
 static var cache: Dictionary={}
+static var frame_cache: Dictionary={}
+static var texture_frame := -1
 const CACHE_BYTES := 8*1024*1024
+
+static func keep_for_frame(key: String,texture: Texture2D) -> void:
+	var frame:=Engine.get_process_frames()
+	if frame!=texture_frame: frame_cache.clear(); texture_frame=frame
+	frame_cache[key]=texture
 
 static func retain(key: String,texture: ImageTexture) -> Texture2D:
 	var bytes:=0
@@ -28,6 +35,7 @@ static func retain(key: String,texture: ImageTexture) -> Texture2D:
 		bytes-=VehicleAppearance.texture_bytes(cache[oldest])
 		cache.erase(oldest)
 	cache[key]=texture
+	keep_for_frame(key,texture)
 	return texture
 
 static func cached(key: String) -> Texture2D:
@@ -35,7 +43,30 @@ static func cached(key: String) -> Texture2D:
 	var texture: Texture2D=cache[key]
 	cache.erase(key)
 	cache[key]=texture
+	keep_for_frame(key,texture)
 	return texture
+
+static func tire_only(source: Texture2D,rim_fraction: float,wheel_radius: float) -> Texture2D:
+	var key:="tire:"+source.resource_path+":"+str(rim_fraction)+":"+str(wheel_radius)
+	var existing:=cached(key)
+	if existing!=null: return existing
+	var image:=source.get_image()
+	image.convert(Image.FORMAT_RGBA8)
+	var dimensions:=image.get_size()
+	var center:=Vector2(dimensions)*.5
+	# Authored crops include two reference pixels of padding around each tire.
+	var outer:=minf(center.x,center.y)*wheel_radius/(wheel_radius+2.0)
+	var inner:=outer*rim_fraction
+	var data:=image.get_data()
+	for y in dimensions.y:
+		for x in dimensions.x:
+			var offset:=(y*dimensions.x+x)*4+3
+			if data[offset]==0: continue
+			var distance:=Vector2(x+.5,y+.5).distance_to(center)
+			var alpha:=smoothstep(inner-1.0,inner+.5,distance)*(1.0-smoothstep(outer-.5,outer+.5,distance))
+			data[offset]=roundi(data[offset]*alpha)
+	image=Image.create_from_data(dimensions.x,dimensions.y,false,Image.FORMAT_RGBA8,data)
+	return retain(key,ImageTexture.create_from_image(image))
 
 static func face(design: int,finish: int,pixels: int) -> Texture2D:
 	var key:="face:%d:%d:%d"%[design,finish,pixels]
@@ -64,26 +95,4 @@ static func face(design: int,finish: int,pixels: int) -> Texture2D:
 	svg+='</svg>'
 	var image:=Image.new()
 	image.load_svg_from_string(svg)
-	return retain(key,ImageTexture.create_from_image(image))
-
-static func authored_finish(source: Texture2D,finish: int,rim_fraction: float) -> Texture2D:
-	if finish==0: return source
-	var key:=source.resource_path+":"+str(finish)+":"+str(rim_fraction)
-	var existing:=cached(key)
-	if existing!=null: return existing
-	var image:=source.get_image()
-	image.convert(Image.FORMAT_RGBA8)
-	var center:=Vector2(image.get_size())*.5
-	var radius:=minf(center.x,center.y)*rim_fraction
-	var metal: Color=COLORS[finish]
-	for y in range(maxi(0,int(center.y-radius)),mini(image.get_height(),ceili(center.y+radius))):
-		for x in range(maxi(0,int(center.x-radius)),mini(image.get_width(),ceili(center.x+radius))):
-			if Vector2(x,y).distance_squared_to(center)>radius*radius: continue
-			var pixel:=image.get_pixel(x,y)
-			if pixel.a<.1 or maxf(pixel.r,maxf(pixel.g,pixel.b))-minf(pixel.r,minf(pixel.g,pixel.b))>.19 or pixel.get_luminance()<.20: continue
-			var luminance:=pixel.get_luminance()
-			var reflection:=maxf(0,luminance-.72)*(.20 if finish==4 else .65)
-			var colored:=metal*(luminance*1.05)+Color(reflection,reflection,reflection)
-			colored.a=pixel.a
-			image.set_pixel(x,y,colored.clamp())
 	return retain(key,ImageTexture.create_from_image(image))

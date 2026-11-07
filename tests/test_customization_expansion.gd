@@ -40,7 +40,7 @@ func run() -> void:
 	p.load_profile()
 	check(p.appearance.design==11 and p.appearance.rim==8 and p.wheels==8 and p.appearance.tint==4,"New option IDs were lost on save/load")
 	check(p.buy_vehicle("gtr"),"Cannot prepare closed-roof tint preview")
-	check(p.appearance.design==0 and p.appearance.rim==0,"A new car inherited another car's cosmetics")
+	check(p.appearance.design==VehicleAppearance.DEFAULT_DESIGN and p.appearance.rim==0,"A new car inherited another car's cosmetics")
 	check(p.select_vehicle("miata") and p.appearance.rim==8,"Vehicle switching lost the new rim finish")
 	game=load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)

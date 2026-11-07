@@ -813,11 +813,13 @@ func full_engine_torque(at_rpm: float) -> float:
 	return power_torque(at_rpm,boost_target(at_rpm,1.0))
 
 func rebuild_shift_map() -> void:
-	shift_map = ShiftPlanner.build(self)
 	var chosen = hardware.tune.get("shift_rpms",[])
-	if chosen is Array and chosen.size() == shift_map.size():
+	if chosen is Array and chosen.size() == gear_ratios.size()-1 and chosen.all(func(rpm): return (rpm is float or rpm is int) and is_finite(float(rpm))):
+		shift_map=chosen.duplicate()
 		for i in chosen.size():
-			if (chosen[i] is float or chosen[i] is int) and is_finite(float(chosen[i])): shift_map[i] = clampf(float(chosen[i]),idle_rpm+1500.0,redline_rpm-50.0)
+			shift_map[i] = clampf(float(chosen[i]),idle_rpm+1500.0,redline_rpm-50.0)
+		return
+	shift_map = ShiftPlanner.build(self)
 
 func select_manual_gear(target: int, clutch_command: float) -> String:
 	if control_mode != "hpattern": return "H GATE NOT INSTALLED"

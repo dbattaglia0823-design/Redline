@@ -97,7 +97,6 @@ static func draw_wheels(g: Node2D,base: Vector2,size: float,s: float,model: Stri
 			WheelVisuals.draw_vehicle_wheel(g,center,radius,state,quality,look,d,index,light)
 		else:
 			if studio and quality>0: WheelVisuals.draw_studio_reflection(g,center,rim_radius,light)
-			if int(look.design)==0 and int(look.caliper)==0: WheelVisuals.draw_rim_reflection(g,center,rim_radius,state,quality,light)
 
 		if not reflections_only and car!=null and car.tire_sidewall_mark>0:
 			WheelVisuals.draw_compound_mark(g,center,radius,car.tire_sidewall_mark,state,light)

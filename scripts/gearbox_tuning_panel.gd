@@ -24,6 +24,9 @@ var dirty_save := false
 var scroll_velocity := 0.0
 var previous_touch_y := 0.0
 var previous_touch_ms := 0
+var save_delay := 0.0
+var layout_revision := 0
+var pointer_focus := false
 
 func setup(tuning: TuningLab) -> void:
 	lab=tuning; g=lab.g; name="GearboxTuning"
@@ -49,6 +52,9 @@ func _process(_dt: float) -> void:
 		scroll_velocity=0
 		visible=false; return
 	visible=true; sync()
+	if dirty_save and not sliding and pointer<0:
+		save_delay-=_dt
+		if save_delay<=0: finish_edit()
 	if pointer<0 and absf(scroll_velocity)>1 and not g.profile.reduced_motion:
 		scroll.scroll_vertical+=roundi(scroll_velocity*_dt)
 		scroll_velocity*=exp(-_dt*9)
@@ -71,10 +77,13 @@ func add_row(parent: Node,key: String,title: String,step: float) -> void:
 	var controls:=HBoxContainer.new(); controls.add_theme_constant_override("separation",12); column.add_child(controls)
 	var minus:=Button.new(); minus.text="−"; minus.custom_minimum_size=Vector2(52,48); controls.add_child(minus)
 	var slider:=HSlider.new(); slider.name=key+"Slider"; slider.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	slider.scrollable=false
+	slider.set_meta("tuning_key",key)
 	slider.add_theme_stylebox_override("slider",rail_style(Color("293c4b")))
 	slider.add_theme_stylebox_override("grabber_area",rail_style(Color("4ca6c5")))
 	slider.add_theme_stylebox_override("grabber_area_highlight",rail_style(GlassPalette.BLUE))
 	slider.custom_minimum_size=Vector2(100,48); slider.step=.1 if PressureUnits.is_pressure_setting(key) else step; slider.mouse_default_cursor_shape=Control.CURSOR_POINTING_HAND; controls.add_child(slider)
+	if key.begins_with("ratio_"): slider.step=.001
 	var plus:=Button.new(); plus.text="+"; plus.custom_minimum_size=Vector2(52,48); controls.add_child(plus)
 	var hint:=label(column,"",13); hint.modulate=GlassPalette.MUTED
 	rows[key]={"slider":slider,"minus":minus,"plus":plus,"value":number,"hint":hint,"column":column,"caption":caption,"title":title}
@@ -82,13 +91,18 @@ func add_row(parent: Node,key: String,title: String,step: float) -> void:
 	minus.pressed.connect(func(): apply(key,current(key)-step,true))
 	plus.pressed.connect(func(): apply(key,current(key)+step,true))
 	slider.drag_started.connect(func(): sliding=true)
-	slider.drag_ended.connect(func(_changed): finish_edit())
-	slider.value_changed.connect(func(value): apply(key,value,not sliding))
+	slider.drag_ended.connect(func(_changed):
+		if key=="gear_count": apply(key,slider.value,false)
+		finish_edit())
+	slider.value_changed.connect(func(value):
+		if key=="gear_count" and sliding: number.text=str(roundi(value))
+		else: apply(key,value,not sliding))
 
 func reveal_row(column: Control) -> void:
 	# Reveal complete rows in content coordinates, independently of the
 	# game's window/UI transform and the position of sibling controls.
 	if not is_instance_valid(column) or not column.is_inside_tree(): return
+	if (pointer_focus or pointer>=0) and not g.gamepad.active: return
 	scroll_velocity=0
 	var top: float=column.position.y+(ratio_box.position.y if column.get_parent()==ratio_box else 0)
 	var bottom: float=top+column.size.y
@@ -178,11 +192,15 @@ func sync() -> void:
 	size=Vector2(552,590) if p else Vector2(916,336 if short else 414)
 	var identity: String=g.profile.vehicle_id+":"+str(g.profile.hardware.transmission)
 	if identity!=build_id or count!=g.car.gear_ratios.size() or sections.is_empty():
-		finish_edit()
+		if identity!=build_id: finish_edit()
+		var keep_scroll: bool=identity==build_id and not sections.is_empty()
+		var previous_scroll:=scroll.scroll_vertical
 		build_id=identity
 		count=g.car.gear_ratios.size()
 		rebuild_group(group)
-		panel_group=""
+		layout_revision+=1
+		if keep_scroll: restore_scroll.call_deferred(previous_scroll,layout_revision)
+		else: panel_group=""
 	if group!=panel_group:
 		panel_group=group
 		jump_to_section.call_deferred(group)
@@ -192,7 +210,8 @@ func sync() -> void:
 		var row: Dictionary=rows[key]; var limits:=bounds(key); var value:=current(key)
 		var lock:=reason(key)
 		row.slider.set_block_signals(true)
-		row.slider.min_value=ceilf(limits.x*100-.00001)/100; row.slider.max_value=floorf(limits.y*100+.00001)/100
+		var display_limits:=Vector2(TransmissionCatalog.MIN_RATIO,TransmissionCatalog.MAX_RATIO) if key.begins_with("ratio_") else limits
+		row.slider.min_value=display_limits.x; row.slider.max_value=display_limits.y
 		row.slider.set_value_no_signal(value); row.slider.set_block_signals(false); row.slider.editable=lock==""
 		row.minus.disabled=lock!="" or value<=limits.x+.0001
 		row.plus.disabled=lock!="" or value>=limits.y-.0001
@@ -216,11 +235,19 @@ func jump_to_section(group: String) -> void:
 	await get_tree().process_frame
 	if group==panel_group and sections.has(group): scroll.scroll_vertical=roundi(sections[group].position.y)
 
-func apply(key: String,requested: float,persist: bool) -> void:
+func restore_scroll(value: int,revision: int) -> void:
+	await get_tree().process_frame
+	if revision==layout_revision: scroll.scroll_vertical=value
+
+func apply(key: String,requested: float,_persist: bool) -> void:
 	if reason(key)!="": return
 	var limits:=bounds(key)
 	var value:=clampf(snappedf(requested,1 if key=="gear_count" else .001),limits.x,limits.y)
 	if PressureUnits.is_pressure_setting(key): value=PressureUnits.from_psi(value)
+	if is_equal_approx(value,stored_value(key)):
+		rows[key].slider.set_value_no_signal(current(key))
+		return
+	var previous_shifts: Array=g.car.shift_map.duplicate()
 	var tuning_key:=key
 	var setting: Variant=value
 	if key.begins_with("ratio_"):
@@ -231,26 +258,29 @@ func apply(key: String,requested: float,persist: bool) -> void:
 		setting[int(key.trim_prefix("boost_slot_"))]=value
 	elif key.begins_with("shift_"):
 		tuning_key="shift_rpms"; setting=g.car.shift_map.duplicate(); setting[int(key.trim_prefix("shift_"))]=value
-	if g.profile.tune_hardware(tuning_key,setting,persist):
-		dirty_save=not persist; g.refresh_car(persist); g.menu_dirty=true
-		if not persist:
-			# Ratios and final drive reach the solver immediately. Expensive
-			# shift optimization runs once on release, not for every drag pixel.
-			var saved: Array=g.profile.hardware.tune.get("shift_rpms",[])
-			g.car.shift_map.resize(g.car.gear_ratios.size()-1)
-			for i in g.car.shift_map.size():
-				if i<saved.size(): g.car.shift_map[i]=float(saved[i])
-				elif g.car.shift_map[i]==null or float(g.car.shift_map[i])<=0: g.car.shift_map[i]=g.car.redline_rpm-500
+	if g.profile.tune_hardware(tuning_key,setting,false):
+		# Once the player tunes a build, keep its displayed shift settings fixed.
+		# Only new gears need new entries; resetting tuning restores automatic planning.
+		if not g.profile.hardware.tune.has("shift_rpms"):
+			var shift_count:=TransmissionCatalog.gear_count(g.profile.hardware)-1
+			previous_shifts.resize(shift_count)
+			for i in shift_count:
+				if previous_shifts[i]==null: previous_shifts[i]=g.car.redline_rpm-500
+			g.profile.tune_hardware("shift_rpms",previous_shifts,false)
+		dirty_save=true; save_delay=.25
+		g.refresh_car(false); g.car.rebuild_shift_map(); g.menu_dirty=true
 		lab.gear=clampi(lab.gear,0,g.car.gear_ratios.size()-1); g.workshop.gear_index=lab.gear
 		sync()
 
 func finish_edit() -> void:
-	if dirty_save: g.profile.save(); g.refresh_car(); dirty_save=false
+	if dirty_save: g.profile.save(); dirty_save=false
 	sliding=false; pointer=-1; touch_slider=null; touch_button=null
 
 func route_input(event: InputEvent) -> bool:
 	if not visible: return false
+	if event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT: pointer_focus=event.pressed
 	if event is InputEventKey:
+		pointer_focus=false
 		scroll_velocity=0
 		var focus:=get_viewport().gui_get_focus_owner()
 		return focus!=null and is_ancestor_of(focus) and RaceControls.key_code(event)!=KEY_ESCAPE
@@ -276,6 +306,11 @@ func route_input(event: InputEvent) -> bool:
 			previous_touch_y=event.position.y; previous_touch_ms=now
 		get_viewport().set_input_as_handled(); return true
 	if event is InputEventScreenTouch and not event.pressed and event.index==pointer:
+		if is_instance_valid(touch_slider) and touch_slider.get_meta("tuning_key","")=="gear_count":
+			if not event.canceled: apply("gear_count",touch_slider.value,false)
+			else:
+				touch_slider.set_value_no_signal(current("gear_count"))
+				rows.gear_count.value.text=str(roundi(current("gear_count")))
 		if not event.canceled and touch_button!=null and not touch_button.disabled and event.position.distance_to(touch_start)<12 and touch_button.get_global_rect().has_point(event.position): touch_button.pressed.emit()
 		finish_edit(); get_viewport().set_input_as_handled(); return true
 	if event is InputEventMouse and get_global_rect().has_point(event.position):

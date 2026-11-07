@@ -82,6 +82,17 @@ var _hybrid_phase := 0.0
 var _compressor_scale := 1.0
 var _gear_whine_level := .0015
 var _super_ratio := 18.0
+var supercharger_profile := "None"
+var _super_level := 0.0
+var _super_harmonic := 0.0
+var _super_sub := 0.0
+var _super_roughness := 0.0
+var _super_air := 0.0
+var _super_bypass := 0.0
+var _super_sub_phase := 0.0
+var _super_mod_phase := 0.0
+var _launch_phase := 0.0
+var target_launch := false
 var target_motor_hz:=0.0
 
 static func band_weights(at_rpm: float, idle: float = 950.0, redline: float = 7600.0) -> Vector4:
@@ -105,13 +116,18 @@ func set_from_vehicle(car: Drivetrain, audible: bool = true) -> void:
 	target_slip = car.wheelspin
 	target_cut = car.fuel_cut
 	target_combustion = car.combustion_fraction
+	target_launch = EngineAudioProfile.launch_active(car)
 	target_nitrous = car.nitrous_active
 	target_nitrous_flow = car.nitrous_delivery
 	target_supercharger = 1.0 if car._supercharger != "" else 0.0
 	_induction_type = car._supercharger
 	_gearbox_kind = car.transmission_kind
 	_gear_whine_level = {"sequential":.012,"drag":.007,"dct":.0027,"automatic":.0018}.get(car.transmission_kind,.0015)
-	_super_ratio = 36.0 if car._supercharger=="centrifugal" else 18.0
+	var blower:=EngineAudioProfile.supercharger_character(car)
+	supercharger_profile=blower.name
+	_super_ratio=float(blower.order); _super_level=float(blower.gain)
+	_super_harmonic=float(blower.harmonic); _super_sub=float(blower.sub)
+	_super_roughness=float(blower.roughness); _super_air=float(blower.air); _super_bypass=float(blower.bypass)
 	_intake_gain = 1.45 if car.hardware.parts.values().has("plenum") else 1.0
 	_compressor_scale = .80 if car.hardware.parts.values().has("turbo_race") else (1.12 if car.hardware.parts.values().has("turbo_hybrid") else 1.0)
 	hybrid_power = car.hybrid_power_w
@@ -157,7 +173,8 @@ func set_from_vehicle(car: Drivetrain, audible: bool = true) -> void:
 			pop = maxf(pop,0.20+target_exhaust*0.35+target_engine*0.10)
 		shift_tick = float({"manual":.11,"sequential":.20,"dct":.08,"automatic":.12,"drag":.19}.get(car.transmission_kind,.12))*(.5+clampf(car.last_shift_load,0,1))
 		last_shift_serial = car.shift_serial
-	if car.throttle > 0.6 and car.boost > 0.1 and car._supercharger == "": _blowoff_armed = true
+	if car._supercharger not in ["","centrifugal"]: _blowoff_armed=false
+	if car.throttle > 0.6 and car.boost > 0.1 and car._supercharger in ["","centrifugal"]: _blowoff_armed = true
 	if _blowoff_armed and car.throttle < 0.3:
 		blowoff = clampf(car.boost*1.5,0.18,0.7)
 		_blowoff_armed = false
@@ -183,7 +200,10 @@ func next_sample() -> float:
 	supercharger_blend += (target_supercharger-supercharger_blend)*0.0015
 	_character = _character.lerp(_target_character,0.0015)
 	gain += (target_gain-gain)*0.0032
-	cut_gain += ((0.12+0.88*target_combustion)-cut_gain)*0.008
+	_launch_phase=fposmod(_launch_phase+23.0/RATE,1.0)
+	var combustion_gain:=.12+.88*target_combustion
+	if target_launch: combustion_gain=maxf(combustion_gain,EngineAudioProfile.launch_pulse(_launch_phase))
+	cut_gain += (combustion_gain-cut_gain)*0.008
 	var firing_hz := rpm/60.0*float(cylinders)*0.5
 	phase = fposmod(phase+firing_hz/RATE,1.0)
 	crank_phase = fposmod(crank_phase+rpm/60.0/RATE,1.0)
@@ -209,11 +229,9 @@ func next_sample() -> float:
 	intake_filter += (noise-intake_filter)*(0.08+load_value*0.12)
 	var amplitude := (0.10+throttle*0.16+load_value*0.22)*(0.75+0.25*clutch_value)*(1.0+exhaust_build*0.12)*cut_gain
 	var overrun := sin(p)*decel*0.055*(1.0+exhaust_build*0.3)
-	var induction_hz := lerpf(900.0+boost*(1600.0+turbo_build*650.0)+rpm*0.025,300.0+rpm*0.22,supercharger_blend)
-	turbo_phase = fposmod(turbo_phase+induction_hz/RATE,1.0)
 	tire_phase = fposmod(tire_phase+(1050.0+slip*600.0)/RATE,1.0)
 	gear_phase = fposmod(gear_phase+clampf(wheel_hz*5.0,0.0,4500.0)/RATE,1.0)
-	var induction := (intake_filter*0.045*_character.w*throttle+sin(turbo_phase*TAU)*(0.013+turbo_build*0.007))*boost
+	var induction := induction_sample()
 	var tire := (sin(tire_phase*TAU)*0.015+filtered_noise*0.065)*slip
 	var gear_whine := sin(gear_phase*TAU)*(0.010 if _gearbox_kind in ["sequential","drag"] else 0.002)*clutch_value*load_value
 	pop_gain += (pop-pop_gain)*0.018
@@ -253,16 +271,11 @@ func next_effect_sample() -> float:
 	var noise:=float(noise_seed)/2147483648.0-1.0
 	filtered_noise+=(noise-filtered_noise)*.20
 	intake_filter+=(noise-intake_filter)*.10
-	var hz:=clampf(lerpf((950+boost*(1700+target_turbo*600))*_compressor_scale,rpm/60*_super_ratio,supercharger_blend),100,8000)
-	turbo_phase=fposmod(turbo_phase+hz/RATE,1)
 	tire_phase=fposmod(tire_phase+(1050+slip*600)/RATE,1)
 	gear_phase=fposmod(gear_phase+clampf(wheel_hz*5,0,4500)/RATE,1)
 	_hybrid_phase=fposmod(_hybrid_phase+target_motor_hz/RATE,1)
 	pop_gain+=(pop-pop_gain)*.018; blowoff_gain+=(blowoff-blowoff_gain)*.008; shift_tick_gain+=(shift_tick-shift_tick_gain)*.025
-	var pressure:=maxf(boost,throttle*.20*supercharger_blend)
-	var whine_level:=lerpf(.010+target_turbo*.006,.055,supercharger_blend)
-	var harmonic:=.20*(1-smoothstep(8000,10000,hz*2))
-	var induction: float=((sin(turbo_phase*TAU)+sin(turbo_phase*TAU*2)*harmonic)*whine_level+intake_filter*.025*_intake_gain)*pressure*induction_mix if pressure*induction_mix>.00001 else 0.0
+	var induction := induction_sample()*induction_mix
 	var tire: float=(sin(tire_phase*TAU)*.014+filtered_noise*.07)*slip*tire_mix if slip*tire_mix>.00001 else 0.0
 	var whine:=sin(gear_phase*TAU)*_gear_whine_level*target_clutch*load_value if target_clutch*load_value*mechanical_mix>.00001 else 0.0
 	var transients:=filtered_noise*(pop_gain*.21*exhaust_fx_mix+blowoff_gain*.24*induction_mix)+noise*shift_tick_gain*.025*mechanical_mix
@@ -271,6 +284,23 @@ func next_effect_sample() -> float:
 	var value:=tanh((induction+tire+whine*mechanical_mix+transients+intake_filter*.07*nitro_gain*nitro_mix+electric+grind_sample())*gain)
 	peak_jump=maxf(peak_jump,absf(value-last_sample)); last_sample=value; samples_generated+=1
 	return value
+
+func induction_sample() -> float:
+	var pressure:=lerpf(maxf(0,boost),maxf(boost,throttle*.22)+_super_bypass,supercharger_blend)
+	if pressure<.00001 or induction_mix<=0: return 0.0
+	var turbo_hz: float=(950+boost*(1700+target_turbo*600))*_compressor_scale
+	var hz:=clampf(lerpf(turbo_hz,rpm/60*_super_ratio,supercharger_blend),100,8000)
+	turbo_phase=fposmod(turbo_phase+hz/RATE,1)
+	_super_sub_phase=fposmod(_super_sub_phase+hz*.5/RATE,1)
+	_super_mod_phase=fposmod(_super_mod_phase+rpm/60*2/RATE,1)
+	var p:=turbo_phase*TAU
+	var alias_guard:=1-smoothstep(8000,10000,hz*2)
+	var harmonics:=lerpf(.20,_super_harmonic,supercharger_blend)*alias_guard
+	var tone:=sin(p)+sin(p*2)*harmonics+sin(_super_sub_phase*TAU)*_super_sub*supercharger_blend
+	tone*=1+sin(_super_mod_phase*TAU)*_super_roughness*supercharger_blend
+	var level:=lerpf(.010+target_turbo*.006,_super_level,supercharger_blend)
+	var air:=lerpf(.025*_intake_gain,_super_air*_intake_gain,supercharger_blend)
+	return (tone*level+intake_filter*air)*pressure
 
 func render(count: int) -> PackedFloat32Array:
 	var result := PackedFloat32Array()

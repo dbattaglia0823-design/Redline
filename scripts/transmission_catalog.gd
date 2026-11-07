@@ -53,7 +53,9 @@ static func duration(id: String, stage: int) -> float:
 	return maxf(minimum,float(s.shift)*scale)
 
 static func strength(stage: int) -> float:
-	return [1.0,1.19,1.42,1.72,2.08,2.45][clampi(stage,0,5)]
+	# Upper tiers must cover a fully built engine's boosted + nitrous torque,
+	# even on the lower-rated manual conversions. Optional internals add reserve.
+	return [1.0,1.25,1.65,2.40,3.80,5.60][clampi(stage,0,5)]
 static func family(id: String) -> String:
 	var kind: String = spec(id).kind
 	return kind if kind in ["manual","automatic","drag"] else "sequential"

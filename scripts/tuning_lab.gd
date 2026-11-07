@@ -210,6 +210,7 @@ func handle_input(event: InputEvent) -> bool:
 	return false
 
 func action(id: String) -> void:
+	if gearbox_panel!=null: gearbox_panel.finish_edit()
 	if id=="tt_back" or id=="tt_return":
 		if name_edit!=null: name_edit.queue_free(); name_edit=null
 		if g.screen=="practice_results": g.screen="garage"; g.practice_mode=false; g.tab="tuning"; page="setup"

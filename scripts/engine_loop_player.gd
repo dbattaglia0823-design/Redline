@@ -7,6 +7,7 @@ static var vehicle_banks: Dictionary={}
 var slots: Array=[]
 var streams: Dictionary={}
 var target: Dictionary={}
+var launch_phase := 0.0
 var profile: Dictionary={}
 var family:=""
 var role:="Player"
@@ -72,6 +73,7 @@ func set_vehicle(car: Drivetrain, audible: bool=true, gain_value: float=1) -> vo
 					if not ResourceLoader.exists(str(path)): ready_bank=false; break
 	profile=p
 	target={"rpm":car.rpm,"throttle":car.throttle,"load":car.engine_load,"combustion":car.combustion_fraction,
+		"launch":EngineAudioProfile.launch_active(car),
 		"shift":car.shift_left,"clutch":car.clutch_engagement,"audible":audible,"gain":gain_value,"idle":car.idle_rpm,"redline":car.redline_rpm,
 		"decel":clampf(-car.engine_torque/maxf(1,car.base_torque),0,1) if car.throttle<.2 and car.clutch_engagement>.4 else 0.0}
 	simulated_rpm=car.rpm
@@ -92,13 +94,17 @@ func advance(dt: float) -> void:
 	var a:=1-exp(-dt/.010)
 	rpm=lerpf(rpm,float(target.rpm),a); opening=lerpf(opening,float(target.throttle),1-exp(-dt/.018)); load_value=lerpf(load_value,clampf(float(target.load),0,1),1-exp(-dt/.018))
 	cycle_phase=fposmod(cycle_phase+rpm/120.0*dt,1.0)
+	launch_phase=fposmod(launch_phase+23.0*dt,1.0)
 	mix_gain=lerpf(mix_gain,(1.0 if target.audible and target.rpm>100 else 0.0)*float(target.gain)*output_gain,1-exp(-dt/.025))
 	for slot in slots: slot.desired=0.0
 	if ready_bank and mix_gain>.0001:
 		var weights:=EngineAudioProfile.weights(rpm,rows)
 		var loaded:=clampf(opening*.20+load_value*.80,0,1)
+		var acoustic_load:=maxf(load_value,opening*.65) if target.launch else load_value
+		if target.launch: loaded=maxf(loaded,opening*.72)
 		var rpm_band:=clampf((rpm-float(target.idle))/maxf(1,float(target.redline)-float(target.idle)),0,1)
 		var cut:=.04+.96*float(target.combustion)
+		if target.launch: cut=maxf(cut,EngineAudioProfile.launch_pulse(launch_phase))
 		var exhaust: float=profile.exhaust
 		filter.cutoff_hz=clampf((1550+loaded*3000+exhaust*1250+float(profile.flow)*450)*float(profile.brightness),900,8500)
 		if profile.turbo: filter.cutoff_hz*=.87
@@ -120,7 +126,7 @@ func advance(dt: float) -> void:
 				match layer:
 					"exhaust_on": gain_value*=sqrt(loaded)*(.38+exhaust*.045)*cut
 					"exhaust_off": gain_value*=sqrt(1-loaded)*lerpf(.16,.32,rpm_band)*cut*(1+float(target.decel)*.25)
-					"intake_on": gain_value*=opening*(.35+.65*load_value)*.28*float(profile.intake)*cut
+					"intake_on": gain_value*=opening*(.35+.65*acoustic_load)*.28*float(profile.intake)*cut
 					"intake_off": gain_value*=(1-loaded)*opening*.12*float(profile.intake)
 					"mechanical": gain_value*=.22*float(profile.mechanical)*clampf(rpm/3000,.25,1)
 				if layer=="intake_on" and float(profile.lift_rpm)>0:

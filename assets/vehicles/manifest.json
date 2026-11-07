@@ -899,8 +899,8 @@
     ],
     "race_body": "res://assets/vehicles/miata/race_body_%d_%s.png",
     "rim_radius": [
-      51.75,
-      51.75
+      54.0,
+      54.0
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -981,8 +981,8 @@
     ],
     "race_body": "res://assets/vehicles/civic_si/race_body_%d_%s.png",
     "rim_radius": [
-      46.92,
-      46.92
+      48.96,
+      48.96
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -1063,8 +1063,8 @@
     ],
     "race_body": "res://assets/vehicles/gti_vr6/race_body_%d_%s.png",
     "rim_radius": [
-      46.23,
-      46.23
+      48.24,
+      48.24
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -1145,8 +1145,8 @@
     ],
     "race_body": "res://assets/vehicles/rsx/race_body_%d_%s.png",
     "rim_radius": [
-      52.44,
-      52.44
+      54.72,
+      54.72
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -1227,8 +1227,8 @@
     ],
     "race_body": "res://assets/vehicles/brz/race_body_%d_%s.png",
     "rim_radius": [
-      53.82,
-      53.82
+      57.72,
+      57.72
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -1309,8 +1309,8 @@
     ],
     "race_body": "res://assets/vehicles/integra/race_body_%d_%s.png",
     "rim_radius": [
-      51.06,
-      51.06
+      54.76,
+      54.76
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -1391,8 +1391,8 @@
     ],
     "race_body": "res://assets/vehicles/gti/race_body_%d_%s.png",
     "rim_radius": [
-      49.68,
-      49.68
+      53.28,
+      53.28
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -1473,8 +1473,8 @@
     ],
     "race_body": "res://assets/vehicles/s2000/race_body_%d_%s.png",
     "rim_radius": [
-      52.44,
-      52.44
+      57.0,
+      57.0
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -1555,8 +1555,8 @@
     ],
     "race_body": "res://assets/vehicles/gr86/race_body_%d_%s.png",
     "rim_radius": [
-      53.82,
-      53.82
+      56.94,
+      56.94
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -1637,8 +1637,8 @@
     ],
     "race_body": "res://assets/vehicles/z350/race_body_%d_%s.png",
     "rim_radius": [
-      54.51,
-      54.51
+      57.67,
+      57.67
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -1719,8 +1719,8 @@
     ],
     "race_body": "res://assets/vehicles/supra/race_body_%d_%s.png",
     "rim_radius": [
-      52.44,
-      52.44
+      55.48,
+      55.48
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -1801,8 +1801,8 @@
     ],
     "race_body": "res://assets/vehicles/m3/race_body_%d_%s.png",
     "rim_radius": [
-      53.13,
-      53.13
+      56.98,
+      56.98
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -1883,8 +1883,8 @@
     ],
     "race_body": "res://assets/vehicles/sti/race_body_%d_%s.png",
     "rim_radius": [
-      48.3,
-      51.75
+      53.2,
+      57.0
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -1969,8 +1969,8 @@
     ],
     "race_body": "res://assets/vehicles/evo/race_body_%d_%s.png",
     "rim_radius": [
-      50.37,
-      50.37
+      54.02,
+      54.02
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -2051,8 +2051,8 @@
     ],
     "race_body": "res://assets/vehicles/type_r/race_body_%d_%s.png",
     "rim_radius": [
-      50.37,
-      50.37
+      54.75,
+      54.75
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -2133,8 +2133,8 @@
     ],
     "race_body": "res://assets/vehicles/mustang/race_body_%d_%s.png",
     "rim_radius": [
-      53.13,
-      53.13
+      57.75,
+      57.75
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -2215,8 +2215,8 @@
     ],
     "race_body": "res://assets/vehicles/supra_gr/race_body_%d_%s.png",
     "rim_radius": [
-      53.82,
-      53.82
+      61.62,
+      61.62
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -2297,8 +2297,8 @@
     ],
     "race_body": "res://assets/vehicles/camaro/race_body_%d_%s.png",
     "rim_radius": [
-      53.82,
-      53.82
+      56.94,
+      56.94
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -2379,8 +2379,8 @@
     ],
     "race_body": "res://assets/vehicles/golf_r/race_body_%d_%s.png",
     "rim_radius": [
-      47.61,
-      47.61
+      52.44,
+      52.44
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -2461,8 +2461,8 @@
     ],
     "race_body": "res://assets/vehicles/z400/race_body_%d_%s.png",
     "rim_radius": [
-      60.03,
-      60.03
+      65.25,
+      65.25
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -2543,8 +2543,8 @@
     ],
     "race_body": "res://assets/vehicles/z06/race_body_%d_%s.png",
     "rim_radius": [
-      56.58,
-      52.44
+      63.96,
+      59.28
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -2629,8 +2629,8 @@
     ],
     "race_body": "res://assets/vehicles/gtr/race_body_%d_%s.png",
     "rim_radius": [
-      52.44,
-      52.44
+      59.28,
+      59.28
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -2711,8 +2711,8 @@
     ],
     "race_body": "res://assets/vehicles/r8/race_body_%d_%s.png",
     "rim_radius": [
-      51.75,
-      48.3
+      58.5,
+      54.6
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -2879,8 +2879,8 @@
     ],
     "race_body": "res://assets/vehicles/redeye/race_body_%d_%s.png",
     "rim_radius": [
-      54.51,
-      51.06
+      57.67,
+      54.02
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -2965,8 +2965,8 @@
     ],
     "race_body": "res://assets/vehicles/turbo_s/race_body_%d_%s.png",
     "rim_radius": [
-      59.34,
-      55.89
+      68.8,
+      64.8
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -3051,8 +3051,8 @@
     ],
     "race_body": "res://assets/vehicles/mclaren/race_body_%d_%s.png",
     "rim_radius": [
-      57.96,
-      57.96
+      65.52,
+      65.52
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -3133,8 +3133,8 @@
     ],
     "race_body": "res://assets/vehicles/sf90/race_body_%d_%s.png",
     "rim_radius": [
-      60.72,
-      57.96
+      66.88,
+      63.84
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -3219,8 +3219,8 @@
     ],
     "race_body": "res://assets/vehicles/demon/race_body_%d_%s.png",
     "rim_radius": [
-      60.72,
-      55.89
+      61.6,
+      56.7
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -3305,8 +3305,8 @@
     ],
     "race_body": "res://assets/vehicles/chiron/race_body_%d_%s.png",
     "rim_radius": [
-      55.89,
-      56.58
+      63.18,
+      63.96
     ],
     "art_pipeline_version": 2,
     "texture_size": [

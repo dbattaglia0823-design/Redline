@@ -4,6 +4,7 @@ extends RefCounted
 # Appearance indices are stable save IDs. New choices must be appended.
 const CATEGORIES := ["paint","finish","design","rim","caliper","tint","stance","spoiler","headlight","taillight"]
 const LABELS := ["Paint","Finish","Wheel design","Wheel color","Calipers","Window tint","Ride height","Spoiler","Headlights","Taillights"]
+const DEFAULT_DESIGN := 1 # Six spoke; saved design IDs remain unchanged.
 const OPTIONS := {
 	"paint":["Ember","Seafoam","Bone","Indigo","Saffron","Orchid"],
 	"finish":["Gloss","Matte","Metallic"],
@@ -15,7 +16,7 @@ const OPTIONS := {
 	"headlight":["Factory","Ice","Amber"],"taillight":["Factory","Ruby","Smoked"]}
 const PRICES := {
 	"paint":[0,0,0,0,0,0],"finish":[0,250,450],
-	"design":[0,400,650,850,1100,950,900,1250,1000,1150,1400,750],
+	"design":[0,0,650,850,1100,950,900,1250,1000,1150,1400,750],
 	"rim":[0,0,0,220,160,190,250,180,170],"caliper":[0,120,120,120],
 	"tint":[0,120,180,260,350],"stance":[0,200,200],"spoiler":[0,100,550],
 	"headlight":[0,140,140],"taillight":[0,140,140]}
@@ -44,13 +45,15 @@ static func compatible(id: String,key: String,index: int) -> bool:
 	var d := definition(id)
 	return d.get("compatible",[]).has(key) and d.get("options",{}).get(key,range(OPTIONS[key].size())).has(index)
 
-static func normalize(raw: Variant, paint: int = 0, rim: int = 0) -> Dictionary:
+static func normalize(raw: Variant, paint: int = 0, rim: int = 0, legacy_wheels: bool = false) -> Dictionary:
 	var clean: Dictionary = {}
 	for key in CATEGORIES: clean[key] = 0
+	clean.design=DEFAULT_DESIGN
 	clean.paint = clampi(paint,0,5); clean.rim = clampi(rim,0,OPTIONS.rim.size()-1)
 	if raw is Dictionary:
 		for key in CATEGORIES:
 			if (raw.get(key) is int or raw.get(key) is float) and is_finite(float(raw[key])): clean[key] = clampi(int(raw[key]),0,OPTIONS[key].size()-1)
+	if legacy_wheels and clean.design==0: clean.design=DEFAULT_DESIGN
 	return clean
 
 static func owned_defaults(look: Dictionary) -> Array:
@@ -58,6 +61,7 @@ static func owned_defaults(look: Dictionary) -> Array:
 	for key in CATEGORIES:
 		owned.append(key+":"+str(look[key]))
 		owned.append(key+":0")
+	if not owned.has("design:"+str(DEFAULT_DESIGN)): owned.append("design:"+str(DEFAULT_DESIGN))
 	return owned
 
 static func texture(path: String) -> Texture2D:

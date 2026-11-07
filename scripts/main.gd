@@ -26,6 +26,7 @@ var tab := "garage"
 var clock := 0.0
 var buttons: Array[Dictionary] = []
 var controls := RaceControls.new()
+var gamepad := GamepadControls.new()
 var staging := RaceStaging.new()
 var countdown := 3.0
 var player_finish := 0.0
@@ -97,6 +98,7 @@ var display_font := AutomotiveUI.DISPLAY
 var preview_states: Dictionary = {}
 
 func _ready() -> void:
+	gamepad.setup(self)
 	font = AutomotiveUI.BODY
 	mono = AutomotiveUI.NUMBERS
 	profile.load_profile()
@@ -213,6 +215,7 @@ func launch_guidance() -> String:
 func _notification(what: int) -> void:
 	if what in [NOTIFICATION_APPLICATION_FOCUS_OUT,NOTIFICATION_APPLICATION_PAUSED]:
 		controls.clear()
+		gamepad.reset_navigation()
 		car.cancel_shift_request()
 		dragging_wager = ""
 		# Desktop races keep running while unfocused; mobile app suspension still pauses safely.
@@ -276,6 +279,7 @@ func set_race_paused(value: bool) -> void:
 	dragging_wager = ""
 
 func _process(dt: float) -> void:
+	gamepad.tick(self,dt)
 	show_save_recovery()
 	sync_menu_size()
 	clock += dt
@@ -593,6 +597,12 @@ func handle_key_input(event: InputEventKey) -> void:
 					glass.focused = str(ids[(ids.size()-1 if event.shift_pressed else 0) if current < 0 else posmod(current+(-1 if event.shift_pressed else 1),ids.size())])
 
 func _input(event: InputEvent) -> void:
+	if event is InputEventJoypadButton or event is InputEventJoypadMotion:
+		gamepad.handle(self,event)
+		get_viewport().set_input_as_handled()
+		return
+	if event is InputEventKey or event is InputEventMouseButton or event is InputEventScreenTouch:
+		gamepad.active = false
 	if audio_lab!=null and audio_lab.visible: return
 	if tuning!=null and tuning.handle_input(event): return
 	menu_dirty = true

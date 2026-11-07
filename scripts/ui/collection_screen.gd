@@ -371,5 +371,4 @@ func studio_options(parent: Node,custom: CustomizationView,id: String,installed:
 		card.tooltip_text=title_text+" / "+status
 
 func cosmetic_name(key: String,index: int,look: Dictionary) -> String:
-	if key=="design" and index==0 and int(look.caliper)==0 and VehicleAppearance.definition(game.profile.vehicle_id).has("stock_wheels"): return "Factory wheel"
 	return str(VehicleAppearance.OPTIONS[key][index])

@@ -90,10 +90,12 @@ func centered(value: String,p: Vector2,size: int,c: Color = WHITE,mono: bool = f
 	text(value,p-Vector2(f.get_string_size(value,HORIZONTAL_ALIGNMENT_LEFT,-1,size).x*.5,0),size,c,mono)
 
 func control(id: String,label: String,r: Rect2,binding: String = "",warm: bool = false,selected: bool = false,enabled: bool = true) -> void:
+	if g.gamepad.active: binding=g.gamepad.hint(id)
 	var held: bool = g.controls.value(id)>0 if RaceControls.HOLD_ACTIONS.has(id) else selected
 	var hover: bool = r.has_point(g.get_local_mouse_position()) and not OS.has_feature("mobile") and not (g.screen=="race" and g.race_touch_layout())
+	hover = hover or (g.gamepad.active and g.glass.focused==id)
 	if not g.glass.states.has(id): g.glass.states[id] = {"hot":0.0,"pulse":0.0,"hover":false}
-	g.glass.states[id].hover = hover
+	g.glass.states[id].hover = hover or g.glass.focused==id
 	var pulse: float = g.glass.states[id].pulse
 	var physical: bool = g.screen=="race" and (CONTROL_ART.has(id) or id=="nitrous")
 	var active := enabled and (held or selected or hover or pulse>0)
@@ -460,10 +462,10 @@ func gear_slot(id: String,label: String,rect: Rect2,selected: bool) -> void:
 func pause(w: float,p: bool) -> void:
 	g.draw_rect(Rect2(0,0,w,1300 if p else 760),Color("02080eed")); g.buttons.clear()
 	var x := w*.5-160
-	centered("RACE PAUSED",Vector2(w*.5,355 if p else 282),28)
+	centered("RACE PAUSED",Vector2(w*.5,355 if p else (190 if g.race_touch_layout() else 282)),28)
 	if OS.is_debug_build(): control("telemetry","DATA",Rect2(w*.5+184,270 if p else 222,90,90),"",false,g.debug_physics)
 	var large: bool = p or g.race_touch_layout()
-	var y := 410 if p else 320
+	var y := 410 if p else (230 if large else 320)
 	var step := 100 if large else 80
 	var height := 90 if large else 62
 	control("resume","RESUME",Rect2(x,y,320,height),"",true)
@@ -471,3 +473,8 @@ func pause(w: float,p: bool) -> void:
 	control("race_units","UNITS: MPH",Rect2(x,y+step*2,154,height),"",false,false,false)
 	control("race_guide","GUIDE: "+("ON" if g.show_shift_guide else "OFF"),Rect2(x+166,y+step*2,154,height),"",false,g.show_shift_guide)
 	control("effects_quality","EFFECTS: "+["LOW","MEDIUM","HIGH"][g.profile.effects_quality],Rect2(x,y+step*3,320,height))
+	if g.gamepad.active:
+		var pad: GamepadControls=g.gamepad
+		var lines := [pad.hint("gas")+" throttle · "+pad.hint("brake")+" brake · "+pad.hint("clutch")+" clutch",pad.hint("down")+" downshift · "+pad.hint("up")+" upshift",pad.hint("nitrous")+" nitrous · "+pad.hint("transbrake")+" transbrake","D-pad / left stick: navigate · "+("Cross: select · Circle: back" if pad.playstation else "A: select · B: back")]
+		if g.car.control_mode=="hpattern": lines[1]+=" · "+("Triangle" if pad.playstation else "Y")+" neutral"
+		for i in lines.size(): centered(lines[i],Vector2(w*.5,y+step*3+height+24+i*(26 if p else 21)),18 if p else 14,DIM)

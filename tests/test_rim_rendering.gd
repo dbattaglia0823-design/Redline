@@ -16,9 +16,11 @@ func run() -> void:
 		canvas.model=id; canvas.car.configure_vehicle(GameCatalog.spec(id)); canvas.car.configure_build(GameCatalog.factory_build(id),id,false); canvas.car.reset()
 		var snapshot: Dictionary=canvas.car.telemetry()
 		var still:=await frame()
-		canvas.car.wheel_angle=1.1; canvas.car.rolling_wheel_angle=.7
 		var other:=await frame()
 		check(still.get_data()==other.get_data(),"Wheel art rotates while stopped: "+id)
+		canvas.car.wheel_angle=1.1; canvas.car.rolling_wheel_angle=.7
+		var rotated:=await frame()
+		check(still.get_data()!=rotated.get_data(),"Physical axle phase did not rotate default rim: "+id)
 		canvas.car.wheel_omega=100; canvas.car.speed=20; canvas.car.wheel_angle=.4; canvas.car.rolling_wheel_angle=1.1
 		var moving:=await frame(); moving.save_png("res://validation/rim_motion/"+id+".png")
 		var d:=VehicleAppearance.definition(id); var scale: float=canvas.SIZE*.232

@@ -1,5 +1,40 @@
 # Engine audio asset pipeline
 
+## Launch-control and supercharger mix
+
+Launch-control sound follows its armed state, throttle and RPM independently of
+the drivetrain's instantaneous ignition-cut fraction. Native exhaust/intake loops
+retain a 23 Hz two-step envelope with a 62% floor and a staging acoustic-load
+floor. Free-revving and brake/clutch-held staging remain audible; normal shift
+cuts, the limiter outside launch control, pause and mute keep their existing gates.
+The synthesis fallback uses the same launch envelope. Audio does not alter torque,
+combustion telemetry or launch physics.
+
+Factory GT500, Redeye and Demon 170 blowers have separate rotor-order, harmonic,
+subharmonic, roughness, intake-air and bypass levels. Aftermarket Roots and
+centrifugal kits use distinct characters with host-engine coloration; a conversion
+replaces the factory blower voice, and an engine swap carries its blower identity.
+Both the native-loop effects and synthesis fallback share this induction voice.
+The following are researched manufacturer references and sound/video examples:
+
+- [Ford GT500 powertrain](https://www.fordservicecontent.com/Ford_Content/vdirsnet/OwnerManual/Home/Content?ProcUid=G2175428&Uid=G2175427&buildtype=web&countryCode=USA&div=f&languageCode=en&moidRef=G539482&userMarket=CAN&vFilteringEnabled=False&variantid=7586): 2.65L inverted factory blower.
+- [Dodge Demon 170 announcement](https://www.dodge.com/news/challenger-srt-demon-170-edition.html): 3.0L supercharger, different airflow and boost from the Redeye.
+- [Shelby supplementary manual](https://www.shelby.com/Resources/Shared/Supplement_Manuals/2022_MustangSupplemental_Manual.pdf): supercharger whine is normal operation.
+- [ProCharger gearset sound discussion](https://www.procharger.com/blog/new-helical-supercharger-gearset-option-for-noise-reduction/): gear construction changes supercharger sound level.
+- [ProCharger video examples](https://www.procharger.com/videos/) and [Mustang GT valve sound demonstration](https://www.procharger.com/video-post/what-does-a-blow-off-valve-sound-like-what-does-five-blow-off-valves-sound-like/): distinguish compressor/gear whine from induction-release air noise.
+
+These are original synthesized sound-design approximations. Acoustic orders and
+mix levels are authored gameplay values, not measured rotor specifications or
+recordings extracted from the linked videos. Sound character still needs listening
+checks on speakers, headphones and physical mobile hardware.
+
+`test_launch_induction_audio` checks real launch-control staging, engine audibility
+during sampled zero-combustion cuts, mute/pause gating, five distinct blower
+waveforms, stock NA silence and engine-swap identity. `test_launch_audio_playback`
+records the native mixer for six configurations into `.qa/launch-audio`: each clip
+contains two seconds of launch control, two seconds of acceleration and a final
+half-second pause. Isolate each test's save and temporary directories.
+
 ## Current v2 production workflow
 
 The existing native-loop/live-effects architecture is retained. The bank now has
