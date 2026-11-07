@@ -123,9 +123,9 @@ func classes(body: VBoxContainer) -> void:
 
 func spec_summary(parent: Node,id: String,c: Drivetrain) -> void:
 	var layout:=grid(parent,2,6)
-	for value in [["ENGINE POWER" if float(GameCatalog.spec(id).get("hybrid_kw",0))>0 else "POWER","%.0f hp"%c.peak_horsepower()],["TORQUE","%.0f Nm"%GarageHub.peak_torque(c)],["WEIGHT","%.0f kg"%c.mass()],["GRIP","%.2f"%GarageHub.grip(c)]]:
+	for value in [["ENGINE POWER" if float(GameCatalog.spec(id).get("hybrid_kw",0))>0 else "POWER","%.0f hp"%c.peak_horsepower()],["TORQUE","%.0f lb-ft"%ImperialUnits.torque(GarageHub.peak_torque(c))],["WEIGHT","%.0f lb"%ImperialUnits.pounds(c.mass())],["GRIP","%.2f"%GarageHub.grip(c)]]:
 		var cell:=AutomotiveUI.column(layout,1); cell.add_child(AutomotiveUI.label(value[0],12,AutomotiveUI.MUTED)); cell.add_child(AutomotiveUI.label(value[1],22))
-	if float(GameCatalog.spec(id).get("hybrid_kw",0))>0: parent.add_child(AutomotiveUI.label("Combustion output + %.0f kW electric assist"%GameCatalog.spec(id).hybrid_kw,14,AutomotiveUI.MUTED))
+	if float(GameCatalog.spec(id).get("hybrid_kw",0))>0: parent.add_child(AutomotiveUI.label("Combustion output + %.0f hp electric assist"%(GameCatalog.spec(id).hybrid_kw/.7457),14,AutomotiveUI.MUTED))
 
 func page_controls(parent: Node,owned: bool=false) -> void:
 	var count: int=game.menu.hub.owned_ids().size() if owned else game.menu.dealer.filtered().size()
@@ -154,9 +154,9 @@ func dealer(body: VBoxContainer) -> void:
 	if portrait: left.size_flags_vertical=Control.SIZE_EXPAND_FILL
 	var hero:=vehicle(left,id,c,VehicleAppearance.normalize({},2,0),190 if portrait else 245); hero.size_flags_vertical=Control.SIZE_EXPAND_FILL
 	if portrait:
-		left.add_child(AutomotiveUI.label("%s · %s · %s"%[s.year,s.engine,s.drive],18,AutomotiveUI.MUTED))
-		left.add_child(AutomotiveUI.label("%.0f %shp / %.0f Nm / %.0f kg / %.2f grip"%[c.peak_horsepower(),"ICE " if float(s.get("hybrid_kw",0))>0 else "",GarageHub.peak_torque(c),c.mass(),GarageHub.grip(c)],20))
-		if float(s.get("hybrid_kw",0))>0: left.add_child(AutomotiveUI.label("Electric assist: %.0f kW"%s.hybrid_kw,17,AutomotiveUI.MUTED))
+		left.add_child(AutomotiveUI.label("%s · %s · %s"%[s.year,ImperialUnits.engine_label(s.engine),s.drive],18,AutomotiveUI.MUTED))
+		left.add_child(AutomotiveUI.label("%.0f %shp / %.0f lb-ft / %.0f lb / %.2f grip"%[c.peak_horsepower(),"ICE " if float(s.get("hybrid_kw",0))>0 else "",ImperialUnits.torque(GarageHub.peak_torque(c)),ImperialUnits.pounds(c.mass()),GarageHub.grip(c)],20))
+		if float(s.get("hybrid_kw",0))>0: left.add_child(AutomotiveUI.label("Electric assist: %.0f hp"%(s.hybrid_kw/.7457),17,AutomotiveUI.MUTED))
 		left.add_child(AutomotiveUI.label("Factory · %d-speed %s"%[c.gear_ratios.size(),c.transmission_kind],17,AutomotiveUI.MUTED))
 		var et:=d.preview_estimate(id)
 		left.add_child(AutomotiveUI.label("1/4 est · %.2f s / %.1f mph"%[et.time,et.mph] if not et.is_empty() else "Measuring factory performance…",18,AutomotiveUI.BLUE))
@@ -180,7 +180,7 @@ func dealer(body: VBoxContainer) -> void:
 		AutomotiveUI.comparison(right,"Power",game.car.peak_horsepower(),c.peak_horsepower(),"hp")
 		AutomotiveUI.comparison(right,"Weight",game.car.mass(),c.mass(),"kg",true)
 	elif portrait:
-		right.add_child(AutomotiveUI.label("Vs active  %+.0f hp / %+.0f Nm / %+.0f kg"%[c.peak_horsepower()-game.car.peak_horsepower(),GarageHub.peak_torque(c)-GarageHub.peak_torque(game.car),c.mass()-game.car.mass()],16,AutomotiveUI.MUTED))
+		right.add_child(AutomotiveUI.label("Vs active  %+.0f hp / %+.0f lb-ft / %+.0f lb"%[c.peak_horsepower()-game.car.peak_horsepower(),ImperialUnits.torque(GarageHub.peak_torque(c))-ImperialUnits.torque(GarageHub.peak_torque(game.car)),ImperialUnits.pounds(c.mass())-ImperialUnits.pounds(game.car.mass())],16,AutomotiveUI.MUTED))
 	if d.details: mechanical_details(right,c)
 	var owned: bool=game.profile.garage.has(id)
 	var reason: String=""
@@ -197,7 +197,7 @@ func mechanical_details(parent: Node,c: Drivetrain) -> void:
 	var content:=AutomotiveUI.column(scroll,4)
 	if not game.glass.reduced_motion:
 		scroll.modulate.a=.8; scroll.create_tween().tween_property(scroll,"modulate:a",1.0,.12)
-	for line in ["Idle %.0f / limiter %.0f rpm"%[c.idle_rpm,c.redline_rpm],"Final drive %.3f / tire radius %.3f m"%[c.final_drive,c.tire_radius],"%.0f ms shift / %.0f Nm input rating"%[c.shift_duration*1000,c.input_capacity()],"Ratios: "+str(c.gear_ratios),"Efficiency %.1f%% / boost %.2f bar"%[c.trans_efficiency*100,c.boost_target(c.redline_rpm,1)]]:
+	for line in ["Idle %.0f / limiter %.0f rpm"%[c.idle_rpm,c.redline_rpm],"Final drive %.3f / tire radius %.1f in"%[c.final_drive,ImperialUnits.inches(c.tire_radius)],"%.0f ms shift / %.0f lb-ft input rating"%[c.shift_duration*1000,ImperialUnits.torque(c.input_capacity())],"Ratios: "+str(c.gear_ratios),"Efficiency %.1f%% / boost %.1f PSI"%[c.trans_efficiency*100,PressureUnits.psi(c.boost_target(c.redline_rpm,1))]]:
 		var line_label:=AutomotiveUI.label(line,15,AutomotiveUI.MUTED); line_label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 		line_label.custom_minimum_size.y=72 if line.begins_with("Ratios:") else 30
 		content.add_child(line_label)
@@ -227,7 +227,7 @@ func collection(body: VBoxContainer) -> void:
 	var engine_class:=GameCatalog.engine_class(selected,c.hardware)
 	var controls: Dictionary={"hpattern":"manual","paddle":"paddle","sequential":"sequential","automatic":"automatic"}
 	detail.add_child(AutomotiveUI.label("Price %s / Engine %s / %d-speed %s"%[GameCatalog.price_class(selected),engine_class,c.gear_ratios.size(),controls.get(c.control_mode,c.control_mode)],16,AutomotiveUI.BLUE))
-	detail.add_child(AutomotiveUI.label("Vs active  %+.0f hp / %+.0f Nm / %+.0f kg"%[c.peak_horsepower()-game.car.peak_horsepower(),GarageHub.peak_torque(c)-GarageHub.peak_torque(game.car),c.mass()-game.car.mass()],17,AutomotiveUI.MUTED))
+	detail.add_child(AutomotiveUI.label("Vs active  %+.0f hp / %+.0f lb-ft / %+.0f lb"%[c.peak_horsepower()-game.car.peak_horsepower(),ImperialUnits.torque(GarageHub.peak_torque(c))-ImperialUnits.torque(GarageHub.peak_torque(game.car)),ImperialUnits.pounds(c.mass())-ImperialUnits.pounds(game.car.mass())],17,AutomotiveUI.MUTED))
 	if portrait: list=AutomotiveUI.column(main,8)
 	var cards:=grid(list,2 if portrait else 1,8)
 	for i in mini(4,ids.size()-h.owned_page*4):

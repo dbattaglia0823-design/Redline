@@ -133,7 +133,7 @@ func load_profile() -> void:
 	test_runs=RunArchive.normalize(data.get("test_runs",{}))
 	effects_quality = clampi(int(data.get("effects_quality",2)),0,2)
 	reduced_motion = bool(data.get("reduced_motion",false))
-	metric_speed = bool(data.get("metric_speed",false))
+	metric_speed = false
 	# Migrate original saves without removing their car, paint, money, or upgrades.
 	garage = {"miata":{"paint":paint,"wheels":wheels,"stages":stages.duplicate(),"owned_stages":data.get("owned_stages",[]),"hardware":GameCatalog.factory_build("miata")}}
 	var saved_garage = data.get("garage", {})

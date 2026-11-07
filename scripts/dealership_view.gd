@@ -95,16 +95,16 @@ func draw() -> void:
 	t("%d / %d   /   %d CARS" % [page+1,ceili(ids.size()/4.0),ids.size()],255,660,16,g.MUTED)
 	g.box(Rect2(786,246,380,428))
 	g.fit_text(str(s.name),807,281,337,27)
-	t("PRICE CLASS "+GameCatalog.price_class(id)+" / "+str(s.engine),808,309,13,g.MUTED)
-	t("%d %sHP / %.0f NM" % [c.peak_horsepower(),"ICE " if float(s.get("hybrid_kw",0))>0 else "",GarageHub.peak_torque(c)],808,347,23,g.GREEN)
-	t("%.0f KG / %.2f GRIP" % [c.mass(),GarageHub.grip(c)],808,378,19)
+	t("PRICE CLASS "+GameCatalog.price_class(id)+" / "+ImperialUnits.engine_label(str(s.engine)),808,309,13,g.MUTED)
+	t("%d %sHP / %.0f lb-ft" % [c.peak_horsepower(),"ICE " if float(s.get("hybrid_kw",0))>0 else "",ImperialUnits.torque(GarageHub.peak_torque(c))],808,347,23,g.GREEN)
+	t("%.0f lb / %.2f GRIP" % [ImperialUnits.pounds(c.mass()),GarageHub.grip(c)],808,378,19)
 	t("%s / %d-SPEED %s" % [s.drive,c.gear_ratios.size(),c.transmission_kind.to_upper()],808,411,15,g.MUTED)
 	var et := preview_estimate(id)
 	var active := {"model":g.profile.vehicle_id,"stages":g.profile.stages,"hardware":g.profile.hardware,"reaction":.25,"pedal":1.0,"skill":2,"shift_error":0,"traction_skill":.8}
 	var current := RaceAI.request_estimate(active)
 	t("1/4 EST %.2f S / %.1f MPH" % [et.time,et.mph] if not et.is_empty() else "MEASURING...",808,447,17,g.GREEN)
-	t("VS ACTIVE %+.0f HP / %+.0f NM" % [c.peak_horsepower()-g.car.peak_horsepower(),GarageHub.peak_torque(c)-GarageHub.peak_torque(g.car)],808,478,14)
-	t("%+.0f KG / %+.2f GRIP" % [c.mass()-g.car.mass(),GarageHub.grip(c)-GarageHub.grip(g.car)],808,503,14,g.MUTED)
+	t("VS ACTIVE %+.0f HP / %+.0f lb-ft" % [c.peak_horsepower()-g.car.peak_horsepower(),ImperialUnits.torque(GarageHub.peak_torque(c))-ImperialUnits.torque(GarageHub.peak_torque(g.car))],808,478,14)
+	t("%+.0f lb / %+.2f GRIP" % [ImperialUnits.pounds(c.mass())-ImperialUnits.pounds(g.car.mass()),GarageHub.grip(c)-GarageHub.grip(g.car)],808,503,14,g.MUTED)
 	var owned: bool = g.profile.garage.has(id)
 	var locked: bool = g.profile.level() < int(s.get("unlock_level",1)) and not owned
 	t("OWNED" if owned else "$%d" % int(s.price),808,544,29,g.GREEN if owned else g.INK)
@@ -118,8 +118,8 @@ func draw_details(s: Dictionary,c: Drivetrain) -> void:
 	t(str(s.name)+" / FACTORY DETAILS",55,218,28)
 	var ratios := ""
 	for ratio in c.gear_ratios: ratios += "%.3f  " % ratio
-	var lines := [str(s.engine)+" / "+str(s.drive),"Idle %.0f / limiter %.0f RPM" % [c.idle_rpm,c.redline_rpm],"Mass %.0f kg / inertia %.3f kg m2" % [c.mass(),c.engine_inertia],"Tire radius %.3f m / final drive %.2f" % [c.tire_radius,c.final_drive],"%s / %.0f ms / %.0f Nm rating" % [c.transmission_kind,c.shift_duration*1000,c.input_capacity()],"Gear ratios: "+ratios,"Efficiency %.1f%% / peak boost %.2f bar" % [c.trans_efficiency*100,c.boost_target(c.redline_rpm,1.0)],"Original illustrations / configurable display names","Track estimate: competent driver, zero reaction / no nitrous.","Compared with your active installed build; factory figures exclude upgrades."]
-	if float(s.get("hybrid_kw",0))>0: lines[7]="Electric assist: %.0f kW / %.1f kWh; dyno shows combustion engine." % [s.hybrid_kw,s.hybrid_kwh]
+	var lines := [ImperialUnits.engine_label(str(s.engine))+" / "+str(s.drive),"Idle %.0f / limiter %.0f RPM" % [c.idle_rpm,c.redline_rpm],"Mass %.0f lb / inertia %.3f lb·ft²" % [ImperialUnits.pounds(c.mass()),ImperialUnits.inertia(c.engine_inertia)],"Tire radius %.1f in / final drive %.2f" % [ImperialUnits.inches(c.tire_radius),c.final_drive],"%s / %.0f ms / %.0f lb-ft rating" % [c.transmission_kind,c.shift_duration*1000,ImperialUnits.torque(c.input_capacity())],"Gear ratios: "+ratios,"Efficiency %.1f%% / peak boost %.1f PSI" % [c.trans_efficiency*100,PressureUnits.psi(c.boost_target(c.redline_rpm,1.0))],"Original illustrations / configurable display names","Track estimate: competent driver, zero reaction / no nitrous.","Compared with your active installed build; factory figures exclude upgrades."]
+	if float(s.get("hybrid_kw",0))>0: lines[7]="Electric assist: %.0f hp / %.0f BTU battery; dyno shows combustion engine." % [s.hybrid_kw/.7457,s.hybrid_kwh*3412.141633]
 	for i in lines.size(): t(lines[i],56,263+i*38,17,g.MUTED if i >= 7 else g.INK)
 func action(id: String) -> bool:
 	if id.begins_with("shop_class_"): enter_class(id.trim_prefix("shop_class_"))

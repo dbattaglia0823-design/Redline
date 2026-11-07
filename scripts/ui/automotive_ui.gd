@@ -226,7 +226,7 @@ static func stat(parent: Node,title: String,value: String,unit: String) -> void:
 	var r:=row(c,6)
 	var number:=label(value,30,INK,true); number.size_flags_horizontal=Control.SIZE_SHRINK_BEGIN
 	number.custom_minimum_size.x=NUMBERS.get_string_size(value,HORIZONTAL_ALIGNMENT_LEFT,-1,30).x; r.add_child(number)
-	var u:=label(unit,14,MUTED); u.custom_minimum_size.x=26; u.size_flags_horizontal=Control.SIZE_SHRINK_BEGIN; u.size_flags_vertical=Control.SIZE_SHRINK_CENTER; r.add_child(u)
+	var u:=label(unit,14,MUTED); u.custom_minimum_size.x=maxf(26,u.get_theme_font("font").get_string_size(unit,HORIZONTAL_ALIGNMENT_LEFT,-1,14).x+2); u.size_flags_horizontal=Control.SIZE_SHRINK_BEGIN; u.size_flags_vertical=Control.SIZE_SHRINK_CENTER; r.add_child(u)
 
 static func button(parent: Node,title: String,variant: String="Secondary",height: float=48) -> Button:
 	var b:=GlassButton.new(); b.text=title; b.theme_type_variation=variant
@@ -246,6 +246,7 @@ static func content_card(parent: Node,height: float,selected: bool=false) -> But
 	return b
 
 static func comparison(parent: Node,title: String,before: float,after: float,unit: String,less_better: bool=false,precision: int=0) -> void:
+	before=ImperialUnits.value(before,unit); after=ImperialUnits.value(after,unit); unit=ImperialUnits.unit(unit)
 	var r:=row(parent,8)
 	r.add_child(label(title,15,MUTED))
 	var format: String="%."+str(precision)+"f"

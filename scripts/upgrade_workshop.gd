@@ -77,13 +77,17 @@ func draw_parts() -> void:
 
 func part_details(part: Dictionary) -> Array[String]:
 	var rows: Array[String] = []
-	var labels := {"torque":"Engine torque factor","flow":"High-RPM flow gain","safe":"Engine torque support","inertia":"Rotating inertia change","redline":"Mechanical RPM headroom","clutch":"Clutch capacity factor","mass":"Mass change, kg","grip":"Effective tire grip gain","radius":"Rolling radius, m","wheel_inertia":"Wheel inertia change","onset":"Turbo onset, RPM","spool":"Spool constant, sec","boost_add":"Extra boost capacity, bar","fuel":"Fuel-flow support factor","pressure":"Supercharger boost, bar","transfer":"Weight-transfer response","shift_scale":"Actuator time factor"}
+	var labels := {"torque":"Engine torque factor","flow":"High-RPM flow gain","safe":"Engine torque support","inertia":"Rotating inertia change, lb·ft²","redline":"Mechanical RPM headroom","clutch":"Clutch capacity factor","mass":"Mass change, lb","grip":"Effective tire grip gain","radius":"Rolling radius, in","wheel_inertia":"Wheel inertia change, lb·ft²","onset":"Turbo onset, RPM","spool":"Spool constant, sec","boost_add":"Extra boost capacity, PSI","fuel":"Fuel-flow support factor","pressure":"Supercharger boost, PSI","transfer":"Weight-transfer response","shift_scale":"Actuator time factor"}
 	for key in labels:
 		if not part.has(key): continue
 		var value:=float(part[key])
 		if key in ["torque","safe","clutch","fuel","shift_scale"]: rows.append("%s: %.2fx"%[labels[key],value])
+		elif key=="mass": rows.append("%s: %+.1f"%[labels[key],ImperialUnits.pounds(value)])
+		elif key=="radius": rows.append("%s: %+.2f"%[labels[key],ImperialUnits.inches(value)])
+		elif key in ["inertia","wheel_inertia"]: rows.append("%s: %+.2f"%[labels[key],ImperialUnits.inertia(value)])
 		elif key=="flow": rows.append("High-RPM flow potential: +%.1f%%"%(value*100))
 		elif key=="onset": rows.append("Boost onset: %.0f RPM"%value)
+		elif key in ["boost_add","pressure"]: rows.append("%s: %+.1f"%[labels[key],PressureUnits.psi(value)])
 		elif key=="redline": rows.append("Mechanical RPM headroom: +%.0f RPM"%value)
 		else: rows.append("%s: %+.3f"%[labels[key],value])
 	if part.has("super"): rows.append("Belt drive / replaces turbo assembly")
@@ -141,7 +145,7 @@ func draw_scoped_tuning() -> void:
 	box(Rect2(36,247,1130,408))
 	var keys: Array = GarageHub.TUNE_KEYS.get(g.menu.hub.selected,[])
 	var fitted: Array = g.profile.hardware.parts.values()
-	var labels := {"launch_rpm":"Launch RPM","redline":"Rev limiter","boost":"Boost target / bar","firmness":"Shift firmness","final_drive":"Final drive","ratio":"Gear ratio","shift":"Upshift RPM"}
+	var labels := {"launch_rpm":"Launch RPM","redline":"Rev limiter","boost":"Boost target / PSI","firmness":"Shift firmness","final_drive":"Final drive","ratio":"Gear ratio","shift":"Upshift RPM"}
 	var enabled := {"launch_rpm":g.car.hardware.parts.has("ecu") or g.car.transmission_kind=="drag","redline":VehicleParts.can_tune_rpm(g.car.hardware),"boost":fitted.has("boost_control"),"firmness":g.car.transmission_kind in ["drag","automatic","dct"],"final_drive":true,"ratio":true,"shift":true}
 	gear_index = clampi(gear_index,0,g.car.gear_ratios.size()-1)
 	if g.menu.hub.selected == 7:
@@ -161,11 +165,11 @@ func tune_default(key: String) -> float:
 	return float(g.profile.hardware.tune.get(key,row[4])) if not row.is_empty() else 0.0
 
 func tune_value(key: String,value: float) -> String:
-	if key=="tire_pressure": return "%.0f psi"%value
+	if key=="tire_pressure": return "%.0f PSI"%value
 	if key=="launch_damping": return "%.2fx"%value
 	if key=="shift" and gear_index>=g.car.gear_ratios.size()-1: return "Top gear / no upshift"
 	if key in ["launch_rpm","redline","shift"]: return "%.0f RPM"%value
-	if key=="boost": return "%.2f bar"%value
+	if PressureUnits.is_pressure_setting(key): return "%.1f PSI%s"%[PressureUnits.psi(value),"/s" if key=="boost_rise" else ""]
 	return "%.3f"%value if key=="ratio" else "%.2f"%value
 
 func action(id: String) -> bool:
@@ -218,7 +222,7 @@ func change_tune(key: String, direction: float) -> void:
 	match key:
 		"launch_rpm": value = g.car.launch_rpm+direction*200.0
 		"redline": value = g.car.redline_rpm+direction*100.0
-		"boost": value = g.car.boost_target(g.car.redline_rpm,1.0)+direction*0.10
+		"boost": value = g.car.boost_target(g.car.redline_rpm,1.0)+direction*PressureUnits.from_psi(.5)
 		"firmness": value = g.car.shift_firmness+direction*0.1
 		"ratio": value = g.car.gear_ratios.duplicate(); value[gear_index] += direction*0.025; key = "ratios"
 		"shift":
@@ -227,7 +231,7 @@ func change_tune(key: String, direction: float) -> void:
 		"final_drive": value = clampf(snappedf(g.car.final_drive+direction*.01,.001),TransmissionCatalog.FINAL_MIN,TransmissionCatalog.FINAL_MAX)
 		_:
 			if not TuningSetup.EXTRA.has(key): return
-			value = tune_default(key)+direction*float(TuningSetup.EXTRA[key][3])
+			value = tune_default(key)+direction*(PressureUnits.from_psi(.5) if PressureUnits.is_pressure_setting(key) else float(TuningSetup.EXTRA[key][3]))
 	if not g.profile.tune_hardware(key,value): g.show_toast("Outside hardware limits / check gear order")
 	g.refresh_car()
 
@@ -272,18 +276,18 @@ func part_comparison() -> Dictionary:
 static func comparison_rows(a: Drivetrain,b: Drivetrain) -> Array[String]:
 	var rows: Array[String] = []
 	if a.peak_horsepower() != b.peak_horsepower(): rows.append("Power %d > %d HP" % [a.peak_horsepower(),b.peak_horsepower()])
-	if absf(a.mass()-b.mass()) > .1: rows.append("Weight %.0f > %.0f kg" % [a.mass(),b.mass()])
+	if absf(ImperialUnits.pounds(a.mass())-ImperialUnits.pounds(b.mass())) > .1: rows.append("Weight %.0f > %.0f lb" % [ImperialUnits.pounds(a.mass()),ImperialUnits.pounds(b.mass())])
 	if absf(GarageHub.grip(a)-GarageHub.grip(b)) > .001: rows.append("Grip %.2f > %.2f" % [GarageHub.grip(a),GarageHub.grip(b)])
 	if absf(a.shift_duration-b.shift_duration) > .001: rows.append("Shifts %.0f > %.0f ms" % [a.shift_duration*1000,b.shift_duration*1000])
 	if absf(a.tire_radius-b.tire_radius) > .001: rows.append("Tire radius %.3f > %.3f m" % [a.tire_radius,b.tire_radius])
 	if absf(a.final_drive-b.final_drive) > .001: rows.append("Final drive %.2f > %.2f" % [a.final_drive,b.final_drive])
-	if absf(a.clutch_capacity()-b.clutch_capacity()) > 1: rows.append("Clutch %.0f > %.0f Nm" % [a.clutch_capacity(),b.clutch_capacity()])
+	if absf(ImperialUnits.torque(a.clutch_capacity())-ImperialUnits.torque(b.clutch_capacity())) > 1: rows.append("Clutch %.0f > %.0f lb-ft" % [ImperialUnits.torque(a.clutch_capacity()),ImperialUnits.torque(b.clutch_capacity())])
 	if a.brake_stage != b.brake_stage:
 		var before := minf(8*(1+a.brake_stage*.18),9.81*a.brake_grip())
 		var after := minf(8*(1+b.brake_stage*.18),9.81*b.brake_grip())
 		rows.append("Braking force %+.0f%%" % ((after/before-1)*100))
 	if absf(a.load_transfer_scale-b.load_transfer_scale) > .001: rows.append("Launch transfer %.2f > %.2f" % [a.load_transfer_scale,b.load_transfer_scale])
-	if absf(a.supported_engine_torque()-b.supported_engine_torque()) > 1: rows.append("Torque support %.0f > %.0f Nm" % [a.supported_engine_torque(),b.supported_engine_torque()])
+	if absf(ImperialUnits.torque(a.supported_engine_torque())-ImperialUnits.torque(b.supported_engine_torque())) > 1: rows.append("Torque support %.0f > %.0f lb-ft" % [ImperialUnits.torque(a.supported_engine_torque()),ImperialUnits.torque(b.supported_engine_torque())])
 	if absf(a.engine_inertia-b.engine_inertia) > .001: rows.append("Rev inertia %.3f > %.3f" % [a.engine_inertia,b.engine_inertia])
 	if a.launch_control != b.launch_control: rows.append("Launch RPM control enabled" if b.launch_control else "Factory launch control")
 	if a.has_transbrake != b.has_transbrake: rows.append("Transbrake launch enabled" if b.has_transbrake else "Factory launch hardware")

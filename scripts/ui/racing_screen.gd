@@ -178,7 +178,7 @@ func race_board(body: VBoxContainer) -> void:
 	art.size_flags_vertical=Control.SIZE_EXPAND_FILL
 	add_label(hero,str(GameCatalog.spec(model).name),23)
 	var identity: String=contract.get("nickname",contract.get("build_label",""))
-	add_label(hero,"%d hp / %.0f Nm%s"%[car.peak_horsepower(),GarageHub.peak_torque(car)," · "+identity if identity!="" else ""],18,AutomotiveUI.MUTED)
+	add_label(hero,"%d hp / %.0f lb-ft%s"%[car.peak_horsepower(),ImperialUnits.torque(GarageHub.peak_torque(car))," · "+identity if identity!="" else ""],18,AutomotiveUI.MUTED)
 	var times:=estimates(contract)
 	var comparison:="Measuring both builds…"
 	if not times.rival.is_empty() and not times.player.is_empty():
@@ -276,8 +276,8 @@ func results(body: VBoxContainer) -> void:
 	for split in [[18.288,"60 ft","sixty_ft_s"],[201.168,"1/8 mile","eighth_s"],[402.336,"1/4 mile","quarter_s"]]:
 		if game.active_distance+0.001<float(split[0]): continue
 		slip_line(slip,split[1],time_value(game.run_telemetry.result.get(split[2])),time_value(game.rival_telemetry.result.get(split[2])))
-	var units: String="km/h" if game.profile.metric_speed else "mph"
-	var factor: float=1.609344 if game.profile.metric_speed else 1.0
+	var units: String="mph"
+	var factor: float=1.0
 	slip_line(slip,"Trap speed","%.1f %s"%[game.finish_speed*factor,units],"%.1f %s"%[game.rival_trap_speed*factor,units] if game.rival_finish>0 else "—")
 	slip_line(slip,"Total","%.3f s"%game.player_finish,"%.3f s"%game.rival_finish if game.rival_finish>0 else "—")
 	if game.rival_finish>0 and not game.staging.red_light:

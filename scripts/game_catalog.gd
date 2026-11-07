@@ -28,7 +28,7 @@ const PART_TIERS := [
 	["Performance pads", "Four-piston kit", "Carbon race kit"],
 	["Street bottle", "Extended bottle", "Competition spray"],
 ]
-const PART_EFFECTS: Array[String] = ["+14% engine torque per tier", "+0.18 bar peak boost per tier", "+0.095 traction coefficient per tier", "-65 kg per tier", "-35 ms shift time per tier", "+6% engine torque per tier", "+18% braking force per tier", "+1.5 s spray / +6% power per tier"]
+const PART_EFFECTS: Array[String] = ["+14% engine torque per tier", "+2.6 PSI peak boost per tier", "+0.095 traction coefficient per tier", "-143 lb per tier", "-35 ms shift time per tier", "+6% engine torque per tier", "Stronger, lighter brake packages", "+1.5 s spray / +6% power per tier"]
 const CAREER_NAMES: Array[String] = ["DOCKSIDE RUN", "MIDNIGHT CLUB", "CITY FINALS"]
 const CAREER_LEVELS: Array[int] = [1,3,5]
 const PRICE_CLASSES := ["E","D","C","B","A","S"]
@@ -97,12 +97,12 @@ static func price_band(index: int) -> String:
 static func part_effect(index: int, tier: int) -> String:
 	match index:
 		0: return "+%d%% engine torque" % (tier*14)
-		1: return "%.2f BAR peak boost" % (0.45+tier*0.18)
+		1: return "%.1f PSI peak boost" % PressureUnits.psi(0.45+tier*0.18)
 		2: return "+%.3f traction coefficient" % (tier*0.095)
-		3: return "-%d KG curb weight" % (tier*65)
+		3: return "-%.0f lb curb weight" % ImperialUnits.pounds(tier*65)
 		4: return "%d MS original paddle cut" % roundi(TransmissionCatalog.duration("legacy6",tier)*1000.0)
 		5: return "+%d%% engine torque" % (tier*6)
-		6: return "+%d%% braking force" % (tier*18)
+		6: return "+%d%% braking force / -%.0f lb" % [tier*18,ImperialUnits.pounds([0.0,4.0,9.0,15.0][clampi(tier,0,3)])]
 		7: return "%.1f S spray / +%d%% power" % [6.0+tier*1.5,55+tier*6]
 	return ""
 

@@ -117,8 +117,10 @@ func setup_text(setup: Dictionary) -> String:
 	return "%s  ·  FD %.2f  ·  Launch set %.0f RPM  ·  %s"%[str(setup.get("transmission","—")),float(setup.get("final_drive",0)),float(setup.get("launch_rpm",0))," / ".join(ratios)]
 func setup_changes(first: Dictionary,second: Dictionary) -> String:
 	var changes: Array=[]
-	for pair in [["tire_pressure","Tire psi"],["diff_lock","Diff"],["tc_slip","TC slip"],["redline","Limiter RPM"],["throttle_gamma","Pedal"],["clutch_rate","Clutch rate"],["boost","Boost bar"],["launch_damping","Damping"]]:
+	for pair in [["tire_pressure","Tire PSI"],["diff_lock","Diff"],["tc_slip","TC slip"],["redline","Limiter RPM"],["throttle_gamma","Pedal"],["clutch_rate","Clutch rate"],["boost","Boost PSI"],["launch_damping","Damping"]]:
 		var x: Variant=first.get(pair[0]); var y: Variant=second.get(pair[0])
+		if pair[0]=="boost" and RunArchive.finite(x) and RunArchive.finite(y):
+			x=PressureUnits.psi(float(x)); y=PressureUnits.psi(float(y))
 		if RunArchive.finite(x) and RunArchive.finite(y) and absf(float(x)-float(y))>.00001: changes.append("%s %.2f → %.2f"%[pair[1],float(y),float(x)])
 	return "B → A   ·   "+"   /   ".join(changes) if not changes.is_empty() else ""
 func diagnostic_color(run: Dictionary) -> Color:
@@ -130,7 +132,7 @@ func diagnostics(run: Dictionary) -> String:
 	for item in [["traction_s","Wheelspin"],["clutch_slip_s","Clutch slip"],["limiter_s","Limiter"],["low_rpm_s","Low RPM / load"]]:
 		if RunArchive.finite(m.get(item[0])) and float(m[item[0]])>.05: notes.append("%s %.2f s"%[item[1],float(m[item[0]])])
 	var peak: Variant=m.get("peak_acceleration")
-	notes.append("Peak %.1f m/s²"%(float(peak) if RunArchive.finite(peak) else 0))
+	notes.append("Peak %.1f ft/s²"%ImperialUnits.feet(float(peak) if RunArchive.finite(peak) else 0))
 	return "   ·   ".join(notes)
 func nearest(run: Dictionary,time: float) -> Dictionary:
 	var found: Dictionary={}; var best:=INF
@@ -145,8 +147,8 @@ func seek_time(time: float) -> void:
 	if sample.is_empty(): return
 	lab.cursor=a.samples.find(sample)
 	var second:=nearest(b,time)
-	sample_label.text="%.2f s  ·  A %.0f RPM / %.1f mph / spin %.0f%% / clutch %.0f RPM / %.1f m/s²"%[time,sample.rpm,sample.speed,sample.wheelspin*100,sample.get("clutch_slip",0),sample.acceleration]
-	if not second.is_empty(): sample_label.text+="\nB %.0f RPM / %.1f mph / spin %.0f%% / clutch %.0f RPM / %.1f m/s²"%[second.rpm,second.speed,second.wheelspin*100,second.get("clutch_slip",0),second.acceleration]
+	sample_label.text="%.2f s  ·  A %.0f RPM / %.1f mph / spin %.0f%% / clutch %.0f RPM / %.1f ft/s²"%[time,sample.rpm,sample.speed,sample.wheelspin*100,sample.get("clutch_slip",0),ImperialUnits.feet(sample.acceleration)]
+	if not second.is_empty(): sample_label.text+="\nB %.0f RPM / %.1f mph / spin %.0f%% / clutch %.0f RPM / %.1f ft/s²"%[second.rpm,second.speed,second.wheelspin*100,second.get("clutch_slip",0),ImperialUnits.feet(second.acceleration)]
 func seek_fraction(fraction: float) -> void:
 	if plots.is_empty(): return
 	seek_time(clampf(fraction,0,1)*plots[0].duration)

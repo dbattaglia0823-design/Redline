@@ -77,7 +77,7 @@ func run() -> void:
 				game.car.elapsed=3.7; game.car.distance=100; game.rival.distance=102
 				await frame()
 				check(game.race_hud.elapsed_text.text=="3.500 s","Live ET included reaction time")
-				check(game.race_hud.gap_text.text=="-2.0 m","Deficit readout diverged from lane positions")
+				check(game.race_hud.gap_text.text=="-6.6 ft","Deficit readout diverged from lane positions")
 				check(is_equal_approx(game.race_hud.progress.value,100.0),"Progress did not match measured distance")
 				game.player_finish=14.75; game.finish_hold_left=.4
 				await frame()
@@ -85,9 +85,9 @@ func run() -> void:
 				game.player_finish=0; game.finish_hold_left=0
 			var first: float=game.race_hud.readings.speed
 			touch("race_units",4); await frame()
-			check(absf(game.race_hud.readings.speed-first*1.609344)<.001,"Metric conversion is wrong")
+			check(absf(game.race_hud.readings.speed-first)<.001,"Imperial speed changed unexpectedly")
 			game.profile.save(); var restored:=DriverProfile.new(); restored.load_profile()
-			check(restored.metric_speed,"Speed units did not persist")
+			check(not restored.metric_speed,"Saved units are not imperial")
 			game.action("race_units")
 			await frame()
 			if hardware in ["manual5","dct8","drag3"]:

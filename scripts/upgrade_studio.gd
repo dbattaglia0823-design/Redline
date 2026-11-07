@@ -63,19 +63,19 @@ func status(index: int) -> String:
 func headline(index: int) -> String:
 	var c: Drivetrain=g.car
 	match index:
-		0,1,2: return "%d hp / %.0f Nm"%[c.peak_horsepower(),GarageHub.peak_torque(c)]
-		3: return "Fuel support %.0f Nm"%c.fuel_torque_capacity()
+		0,1,2: return "%d hp / %.0f lb-ft"%[c.peak_horsepower(),ImperialUnits.torque(GarageHub.peak_torque(c))]
+		3: return "Fuel support %.0f lb-ft"%ImperialUnits.torque(c.fuel_torque_capacity())
 		4: return "Limiter %.0f rpm"%c.redline_rpm
-		5: return "%.2f bar / belt drive"%c.boost_target(c.redline_rpm,1) if c._supercharger!="" else "%.2f bar / %.0f rpm onset"%[c.boost_target(c.redline_rpm,1),c.turbo_onset()]
+		5: return "%.1f PSI / belt drive"%PressureUnits.psi(c.boost_target(c.redline_rpm,1)) if c._supercharger!="" else "%.1f PSI / %.0f rpm onset"%[PressureUnits.psi(c.boost_target(c.redline_rpm,1)),c.turbo_onset()]
 		6: return "%.1f seconds spray"%c.nitrous_capacity()
 		7: return "%d gears / %.0f ms shifts"%[c.gear_ratios.size(),c.shift_duration*1000]
-		8: return "%.0f Nm clutch capacity"%c.clutch_capacity()
+		8: return "%.0f lb-ft clutch capacity"%ImperialUnits.torque(c.clutch_capacity())
 		9: return "%.2f final drive"%c.final_drive
-		10: return "%.2f grip / %.0f mm radius"%[GarageHub.grip(c),c.tire_radius*1000]
+		10: return "%.2f grip / %.1f in radius"%[GarageHub.grip(c),ImperialUnits.inches(c.tire_radius)]
 		11: return "%.2f launch transfer"%c.load_transfer_scale
 		12: return "%.1f m/s2 brake limit"%brake_limit(c)
-		13: return "%.0f mm radius / %.2f kg m2"%[c.tire_radius*1000,c.wheel_inertia]
-		14: return "%.0f kg vehicle mass"%c.mass()
+		13: return "%.1f in radius / %.2f lb·ft²"%[ImperialUnits.inches(c.tire_radius),ImperialUnits.inertia(c.wheel_inertia)]
+		14: return "%.0f lb vehicle mass"%ImperialUnits.pounds(c.mass())
 	return ""
 
 func overview() -> void:
@@ -83,7 +83,7 @@ func overview() -> void:
 	if mobile:
 		g.mobile.header("UPGRADES")
 		fit(str(GameCatalog.spec(g.profile.vehicle_id).name),24,108,340,25)
-		t("%d hp / %.0f Nm"%[g.car.peak_horsepower(),GarageHub.peak_torque(g.car)],24,148,22,g.MUTED)
+		t("%d hp / %.0f lb-ft"%[g.car.peak_horsepower(),ImperialUnits.torque(GarageHub.peak_torque(g.car))],24,148,22,g.MUTED)
 		button("hub_dyno","Live Dyno",Rect2(396,80,180,68))
 	else:
 		button("hub_test","Test build",Rect2(800,103,156,48))
@@ -97,8 +97,8 @@ func overview() -> void:
 	if not mobile:
 		t("CURRENT BUILD",800,275,12,GlassPalette.BLUE)
 		fit(str(GameCatalog.spec(g.profile.vehicle_id).name),800,305,340,23)
-		t("%d hp   /   %.0f Nm"%[g.car.peak_horsepower(),GarageHub.peak_torque(g.car)],800,338,18)
-		t("%.0f kg   /   %.2f grip"%[g.car.mass(),GarageHub.grip(g.car)],800,369,15,g.MUTED)
+		t("%d hp   /   %.0f lb-ft"%[g.car.peak_horsepower(),ImperialUnits.torque(GarageHub.peak_torque(g.car))],800,338,18)
+		t("%.0f lb   /   %.2f grip"%[ImperialUnits.pounds(g.car.mass()),GarageHub.grip(g.car)],800,369,15,g.MUTED)
 		t(g.menu.hub.configuration_label(),800,397,11,GlassPalette.BLUE)
 	for position in GROUPS[system].size():
 		var index: int=GROUPS[system][position]
@@ -163,7 +163,7 @@ func options(mobile: bool) -> void:
 			var state: String="Equipped" if target==stage else ("Owned" if target<=g.profile.highest_stage(g.selected_part) else "$%d"%g.profile.upgrade_cost(g.selected_part,target))
 			t(state,r.end.x-140,r.position.y+(38 if mobile else 29),18 if mobile else 14,g.GREEN if target<=stage else g.MUTED)
 		if mobile and GameCatalog.max_stage(g.selected_part)<5 and engine_changed(g.car,w._preview):
-			t("HP",24,654,17,g.ORANGE); t("Nm",68,654,17,g.GREEN)
+			t("HP",24,654,17,g.ORANGE); t("lb-ft",68,654,17,g.GREEN)
 			t("Solid installed / dashed preview",124,654,17,g.MUTED)
 			g.menu.hub.draw_graph(Rect2(76,678,470,60),g.car,w._preview,18)
 		if not mobile:
@@ -226,7 +226,7 @@ func comparison(mobile: bool) -> void:
 		for i in mini(3 if mobile else (2 if graph else 4),rows.size()):
 			fit(rows[i],x,top+103+i*(33 if mobile else 39),552 if mobile else 400,20 if mobile else 18,metric_color(rows[i]))
 		if graph:
-			if slot in ["induction","boost"]: fit("%.2f > %.2f bar / onset %.0f > %.0f rpm"%[g.car.boost_target(g.car.redline_rpm,1),c.boost_target(c.redline_rpm,1),boost_onset(g.car),boost_onset(c)],744,421,400,13,g.MUTED)
+			if slot in ["induction","boost"]: fit("%.1f > %.1f PSI / onset %.0f > %.0f rpm"%[PressureUnits.psi(g.car.boost_target(g.car.redline_rpm,1)),PressureUnits.psi(c.boost_target(c.redline_rpm,1)),boost_onset(g.car),boost_onset(c)],744,421,400,13,g.MUTED)
 			h.draw_graph(Rect2(787,438,329,102),g.car,c)
 		elif not mobile:
 			var estimates: String="Supporting hardware needed for a race projection." if reason!="" else race_comparison(c)
@@ -281,6 +281,9 @@ static func brake_limit(c: Drivetrain) -> float: return minf(8*(1+c.brake_stage*
 static func boost_onset(c: Drivetrain) -> float: return c.idle_rpm if c._supercharger!="" else c.turbo_onset()
 static func spool(c: Drivetrain) -> float: return .045 if c._supercharger!="" else (c._spool_override if c._spool_override>0 else [.32,.24,.38,.55][c.turbo_stage])
 static func metric(label: String,a: float,b: float,unit: String,precision: int=0) -> String:
+	if unit=="bar":
+		a=PressureUnits.psi(a); b=PressureUnits.psi(b); unit="PSI"; precision=1
+	a=ImperialUnits.value(a,unit); b=ImperialUnits.value(b,unit); unit=ImperialUnits.unit(unit)
 	var format: String="%."+str(precision)+"f"
 	return label+"  "+(format%a)+" > "+(format%b)+(" "+unit if unit!="" else "")
 func metrics(a: Drivetrain,b: Drivetrain,index: int,slot: String) -> Array[String]:
@@ -317,7 +320,7 @@ func metrics(a: Drivetrain,b: Drivetrain,index: int,slot: String) -> Array[Strin
 			6: rows.append(metric("Spray capacity",a.nitrous_capacity(),b.nitrous_capacity(),"s",1)); rows.append(metric("Nozzle request",a.nitrous_torque_gain()*100,b.nitrous_torque_gain()*100,"%",1)); rows.append(metric("Torque ceiling",a.supported_engine_torque(),b.supported_engine_torque(),"Nm"))
 			7: rows.append(metric("Shift time",a.shift_duration*1000,b.shift_duration*1000,"ms")); rows.append(metric("Input rating",a.input_capacity(),b.input_capacity(),"Nm")); rows.append(metric("Clutch capacity",a.clutch_capacity(),b.clutch_capacity(),"Nm"))
 			10: rows.append(metric("Grip",GarageHub.grip(a),GarageHub.grip(b),"",2))
-			12: rows.append(metric("Brake limit",brake_limit(a),brake_limit(b),"m/s2",2))
+			12: rows.append(metric("Brake limit",brake_limit(a),brake_limit(b),"m/s2",2)); rows.append(metric("Vehicle mass",a.mass(),b.mass(),"kg"))
 			14: rows.append(metric("Vehicle mass",a.mass(),b.mass(),"kg"))
 	if rows.is_empty():
 		rows.append(metric("Power",a.peak_horsepower(),b.peak_horsepower(),"hp"))
@@ -348,7 +351,7 @@ func package_description(index: int) -> String:
 	return "Changes apply only after purchase or installation."
 func package_details(index: int) -> Array:
 	var c:=candidate()
-	return [package_description(index),"Purchased tiers and all lower levels can be equipped free.","Parts remain individually owned and reinstallable.","Engine limiter %.0f rpm / mass %.0f kg"%[c.redline_rpm,c.mass()]]
+	return [package_description(index),"Purchased tiers and all lower levels can be equipped free.","Parts remain individually owned and reinstallable.","Engine limiter %.0f rpm / mass %.0f lb"%[c.redline_rpm,ImperialUnits.pounds(c.mass())]]
 
 func build_runs(c: Drivetrain) -> Array[Dictionary]:
 	var results: Array[Dictionary] = []

@@ -27,7 +27,7 @@ var gearbox_panel: GearboxTuningPanel
 var results_panel: TestResultsPanel
 const SLOTS := ["street","eighth","quarter","custom"]
 const SLOT_NAMES := ["Street","1/8 Mile","1/4 Mile","Custom"]
-const LABELS := {"gear_count":"Forward gears","launch_rpm":"Launch RPM","redline":"Rev limiter","boost":"Maximum boost / bar","boost_gear":"Gear boost cap / bar","firmness":"Shift firmness","final_drive":"Final drive","ratio":"Gear ratio","shift":"Upshift RPM"}
+const LABELS := {"gear_count":"Forward gears","launch_rpm":"Launch RPM","redline":"Rev limiter","boost":"Maximum boost / PSI","boost_gear":"Gear boost cap / PSI","firmness":"Shift firmness","final_drive":"Final drive","ratio":"Gear ratio","shift":"Upshift RPM"}
 
 func _init(game: Node2D) -> void: g=game
 func text(s: String,x: float,y: float,n: int = 18,c: Color = GlassPalette.INK) -> void: g.text_at(s,x,y,n,c)
@@ -112,6 +112,7 @@ func value(key: String) -> Variant:
 
 func display_value(key: String) -> String:
 	var v:=float(value(key))
+	if PressureUnits.is_pressure_setting(key): return "%.1f PSI%s"%[PressureUnits.psi(v),"/s" if key=="boost_rise" else ""]
 	if key=="launch_enabled": return "ON" if v>.5 else "OFF"
 	if key=="tc_slip" and v==0: return "OFF"
 	if key in ["launch_rpm","redline","shift"]: return "%.0f RPM"%v
@@ -125,11 +126,11 @@ func change(key: String,dir: float) -> void:
 		return
 	if TuningSetup.EXTRA.has(key):
 		var row: Array=TuningSetup.EXTRA[key]
-		g.profile.tune_hardware(key,float(value(key))+dir*float(row[3]))
+		g.profile.tune_hardware(key,float(value(key))+dir*(PressureUnits.from_psi(.5) if PressureUnits.is_pressure_setting(key) else float(row[3])))
 	elif key=="boost_gear":
 		var caps: Array=[]
 		for i in g.car.gear_ratios.size(): caps.append(g.car.boost_by_gear[i] if i<g.car.boost_by_gear.size() else g.car.boost_target(g.car.redline_rpm,1))
-		caps[gear]=maxf(0,float(caps[gear])+dir*.1); g.profile.tune_hardware("boost_by_gear",caps)
+		caps[gear]=maxf(0,float(caps[gear])+dir*PressureUnits.from_psi(.5)); g.profile.tune_hardware("boost_by_gear",caps)
 	else: g.workshop.change_tune(key,dir); return
 	g.refresh_car()
 

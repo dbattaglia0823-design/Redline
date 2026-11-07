@@ -47,6 +47,36 @@ func _initialize() -> void:
 			visual.update(.1,c,true,GameCatalog.spec(id))
 			check(visual.body_offset == frozen and c.telemetry() == snapshot,"Paused visual state or physics changed")
 	# Quality selection survives existing saves; default old saves use High.
+	for model in ["civic_si","miata","sti"]:
+		var spec:=GameCatalog.spec(model)
+		c.configure_vehicle(spec)
+		c.configure_build(GameCatalog.factory_build(model),model,false)
+		c.reset(); c.running=true
+		c.set_road_state(12,2)
+		c.wheel_omega=18/c.tire_radius
+		c.wheelspin=.5
+		c.throttle=.2
+		visual.reset(c)
+		visual.set_quality(2)
+		var snapshot:=c.telemetry()
+		var seen: Array=[]
+		var definition:=VehicleAppearance.definition(model)
+		for tick in 60:
+			visual.update(1.0/60,c,false,spec)
+			for puff in visual.smoke:
+				if puff.age>0: continue
+				for wheel in 2:
+					var point:=VehicleAppearance.point(definition.rear if wheel==0 else definition.front)
+					if absf(puff.position.x-(210+point.x*.232*1.65))<.01 and not seen.has(wheel): seen.append(wheel)
+		check(not visual.smoke.is_empty() and visual.smoke[-1].strength>.3,"Rolling traction loss produced no visible smoke: "+model)
+		check(seen==[1] if c.drivetrain=="FWD" else (seen==[0] if c.drivetrain=="RWD" else seen.has(0) and seen.has(1)),"Smoke emitted from the wrong axle: "+model)
+		check(c.telemetry()==snapshot,"Smoke changed vehicle physics")
+		c.wheelspin=0; c.wheel_omega=c.speed/c.tire_radius
+		for tick in 120: visual.update(1.0/60,c,false,spec)
+		check(visual.smoke.is_empty(),"Smoke did not clear after traction recovered")
+		c.gear=0; c.rpm=7000; visual.reset(c)
+		for tick in 30: visual.update(1.0/60,c,false,spec)
+		check(visual.smoke.is_empty(),"Free revving produced tire smoke")
 	var p := DriverProfile.new(); p.effects_quality = 0; p.save()
 	var restored := DriverProfile.new(); restored.load_profile()
 	check(restored.effects_quality == 0,"Effects preference did not persist")

@@ -10,7 +10,7 @@ const GREEN := GlassPalette.GREEN
 const RED := Color("ff6d69")
 const CLUTCH_AMBER := Color("ffca79")
 const GEARBOX_VIOLET := Color("efa0ed")
-const SPLITS := {402.336:"1/4 MI",304.8:"1000 FT",201.168:"1/8 MI",100.0:"100 M",18.288:"60 FT"}
+const SPLITS := {402.336:"1/4 MI",304.8:"1000 FT",201.168:"1/8 MI",100.0:"328 FT",18.288:"60 FT"}
 const CONTROL_ART := {
 	"gas":preload("res://assets/ui/race_controls/throttle.svg"),
 	"brake":preload("res://assets/ui/race_controls/brake.svg"),
@@ -189,7 +189,7 @@ func sample() -> Dictionary:
 	var c: Drivetrain = g.car
 	var target := c.good_shift_min()
 	if c.gear>0 and c.gear<=c.shift_map.size(): target = float(c.shift_map[c.gear-1])
-	return {"rpm":c.rpm,"speed":c.speed*(3.6 if g.profile.metric_speed else Drivetrain.MPH_PER_MPS),"target":target,"gear":("R" if c.gear<0 else ("N" if c.gear==0 else str(c.gear))),"boost":c.boost,"nitrous":c.nitrous_remaining,"engaging":c.shift_left>0,"queued":c.queued_shift,"limiter":c.limiter}
+	return {"rpm":c.rpm,"speed":c.speed*Drivetrain.MPH_PER_MPS,"target":target,"gear":("R" if c.gear<0 else ("N" if c.gear==0 else str(c.gear))),"boost":c.boost,"nitrous":c.nitrous_remaining,"engaging":c.shift_left>0,"queued":c.queued_shift,"limiter":c.limiter}
 
 func draw(portrait: bool = false) -> void:
 	readings = sample()
@@ -256,11 +256,11 @@ func top(w: float,p: bool) -> void:
 			track = "CLASS %s BOSS"%g.active_contract.series
 	event_text.text = track
 	var meters := clampf(g.car.distance,0.0,g.active_distance)
-	distance_text.text = "%d / %d m"%[floori(meters),roundi(g.active_distance)] if p else "%s  ·  %d/%d m"%[g.distance_label(g.active_distance),floori(meters),roundi(g.active_distance)]
+	distance_text.text = "%d / %d ft"%[floori(ImperialUnits.feet(meters)),roundi(ImperialUnits.feet(g.active_distance))] if p else "%s  ·  %d/%d ft"%[g.distance_label(g.active_distance),floori(ImperialUnits.feet(meters)),roundi(ImperialUnits.feet(g.active_distance))]
 	var total: float = g.player_finish if g.player_finish>0 else g.car.elapsed
 	elapsed_text.text = "%.3f s"%g.staging.elapsed(total) if g.staging.released[0] else "0.000 s"
 	var gap: float = g.car.distance-g.rival.distance
-	gap_text.text = "SOLO" if g.practice_mode else ("%+.1f m"%gap if absf(gap)>=.05 else "EVEN")
+	gap_text.text = "SOLO" if g.practice_mode else ("%+.1f ft"%ImperialUnits.feet(gap) if absf(gap)>=.05 else "EVEN")
 	gap_text.add_theme_color_override("font_color",DIM if g.practice_mode or absf(gap)<.05 else (GREEN if gap>0 else ORANGE))
 	var rail := Rect2(34,12+h-7,right-50,2)
 	progress.position = rail.position-status.position
@@ -383,12 +383,12 @@ func dashboard(w: float,p: bool) -> void:
 	if g.shift_flash>.46 and c.shift_message not in ["NEUTRAL","DRIVE"]: gear_status="↑ UPSHIFT" if c.shift_direction>0 else "↓ DOWNSHIFT"
 	elif c.queued_shift!=0: gear_status="QUEUED "+("+" if c.queued_shift>0 else "−")
 	centered(gear_status,gear_pos+Vector2(0,45),13,gear_color if g.shift_flash>.46 or perfect else DIM)
-	var speed: float = readings.speed if g.profile.reduced_motion else g.feedback.visual_mph*(1.609344 if g.profile.metric_speed else 1.0)
+	var speed: float = readings.speed if g.profile.reduced_motion else g.feedback.visual_mph
 	centered("%03d"%roundi(speed),speed_pos,44,WHITE,true)
-	centered("KM/H" if g.profile.metric_speed else "MPH",speed_pos+Vector2(0,24),15,BLUE)
+	centered("MPH",speed_pos+Vector2(0,24),15,BLUE)
 	g.buttons.append({"id":"race_units","rect":Rect2(speed_pos-Vector2(52,48),Vector2(104,92))})
 	if c.base_boost>0 or c.turbo_stage>0:
-		centered("%.2f BAR"%c.boost,speed_pos+Vector2(0,47),13,BLUE,true)
+		centered("%.1f PSI"%PressureUnits.psi(c.boost),speed_pos+Vector2(0,47),13,BLUE,true)
 	var left := 20.0
 	var right := w-286
 	var row := 940.0 if p else (612.0 if touch else 608.0)
@@ -402,12 +402,22 @@ func dashboard(w: float,p: bool) -> void:
 		var gate_y := row if p else (548.0 if touch else 590.0)
 		var gate_step := 78.0 if p else (96.0 if touch else 54.0)
 		var gate_h := 70.0 if p else (90.0 if touch else 48.0)
-		# Connected H gate, with numbered direct-selection pads on each branch.
-		g.draw_line(Vector2(left+cell*.5,gate_y+gate_step-5),Vector2(left+gate_width-cell*.5,gate_y+gate_step-5),Color(BLUE,.4),2,true)
+		var plate:=Rect2(left-6,gate_y-4,gate_width+8,gate_step+gate_h+8)
+		surface(plate,false,false,16)
+		var middle:=gate_y+gate_h*.5+gate_step*.5
+		var start:=Vector2(left+cell*.5-2.5,middle)
+		var end:=Vector2(left+gate_width-cell*.5-2.5,middle)
+		g.draw_line(start,end,Color("050b10"),12,true)
+		g.draw_line(start,end,Color("75838b"),2,true)
+		for col in columns:
+			var x:=left+(col+.5)*cell-2.5
+			g.draw_line(Vector2(x,gate_y+gate_h*.5),Vector2(x,gate_y+gate_step+gate_h*.5),Color("050b10"),12,true)
+			g.draw_line(Vector2(x,gate_y+gate_h*.5),Vector2(x,gate_y+gate_step+gate_h*.5),Color("75838b"),2,true)
 		for gear in range(1,count+1):
 			var col := int((gear-1)/2); var rr := (gear-1)%2
-			control("manual_%d"%gear,str(gear),Rect2(left+col*cell,gate_y+rr*gate_step,cell-5,gate_h),"",false,c.gear==gear)
-		control("manual_0","N",Rect2(24,842,92,72) if p else Rect2(left+gate_width+8,548 if touch else 590,112 if touch else 48,90 if touch else 48),"",false,c.gear==0)
+			gear_slot("manual_%d"%gear,str(gear),Rect2(left+col*cell,gate_y+rr*gate_step,cell-5,gate_h),c.gear==gear)
+		gear_slot("manual_0","N",Rect2(24,842,92,72) if p else Rect2(left+gate_width+8,548 if touch else 590,112 if touch else 48,90 if touch else 48),c.gear==0)
+
 	elif c.control_mode in ["paddle","sequential"]:
 		control("down","",Rect2(left,row,120,ch),"Q")
 		control("up","",Rect2(left+132,row,120,ch),"E",false,g.show_shift_guide and c.shift_recommended())
@@ -436,6 +446,17 @@ func dashboard(w: float,p: bool) -> void:
 	var available: bool = c.nitrous_remaining>.001 and nitrous_lock==""
 	control("nitrous","EMPTY" if nitrous_lock=="" else nitrous_lock,nr,"SPACE",false,c.nitrous_active,available)
 
+func gear_slot(id: String,label: String,rect: Rect2,selected: bool) -> void:
+	g.buttons.append({"id":id,"rect":rect,"disabled":false})
+	var center:=rect.get_center()
+	var radius:=minf(rect.size.x,rect.size.y)*(.39 if selected else .28)
+	var hovered:=rect.has_point(g.get_local_mouse_position())
+	g.draw_circle(center+Vector2(0,3),radius+2,Color("020609"),true,-1,true)
+	g.draw_circle(center,radius,Color("354954") if selected else Color("121d25"),true,-1,true)
+	g.draw_arc(center,radius,0,TAU,32,ORANGE if selected else (BLUE if hovered else Color("60727e")),2,true)
+	g.draw_arc(center,radius*.83,PI*1.05,PI*1.8,20,Color(1,1,1,.23),1.5,true)
+	centered(label,center+Vector2(0,7),24 if g.race_touch_layout() else 20,WHITE if selected else BLUE,true)
+
 func pause(w: float,p: bool) -> void:
 	g.draw_rect(Rect2(0,0,w,1300 if p else 760),Color("02080eed")); g.buttons.clear()
 	var x := w*.5-160
@@ -447,6 +468,6 @@ func pause(w: float,p: bool) -> void:
 	var height := 90 if large else 62
 	control("resume","RESUME",Rect2(x,y,320,height),"",true)
 	control("garage","END TEST" if g.practice_mode else "FORFEIT $%d / GARAGE"%g.active_stake,Rect2(x,y+step,320,height))
-	control("race_units","UNITS: "+("KM/H" if g.profile.metric_speed else "MPH"),Rect2(x,y+step*2,154,height))
+	control("race_units","UNITS: MPH",Rect2(x,y+step*2,154,height),"",false,false,false)
 	control("race_guide","GUIDE: "+("ON" if g.show_shift_guide else "OFF"),Rect2(x+166,y+step*2,154,height),"",false,g.show_shift_guide)
 	control("effects_quality","EFFECTS: "+["LOW","MEDIUM","HIGH"][g.profile.effects_quality],Rect2(x,y+step*3,320,height))

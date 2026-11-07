@@ -113,7 +113,7 @@ func update_driving_cues(dt: float, car: Drivetrain) -> void:
 		traction_lost = false
 		if car.running and car.speed>2.0: traction_recovered = .65
 
-func update(dt: float, car: Drivetrain, paused: bool, spec: Dictionary, origin: Vector2 = Vector2(210,410), reduced_motion: bool = false, pixels_per_meter: float = 12.0) -> void:
+func update(dt: float, car: Drivetrain, paused: bool, spec: Dictionary, origin: Vector2 = Vector2(210,410), reduced_motion: bool = false, pixels_per_meter: float = 32.0) -> void:
 	if paused: return
 	dt = clampf(dt,0.0,0.1)
 	update_driving_cues(dt,car)
@@ -163,10 +163,13 @@ func update(dt: float, car: Drivetrain, paused: bool, spec: Dictionary, origin: 
 		p.velocity.y -= dt*10.0
 		p.position += p.velocity*dt
 		if p.age >= p.life: smoke.remove_at(i)
-	if (not car.running and not car.staging_motion) or car.wheelspin < 0.08 or car.throttle < 0.35:
+	var slip_speed:=maxf(0.0,car.wheel_omega*car.tire_radius-car.speed)
+	if (not car.running and not car.staging_motion) or car.gear<=0 or car.wheelspin<.06 or slip_speed<.5:
 		_emission = 0.0
 		return
-	_emission += dt*float([12,20,32][clampi(quality,0,2)])*car.wheelspin
+	var severity:=sqrt(smoothstep(.5,12.0,slip_speed)*smoothstep(.06,.75,car.wheelspin))
+	var intensity:=.25+.75*severity
+	_emission += dt*float([18,32,48][clampi(quality,0,2)])*intensity
 	var count := mini(floori(_emission),4)
 	_emission -= count
 	for index in count:
@@ -181,4 +184,4 @@ func update(dt: float, car: Drivetrain, paused: bool, spec: Dictionary, origin: 
 		var y := origin.y+(anchor.y-lift+stock_radius*WheelVisuals.radius_scale(car,spec)*.96)*0.232*1.65
 		_particle_serial += 1
 		var spread := sin(_particle_serial*2.399)
-		smoke.append({"position":Vector2(x,y),"velocity":Vector2(-minf(260.0,40.0+car.speed*12.0)+spread*9.0,-18.0-spread*9.0),"age":0.0,"life":1.05+spread*.18,"strength":car.wheelspin*clampf(absf(car.wheel_omega*car.tire_radius-car.speed)/8.0,.15,1.0),"seed":spread})
+		smoke.append({"position":Vector2(x,y),"velocity":Vector2(-minf(520.0,40.0+car.speed*pixels_per_meter*.7)+spread*9.0,-18.0-spread*9.0),"age":0.0,"life":1.15+spread*.18,"strength":intensity,"stretch":1.0+minf(car.speed/70.0,.6),"seed":spread})

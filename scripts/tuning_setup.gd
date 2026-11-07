@@ -6,10 +6,10 @@ const EXTRA := {
 	"launch_enabled":["Launch control",0,1,1,1,"on/off"],
 	"throttle_gamma":["Pedal curve",0.65,1.6,0.1,1.0,"exponent"],
 	"tc_slip":["Traction slip target",0,0.25,0.025,0.0,"0 = off"],
-	"boost_rise":["Boost rise limit",0,4.0,0.25,0,"bar/s / 0 = mechanical"],
+	"boost_rise":["Boost rise limit",0,4.0,0.25,0,"PSI/s / 0 = mechanical"],
 	"clutch_rate":["Clutch engagement rate",0.5,1.5,0.1,1.0,"relative"],
 	"launch_gear":["Launch gear",1,2,1,1,"gear"],
-	"tire_pressure":["Tire pressure",18,40,1,32,"psi"],
+	"tire_pressure":["Tire pressure",18,40,1,32,"PSI"],
 	"diff_lock":["Differential preload",0.25,1.0,0.1,1.0,"fraction"],
 	"launch_damping":["Launch damping",.65,1.35,.05,1.0,"relative"]
 }

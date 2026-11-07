@@ -39,8 +39,8 @@ func hero(parent: Node,id: String,c: Drivetrain,look: Dictionary) -> void:
 	text(parent,str(GameCatalog.spec(id).name),30)
 	var view:=ui.vehicle(parent,id,c,look,220); view.size_flags_vertical=Control.SIZE_EXPAND_FILL
 	var assist: float=GameCatalog.spec(id).get("hybrid_kw",0)
-	text(parent,"%.0f %shp / %.0f Nm / %.0f kg / %.2f grip"%[c.peak_horsepower(),"ICE " if assist>0 else "",GarageHub.peak_torque(c),c.mass(),GarageHub.grip(c)],24)
-	if assist>0: text(parent,"Electric assist %.0f kW"%assist,24,AutomotiveUI.BLUE)
+	text(parent,"%.0f %shp / %.0f lb-ft / %.0f lb / %.2f grip"%[c.peak_horsepower(),"ICE " if assist>0 else "",ImperialUnits.torque(GarageHub.peak_torque(c)),ImperialUnits.pounds(c.mass()),GarageHub.grip(c)],24)
+	if assist>0: text(parent,"Electric assist %.0f hp"%(assist/.7457),24,AutomotiveUI.BLUE)
 func dealer(left: Node,right: Node,footer: Node) -> void:
 	var d: DealershipView=g.menu.dealer; var ids:=d.filtered()
 	if ids.is_empty(): return
@@ -83,7 +83,7 @@ func owned(left: Node,right: Node,footer: Node) -> void:
 	for i in mini(4,ids.size()-h.owned_page*4):
 		var item: String=ids[h.owned_page*4+i]
 		var b:=AutomotiveUI.vehicle_card(cards,g,item,h.vehicle(item),g.profile.appearance_for(item),"Equipped" if item==g.profile.vehicle_id else "Owned",id==item,156); ui.bind(b,"hub_pick_"+item)
-	text(footer,"Vs active %+.0f hp / %+.0f kg"%[c.peak_horsepower()-g.car.peak_horsepower(),c.mass()-g.car.mass()],24,AutomotiveUI.MUTED)
+	text(footer,"Vs active %+.0f hp / %+.0f lb"%[c.peak_horsepower()-g.car.peak_horsepower(),ImperialUnits.pounds(c.mass())-ImperialUnits.pounds(g.car.mass())],24,AutomotiveUI.MUTED)
 	if ids.size()>4: ui.button(footer,"hub_owned_prev","‹ Page"); ui.button(footer,"hub_owned_next","Page ›")
 	ui.button(footer,"tab_style","Customize"); ui.button(footer,"open_tuning","Test track")
 	ui.button(footer,"hub_equip","Equipped" if id==g.profile.vehicle_id else "Drive this car",true)

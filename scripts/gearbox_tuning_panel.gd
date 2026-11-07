@@ -11,6 +11,7 @@ var summary: Label
 var rows: Dictionary = {}
 var count := -1
 var panel_group := ""
+var sections: Dictionary = {}
 var build_id := ""
 var cached_state := ""
 var pointer := -1
@@ -62,6 +63,7 @@ func rail_style(color: Color) -> StyleBoxFlat:
 	return style
 
 func add_row(parent: Node,key: String,title: String,step: float) -> void:
+	if PressureUnits.is_pressure_setting(key): step=.5
 	var column:=VBoxContainer.new(); column.name=key; column.add_theme_constant_override("separation",1); parent.add_child(column)
 	var title_row:=HBoxContainer.new(); column.add_child(title_row)
 	var caption:=label(title_row,title,18); caption.size_flags_horizontal=Control.SIZE_EXPAND_FILL
@@ -72,7 +74,7 @@ func add_row(parent: Node,key: String,title: String,step: float) -> void:
 	slider.add_theme_stylebox_override("slider",rail_style(Color("293c4b")))
 	slider.add_theme_stylebox_override("grabber_area",rail_style(Color("4ca6c5")))
 	slider.add_theme_stylebox_override("grabber_area_highlight",rail_style(GlassPalette.BLUE))
-	slider.custom_minimum_size=Vector2(100,48); slider.step=step; slider.mouse_default_cursor_shape=Control.CURSOR_POINTING_HAND; controls.add_child(slider)
+	slider.custom_minimum_size=Vector2(100,48); slider.step=.1 if PressureUnits.is_pressure_setting(key) else step; slider.mouse_default_cursor_shape=Control.CURSOR_POINTING_HAND; controls.add_child(slider)
 	var plus:=Button.new(); plus.text="+"; plus.custom_minimum_size=Vector2(52,48); controls.add_child(plus)
 	var hint:=label(column,"",13); hint.modulate=GlassPalette.MUTED
 	rows[key]={"slider":slider,"minus":minus,"plus":plus,"value":number,"hint":hint,"column":column,"caption":caption,"title":title}
@@ -93,22 +95,30 @@ func reveal_row(column: Control) -> void:
 	if top<scroll.scroll_vertical: scroll.scroll_vertical=roundi(top)
 	elif bottom>scroll.scroll_vertical+scroll.size.y: scroll.scroll_vertical=roundi(bottom-scroll.size.y)
 
-func rebuild_group(group: String) -> void:
+func rebuild_group(_group: String) -> void:
 	rows.clear()
+	sections.clear()
 	for child in list.get_children(): list.remove_child(child); child.queue_free()
-	if group=="Gearbox":
-		add_row(list,"gear_count","Number of Gears",1); add_row(list,"final_drive","Final Drive Ratio",.01)
-	else:
-		for key in TuningSetup.GROUPS[group]:
+	for group_name in TuningSetup.GROUPS:
+		var section:=label(list,group_name.to_upper(),20)
+		section.modulate=GlassPalette.BLUE
+		sections[group_name]=section
+		if group_name=="Gearbox":
+			add_row(list,"gear_count","Number of Gears",1)
+			add_row(list,"final_drive","Final Drive Ratio",.01)
+			ratio_box=VBoxContainer.new()
+			ratio_box.add_theme_constant_override("separation",10)
+			list.add_child(ratio_box)
+			rebuild_ratios()
+			continue
+		for key in TuningSetup.GROUPS[group_name]:
 			if key=="boost_gear":
-				for index in g.car.gear_ratios.size(): add_row(list,"boost_slot_%d"%index,"Gear %d boost cap · bar"%(index+1),.01)
+				for index in g.car.gear_ratios.size(): add_row(list,"boost_slot_%d"%index,"Gear %d boost cap · PSI"%(index+1),.5)
 			else: add_row(list,key,lab.LABELS.get(key,TuningSetup.EXTRA.get(key,[key])[0]),float(TuningSetup.EXTRA[key][3]) if TuningSetup.EXTRA.has(key) else (50.0 if key=="launch_rpm" else (100.0 if key=="redline" else .01)))
-	ratio_box=VBoxContainer.new(); ratio_box.add_theme_constant_override("separation",10); list.add_child(ratio_box)
-	if group=="Gearbox": rebuild_ratios()
 
 func rebuild_ratios() -> void:
 	for key in rows.keys():
-		if key not in ["gear_count","final_drive"]: rows.erase(key)
+		if key.begins_with("ratio_") or key.begins_with("shift_") or key in ["firmness","launch_gear"]: rows.erase(key)
 	for child in ratio_box.get_children(): ratio_box.remove_child(child); child.queue_free()
 	for index in g.car.gear_ratios.size():
 		var ordinal: String=["1st","2nd","3rd"][index] if index<3 else str(index+1)+"th"
@@ -119,6 +129,10 @@ func rebuild_ratios() -> void:
 	if g.car.transmission_kind in ["automatic","drag"]: add_row(ratio_box,"launch_gear","Launch gear",1)
 
 func bounds(key: String) -> Vector2:
+	var limits:=stored_bounds(key)
+	return limits*PressureUnits.PSI_PER_BAR if PressureUnits.is_pressure_setting(key) else limits
+
+func stored_bounds(key: String) -> Vector2:
 	if TuningSetup.EXTRA.has(key):
 		var row: Array=TuningSetup.EXTRA[key]; return Vector2(float(row[1]),minf(float(row[2]),g.car.gear_ratios.size()) if key=="launch_gear" else float(row[2]))
 	if key=="launch_rpm": return Vector2(2200,minf(6000,g.car.redline_rpm-400))
@@ -143,6 +157,10 @@ func reason(key: String) -> String:
 	return lab.reason(key)
 
 func current(key: String) -> float:
+	var value:=stored_value(key)
+	return PressureUnits.psi(value) if PressureUnits.is_pressure_setting(key) else value
+
+func stored_value(key: String) -> float:
 	if key=="gear_count": return g.car.gear_ratios.size()
 	if key.begins_with("boost_slot_"):
 		var index:=int(key.trim_prefix("boost_slot_")); return g.car.boost_by_gear[index] if index<g.car.boost_by_gear.size() else g.car.boost_target(g.car.redline_rpm,1)
@@ -159,16 +177,17 @@ func sync() -> void:
 	position=Vector2(24,430) if p else Vector2(250,252)
 	size=Vector2(552,590) if p else Vector2(916,336 if short else 414)
 	var identity: String=g.profile.vehicle_id+":"+str(g.profile.hardware.transmission)
-	if identity!=build_id: finish_edit(); scroll.scroll_vertical=0; build_id=identity
+	if identity!=build_id or count!=g.car.gear_ratios.size() or sections.is_empty():
+		finish_edit()
+		build_id=identity
+		count=g.car.gear_ratios.size()
+		rebuild_group(group)
+		panel_group=""
 	if group!=panel_group:
-		finish_edit(); panel_group=group; rebuild_group(group); scroll.scroll_vertical=0
-		count=g.car.gear_ratios.size()
-	elif count!=g.car.gear_ratios.size():
-		count=g.car.gear_ratios.size()
-		if group=="Gearbox": rebuild_ratios()
-		else: rebuild_group(group)
-	heading.text=TransmissionCatalog.spec(str(g.profile.hardware.transmission)).name+" · Gearing" if group=="Gearbox" else group+" · Installed setup"
-	summary.text="Live speeds at %.0f RPM · scroll for all gears"%g.car.redline_rpm if group=="Gearbox" else "Live settings · saved on release"
+		panel_group=group
+		jump_to_section.call_deferred(group)
+	heading.text="Complete vehicle tuning"
+	summary.text="All installed settings · category buttons jump to a section"
 	for key in rows:
 		var row: Dictionary=rows[key]; var limits:=bounds(key); var value:=current(key)
 		var lock:=reason(key)
@@ -178,6 +197,8 @@ func sync() -> void:
 		row.minus.disabled=lock!="" or value<=limits.x+.0001
 		row.plus.disabled=lock!="" or value>=limits.y-.0001
 		row.value.text=str(roundi(value)) if key in ["gear_count","launch_rpm","redline"] or key.begins_with("shift_") else ("ON" if value>.5 else "OFF") if key=="launch_enabled" else "%.3f"%value
+		if PressureUnits.is_pressure_setting(key): row.value.text="%.1f PSI%s"%[value,"/s" if key=="boost_rise" else ""]
+		elif key=="tire_pressure": row.value.text="%.0f PSI"%value
 		row.minus.custom_minimum_size=Vector2(90,90) if short else (Vector2(68,68) if p else Vector2(52,44))
 		row.plus.custom_minimum_size=row.minus.custom_minimum_size
 		row.slider.custom_minimum_size.y=90 if short else (68 if p else 44)
@@ -185,16 +206,21 @@ func sync() -> void:
 		row.hint.text=lock
 		if lock=="" and key.begins_with("ratio_"):
 			var speed: float=g.car.redline_rpm/Drivetrain.RPM_PER_RAD*g.car.tire_radius/(value*g.car.final_drive)
-			row.caption.text=row.title+" · %.0f %s"%[speed*(3.6 if g.profile.metric_speed else Drivetrain.MPH_PER_MPS),"km/h" if g.profile.metric_speed else "mph"]
-			row.column.tooltip_text="%.0f km/h at redline · %.0f mph"%[speed*3.6,speed*Drivetrain.MPH_PER_MPS]
+			row.caption.text=row.title+" · %.0f %s"%[speed*Drivetrain.MPH_PER_MPS,"mph"]
+			row.column.tooltip_text="%.0f mph at redline"%(speed*Drivetrain.MPH_PER_MPS)
 		elif lock=="" and key=="gear_count": row.caption.text=row.title+" · %d–%d"%[int(limits.x),int(limits.y)]
 		elif lock=="" and key=="final_drive": row.column.tooltip_text="Lower: taller gearing · Higher: quicker acceleration"
 		row.hint.visible=lock!=""
+
+func jump_to_section(group: String) -> void:
+	await get_tree().process_frame
+	if group==panel_group and sections.has(group): scroll.scroll_vertical=roundi(sections[group].position.y)
 
 func apply(key: String,requested: float,persist: bool) -> void:
 	if reason(key)!="": return
 	var limits:=bounds(key)
 	var value:=clampf(snappedf(requested,1 if key=="gear_count" else .001),limits.x,limits.y)
+	if PressureUnits.is_pressure_setting(key): value=PressureUnits.from_psi(value)
 	var tuning_key:=key
 	var setting: Variant=value
 	if key.begins_with("ratio_"):

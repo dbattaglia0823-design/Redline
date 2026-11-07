@@ -194,7 +194,7 @@ func rival_appearance() -> Dictionary:
 func race_origins() -> Array[Vector2]:
 	var player := Vector2(70,335) if is_portrait() else Vector2(210,410)
 	# Actual distance gap controls position; a trailing rival must be able to leave the view.
-	var rival_origin := Vector2(player.x+(rival.distance-car.distance)*(6 if is_portrait() else 12),200 if is_portrait() else 310)
+	var rival_origin := Vector2(player.x+(rival.distance-car.distance)*TrackPresentation.pixels_per_meter(is_portrait()),200 if is_portrait() else 310)
 	return [player,rival_origin]
 
 func current_contract() -> Dictionary:
@@ -302,8 +302,8 @@ func _process(dt: float) -> void:
 		shift_notice_left = maxf(0.0,shift_notice_left-dt)
 		if screen == "race":
 			feedback.set_quality(profile.effects_quality); rival_feedback.set_quality(profile.effects_quality)
-			feedback.update(dt,car,false,GameCatalog.spec(profile.vehicle_id),race_origins()[0],profile.reduced_motion,6.0 if is_portrait() else 12.0)
-			rival_feedback.update(dt,rival,false,GameCatalog.spec(str(active_contract.get("model","kaze"))),race_origins()[1],profile.reduced_motion,6.0 if is_portrait() else 12.0)
+			feedback.update(dt,car,false,GameCatalog.spec(profile.vehicle_id),race_origins()[0],profile.reduced_motion,TrackPresentation.pixels_per_meter(is_portrait()))
+			rival_feedback.update(dt,rival,false,GameCatalog.spec(str(active_contract.get("model","kaze"))),race_origins()[1],profile.reduced_motion,TrackPresentation.pixels_per_meter(is_portrait()))
 	if is_instance_valid(sound):
 		sound.pump()
 	if tuning!=null and ((screen=="garage" and tab=="tuning") or screen=="practice_results"): tuning.update()
@@ -659,7 +659,7 @@ func action(id: String) -> void:
 	if id=="open_tuning": tuning.open(); return
 	if id.begins_with("tt_"): tuning.action(id); return
 	if id == "race_units":
-		profile.metric_speed = not profile.metric_speed; profile.save(); menu_dirty = true; return
+		profile.metric_speed = false; profile.save(); menu_dirty = true; return
 	if id == "race_guide":
 		show_shift_guide = not show_shift_guide; menu_dirty = true; return
 	if id=="sound_preview" and screen=="garage":
@@ -964,11 +964,13 @@ func draw_race() -> void:
 
 func draw_tire_smoke(cloud: RaceFeedback) -> void:
 	for particle in cloud.smoke:
-		var age: float = particle.age/particle.life
-		var radius: float = 6.0+smoothstep(0,1,age)*42.0
+		var age: float = clampf(particle.age/particle.life,0,1)
+		var radius: float = (5.0+smoothstep(0,1,age)*36.0)*(.8+particle.strength*.4)
 		var center: Vector2 = particle.position+(Vector2.ZERO if profile.reduced_motion else feedback.camera_offset)
 		var night: bool = TrackPresentation.spec(race_track_index()).night
-		TrackPresentation.glow(self,Rect2(center-Vector2.ONE*radius,Vector2.ONE*radius*2),Color(.48,.53,.58,sin(age*PI)*.32*particle.strength) if night else Color(.67,.65,.62,sin(age*PI)*.28*particle.strength))
+		var opacity: float = (.45+.55*sin(age*PI))*pow(1.0-age,.6)*particle.strength
+		var extent:=Vector2(radius*float(particle.get("stretch",1.0)),radius)
+		TrackPresentation.glow(self,Rect2(center-extent,extent*2),Color(.68,.73,.78,opacity*.48) if night else Color(.73,.71,.68,opacity*.44))
 
 func draw_results() -> void:
 	menu.draw_results()
@@ -1023,7 +1025,7 @@ func install_part(index: int, tier: int = -1) -> void:
 	else: show_toast("Already owned, or not enough credits")
 
 func distance_label(value: float) -> String:
-	if value < 150.0: return "100 M"
+	if value < 150.0: return "328 FT"
 	if value < 250.0: return "1/8 MILE"
 	if value > 600.0: return "1/2 MILE"
 	return "1/4 MILE"
@@ -1086,7 +1088,7 @@ func step_rival(dt: float) -> void:
 
 func draw_telemetry() -> void:
 	box(Rect2(30,94,475,236),Color(0.03,0.05,0.08,0.94),EDGE)
-	var lines := ["RPM %5d / IDEAL %5d / GEAR %s" % [int(car.rpm),int(car.wheel_rpm(car.gear)),"N" if car.gear == 0 else str(car.gear)],"TORQUE %+6.1f Nm / LOAD %.2f" % [car.engine_torque,car.engine_load],"CLUTCH %.2f / SLIP %+6.0f RPM" % [car.clutch_engagement,car.clutch_slip_rpm],"TIRE %+6.0f N / GRIP %6.0f N" % [car.traction_force,car.available_traction],"WHEEL %.1f RAD/S / SLIP %+.2f" % [car.wheel_omega,car.slip_ratio],"ACCEL %+.2f / BOOST %.2f BAR" % [car.acceleration,car.boost],"240 HZ / AUDIO UNDERRUNS %d" % sound.underruns]
+	var lines := ["RPM %5d / IDEAL %5d / GEAR %s" % [int(car.rpm),int(car.wheel_rpm(car.gear)),"N" if car.gear == 0 else str(car.gear)],"TORQUE %+6.1f lb-ft / LOAD %.2f" % [ImperialUnits.torque(car.engine_torque),car.engine_load],"CLUTCH %.2f / SLIP %+6.0f RPM" % [car.clutch_engagement,car.clutch_slip_rpm],"TIRE %+6.0f lbf / GRIP %6.0f lbf" % [ImperialUnits.force(car.traction_force),ImperialUnits.force(car.available_traction)],"WHEEL %.1f RAD/S / SLIP %+.2f" % [car.wheel_omega,car.slip_ratio],"ACCEL %+.2f ft/s² / BOOST %.1f PSI" % [ImperialUnits.feet(car.acceleration),PressureUnits.psi(car.boost)],"240 HZ / AUDIO UNDERRUNS %d" % sound.underruns]
 	lines.append("TURBINE %5d / CONVERTER SLIP %+.2f" % [int(car.turbine_omega*Drivetrain.RPM_PER_RAD),car.converter_slip])
 	lines.append("ENGINE %.0f C / TRANS %.0f C / WEAR %.3f" % [car.engine_temperature,car.transmission_temperature,car.component_wear])
 	for i in lines.size(): text_at(lines[i],44,119+i*23,14,GREEN if i == 6 else INK,true)

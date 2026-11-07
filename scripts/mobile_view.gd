@@ -45,7 +45,7 @@ func garage() -> void:
 	while size > 22 and g.font.get_string_size(str(spec.name),HORIZONTAL_ALIGNMENT_LEFT,-1,size).x > 340: size -= 1
 	g.fit_text(str(spec.name),24,150,340,size)
 	b("hub_owned","Change car",Rect2(390,108,186,68))
-	t(g.car.engine_label+"  /  "+str(spec.drive),24,193,21,g.MUTED)
+	t(ImperialUnits.engine_label(g.car.engine_label)+"  /  "+str(spec.drive),24,193,21,g.MUTED)
 	g.draw_workshop(Rect2(24,222,552,386))
 	t(PerformanceClasses.label(g.profile),42,259,18,g.MUTED)
 	g.draw_car(Vector2(30,370),2.3,g.PAINTS[g.profile.paint],0,g.profile.wheels,false,g.profile.vehicle_id,-1,.315,g.car)
@@ -66,7 +66,7 @@ func owned() -> void:
 	preview(h.owned_selection,162,h.vehicle(h.owned_selection))
 	var c := h.vehicle(h.owned_selection)
 	t(str(GameCatalog.spec(h.owned_selection).name),24,434,26)
-	t("VS ACTIVE  %+.0f HP / %+.0f NM / %+.0f KG" % [c.peak_horsepower()-g.car.peak_horsepower(),GarageHub.peak_torque(c)-GarageHub.peak_torque(g.car),c.mass()-g.car.mass()],24,473,17,g.MUTED)
+	t("VS ACTIVE  %+.0f HP / %+.0f lb-ft / %+.0f lb" % [c.peak_horsepower()-g.car.peak_horsepower(),ImperialUnits.torque(GarageHub.peak_torque(c))-ImperialUnits.torque(GarageHub.peak_torque(g.car)),ImperialUnits.pounds(c.mass())-ImperialUnits.pounds(g.car.mass())],24,473,17,g.MUTED)
 	for i in mini(4,ids.size()-h.owned_page*4):
 		var id: String = ids[h.owned_page*4+i]; var y := 498+i*94
 		b("hub_pick_"+id,"",Rect2(24,y,552,84),false,h.owned_selection == id)
@@ -86,13 +86,13 @@ func dyno() -> void:
 	header("LIVE DYNO")
 	b("hub_dyno_close","< RETURN",Rect2(24,80,552,72))
 	b("hub_hp","HP "+("ON" if g.menu.hub.show_hp else "OFF"),Rect2(24,180,264,68),false,g.menu.hub.show_hp)
-	b("hub_torque","NM "+("ON" if g.menu.hub.show_torque else "OFF"),Rect2(312,180,264,68),false,g.menu.hub.show_torque)
+	b("hub_torque","lb-ft "+("ON" if g.menu.hub.show_torque else "OFF"),Rect2(312,180,264,68),false,g.menu.hub.show_torque)
 	var c: Drivetrain = g.menu.hub.preview()
 	g.menu.hub.draw_graph(Rect2(82,332,460,360),g.car,c,20)
-	t("HP",24,300,24,g.ORANGE); t("NM",100,300,24,g.GREEN)
+	t("HP",24,300,24,g.ORANGE); t("lb-ft",100,300,24,g.GREEN)
 	t("Solid: installed / Dashed: preview",24,790,21,g.MUTED)
 	t("PEAK POWER  %d > %d HP" % [g.car.peak_horsepower(),c.peak_horsepower()],24,864,26,g.ORANGE)
-	t("PEAK TORQUE  %.0f > %.0f NM" % [GarageHub.peak_torque(g.car),GarageHub.peak_torque(c)],24,922,25,g.GREEN)
+	t("PEAK TORQUE  %.0f > %.0f lb-ft" % [ImperialUnits.torque(GarageHub.peak_torque(g.car)),ImperialUnits.torque(GarageHub.peak_torque(c))],24,922,25,g.GREEN)
 	t("Crankshaft / full throttle / no nitrous",24,1000,21,g.MUTED)
 	g.end_sheet()
 func upgrade() -> void:
@@ -138,7 +138,7 @@ func tuning() -> void:
 	if g.menu.hub.selected == 7:
 		b("tune_gear_prev","< GEAR",Rect2(24,354,264,68)); b("tune_gear_next","GEAR %d >" % (w.gear_index+1),Rect2(312,354,264,68))
 	var values := {"launch_rpm":g.car.launch_rpm,"redline":g.car.redline_rpm,"boost":g.car.boost_target(g.car.redline_rpm,1),"firmness":g.car.shift_firmness,"final_drive":g.car.final_drive,"ratio":g.car.gear_ratios[w.gear_index],"shift":g.car.shift_map[w.gear_index] if w.gear_index < g.car.shift_map.size() else 0}
-	var labels := {"launch_rpm":"Launch RPM","redline":"Rev limiter","boost":"Boost / bar","firmness":"Shift firmness","final_drive":"Final drive","ratio":"Gear ratio","shift":"Upshift RPM"}
+	var labels := {"launch_rpm":"Launch RPM","redline":"Rev limiter","boost":"Boost / PSI","firmness":"Shift firmness","final_drive":"Final drive","ratio":"Gear ratio","shift":"Upshift RPM"}
 	for i in keys.size():
 		var key: String = keys[i]; var y := 454+i*124
 		var enabled := w.tuning_enabled(key)
@@ -172,15 +172,15 @@ func dealer() -> void:
 	d.page = int(ids.find(id)/4)
 	var s := GameCatalog.spec(id); var c := d.factory(id)
 	preview(id,246,c,VehicleAppearance.normalize({},2,0))
-	g.fit_text(str(s.name),24,515,552,28); g.fit_text("PRICE CLASS "+GameCatalog.price_class(id)+" / "+str(s.year)+" / "+str(s.engine),24,551,552,21,g.MUTED)
+	g.fit_text(str(s.name),24,515,552,28); g.fit_text("PRICE CLASS "+GameCatalog.price_class(id)+" / "+str(s.year)+" / "+ImperialUnits.engine_label(str(s.engine)),24,551,552,21,g.MUTED)
 	stats(c,576)
 	b("shop_car_prev","<",Rect2(24,756,120,68)); b("shop_car_next",">",Rect2(456,756,120,68))
 	b("shop_details","LESS" if d.details else "DETAILS",Rect2(168,756,264,68))
 	if d.details:
 		t("%s / %d-SPEED %s" % [s.drive,c.gear_ratios.size(),c.transmission_kind.to_upper()],24,860,23,g.GREEN)
-		t("%.0f kW ELECTRIC ASSIST / %.1f kWh" % [s.hybrid_kw,s.hybrid_kwh] if float(s.get("hybrid_kw",0))>0 else "%.0f MS SHIFT / %.0f NM RATING" % [c.shift_duration*1000,c.input_capacity()],24,901,21,g.MUTED)
+		t("%.0f HP ELECTRIC ASSIST / %.0f BTU" % [s.hybrid_kw/.7457,s.hybrid_kwh*3412.141633] if float(s.get("hybrid_kw",0))>0 else "%.0f MS SHIFT / %.0f lb-ft RATING" % [c.shift_duration*1000,ImperialUnits.torque(c.input_capacity())],24,901,21,g.MUTED)
 	else:
-		t("VS ACTIVE %+.0f HP / %+.0f KG" % [c.peak_horsepower()-g.car.peak_horsepower(),c.mass()-g.car.mass()],24,860,23,g.GREEN)
+		t("VS ACTIVE %+.0f HP / %+.0f lb" % [c.peak_horsepower()-g.car.peak_horsepower(),ImperialUnits.pounds(c.mass())-ImperialUnits.pounds(g.car.mass())],24,860,23,g.GREEN)
 		var et := d.preview_estimate(id); t("1/4 EST %.2f S / %.1f MPH" % [et.time,et.mph] if not et.is_empty() else "MEASURING...",24,901,22,g.MUTED)
 	var owned: bool = g.profile.garage.has(id); var locked: bool = not owned and g.profile.level() < int(s.get("unlock_level",1))
 	var label: String = "LEVEL %d REQUIRED" % int(s.get("unlock_level",1)) if locked else ("DRIVING" if id == g.profile.vehicle_id else ("DRIVE THIS CAR" if owned else ("BUY / $%d" % int(s.price) if g.profile.credits >= int(s.price) else g.missing_credits(int(s.price)))))

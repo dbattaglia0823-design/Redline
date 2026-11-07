@@ -37,12 +37,12 @@ static func peak_torque(c: Drivetrain) -> float:
 	return peak
 static func grip(c: Drivetrain) -> float: return c.effective_grip()
 func stats(c: Drivetrain) -> Array:
-	return ["%d %sHP" % [c.peak_horsepower(),"ICE " if float(c._base_spec.get("hybrid_kw",0))>0 else ""],"%.0f NM" % peak_torque(c),"%.2f GRIP" % grip(c),"%.0f KG" % c.mass()]
+	return ["%d %sHP" % [c.peak_horsepower(),"ICE " if float(c._base_spec.get("hybrid_kw",0))>0 else ""],"%.0f lb-ft" % ImperialUnits.torque(peak_torque(c)),"%.2f GRIP" % grip(c),"%.0f lb" % ImperialUnits.pounds(c.mass())]
 func draw_garage() -> void:
 	var spec := GameCatalog.spec(g.profile.vehicle_id)
 	t("YOUR GARAGE",36,103,11,g.MUTED)
 	t(str(spec.name),36,143,34)
-	t(g.car.engine_label+"  /  "+str(spec.drive),38,170,15,g.MUTED)
+	t(ImperialUnits.engine_label(g.car.engine_label)+"  /  "+str(spec.drive),38,170,15,g.MUTED)
 	b("hub_owned","Change car",Rect2(986,116,180,48))
 	g.draw_workshop(Rect2(36,192,1130,354))
 	t(configuration_label()+" / "+PerformanceClasses.label(g.profile),60,221,13,g.MUTED)
@@ -58,10 +58,10 @@ func configuration_label() -> String:
 func draw_stat_strip(r: Rect2,columns: int = 4) -> void:
 	# Read-only telemetry has one quiet surface, rather than four button-like pills.
 	g.glass.surface(g,r,Color("151e29d9"),Color("ffffff0c"),18,false)
-	var values := ["%d" % g.car.peak_horsepower(),"%.0f" % peak_torque(g.car),"%.2f" % grip(g.car),"%.0f" % g.car.mass()]
+	var values := ["%d" % g.car.peak_horsepower(),"%.0f" % ImperialUnits.torque(peak_torque(g.car)),"%.2f" % grip(g.car),"%.0f" % ImperialUnits.pounds(g.car.mass())]
 	var labels := ["POWER","TORQUE","GRIP","WEIGHT"]
 	if float(g.car._base_spec.get("hybrid_kw",0))>0: labels[0]="ENGINE POWER"
-	var units := ["hp","Nm","","kg"]
+	var units := ["hp","lb-ft","","lb"]
 	var rows := ceili(4.0/columns)
 	var cell := r.size/Vector2(columns,rows)
 	var compact: bool = g.is_portrait()
@@ -120,7 +120,7 @@ func draw_owned() -> void:
 	var c := vehicle(owned_selection)
 	var values := stats(c)
 	for i in 4: t(values[i],615+(i%2)*270,502+int(i/2)*42,22)
-	t("VS ACTIVE   %+.0f HP / %+.0f NM / %+.0f KG" % [c.peak_horsepower()-g.car.peak_horsepower(),peak_torque(c)-peak_torque(g.car),c.mass()-g.car.mass()],615,590,14,g.MUTED)
+	t("VS ACTIVE   %+.0f HP / %+.0f lb-ft / %+.0f lb" % [c.peak_horsepower()-g.car.peak_horsepower(),ImperialUnits.torque(peak_torque(c))-ImperialUnits.torque(peak_torque(g.car)),ImperialUnits.pounds(c.mass())-ImperialUnits.pounds(g.car.mass())],615,590,14,g.MUTED)
 	b("hub_equip","ACTIVE CAR" if owned_selection == g.profile.vehicle_id else "DRIVE THIS CAR",Rect2(614,608,532,50),true)
 	b("hub_back","< GARAGE",Rect2(962,103,204,48))
 
@@ -175,7 +175,7 @@ func draw_graph(r: Rect2,current: Drivetrain,candidate: Drivetrain,label_size: i
 	var xmax := current.redline_rpm; var ymax := 1.0
 	for c in cars:
 		xmax = maxf(xmax,c.redline_rpm)
-		for p in curve(c): ymax = maxf(ymax,maxf(p.y,p.z))
+		for p in curve(c): ymax = maxf(ymax,maxf(p.y,ImperialUnits.torque(p.z)))
 	ymax = ceil(ymax/100.0)*100.0
 	for i in 5:
 		var y := r.end.y-r.size.y*i/4.0
@@ -189,7 +189,7 @@ func draw_graph(r: Rect2,current: Drivetrain,candidate: Drivetrain,label_size: i
 			if (line == 0 and not show_hp) or (line == 1 and not show_torque): continue
 			var projected := PackedVector2Array()
 			for point in points:
-				var value: float = point.y if line == 0 else point.z
+				var value: float = point.y if line == 0 else ImperialUnits.torque(point.z)
 				projected.append(Vector2(r.position.x+point.x/xmax*r.size.x,r.end.y-value/ymax*r.size.y))
 			var color: Color = LiquidGlass.PALETTE.orange if line == 0 else LiquidGlass.PALETTE.green
 			var width := 1.6 if r.size.y < 120 else 2.2
@@ -204,13 +204,13 @@ func draw_dyno_overlay() -> void:
 	t("LIVE DYNO / "+str(GameCatalog.spec(g.profile.vehicle_id).name),42,127,28)
 	b("hub_dyno_close","< RETURN",Rect2(966,100,198,48))
 	g.button("hub_hp","HP "+("ON" if show_hp else "OFF"),Rect2(42,160,230,48),false,show_hp)
-	g.button("hub_torque","TORQUE NM "+("ON" if show_torque else "OFF"),Rect2(286,160,230,48),false,show_torque)
+	g.button("hub_torque","TORQUE lb-ft "+("ON" if show_torque else "OFF"),Rect2(286,160,230,48),false,show_torque)
 	t("Solid: installed / Dashed: compatible preview",550,191,17,g.MUTED)
 	var c := preview()
 	draw_graph(Rect2(100,250,1010,300),g.car,c)
-	t("HP",48,240,16,g.ORANGE); t("NM",94,240,16,g.GREEN)
+	t("HP",48,240,16,g.ORANGE); t("lb-ft",94,240,16,g.GREEN)
 	t("PEAK POWER  %d > %d HP" % [g.car.peak_horsepower(),c.peak_horsepower()],60,640,24,g.ORANGE)
-	t("PEAK TORQUE  %.0f > %.0f NM" % [peak_torque(g.car),peak_torque(c)],620,640,24,g.GREEN)
+	t("PEAK TORQUE  %.0f > %.0f lb-ft" % [ImperialUnits.torque(peak_torque(g.car)),ImperialUnits.torque(peak_torque(c))],620,640,24,g.GREEN)
 	t("Steady full throttle / no nitrous / drivetrain and chassis effects shown in parts",60,696,16,g.MUTED)
 	g.end_sheet()
 func back() -> bool:

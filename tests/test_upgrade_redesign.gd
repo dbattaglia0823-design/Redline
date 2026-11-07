@@ -128,8 +128,9 @@ func check_ui() -> void:
 		await click("hw_buy")
 		check(game.profile.hardware.parts.has("gear_strength"),"UI did not install gearbox upgrade")
 		await click("system_tuning")
-		check(game.tab=="tuning" and game.tuning.gear_slider.has_area(),"Tuning did not open on the gearbox slider")
-		var point: Vector2=game.to_global(game.tuning.gear_slider.end-Vector2(12,30))
+		var gear_slider: HSlider=game.tuning.gearbox_panel.rows.gear_count.slider
+		check(game.tab=="tuning" and gear_slider.is_visible_in_tree(),"Tuning did not open on the gearbox slider")
+		var point: Vector2=gear_slider.get_global_transform()*Vector2(gear_slider.size.x-8,gear_slider.size.y*.5)
 		for pressed in [true,false]:
 			var event := InputEventScreenTouch.new()
 			event.index=4

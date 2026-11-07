@@ -67,7 +67,7 @@ func setup(owner_game: Node2D) -> void:
 	family_picker=OptionButton.new(); family_picker.add_item("Engine family: automatic")
 	for name in ["i4_na","i4_vtec","i4_turbo","h4_na","h4_turbo","i6_na","i6_turbo","vr6_na","v6_na","v6_tt","v8_cross","v8_flat","v8_super","v8_flat_tt","v10_na","h6_na","h6_turbo","w16_tt"]: family_picker.add_item(name)
 	family_picker.item_selected.connect(func(_i): rebuild()); advanced.add_child(family_picker)
-	for row in [["RPM",500,11500,850],["Throttle",0,1,.8],["Load",-1,1,.7],["Boost bar",0,3,0],["Gear",0,10,1],["Clutch engagement",0,1,1]]:
+	for row in [["RPM",500,11500,850],["Throttle",0,1,.8],["Load",-1,1,.7],["Boost PSI",0,PressureUnits.psi(3),0],["Gear",0,10,1],["Clutch engagement",0,1,1]]:
 		var line:=HBoxContainer.new(); advanced.add_child(line)
 		var label:=Label.new(); label.text=row[0]; label.custom_minimum_size.x=155; line.add_child(label)
 		var slider:=HSlider.new(); slider.min_value=row[1]; slider.max_value=row[2]; slider.step=1 if row[0] in ["RPM","Gear"] else .01; slider.value=row[3]; slider.size_flags_horizontal=Control.SIZE_EXPAND_FILL; slider.custom_minimum_size.y=48; line.add_child(slider); values[row[0]]=slider
@@ -198,7 +198,7 @@ func _process(dt: float) -> void:
 			preview.throttle=.92 if phase<6 else .02; preview.engine_load=.75 if phase<6 else -.35
 			preview.boost=preview.boost_target(preview.rpm,preview.throttle); preview.clutch_engagement=1
 		else:
-			preview.rpm=values.RPM.value; preview.throttle=values.Throttle.value; preview.engine_load=values.Load.value; preview.boost=values["Boost bar"].value; preview.clutch_engagement=values["Clutch engagement"].value
+			preview.rpm=values.RPM.value; preview.throttle=values.Throttle.value; preview.engine_load=values.Load.value; preview.boost=PressureUnits.from_psi(values["Boost PSI"].value); preview.clutch_engagement=values["Clutch engagement"].value
 		preview.gear=clampi(int(values.Gear.value),0,preview.gear_ratios.size())
 		preview.shift_left=.1 if flags.Shifting.button_pressed else 0
 		preview.fuel_cut=flags.Limiter.button_pressed or (flags.Shifting.button_pressed and preview.control_mode!="hpattern")
@@ -209,6 +209,6 @@ func _process(dt: float) -> void:
 	game.sound.preview_car=preview; game.sound.update_vehicle(preview,not playing)
 	game.sound.pump()
 	if recorder!=null and Time.get_ticks_msec()-recording_started>=20000: finish_recording()
-	status.text="%s / %.0f RPM / load %.2f / %.2f bar\nOriginal synthesized loops + live effects"%[EngineAudioProfile.resolve(preview).family,preview.rpm,preview.engine_load,preview.boost]
+	status.text="%s / %.0f RPM / load %.2f / %.1f PSI\nOriginal synthesized loops + live effects"%[EngineAudioProfile.resolve(preview).family,preview.rpm,preview.engine_load,PressureUnits.psi(preview.boost)]
 	if not last_recording.is_empty(): status.text+="\n"+last_recording
 

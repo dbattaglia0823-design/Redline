@@ -7,6 +7,12 @@ const TRACKS := [
 	{"name":"REDLINE PARK","art":"redline","night":false,"accent":"d95149"}]
 
 static func spec(index: int) -> Dictionary: return TRACKS[clampi(index,0,2)]
+
+static func pixels_per_meter(portrait: bool) -> float:
+	return 16.0 if portrait else 32.0
+
+static func marker_x(g: Node2D,meters: float,distance: float) -> float:
+	return g.race_origins()[0].x+354.0+(meters-distance)*pixels_per_meter(g.is_portrait())
 # Location artwork has its own bounded cache; it must not evict vehicle layers.
 static var _location := ""
 static var _art: Texture2D
@@ -33,7 +39,7 @@ static func panorama(g: Node2D,key: String,area: Rect2,scroll: float,portrait: b
 	var source := Rect2(0,0,_art.get_width(),_art.get_height())
 	var w := maxf(740 if portrait else 1120,source.size.x*area.size.y/source.size.y)
 	var camera: Vector2 = Vector2.ZERO if g.profile.reduced_motion else g.feedback.camera_offset
-	var travel := scroll*.23
+	var travel := scroll*.18
 	var first := floori(travel/w)
 	for i in range(-1,ceili(area.size.x/w)+1):
 		var x := i*w-fposmod(travel,w)
@@ -53,7 +59,7 @@ static func draw(g: Node2D) -> void:
 	var top := 116.0 if portrait else (120.0 if g.race_touch_layout() else 64.0)
 	var road := 300.0 if portrait else 347.0
 	var bottom := 580.0 if portrait else (546.0 if g.race_touch_layout() else 580.0)
-	var ppm := 6.0 if portrait else 12.0
+	var ppm := pixels_per_meter(portrait)
 	var distance: float = g.car.distance if g.profile.reduced_motion else g.feedback.visual_distance
 	var scroll := distance*ppm
 	var location := spec(g.race_track_index())
@@ -75,18 +81,28 @@ static func draw(g: Node2D) -> void:
 	# Close apron and drainage cover provide another depth cue without hiding cars.
 	g.draw_rect(Rect2(0,bottom-17,width,17),Color("172028") if night else Color("414343"))
 	for i in range(-1,ceili(width/192)+1):
-		var x := i*192-fposmod(scroll*1.08,192)
+		var x := i*192-fposmod(scroll*1.20,192)
 		g.draw_line(Vector2(x,bottom-15),Vector2(x+130,bottom-15),Color("788080"),1)
 		if g.profile.effects_quality > 0:
 			for slot in 5: g.draw_line(Vector2(x+slot*7,bottom-11),Vector2(x+slot*7-3,bottom-4),Color("10171b"),3)
-	if g.profile.effects_quality == 2 and g.car.speed > 35 and not g.profile.reduced_motion:
-		for i in 10:
-			var x := fposmod(i*191-scroll*1.08,width+180)-120
-			var y := bottom-24-float(i%3)*5
-			g.draw_line(Vector2(x,y),Vector2(x+minf(g.car.speed*.5,48),y),Color(.8,.85,.88,.065),1,true)
-	var origin: Vector2 = g.race_origins()[0]
-	var start_x := origin.x+354.0-scroll
-	var finish_x: float = origin.x+354.0+g.active_distance*ppm-scroll
+	# Reflective apron posts give the eye a fast, close reference against the
+	# slower facility behind the wall. Their positions depend only on travel.
+	for i in range(-1,ceili(width/280)+1):
+		var x:=i*280-fposmod(scroll*1.35,280)
+		g.draw_rect(Rect2(x,bottom-30,5,28),Color("222b30"))
+		g.draw_rect(Rect2(x,bottom-28,5,9),accent)
+		g.draw_rect(Rect2(x,bottom-18,5,4),Color("dadfd8"))
+	if g.profile.effects_quality>0 and not g.profile.reduced_motion:
+		var intensity:=smoothstep(5.0,55.0,g.car.speed)
+		var count:=18 if g.profile.effects_quality==2 else 9
+		var length:=clampf(g.car.speed*ppm*.10,12.0,180.0)
+		for i in count:
+			var x:=fposmod(i*191-scroll*1.35,width+340)-220
+			var y:=bottom-35-float(i%5)*7
+			g.draw_line(Vector2(x,y),Vector2(x+length,y),Color(.83,.87,.89,intensity*.15),1.5,true)
+	distance_markers(g,distance,road,accent,width)
+	var start_x := marker_x(g,0,distance)
+	var finish_x := marker_x(g,g.active_distance,distance)
 	if start_x > -1400 and start_x < width+100:
 		g.draw_rect(Rect2(start_x-95,road+4,95,bottom-road-21),Color(0,0,0,.22))
 		for lane in 2:
@@ -106,6 +122,16 @@ static func draw(g: Node2D) -> void:
 	g.draw_rect(Rect2(0,bottom-2,width,3),accent)
 	if g.feedback.finish_flash>.02 and g.profile.effects_quality>0 and not g.profile.reduced_motion:
 		AutomotiveUI.glow(g,Rect2(finish_x-100,road-42,200,bottom-road+75),Color(accent,g.feedback.finish_flash*.40))
+
+static func distance_markers(g: Node2D,distance: float,road: float,accent: Color,width: float) -> void:
+	for feet in range(200,roundi(ImperialUnits.feet(g.active_distance))-80,200):
+		var meters:=feet/3.280839895
+		var x:=marker_x(g,meters,distance)
+		if x < -60 or x > width+60: continue
+		g.draw_rect(Rect2(x,road-50,3,30),Color("879293"))
+		g.draw_rect(Rect2(x-36,road-73,76,26),Color("101e28"))
+		g.draw_line(Vector2(x-36,road-73),Vector2(x+40,road-73),accent,2,true)
+		g.text_at("%d FT"%feet,x-29,road-54,14,Color("d9e2e2"),true)
 
 static func tree(g: Node2D,p: Vector2,s: float) -> void:
 	g.draw_rect(Rect2(p+Vector2(29,4)*s,Vector2(6,175)*s),Color("222e37"))

@@ -3,7 +3,7 @@ extends SceneTree
 # review; existing staging/physics tests cover actual driving and timing.
 var game: Node2D
 var failures := 0
-const OUTPUT := "res://validation/track_environments/"
+const OUTPUT := "res://.qa/race_speed/"
 func check(ok: bool,message: String) -> void:
 	if not ok: failures += 1; push_error(message)
 func _initialize() -> void: call_deferred("run")
@@ -15,7 +15,9 @@ func capture(name: String) -> void:
 func prepare(index: int) -> void:
 	game.go_garage(); game.profile = DriverProfile.new(); game.profile.xp = 20000
 	game.event_index = index; game.selected_opponent = 0; game.wager = 0
+	game.career_board.select_series("OPEN")
 	RosterTest.ready(game); game.start_race()
+	game.active_contract.track_index=index
 	game.feedback.reset(game.car); game.rival_feedback.reset(game.rival)
 func run() -> void:
 	DirAccess.make_dir_recursive_absolute(OUTPUT)
@@ -23,6 +25,15 @@ func run() -> void:
 	game.set_process(false); game.set_physics_process(false)
 	for track in 3:
 		prepare(track)
+		var finish_distance: float=game.active_distance
+		for portrait in [false,true]:
+			root.size=Vector2i(390,844) if portrait else Vector2i(1200,760)
+			game.sync_menu_size()
+			var anchor:=TrackPresentation.marker_x(game,0,0)
+			check(is_equal_approx(TrackPresentation.marker_x(game,finish_distance,finish_distance),anchor),"Finish does not align at race distance")
+			check(is_equal_approx(TrackPresentation.marker_x(game,50,0)-anchor,50*TrackPresentation.pixels_per_meter(portrait)),"Distance boards use a different scale")
+			check(TrackPresentation.pixels_per_meter(portrait)>(6 if portrait else 12),"Visual strip travel was not extended")
+		root.size=Vector2i(1200,760)
 		for phase in ["staging","acceleration","high_speed"]:
 			var speed: float = {"staging":0.0,"acceleration":14.0,"high_speed":48.0}[phase]
 			var distance: float = {"staging":0.0,"acceleration":24.0,"high_speed":280.0}[phase]

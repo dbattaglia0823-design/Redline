@@ -224,7 +224,10 @@ func configure_vehicle(spec: Dictionary) -> void:
 		for ratio in supplied: gear_ratios.append(clampf(float(ratio),0.3,6.0))
 
 func mass() -> float:
-	return maxf(350.0,base_mass-weight_stage*65.0+trans_mass_delta+extra_mass)
+	return maxf(350.0,base_mass-weight_stage*65.0+trans_mass_delta+extra_mass-brake_weight_saving())
+
+func brake_weight_saving() -> float:
+	return [0.0,4.0,9.0,15.0][clampi(brake_stage,0,3)]
 
 func nitrous_capacity() -> float:
 	return NITROUS_KIT_CAPACITY+nitrous_stage*1.5 if has_nitrous() else 0.0

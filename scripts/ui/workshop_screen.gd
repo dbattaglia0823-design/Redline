@@ -85,7 +85,7 @@ class BoostPlot extends Control:
 		for line in 3:
 			var y:=area.end.y-area.size.y*line/2.0
 			draw_line(Vector2(area.position.x,y),Vector2(area.end.x,y),Color("344657"))
-			draw_string(AutomotiveUI.NUMBERS,Vector2(0,y+4),"%.1f"%(pressure_max*line/2.0),HORIZONTAL_ALIGNMENT_LEFT,-1,11,AutomotiveUI.MUTED)
+			draw_string(AutomotiveUI.NUMBERS,Vector2(0,y+4),"%.1f"%PressureUnits.psi(pressure_max*line/2.0),HORIZONTAL_ALIGNMENT_LEFT,-1,11,AutomotiveUI.MUTED)
 		draw_string(AutomotiveUI.NUMBERS,Vector2(area.position.x,area.end.y+16),"0 RPM",HORIZONTAL_ALIGNMENT_LEFT,-1,11,AutomotiveUI.MUTED)
 		draw_string(AutomotiveUI.NUMBERS,Vector2(area.end.x-62,area.end.y+16),"%d RPM"%int(rpm_max),HORIZONTAL_ALIGNMENT_LEFT,-1,11,AutomotiveUI.MUTED)
 		for car in [current,candidate]:
@@ -103,7 +103,7 @@ class DynoPlot extends Control:
 		var bounds:=Rect2(36,12,size.x-46,size.y-40)
 		if bounds.size.x<10: return
 		var maximum: float=maxf(1,maxf(current.peak_horsepower(),candidate.peak_horsepower()))
-		maximum=maxf(maximum,maxf(GarageHub.peak_torque(current),GarageHub.peak_torque(candidate)))*1.1
+		maximum=maxf(maximum,maxf(ImperialUnits.torque(GarageHub.peak_torque(current)),ImperialUnits.torque(GarageHub.peak_torque(candidate))))*1.1
 		for i in 4:
 			var y: float=bounds.end.y-bounds.size.y*i/3
 			draw_line(Vector2(bounds.position.x,y),Vector2(bounds.end.x,y),Color("ffffff10"),1)
@@ -117,6 +117,7 @@ class DynoPlot extends Control:
 					var rpm: float=lerpf(build.idle_rpm,build.redline_rpm,float(i)/64)
 					var value: float=build.full_engine_torque(rpm)
 					if not torque: value=value*rpm/7127.0
+					else: value=ImperialUnits.torque(value)
 					points.append(Vector2(bounds.position.x+bounds.size.x*rpm/limit,bounds.end.y-bounds.size.y*value/maximum))
 				var color:=Color("a9ced5") if torque else AutomotiveUI.ORANGE
 				if pass_index==0:
@@ -446,9 +447,9 @@ func garage_stats(parent: Node,columns: int) -> void:
 	grid.add_theme_constant_override("v_separation",14)
 	parent.add_child(grid)
 	AutomotiveUI.stat(grid,"ENGINE POWER" if float(game.car._base_spec.get("hybrid_kw",0))>0 else "POWER","%.0f"%game.car.peak_horsepower(),"hp")
-	AutomotiveUI.stat(grid,"TORQUE","%.0f"%GarageHub.peak_torque(game.car),"Nm")
+	AutomotiveUI.stat(grid,"TORQUE","%.0f"%ImperialUnits.torque(GarageHub.peak_torque(game.car)),"lb-ft")
 	AutomotiveUI.stat(grid,"GRIP","%.2f"%GarageHub.grip(game.car),"")
-	AutomotiveUI.stat(grid,"WEIGHT","%.0f"%game.car.mass(),"kg")
+	AutomotiveUI.stat(grid,"WEIGHT","%.0f"%ImperialUnits.pounds(game.car.mass()),"lb")
 
 func catalog_scroll(parent: Node, label: String, offset: int) -> ScrollContainer:
 	var scroll:=ScrollContainer.new()
@@ -503,7 +504,7 @@ func workshop_hero(parent: Node,candidate: Drivetrain,minimum_width: float,heigh
 			var animation:=sweep.create_tween()
 			animation.tween_property(sweep,"phase",1.0,.58).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
 			animation.tween_callback(sweep.queue_free)
-	hero.add_child(AutomotiveUI.label("%.0f HP / %.0f NM / %.2f GRIP"%[candidate.peak_horsepower(),GarageHub.peak_torque(candidate),GarageHub.grip(candidate)],17,AutomotiveUI.INK,true))
+	hero.add_child(AutomotiveUI.label("%.0f HP / %.0f lb-ft / %.2f GRIP"%[candidate.peak_horsepower(),ImperialUnits.torque(GarageHub.peak_torque(candidate)),GarageHub.grip(candidate)],17,AutomotiveUI.INK,true))
 	return hero
 
 func overview(body: VBoxContainer) -> void:
@@ -515,6 +516,7 @@ func overview(body: VBoxContainer) -> void:
 	var tools:=AutomotiveUI.row(hero,8)
 	button(tools,"hub_dyno","Live Dyno")
 	button(tools,"hub_test","Test build")
+	button(tools,"open_tuning","Tuning")
 	var catalog:=AutomotiveUI.column(layout,5 if short_catalog() else 10)
 	catalog.size_flags_vertical=Control.SIZE_EXPAND_FILL
 	search=LineEdit.new()
@@ -785,7 +787,7 @@ func system_shop(body: VBoxContainer, transmission: bool) -> void:
 		metrics.append(UpgradeStudio.metric("Boost response",candidate_spool(installed),candidate_spool(candidate),"s",2))
 	for metric in metrics: AutomotiveUI.metric_row(details,metric,studio.metric_color(metric))
 	if not transmission:
-		details.add_child(AutomotiveUI.label("BOOST CURVE  /  INSTALLED + PREVIEW  /  BAR",12,AutomotiveUI.BLUE,true))
+		details.add_child(AutomotiveUI.label("BOOST CURVE  /  INSTALLED + PREVIEW  /  PSI",12,AutomotiveUI.BLUE,true))
 		var boost_graph:=BoostPlot.new()
 		boost_graph.current=installed
 		boost_graph.candidate=candidate
@@ -934,6 +936,7 @@ func comparison_rail(parent: Node,title: String,before: Variant,after: Variant,u
 	if before==null or after==null:
 		cell.add_child(AutomotiveUI.label("Measuring…" if waiting else "No result",14,AutomotiveUI.MUTED))
 		return
+	before=ImperialUnits.value(float(before),unit); after=ImperialUnits.value(float(after),unit); unit=" "+ImperialUnits.unit(unit) if unit!="" else ""
 	var format: String="%."+str(precision)+"f"
 	var delta: float=float(after)-float(before)
 	var ink:=AutomotiveUI.BLUE
@@ -955,7 +958,7 @@ func comparison_rail(parent: Node,title: String,before: Variant,after: Variant,u
 func dyno_preview(parent: Node,candidate: Drivetrain) -> void:
 	var legend:=AutomotiveUI.row(parent,8)
 	legend.add_child(AutomotiveUI.label("DYNO / HP",13,AutomotiveUI.ORANGE,true))
-	legend.add_child(AutomotiveUI.label("TORQUE / NM",13,AutomotiveUI.BLUE,true))
+	legend.add_child(AutomotiveUI.label("TORQUE / lb-ft",13,AutomotiveUI.BLUE,true))
 	var graph:=DynoPlot.new()
 	graph.current=game.car
 	graph.candidate=candidate
