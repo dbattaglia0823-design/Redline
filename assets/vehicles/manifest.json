@@ -60,14 +60,12 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
       "stance",
       "spoiler",
       "headlight",
-      "taillight",
-      "decal"
+      "taillight"
     ]
   },
   "nori": {
@@ -131,14 +129,12 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
       "stance",
       "spoiler",
       "headlight",
-      "taillight",
-      "decal"
+      "taillight"
     ]
   },
   "aster": {
@@ -202,14 +198,12 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
       "stance",
       "spoiler",
       "headlight",
-      "taillight",
-      "decal"
+      "taillight"
     ]
   },
   "vanta": {
@@ -273,14 +267,12 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
       "stance",
       "spoiler",
       "headlight",
-      "taillight",
-      "decal"
+      "taillight"
     ]
   },
   "mika": {
@@ -344,14 +336,12 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
       "stance",
       "spoiler",
       "headlight",
-      "taillight",
-      "decal"
+      "taillight"
     ]
   },
   "brindle": {
@@ -415,14 +405,12 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
       "stance",
       "spoiler",
       "headlight",
-      "taillight",
-      "decal"
+      "taillight"
     ]
   },
   "comet": {
@@ -486,14 +474,12 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
       "stance",
       "spoiler",
       "headlight",
-      "taillight",
-      "decal"
+      "taillight"
     ]
   },
   "rikka": {
@@ -557,14 +543,12 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
       "stance",
       "spoiler",
       "headlight",
-      "taillight",
-      "decal"
+      "taillight"
     ]
   },
   "velora": {
@@ -628,14 +612,12 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
       "stance",
       "spoiler",
       "headlight",
-      "taillight",
-      "decal"
+      "taillight"
     ]
   },
   "solenne": {
@@ -699,14 +681,12 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
       "stance",
       "spoiler",
       "headlight",
-      "taillight",
-      "decal"
+      "taillight"
     ]
   },
   "aurora": {
@@ -770,14 +750,12 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
       "stance",
       "spoiler",
       "headlight",
-      "taillight",
-      "decal"
+      "taillight"
     ]
   },
   "hammer": {
@@ -841,14 +819,12 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
       "stance",
       "spoiler",
       "headlight",
-      "taillight",
-      "decal"
+      "taillight"
     ]
   },
   "miata": {
@@ -912,11 +888,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -996,11 +970,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -1080,11 +1052,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -1164,11 +1134,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -1248,11 +1216,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -1332,11 +1298,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -1416,11 +1380,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -1500,11 +1462,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -1584,11 +1544,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -1668,11 +1626,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -1752,11 +1708,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -1836,11 +1790,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -1920,11 +1872,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -2008,11 +1958,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -2092,11 +2040,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -2176,11 +2122,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -2260,11 +2204,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -2344,11 +2286,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -2428,11 +2368,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -2512,11 +2450,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -2596,11 +2532,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -2684,11 +2618,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -2768,11 +2700,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -2856,11 +2786,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -2940,11 +2868,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -3028,11 +2954,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -3116,11 +3040,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -3200,11 +3122,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -3288,11 +3208,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [
@@ -3376,11 +3294,9 @@
       "finish",
       "design",
       "rim",
-      "sidewall",
       "caliper",
       "tint",
-      "stance",
-      "decal"
+      "stance"
     ],
     "art_status": "New original reference illustration; model/trim artistic review required",
     "stock_wheels": [

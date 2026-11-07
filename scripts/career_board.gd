@@ -49,7 +49,7 @@ func draw() -> void:
 	else: g.draw_header(); text("Class championships",36,127,28)
 	if not picker: button("cb_back","Championships",Rect2(24,80,264,68) if p else Rect2(952,92,214,90) if g.race_touch_layout() else Rect2(952,103,214,48))
 	var engine_class:=GameCatalog.engine_class(g.profile.vehicle_id,g.profile.hardware)
-	g.fit_text("Price %s / Engine %s"%[GameCatalog.price_class(g.profile.vehicle_id),engine_class],312 if p else 38,121 if p else 157,264 if p else 870,19 if p else 15,g.MUTED)
+	g.fit_text("Engine class %s"%engine_class,312 if p else 38,121 if p else 157,264 if p else 870,19 if p else 15,g.MUTED)
 	if picker: draw_classes(p)
 	else: draw_rival(p)
 	g.draw_navigation()

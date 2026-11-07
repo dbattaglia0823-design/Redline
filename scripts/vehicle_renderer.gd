@@ -32,10 +32,9 @@ static func draw(g: Node2D,origin: Vector2,size: float,model: String,look: Dicti
 	draw_wheels(g,base,size,s,model,d,look,car,animate,quality,light,false,studio)
 	g.draw_set_transform(body+pivot,pitch)
 	layer(g,str(d.body) % [int(look.paint),["gloss","matte","metallic"][int(look.finish)]],pivot,s,light)
-	if int(look.decal) > 0: layer(g,str(d.layers[["stripe","number"][int(look.decal)-1]]),pivot,s,light)
 	var baked_layers := int(d.get("art_pipeline_version",0))>=2
 	if not baked_layers: layer(g,d.layers.glass,pivot,s,light)
-	if int(look.tint) > 0: layer(g,d.layers.tint,pivot,s,Color(1,1,1,[0.0,.32,.65][int(look.tint)]))
+	if int(look.tint) > 0: layer(g,d.layers.tint,pivot,s,Color(1,1,1,VehicleAppearance.TINT_OPACITY[int(look.tint)]))
 	if not baked_layers: layer(g,d.layers.lamps,pivot,s)
 	# Lamps are part of the authored body; do not draw generic light bars over them.
 	if int(look.spoiler) == 0 and not baked_layers: layer(g,d.layers.spoiler,pivot,s)
@@ -93,21 +92,14 @@ static func draw_wheels(g: Node2D,base: Vector2,size: float,s: float,model: Stri
 		var state := WheelVisuals.motion(car,driven,quality) if car != null and animate else {"omega":0.0,"angle":0.0,"spoke_angle":0.0,"blur":0.0,"sweep":0.0}
 		var center:=base+VehicleAppearance.point(d.rear if index == 0 else d.front)*s
 		var radius:=float(radii[index])*s*radius_factor
-		if d.has("stock_wheels") and int(look.design)==0 and int(look.rim)==0 and int(look.caliper)==0 and int(look.sidewall)==0:
-			if reflections_only:
-				var rim_radius: float = float(d.get("rim_radius",[float(d.radius)*.70,float(d.radius)*.70])[index])*s*radius_factor
-				if studio and quality>0: WheelVisuals.draw_studio_reflection(g,center,rim_radius,light)
-				WheelVisuals.draw_rim_reflection(g,center,rim_radius,state,quality,light)
-				continue
-			var texture:=VehicleAppearance.texture(str(d.stock_wheels[index]))
-			if texture:
-				# Texture includes a two-pixel transparent gutter. Do not shrink the
-				# original tire into the cutout, and never rotate its baked lighting.
-				var extent := radius+2*s*radius_factor
-				g.draw_texture_rect(texture,Rect2(center-Vector2.ONE*extent,Vector2.ONE*extent*2),false,light)
-		elif not reflections_only: WheelVisuals.draw_wheel(g,center,radius,size,int(look.rim),state,quality,look,studio,light)
-		elif studio and quality>0: WheelVisuals.draw_studio_reflection(g,center,radius*.75,light)
-		if not reflections_only and car!=null and car.tire_sidewall_mark>0 and int(look.sidewall)==0:
+		var rim_radius: float = float(d.get("rim_radius",[float(d.radius)*.70,float(d.radius)*.70])[index])*s*radius_factor
+		if not reflections_only:
+			WheelVisuals.draw_vehicle_wheel(g,center,radius,state,quality,look,d,index,light)
+		else:
+			if studio and quality>0: WheelVisuals.draw_studio_reflection(g,center,rim_radius,light)
+			if int(look.design)==0 and int(look.caliper)==0: WheelVisuals.draw_rim_reflection(g,center,rim_radius,state,quality,light)
+
+		if not reflections_only and car!=null and car.tire_sidewall_mark>0:
 			WheelVisuals.draw_compound_mark(g,center,radius,car.tire_sidewall_mark,state,light)
 
 

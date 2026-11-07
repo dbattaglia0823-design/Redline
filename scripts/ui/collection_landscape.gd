@@ -11,7 +11,7 @@ func text(parent: Node,value: String,points: int=24,color: Color=AutomotiveUI.IN
 func build() -> void:
 	var body:=ui.container(Rect2(24,14,ui.size.x-48,614)); body.add_theme_constant_override("separation",12)
 	if g.tab=="dealer" and g.menu.dealer.class_picker:
-		var heading:=AutomotiveUI.row(body); text(heading,"REDLINE / Choose a price class",32); text(heading,"$%d"%g.profile.credits,26,AutomotiveUI.MUTED)
+		var heading:=AutomotiveUI.row(body); text(heading,"REDLINE / Choose an engine class",32); text(heading,"$%d"%g.profile.credits,26,AutomotiveUI.MUTED)
 		# Reuse the existing class-card builder, dropping its repeated heading.
 		ui.classes(body)
 		body.get_child(1).hide(); body.get_child(2).hide()
@@ -26,7 +26,7 @@ func build() -> void:
 	if g.tab=="dealer":
 		ui.button(top,"shop_classes","Classes"); ui.button(top,"shop_details","Showroom" if g.menu.dealer.details else "Details")
 	elif g.tab=="owned":
-		ui.button(top,"owned_filter","Price class: "+("All" if g.menu.hub.owned_filter==0 else GameCatalog.PRICE_CLASSES[g.menu.hub.owned_filter-1]))
+		ui.button(top,"owned_filter","Engine class: "+("All" if g.menu.hub.owned_filter==0 else PerformanceClasses.ORDER[g.menu.hub.owned_filter-1]))
 		ui.button(top,"owned_sort","Quickest" if g.menu.hub.owned_sort else "Collection order"); ui.button(top,"hub_back","Garage")
 	var main:=AutomotiveUI.row(body,24); main.size_flags_vertical=Control.SIZE_EXPAND_FILL
 	var left:=AutomotiveUI.column(main,8); left.size_flags_stretch_ratio=1.15
@@ -57,7 +57,7 @@ func dealer(left: Node,right: Node,footer: Node) -> void:
 			var state: String="Equipped" if item==g.profile.vehicle_id else ("Owned" if g.profile.garage.has(item) else "$%d"%GameCatalog.spec(item).price)
 			var b:=AutomotiveUI.vehicle_card(cards,g,item,d.factory(item),VehicleAppearance.normalize({},2,0),state,item==id,148); ui.bind(b,"dealer_%d"%GameCatalog.CAR_IDS.find(item))
 		var et:=d.preview_estimate(id)
-		text(right,"Price class %s / %s / %d-speed %s"%[GameCatalog.price_class(id),spec.drive,car.gear_ratios.size(),car.transmission_kind],24,AutomotiveUI.BLUE)
+		text(right,"Engine class %s / %s / %d-speed %s"%[GameCatalog.engine_class(id),spec.drive,car.gear_ratios.size(),car.transmission_kind],24,AutomotiveUI.BLUE)
 		text(right,"1/4 est %.2f s / %.1f mph"%[et.time,et.mph] if not et.is_empty() else "Measuring…",24)
 	var owned: bool=g.profile.garage.has(id)
 	text(footer,"Owned" if owned else "$%d"%spec.price,30,AutomotiveUI.ORANGE)
@@ -71,14 +71,14 @@ func dealer(left: Node,right: Node,footer: Node) -> void:
 		ui.button(footer,"shop_prev","‹ Page"); ui.button(footer,"shop_next","Page ›")
 func owned(left: Node,right: Node,footer: Node) -> void:
 	var h: GarageHub=g.menu.hub; var ids:=h.owned_ids()
-	if ids.is_empty(): text(left,"No owned cars in this price class",26); return
+	if ids.is_empty(): text(left,"No owned cars in this engine class",26); return
 	if not ids.has(h.owned_selection): h.owned_selection=ids[0]
 	h.owned_page=clampi(h.owned_page,0,maxi(0,ceili(ids.size()/4.0)-1))
 	var id: String=h.owned_selection; var c:=h.vehicle(id)
 	hero(left,id,c,g.profile.appearance_for(id))
 	var engine_class:=GameCatalog.engine_class(id,c.hardware)
 	var controls: Dictionary={"hpattern":"manual","paddle":"paddle","sequential":"sequential","automatic":"automatic"}
-	text(left,"Price %s / Engine %s / %d-speed %s"%[GameCatalog.price_class(id),engine_class,c.gear_ratios.size(),controls.get(c.control_mode,c.control_mode)],24,AutomotiveUI.BLUE)
+	text(left,"Engine class %s / %d-speed %s"%[engine_class,c.gear_ratios.size(),controls.get(c.control_mode,c.control_mode)],24,AutomotiveUI.BLUE)
 	var cards:=ui.grid(right,2,8)
 	for i in mini(4,ids.size()-h.owned_page*4):
 		var item: String=ids[h.owned_page*4+i]

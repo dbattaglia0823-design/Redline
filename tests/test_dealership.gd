@@ -43,13 +43,13 @@ func run_checks() -> void:
 		check(restored.hardware.parts.get("ecu") == "ecu","Per-car parts lost: "+id)
 	var locked := DriverProfile.new(); locked.credits = 4000000
 	check(not locked.buy_vehicle("chiron") and locked.credits == 4000000,"Progression lock bypassed")
-	check(GameCatalog.price_class("supra_gr")=="B" and GameCatalog.price_class("mustang")=="C" and GameCatalog.price_class("camaro")=="C","GR Supra must be priced a class above the Mustang GT and Camaro SS")
+	check(GameCatalog.engine_class("supra_gr")=="B" and GameCatalog.engine_class("mustang")=="A" and GameCatalog.engine_class("camaro")=="A","Dealer must group cars by engine tier regardless of price")
 	check(GameCatalog.spec("supra_gr").price==49990 and GameCatalog.spec("mustang").price==42495 and GameCatalog.spec("camaro").price==37295,"Reference trim prices changed")
 	var seen: Array=[]
 	for letter in PerformanceClasses.ORDER:
 		showroom.enter_class(letter)
 		check(not showroom.filtered().is_empty(),"Empty class: "+letter)
-		check(showroom.filtered().all(func(id): return GameCatalog.price_class(id)==letter),"Wrong cars in class: "+letter)
+		check(showroom.filtered().all(func(id): return GameCatalog.engine_class(id)==letter),"Wrong cars in class: "+letter)
 		seen.append_array(showroom.filtered())
 	check(seen.size()==30,"Class selection omitted cars")
 	var competitive := VehicleBench.run(GameCatalog.spec("gr86"),[3,3,3,3,3,3,3,0],GameCatalog.factory_build("gr86"))

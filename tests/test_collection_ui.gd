@@ -40,7 +40,7 @@ func run() -> void:
 		check(game.menu.dealer.class_picker,"Dealer bypasses class overview")
 		for letter in PerformanceClasses.ORDER:
 			await click("shop_class_"+letter,touch); audit()
-			check(game.menu.dealer.filtered().all(func(id): return GameCatalog.price_class(id)==letter),"Native class inventory is incorrect")
+			check(game.menu.dealer.filtered().all(func(id): return GameCatalog.engine_class(id)==letter),"Native class inventory is incorrect")
 			if game.menu.dealer.filtered().size()>4:
 				await click("shop_next",touch); check(game.menu.dealer.page==1,"Dealer next page failed")
 				await click("shop_prev",touch); check(game.menu.dealer.page==0,"Dealer previous page failed")
@@ -54,7 +54,7 @@ func run() -> void:
 				for line in detail.get_child(0).get_children(): check(line.size.y>=24 and line.size.x>100,"Specification label has unusable layout")
 			await press_key(KEY_ESCAPE); check(not game.menu.dealer.details and not game.menu.dealer.class_picker,"Keyboard back skipped the inventory")
 			await click("shop_classes",touch)
-		await click("shop_class_E",touch)
+		await click("shop_class_"+GameCatalog.engine_class("gti_vr6"),touch)
 		var car_id: String=game.menu.dealer.filtered().filter(func(id): return not game.profile.garage.has(id))[0]
 		await click("dealer_%d"%GameCatalog.CAR_IDS.find(car_id),touch)
 		game.menu.dealer.equip=true; await frame(); await click("shop_equip",touch)

@@ -57,6 +57,6 @@ for model, (rear, radius, deck) in REAR.items():
                            headlight=[[902,191],[936,200]], taillight=[[44,213],[73,208]],
                            body=f'res://assets/vehicles/{model}/body_%d_%s.svg',
                            layers={name:f'res://assets/vehicles/{model}/{name}.svg' for name in ['glass','lamps','spoiler','tint','stripe','number','paint_mask']},
-                           compatible=['paint','finish','design','rim','sidewall','caliper','tint','stance','spoiler','headlight','taillight','decal'])
+                           compatible=['paint','finish','design','rim','caliper','tint','stance','spoiler','headlight','taillight'])
 (OUT/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8')
 print(f'Generated layered artwork for {len(manifest)} vehicles')

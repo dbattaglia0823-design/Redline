@@ -52,7 +52,7 @@ func run() -> void:
 		var signatures: Array=[]
 		var model_alpha:=true
 		for finish in 3:
-			art.look=VehicleAppearance.normalize({"paint":index%6,"finish":finish,"design":(index+finish)%5,"rim":index%3,"caliper":index%4,"tint":finish})
+			art.look=VehicleAppearance.normalize({"paint":index%6,"finish":finish,"design":(index+finish)%VehicleAppearance.OPTIONS.design.size(),"rim":index%VehicleAppearance.OPTIONS.rim.size(),"caliper":index%4,"tint":(index+finish)%VehicleAppearance.OPTIONS.tint.size()})
 			art.baseline=true
 			var before:=await capture(art)
 			art.baseline=false

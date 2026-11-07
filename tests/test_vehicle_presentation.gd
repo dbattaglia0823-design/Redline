@@ -28,7 +28,7 @@ func run_checks() -> void:
 		if not roster_review or id in ["miata","supra","mustang"]:
 			game.action("tab_performance"); await snap(id,"upgrades")
 			game.action("hub_owned"); game.menu.hub.owned_selection=id; await snap(id,"collection")
-			game.action("tab_dealer"); game.menu.dealer.enter_class(GameCatalog.price_class(id)); game.dealer_index=RosterData.IDS.find(id); await snap(id,"dealer")
+			game.action("tab_dealer"); game.menu.dealer.enter_class(GameCatalog.engine_class(id)); game.dealer_index=RosterData.IDS.find(id); await snap(id,"dealer")
 			game.go_garage(); game.action("tab_style"); await snap(id,"customize")
 			# Preview only, with no economy or mechanical side effects.
 			game.menu.customize.candidate.paint=4; game.menu.customize.candidate.finish=2; game.menu.customize.candidate.tint=2

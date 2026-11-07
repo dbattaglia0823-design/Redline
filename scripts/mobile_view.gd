@@ -57,10 +57,10 @@ func owned() -> void:
 	if not g.profile.garage.has(h.owned_selection): h.owned_selection = g.profile.vehicle_id
 	header("CHANGE CAR")
 	b("hub_back","< Garage",Rect2(24,76,172,68))
-	b("owned_filter","Price "+("All" if h.owned_filter==0 else GameCatalog.PRICE_CLASSES[h.owned_filter-1]),Rect2(208,76,172,68))
+	b("owned_filter","Engine "+("All" if h.owned_filter==0 else PerformanceClasses.ORDER[h.owned_filter-1]),Rect2(208,76,172,68))
 	b("owned_sort","Quickest" if h.owned_sort else "Order",Rect2(392,76,184,68))
 	var ids: Array=h.owned_ids()
-	if ids.is_empty(): t("No owned cars in this price class",24,230,23); return
+	if ids.is_empty(): t("No owned cars in this engine class",24,230,23); return
 	if not ids.has(h.owned_selection): h.owned_selection=str(ids[0])
 	h.owned_page = clampi(h.owned_page,0,maxi(0,ceili(ids.size()/4.0)-1))
 	preview(h.owned_selection,162,h.vehicle(h.owned_selection))
@@ -164,7 +164,7 @@ func dealer() -> void:
 	header("DEALERSHIP")
 	if d.class_picker: d.draw_classes(true); return
 	b("shop_classes","< Car classes",Rect2(24,80,552,68))
-	t("CLASS "+d.CLASSES[d.class_filter]+" / "+d.CLASS_NAMES[d.class_filter-1],24,200,23,g.MUTED)
+	t("ENGINE CLASS "+d.CLASSES[d.class_filter],24,200,23,g.MUTED)
 	var ids:=d.filtered()
 	if ids.is_empty(): d.show_classes(); return
 	var id: String = GameCatalog.CAR_IDS[g.dealer_index]
@@ -172,7 +172,7 @@ func dealer() -> void:
 	d.page = int(ids.find(id)/4)
 	var s := GameCatalog.spec(id); var c := d.factory(id)
 	preview(id,246,c,VehicleAppearance.normalize({},2,0))
-	g.fit_text(str(s.name),24,515,552,28); g.fit_text("PRICE CLASS "+GameCatalog.price_class(id)+" / "+str(s.year)+" / "+ImperialUnits.engine_label(str(s.engine)),24,551,552,21,g.MUTED)
+	g.fit_text(str(s.name),24,515,552,28); g.fit_text("ENGINE CLASS "+GameCatalog.engine_class(id)+" / "+str(s.year)+" / "+ImperialUnits.engine_label(str(s.engine)),24,551,552,21,g.MUTED)
 	stats(c,576)
 	b("shop_car_prev","<",Rect2(24,756,120,68)); b("shop_car_next",">",Rect2(456,756,120,68))
 	b("shop_details","LESS" if d.details else "DETAILS",Rect2(168,756,264,68))

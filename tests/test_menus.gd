@@ -42,7 +42,7 @@ func run_checks() -> void:
 	game.selected_opponent = 0
 	game.refresh_car()
 	await refresh()
-	await click("tab_dealer"); await click("shop_class_"+GameCatalog.price_class("civic_si"))
+	await click("tab_dealer"); await click("shop_class_"+GameCatalog.engine_class("civic_si"))
 	await click("dealer_1")
 	await click("buy_car")
 	var after_purchase:=20000-int(GameCatalog.spec("civic_si").price)
@@ -63,7 +63,7 @@ func run_checks() -> void:
 	await click("dealer_0")
 	await click("drive_car")
 	check(game.profile.vehicle_id == "miata" and game.profile.stages[7] == 0,"Dealer did not switch to independent starter-car build")
-	await click("shop_classes"); await click("shop_class_"+GameCatalog.price_class("civic_si"))
+	await click("shop_classes"); await click("shop_class_"+GameCatalog.engine_class("civic_si"))
 	await click("dealer_1")
 	await click("drive_car")
 	check(game.profile.paint == 5 and game.profile.wheels == 2 and game.profile.stages[7] == 1,"Switching back lost car customization")

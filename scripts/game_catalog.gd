@@ -31,7 +31,6 @@ const PART_TIERS := [
 const PART_EFFECTS: Array[String] = ["+14% engine torque per tier", "+2.6 PSI peak boost per tier", "+0.095 traction coefficient per tier", "-143 lb per tier", "-35 ms shift time per tier", "+6% engine torque per tier", "Stronger, lighter brake packages", "+1.5 s spray / +6% power per tier"]
 const CAREER_NAMES: Array[String] = ["DOCKSIDE RUN", "MIDNIGHT CLUB", "CITY FINALS"]
 const CAREER_LEVELS: Array[int] = [1,3,5]
-const PRICE_CLASSES := ["E","D","C","B","A","S"]
 # Fixed engine tiers preserve the established factory race classes.
 const ENGINE_CLASSES := {
 	"miata":"E", "civic_si":"E",
@@ -43,7 +42,6 @@ const ENGINE_CLASSES := {
 }
 const ENGINE_FIELDS := ["engine","layout","cylinders","torque","torque_curve","torque_rpm","idle","redline",
 	"throttle_response","inertia","base_boost","factory_super","hybrid_kw","hybrid_kwh"]
-const PRICE_FLOORS := [0,15000,30000,47000,85000,180000]
 const BOT_NAMES := [
 	["Dockhand Dex", "Neon Nia", "Spanner Sol", "Late-shift Leo", "Harbor Quinn"],
 	["Vinyl Vera", "Boost Benji", "Night Owl", "Slick Sora", "Midnight Mara"],
@@ -81,18 +79,6 @@ static func with_engine(chassis: Dictionary, engine: String) -> Dictionary:
 
 static func blank_stages() -> Array:
 	return [0,0,0,0,0,0,0,0]
-
-static func price_class(id: String) -> String:
-	var price := int(RosterData.rows()[id].price) if RosterData.rows().has(id) else int(spec(id).price)
-	for index in range(PRICE_FLOORS.size()-1,0,-1):
-		if price>=PRICE_FLOORS[index]: return PRICE_CLASSES[index]
-	return PRICE_CLASSES[0]
-
-static func price_band(index: int) -> String:
-	if index==0: return "Under $%dk"%(PRICE_FLOORS[1]/1000)
-	var minimum := "$%dk"%(PRICE_FLOORS[index]/1000)
-	if index==PRICE_FLOORS.size()-1: return minimum+"+"
-	return "%s to <$%dk"%[minimum,PRICE_FLOORS[index+1]/1000]
 
 static func part_effect(index: int, tier: int) -> String:
 	match index:

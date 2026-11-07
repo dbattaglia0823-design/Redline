@@ -53,5 +53,5 @@ static func advance() -> bool:
 	if cache.size()>128: cache.erase(cache.keys()[0])
 	cache[job.key]=d; jobs.pop_front(); return true
 static func label(profile: DriverProfile) -> String:
-	return "PRICE %s / ENGINE %s"%[GameCatalog.price_class(profile.vehicle_id),GameCatalog.engine_class(profile.vehicle_id,profile.hardware)]
+	return "ENGINE CLASS %s"%GameCatalog.engine_class(profile.vehicle_id,profile.hardware)
 

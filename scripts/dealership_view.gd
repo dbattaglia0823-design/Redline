@@ -22,7 +22,7 @@ func factory(id: String) -> Drivetrain:
 func class_ids(letter: String) -> Array[String]:
 	var ids: Array[String]=[]
 	for id in GameCatalog.CAR_IDS:
-		if GameCatalog.price_class(id)==letter: ids.append(id)
+		if GameCatalog.engine_class(id)==letter: ids.append(id)
 	ids.sort_custom(func(a,b): return int(RosterData.rows()[a].price)<int(RosterData.rows()[b].price))
 	return ids
 func filtered() -> Array[String]:
@@ -39,20 +39,18 @@ func enter_class(letter: String) -> void:
 	var selected: String=remembered.get(letter,ids[0])
 	if not ids.has(selected): selected=ids[0]
 	g.dealer_index=GameCatalog.CAR_IDS.find(selected); page=int(ids.find(selected)/4); age=0
-const CLASS_NAMES := ["Entry","Enthusiast","Sport","Premium","Collector","Exotic"]
 func draw_classes(mobile: bool=false) -> void:
 	for i in 6:
 		var letter: String=CLASSES[i+1]; var ids:=class_ids(letter)
 		var r:=Rect2(24+(i%2)*284,100+int(i/2)*280,268,268) if mobile else Rect2(36+(i%3)*384,196+int(i/3)*230,362,212)
 		g.button("shop_class_"+letter,"",r,false,false)
 		t(letter,r.position.x+20,r.position.y+54,44,GlassPalette.BLUE)
-		g.fit_text(CLASS_NAMES[i],r.position.x+78,r.position.y+42,r.size.x-98,22 if mobile else 24)
+		g.fit_text("Engine class "+letter,r.position.x+78,r.position.y+42,r.size.x-98,22 if mobile else 24)
 		t("%d cars"%ids.size(),r.position.x+80,r.position.y+65,17 if mobile else 13,g.MUTED)
 		if ids.is_empty(): continue
 		var cheapest: String=ids[0]
 		g.draw_car(r.position+Vector2(12,78 if mobile else 65),1.05 if mobile else 1.4,g.PAINTS[2],0,0,false,cheapest)
 		t("From $%d"%int(GameCatalog.spec(cheapest).price),r.position.x+20,r.end.y-47 if mobile else r.end.y-20,20 if mobile else 15)
-		t(GameCatalog.price_band(i),r.position.x+20,r.end.y-20,16,g.MUTED) if mobile else t(GameCatalog.price_band(i),r.end.x-130,r.end.y-20,14,g.MUTED)
 func estimate(id: String) -> Dictionary:
 	return RaceAI.estimate({"model":id,"stages":GameCatalog.blank_stages(),"hardware":GameCatalog.factory_build(id),"reaction":.25,"pedal":1.0,"skill":2,"shift_error":0,"traction_skill":.8})
 func navigate(direction: int) -> void:
@@ -74,7 +72,7 @@ func select_edge(last: bool) -> void:
 func draw() -> void:
 	if class_picker: draw_classes(); return
 	b("shop_classes","< Classes",Rect2(36,182,180,48))
-	t("CLASS "+CLASSES[class_filter]+" / "+CLASS_NAMES[class_filter-1],238,213,18,g.MUTED)
+	t("ENGINE CLASS "+CLASSES[class_filter],238,213,18,g.MUTED)
 	b("shop_details","DETAILS" if not details else "CLOSE DETAILS",Rect2(962,103,204,48))
 	var ids:=filtered()
 	if ids.is_empty(): show_classes(); return
@@ -95,7 +93,7 @@ func draw() -> void:
 	t("%d / %d   /   %d CARS" % [page+1,ceili(ids.size()/4.0),ids.size()],255,660,16,g.MUTED)
 	g.box(Rect2(786,246,380,428))
 	g.fit_text(str(s.name),807,281,337,27)
-	t("PRICE CLASS "+GameCatalog.price_class(id)+" / "+ImperialUnits.engine_label(str(s.engine)),808,309,13,g.MUTED)
+	t("ENGINE CLASS "+GameCatalog.engine_class(id)+" / "+ImperialUnits.engine_label(str(s.engine)),808,309,13,g.MUTED)
 	t("%d %sHP / %.0f lb-ft" % [c.peak_horsepower(),"ICE " if float(s.get("hybrid_kw",0))>0 else "",ImperialUnits.torque(GarageHub.peak_torque(c))],808,347,23,g.GREEN)
 	t("%.0f lb / %.2f GRIP" % [ImperialUnits.pounds(c.mass()),GarageHub.grip(c)],808,378,19)
 	t("%s / %d-SPEED %s" % [s.drive,c.gear_ratios.size(),c.transmission_kind.to_upper()],808,411,15,g.MUTED)

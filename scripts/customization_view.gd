@@ -10,9 +10,9 @@ var camera_pose := Vector2(0,1)
 var focus_override := -1
 var zoom_step := 0
 var trim_open := false
-const GROUPS := {"paint":["paint","finish","stance","spoiler","headlight","taillight","decal"],"wheels":["design","rim","sidewall"],"calipers":["caliper"],"tint":["tint"]}
+const GROUPS := {"paint":["paint","finish","stance","spoiler","headlight","taillight"],"wheels":["design","rim"],"calipers":["caliper"],"tint":["tint"]}
 const GROUP_LABELS := {"paint":"Paint","wheels":"Wheels","calipers":"Calipers","tint":"Tint"}
-const TRIM := ["stance","spoiler","headlight","taillight","decal"]
+const TRIM := ["stance","spoiler","headlight","taillight"]
 
 func _init(game: Node2D) -> void: g = game
 func open() -> void:
@@ -53,7 +53,7 @@ func action(id: String) -> bool:
 	elif id.begins_with("custom_category_"):
 		var key:=id.trim_prefix("custom_category_")
 		if VehicleAppearance.definition(vehicle_id).compatible.has(key):
-			if primary() in ["wheels","calipers"] and key not in ["design","rim","sidewall","caliper"]: focus_override=-1
+			if primary() in ["wheels","calipers"] and key not in ["design","rim","caliper"]: focus_override=-1
 			category=key
 			trim_open=key in TRIM
 			compare=false

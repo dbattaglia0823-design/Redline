@@ -15,7 +15,7 @@ class SwatchArt extends Node2D:
 		var area:=view.size
 		var look: Dictionary=g.menu.customize.candidate.duplicate(true)
 		look[key]=index
-		if key in ["design","rim","sidewall","caliper"]:
+		if key in ["design","rim","caliper"]:
 			draw_wheel_sample(look,area)
 		elif key=="tint":
 			draw_tint_sample(area,index)
@@ -27,11 +27,7 @@ class SwatchArt extends Node2D:
 		var d:=VehicleAppearance.definition(g.profile.vehicle_id)
 		var radius:=minf(area.y*.49,area.x*.34)
 		var center:=area*.5
-		if d.has("stock_wheels") and int(look.design)==0 and int(look.rim)==0 and int(look.caliper)==0 and int(look.sidewall)==0:
-			var texture:=VehicleAppearance.texture(str(d.stock_wheels[1]))
-			if texture: draw_texture_rect(texture,Rect2(center-Vector2.ONE*radius,Vector2.ONE*radius*2),false)
-		else:
-			WheelVisuals.draw_wheel(self,center,radius,maxf(.7,radius/17.0),int(look.rim),{"angle":0.0,"spoke_angle":0.0,"blur":0.0},2,look,true)
+		WheelVisuals.draw_vehicle_wheel(self,center,radius,{"omega":0.0,"angle":0.0,"spoke_angle":0.0,"blur":0.0},2,look,d,1)
 
 	func draw_paint_sample(area: Vector2,base: Color,finish: int) -> void:
 		var bounds:=Rect2(Vector2(2,2),Vector2(area.x-4,area.y-4))
@@ -50,10 +46,10 @@ class SwatchArt extends Node2D:
 
 	func draw_tint_sample(area: Vector2,index: int) -> void:
 		var points:=PackedVector2Array([area*Vector2(.04,.84),area*Vector2(.22,.16),area*Vector2(.82,.16),area*Vector2(.96,.84)])
-		draw_colored_polygon(points,[Color("a1bac9"),Color("53667b"),Color("253448")][index])
+		draw_colored_polygon(points,[Color("a1bac9"),Color("53667b"),Color("253448"),Color("121d2b"),Color("080f19")][index])
 		draw_polyline(PackedVector2Array([points[0],points[1],points[2],points[3],points[0]]),Color("b1c2cb"),1,true)
-		draw_line(area*Vector2(.29,.22),area*Vector2(.14,.77),Color(1,1,1,.36-index*.09),3,true)
-		draw_line(area*Vector2(.68,.22),area*Vector2(.52,.77),Color(1,1,1,.24-index*.06),1,true)
+		draw_line(area*Vector2(.29,.22),area*Vector2(.14,.77),Color(1,1,1,maxf(.12,.36-index*.06)),3,true)
+		draw_line(area*Vector2(.68,.22),area*Vector2(.52,.77),Color(1,1,1,maxf(.08,.24-index*.04)),1,true)
 
 func configure(g: Node2D,category: String,index: int) -> void:
 	game=g

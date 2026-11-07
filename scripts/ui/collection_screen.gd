@@ -102,7 +102,7 @@ func vehicle(parent: Node,id: String,c: Drivetrain,look: Dictionary,height: floa
 
 func classes(body: VBoxContainer) -> void:
 	title(body,"Dealership / Class index")
-	AutomotiveUI.section_mark(body,"FACTORY INVENTORY  /  USD PRICE CLASS","dealer",AutomotiveUI.BLUE)
+	AutomotiveUI.section_mark(body,"FACTORY INVENTORY  /  ENGINE CLASS","dealer",AutomotiveUI.BLUE)
 	var layout:=grid(body,2 if portrait else 3,14)
 	for i in 6:
 		var letter: String=PerformanceClasses.ORDER[i]; var ids: Array=game.menu.dealer.class_ids(letter)
@@ -110,7 +110,7 @@ func classes(body: VBoxContainer) -> void:
 		AutomotiveUI.class_decal(card,letter,i)
 		bind(card,"shop_class_"+letter)
 		var content: VBoxContainer=card.get_meta("content")
-		content.add_child(AutomotiveUI.label(letter+"  /  "+DealershipView.CLASS_NAMES[i],26,AutomotiveUI.INK))
+		content.add_child(AutomotiveUI.label("CLASS "+letter,26,AutomotiveUI.INK))
 		if not ids.is_empty():
 			var available: Array=ids.filter(func(id): return not game.profile.garage.has(id))
 			var offers: Array=ids if available.is_empty() else available
@@ -118,8 +118,8 @@ func classes(body: VBoxContainer) -> void:
 			vehicle(content,cheapest,game.menu.dealer.factory(cheapest),VehicleAppearance.normalize({},2,0),110 if portrait else 104,false)
 			content.add_child(AutomotiveUI.label("Collection complete" if available.is_empty() else "Available from $%d"%GameCatalog.spec(cheapest).price,16))
 			content.add_child(AutomotiveUI.label("%d cars · %d owned"%[ids.size(),ids.size()-available.size()],14,AutomotiveUI.MUTED))
-		else: content.add_child(AutomotiveUI.label("No cars in this price class",16))
-		content.add_child(AutomotiveUI.label(GameCatalog.price_band(i),15,AutomotiveUI.MUTED))
+		else: content.add_child(AutomotiveUI.label("No engines in this class",16))
+		content.add_child(AutomotiveUI.label("Factory engine classification",15,AutomotiveUI.MUTED))
 
 func spec_summary(parent: Node,id: String,c: Drivetrain) -> void:
 	var layout:=grid(parent,2,6)
@@ -146,7 +146,7 @@ func dealer(body: VBoxContainer) -> void:
 	d.page=int(ids.find(id)/4)
 	var s:=GameCatalog.spec(id); var c:=d.factory(id)
 	var top:=AutomotiveUI.row(body)
-	var class_back:=button(top,"shop_classes","‹ Class "+GameCatalog.price_class(id)); class_back.custom_minimum_size.x=120; class_back.size_flags_horizontal=Control.SIZE_SHRINK_BEGIN
+	var class_back:=button(top,"shop_classes","‹ Class "+GameCatalog.engine_class(id)); class_back.custom_minimum_size.x=120; class_back.size_flags_horizontal=Control.SIZE_SHRINK_BEGIN
 	top.add_child(AutomotiveUI.label(str(s.name),26))
 	var detail_button:=button(top,"shop_details","Showroom" if d.details else "Details"); detail_button.custom_minimum_size.x=114; detail_button.size_flags_horizontal=Control.SIZE_SHRINK_END
 	var main: BoxContainer=VBoxContainer.new() if portrait else HBoxContainer.new(); main.add_theme_constant_override("separation",16); main.size_flags_vertical=Control.SIZE_EXPAND_FILL; body.add_child(main)
@@ -171,7 +171,7 @@ func dealer(body: VBoxContainer) -> void:
 	var right: VBoxContainer=left if portrait else AutomotiveUI.panel(main)
 	if not portrait and not d.details:
 		right.add_child(AutomotiveUI.label(str(s.brand)+"  /  "+str(s.year),17,AutomotiveUI.BLUE))
-		right.add_child(AutomotiveUI.label("Factory specification · Price class "+GameCatalog.price_class(id),15,AutomotiveUI.MUTED))
+		right.add_child(AutomotiveUI.label("Factory specification · Engine class "+GameCatalog.engine_class(id),15,AutomotiveUI.MUTED))
 		spec_summary(right,id,c)
 		right.add_child(AutomotiveUI.label(str(s.drive)+" / %d-speed %s"%[c.gear_ratios.size(),c.transmission_kind],16,AutomotiveUI.MUTED))
 		var et:=d.preview_estimate(id)
@@ -206,9 +206,9 @@ func collection(body: VBoxContainer) -> void:
 	var h: GarageHub=game.menu.hub; var ids:=h.owned_ids()
 	title(body,"Your collection","hub_back")
 	var filters:=AutomotiveUI.row(body)
-	button(filters,"owned_filter","Price class: "+("All" if h.owned_filter==0 else GameCatalog.PRICE_CLASSES[h.owned_filter-1]))
+	button(filters,"owned_filter","Engine class: "+("All" if h.owned_filter==0 else PerformanceClasses.ORDER[h.owned_filter-1]))
 	button(filters,"owned_sort","Quickest first" if h.owned_sort else "Collection order")
-	if ids.is_empty(): body.add_child(AutomotiveUI.label("No owned cars in this price class",22)); return
+	if ids.is_empty(): body.add_child(AutomotiveUI.label("No owned cars in this engine class",22)); return
 	if not ids.has(h.owned_selection): h.owned_selection=ids[0]
 	h.owned_page=clampi(h.owned_page,0,maxi(0,ceili(ids.size()/4.0)-1))
 	var selected: String=h.owned_selection; var c:=h.vehicle(selected)
@@ -226,13 +226,13 @@ func collection(body: VBoxContainer) -> void:
 	spec_summary(detail,selected,c)
 	var engine_class:=GameCatalog.engine_class(selected,c.hardware)
 	var controls: Dictionary={"hpattern":"manual","paddle":"paddle","sequential":"sequential","automatic":"automatic"}
-	detail.add_child(AutomotiveUI.label("Price %s / Engine %s / %d-speed %s"%[GameCatalog.price_class(selected),engine_class,c.gear_ratios.size(),controls.get(c.control_mode,c.control_mode)],16,AutomotiveUI.BLUE))
+	detail.add_child(AutomotiveUI.label("Engine class %s / %d-speed %s"%[engine_class,c.gear_ratios.size(),controls.get(c.control_mode,c.control_mode)],16,AutomotiveUI.BLUE))
 	detail.add_child(AutomotiveUI.label("Vs active  %+.0f hp / %+.0f lb-ft / %+.0f lb"%[c.peak_horsepower()-game.car.peak_horsepower(),ImperialUnits.torque(GarageHub.peak_torque(c))-ImperialUnits.torque(GarageHub.peak_torque(game.car)),ImperialUnits.pounds(c.mass())-ImperialUnits.pounds(game.car.mass())],17,AutomotiveUI.MUTED))
 	if portrait: list=AutomotiveUI.column(main,8)
 	var cards:=grid(list,2 if portrait else 1,8)
 	for i in mini(4,ids.size()-h.owned_page*4):
 		var id: String=ids[h.owned_page*4+i]; var owned_car:=h.vehicle(id)
-		var card:=AutomotiveUI.vehicle_card(cards,game,id,owned_car,game.profile.appearance_for(id),("Equipped · Price " if id==game.profile.vehicle_id else "Owned · Price ")+GameCatalog.price_class(id),id==selected,108 if portrait else 94)
+		var card:=AutomotiveUI.vehicle_card(cards,game,id,owned_car,game.profile.appearance_for(id),("Equipped · Class " if id==game.profile.vehicle_id else "Owned · Class ")+GameCatalog.engine_class(id,owned_car.hardware),id==selected,108 if portrait else 94)
 		bind(card,"hub_pick_"+id)
 	page_controls(list,true)
 	var actions:=AutomotiveUI.row(body,8)
@@ -325,7 +325,7 @@ func studio_subcategories(parent: Node,custom: CustomizationView,id: String) -> 
 	var group:=custom.primary()
 	if group not in ["paint","wheels"]: return
 	var sections:=AutomotiveUI.row(parent,5)
-	var labels := {"paint":"Color","finish":"Finish","design":"Design","rim":"Metal","sidewall":"Sidewall"}
+	var labels := {"paint":"Color","finish":"Finish","design":"Design","rim":"Finish"}
 	for key in (["paint","finish"] if group=="paint" else CustomizationView.GROUPS.wheels):
 		if VehicleAppearance.definition(id).compatible.has(key):
 			studio_button(sections,"custom_category_"+key,labels[key],custom.category==key)
@@ -335,7 +335,7 @@ func studio_subcategories(parent: Node,custom: CustomizationView,id: String) -> 
 	studio_button(sections,"custom_trim","Trim",custom.trim_open)
 	if custom.trim_open:
 		var extra:=grid(parent,3 if portrait else trim.size(),5)
-		var trim_labels:={"stance":"Height","spoiler":"Spoiler","headlight":"Lamps","taillight":"Tail lamps","decal":"Livery"}
+		var trim_labels:={"stance":"Height","spoiler":"Spoiler","headlight":"Lamps","taillight":"Tail lamps"}
 		for key in trim:
 			studio_button(extra,"custom_category_"+key,trim_labels[key],custom.category==key)
 
@@ -366,10 +366,10 @@ func studio_options(parent: Node,custom: CustomizationView,id: String,installed:
 		var equipped: bool=int(installed[key])==choice
 		var status:="Equipped" if equipped else ("Owned" if cost==0 else "$%d"%cost)
 		var title_text:=cosmetic_name(key,choice,custom.candidate)
-		content.add_child(AutomotiveUI.label(title_text,17 if compact_landscape() else 16))
+		content.add_child(AutomotiveUI.label(title_text,(15 if compact_landscape() else 14) if title_text.length()>14 else (17 if compact_landscape() else 16)))
 		content.add_child(AutomotiveUI.label(status,15,GlassPalette.GREEN if equipped else AutomotiveUI.MUTED,true))
 		card.tooltip_text=title_text+" / "+status
 
 func cosmetic_name(key: String,index: int,look: Dictionary) -> String:
-	if key=="design" and index==0 and int(look.rim)==0 and int(look.caliper)==0 and int(look.sidewall)==0 and VehicleAppearance.definition(game.profile.vehicle_id).has("stock_wheels"): return "Factory wheel"
+	if key=="design" and index==0 and int(look.caliper)==0 and VehicleAppearance.definition(game.profile.vehicle_id).has("stock_wheels"): return "Factory wheel"
 	return str(VehicleAppearance.OPTIONS[key][index])

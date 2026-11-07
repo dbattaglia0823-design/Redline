@@ -2,16 +2,24 @@ class_name VehicleAppearance
 extends RefCounted
 
 # Appearance indices are stable save IDs. New choices must be appended.
-const CATEGORIES := ["paint","finish","design","rim","sidewall","caliper","tint","stance","spoiler","headlight","taillight","decal"]
-const LABELS := ["Paint","Finish","Wheel design","Wheel color","Sidewalls","Calipers","Window tint","Ride height","Spoiler","Headlights","Taillights","Livery"]
+const CATEGORIES := ["paint","finish","design","rim","caliper","tint","stance","spoiler","headlight","taillight"]
+const LABELS := ["Paint","Finish","Wheel design","Wheel color","Calipers","Window tint","Ride height","Spoiler","Headlights","Taillights"]
 const OPTIONS := {
 	"paint":["Ember","Seafoam","Bone","Indigo","Saffron","Orchid"],
-	"finish":["Gloss","Matte","Metallic"],"design":["Split five","Six spoke","Mesh","Forged ten","Deep dish"],
-	"rim":["Silver","Bronze","Graphite"],"sidewall":["Blackwall","White ring","Track marks"],
-	"caliper":["Copper","Red","Yellow","Silver"],"tint":["Factory","Smoke","Deep"],
+	"finish":["Gloss","Matte","Metallic"],
+	"design":["Split five","Six spoke","Mesh","Forged ten","Deep dish","Turbine","Concave seven","Cross-lace","Track six","Y-spoke","Aero disc","Classic eight"],
+	"rim":["Silver","Bronze","Graphite","Polished chrome","Satin black","Gloss black","Brushed titanium","Champagne","Pearl white"],
+	"caliper":["Copper","Red","Yellow","Silver"],
+	"tint":["Factory","Smoke","Deep","Limo 10%","Privacy 5%"],
 	"stance":["Factory","Street low","Raised"],"spoiler":["Factory","Clean deck","Track wing"],
-	"headlight":["Factory","Ice","Amber"],"taillight":["Factory","Ruby","Smoked"],"decal":["Clean","Side stripes","Number 71"]}
-const PRICES := {"paint":[0,0,0,0,0,0],"finish":[0,250,450],"design":[0,400,650,850,1100],"rim":[0,0,0],"sidewall":[0,100,150],"caliper":[0,120,120,120],"tint":[0,120,180],"stance":[0,200,200],"spoiler":[0,100,550],"headlight":[0,140,140],"taillight":[0,140,140],"decal":[0,200,300]}
+	"headlight":["Factory","Ice","Amber"],"taillight":["Factory","Ruby","Smoked"]}
+const PRICES := {
+	"paint":[0,0,0,0,0,0],"finish":[0,250,450],
+	"design":[0,400,650,850,1100,950,900,1250,1000,1150,1400,750],
+	"rim":[0,0,0,220,160,190,250,180,170],"caliper":[0,120,120,120],
+	"tint":[0,120,180,260,350],"stance":[0,200,200],"spoiler":[0,100,550],
+	"headlight":[0,140,140],"taillight":[0,140,140]}
+const TINT_OPACITY := [0.0,.32,.65,.90,.95]
 static var _manifest: Dictionary = {}
 static var _textures: Dictionary = {}
 static var _frame_textures: Dictionary = {}
@@ -39,7 +47,7 @@ static func compatible(id: String,key: String,index: int) -> bool:
 static func normalize(raw: Variant, paint: int = 0, rim: int = 0) -> Dictionary:
 	var clean: Dictionary = {}
 	for key in CATEGORIES: clean[key] = 0
-	clean.paint = clampi(paint,0,5); clean.rim = clampi(rim,0,2)
+	clean.paint = clampi(paint,0,5); clean.rim = clampi(rim,0,OPTIONS.rim.size()-1)
 	if raw is Dictionary:
 		for key in CATEGORIES:
 			if (raw.get(key) is int or raw.get(key) is float) and is_finite(float(raw[key])): clean[key] = clampi(int(raw[key]),0,OPTIONS[key].size()-1)
@@ -103,7 +111,7 @@ static func validate(id: String) -> Array[String]:
 	for key in d.get("compatible",[]):
 		if not OPTIONS.has(key): errors.append("Unsupported option "+str(key))
 	var layers: Dictionary = d.get("layers",{})
-	for name in ["glass","lamps","spoiler","tint","stripe","number","paint_mask"]:
+	for name in ["glass","lamps","spoiler","tint","paint_mask"]:
 		if not ResourceLoader.exists(str(layers.get(name,""))): errors.append("Missing texture "+name)
 	for paint in 6:
 		for finish in ["gloss","matte","metallic"]:

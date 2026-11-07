@@ -85,11 +85,11 @@ func owned_ids() -> Array:
 	var ids: Array=[]; var times: Dictionary={}
 	for id in GameCatalog.CAR_IDS:
 		if not g.profile.garage.has(id): continue
-		if owned_filter>0 and GameCatalog.price_class(id)!=GameCatalog.PRICE_CLASSES[owned_filter-1]: continue
-		ids.append(id)
-		if not owned_sort: continue
 		var entry: Dictionary=g.profile.garage[id]
 		var build: Dictionary=g.profile.hardware if id==g.profile.vehicle_id else entry.get("hardware",GameCatalog.factory_build(id))
+		if owned_filter>0 and GameCatalog.engine_class(id,build)!=PerformanceClasses.ORDER[owned_filter-1]: continue
+		ids.append(id)
+		if not owned_sort: continue
 		var levels: Array=g.profile.stages if id==g.profile.vehicle_id else entry.stages
 		var measured:=PerformanceClasses.request(id,levels,build)
 		times[id]=float(measured.get("quarter_s",99))
@@ -99,9 +99,9 @@ func owned_ids() -> Array:
 func draw_owned() -> void:
 	if owned_selection == "" or not g.profile.garage.has(owned_selection): owned_selection = g.profile.vehicle_id
 	var ids:=owned_ids()
-	b("owned_filter","Price class: "+("All" if owned_filter==0 else GameCatalog.PRICE_CLASSES[owned_filter-1]),Rect2(36,112,236,48))
+	b("owned_filter","Engine class: "+("All" if owned_filter==0 else PerformanceClasses.ORDER[owned_filter-1]),Rect2(36,112,236,48))
 	b("owned_sort","Quickest first" if owned_sort else "Collection order",Rect2(284,112,236,48))
-	if ids.is_empty(): t("No owned cars in this price class",36,230,22); b("hub_back","< GARAGE",Rect2(962,103,204,48)); return
+	if ids.is_empty(): t("No owned cars in this engine class",36,230,22); b("hub_back","< GARAGE",Rect2(962,103,204,48)); return
 	if not ids.has(owned_selection): owned_selection=str(ids[0])
 	owned_page = clampi(owned_page,0,maxi(0,ceili(ids.size()/4.0)-1))
 	for i in mini(4,ids.size()-owned_page*4):

@@ -127,7 +127,7 @@ func load_profile() -> void:
 	races = maxi(wins, int(data.get("races", 0)))
 	best = maxf(0.0, float(data.get("best", 0.0)))
 	paint = clampi(int(data.get("paint", 0)), 0, 5)
-	wheels = clampi(int(data.get("wheels", 0)), 0, 2)
+	wheels = clampi(int(data.get("wheels", 0)), 0, VehicleAppearance.OPTIONS.rim.size()-1)
 	stages = GameCatalog.normalize_stages(data.get("stages", []))
 	muted = bool(data.get("muted", false))
 	test_runs=RunArchive.normalize(data.get("test_runs",{}))
@@ -141,7 +141,7 @@ func load_profile() -> void:
 		for id in GameCatalog.CAR_IDS:
 			var entry = saved_garage.get(id)
 			if entry is Dictionary:
-				garage[id] = {"paint":clampi(int(entry.get("paint",0)),0,5),"wheels":clampi(int(entry.get("wheels",0)),0,2),"stages":GameCatalog.normalize_stages(entry.get("stages",[])),"hardware":VehicleParts.normalize(entry.get("hardware",{}),id)}
+				garage[id] = {"paint":clampi(int(entry.get("paint",0)),0,5),"wheels":clampi(int(entry.get("wheels",0)),0,VehicleAppearance.OPTIONS.rim.size()-1),"stages":GameCatalog.normalize_stages(entry.get("stages",[])),"hardware":VehicleParts.normalize(entry.get("hardware",{}),id)}
 				garage[id].owned_stages = GameCatalog.normalize_stages(entry.get("owned_stages",[]))
 				garage[id].tuning_presets = normalize_tune_presets(entry.get("tuning_presets",{}))
 				garage[id].appearance = VehicleAppearance.normalize(entry.get("appearance",{}),int(garage[id].paint),int(garage[id].wheels))
