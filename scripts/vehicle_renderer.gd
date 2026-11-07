@@ -5,7 +5,7 @@ static func layer(g: Node2D,path: String,pivot: Vector2,scale: float,modulate: C
 	var tex := VehicleAppearance.texture(path)
 	if tex: g.draw_texture_rect(tex,Rect2(-pivot,Vector2(1000,360)*scale),false,modulate)
 
-static func draw(g: Node2D,origin: Vector2,size: float,model: String,look: Dictionary,car: Drivetrain,animate: bool,offset: Vector2,pitch: float,flame: bool,quality: int,night: bool = false,braking: bool = false,effects: RaceFeedback = null,reveal: float = 1.0,studio: bool = false) -> void:
+static func draw(g: Node2D,origin: Vector2,size: float,model: String,look: Dictionary,car: Drivetrain,animate: bool,offset: Vector2,pitch: float,flame: bool,quality: int,night: bool = false,braking: bool = false,effects: RaceFeedback = null,reveal: float = 1.0,studio: bool = false,light_phase: float = 0.0) -> void:
 	var d := VehicleAppearance.definition(model)
 	if d.is_empty(): return
 	var s := size*.232
@@ -16,6 +16,9 @@ static func draw(g: Node2D,origin: Vector2,size: float,model: String,look: Dicti
 	var base := origin-Vector2(0,lift)
 	var body := base+offset+Vector2(0,VehicleAppearance.body_drop(look)*s)
 	var light := Color(.72,.80,.94) if night else Color.WHITE
+	if studio:
+		VehicleLighting.apply(g,model,look,quality,light_phase)
+		light=Color(.80,.81,.82) if night else Color(1.0,.98,.95)
 	if night and animate and car != null and quality > 0:
 		# Soft variation under the facility's light banks; no realtime lights.
 		var pool := .97+.055*sin(car.distance*.065)
@@ -71,7 +74,8 @@ static func contact_shadow(g: Node2D,base: Vector2,d: Dictionary,s: float,radius
 	var extent := Vector2((front.x-rear.x)*.62+float(d.radius),15.0 if quality>0 else 9.0)*s
 	TrackPresentation.glow(g,Rect2(center-extent,extent*2),Color(.005,.009,.015,.78))
 	for anchor in [rear,front]:
-		var contact := base+Vector2(anchor.x,y)*s
+		var index:=0 if anchor==rear else 1
+		var contact := base+Vector2(anchor.x,anchor.y+float(radii[index])*radius_factor)*s
 		TrackPresentation.glow(g,Rect2(contact-Vector2(20,3)*s,Vector2(40,6)*s),Color(0,0,0,.85))
 
 static func showroom_light(g: Node2D,bounds: Rect2,quality: int) -> void:
@@ -92,6 +96,7 @@ static func draw_wheels(g: Node2D,base: Vector2,size: float,s: float,model: Stri
 		if d.has("stock_wheels") and int(look.design)==0 and int(look.rim)==0 and int(look.caliper)==0 and int(look.sidewall)==0:
 			if reflections_only:
 				var rim_radius: float = float(d.get("rim_radius",[float(d.radius)*.70,float(d.radius)*.70])[index])*s*radius_factor
+				if studio and quality>0: WheelVisuals.draw_studio_reflection(g,center,rim_radius,light)
 				WheelVisuals.draw_rim_reflection(g,center,rim_radius,state,quality,light)
 				continue
 			var texture:=VehicleAppearance.texture(str(d.stock_wheels[index]))
@@ -100,7 +105,8 @@ static func draw_wheels(g: Node2D,base: Vector2,size: float,s: float,model: Stri
 				# original tire into the cutout, and never rotate its baked lighting.
 				var extent := radius+2*s*radius_factor
 				g.draw_texture_rect(texture,Rect2(center-Vector2.ONE*extent,Vector2.ONE*extent*2),false,light)
-		elif not reflections_only: WheelVisuals.draw_wheel(g,center,radius,size,int(look.rim),state,quality,look,studio)
+		elif not reflections_only: WheelVisuals.draw_wheel(g,center,radius,size,int(look.rim),state,quality,look,studio,light)
+		elif studio and quality>0: WheelVisuals.draw_studio_reflection(g,center,radius*.75,light)
 		if not reflections_only and car!=null and car.tire_sidewall_mark>0 and int(look.sidewall)==0:
 			WheelVisuals.draw_compound_mark(g,center,radius,car.tire_sidewall_mark,state,light)
 

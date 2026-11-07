@@ -79,6 +79,7 @@ var focus_skin:=AutomotiveUI.surface(Color.TRANSPARENT,AutomotiveUI.ORANGE,15)
 
 func setup(g: Node2D) -> void:
 	game=g
+	z_index=10
 	mouse_filter=Control.MOUSE_FILTER_IGNORE
 	for i in TABS.size():
 		var item:=DockItem.new()

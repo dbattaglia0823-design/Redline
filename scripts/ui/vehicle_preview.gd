@@ -42,7 +42,7 @@ class PreviewArt extends Node2D:
 			# Width-limited portrait heroes sit lower in the bay, on the floor.
 			origin.y += maxf(0,area.y-s*105.0)*.14
 			VehicleRenderer.showroom_light(self,Rect2(Vector2.ZERO,area),view.game.profile.effects_quality)
-		VehicleRenderer.draw(self,origin+offset,s,view.model,view.look,view.car,false,Vector2.ZERO,0,false,view.game.profile.effects_quality,false,false,null,reveal)
+		VehicleRenderer.draw(self,origin+offset,s,view.model,view.look,view.car,false,Vector2.ZERO,0,false,view.game.profile.effects_quality,false,false,null,reveal,not view.road_preview,offset.x*.001)
 
 func configure(g: Node2D,id: String,vehicle: Drivetrain,appearance: Dictionary,background: bool=true,height: float=200,animated: bool=true) -> void:
 	game=g; model=id; car=vehicle; look=appearance.duplicate(true); showroom=background

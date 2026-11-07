@@ -6,6 +6,11 @@ var game: Node2D
 var custom: CustomizationView
 var look: Dictionary
 var art: StageArt
+var reflection: ReflectionArt
+var light_phase := 0.0:
+	set(value):
+		light_phase=value
+		if is_instance_valid(art): art.queue_redraw()
 var pose := Vector2(0,1):
 	set(value):
 		pose=value
@@ -40,19 +45,24 @@ class StageArt extends Node2D:
 		var detail_origin:=area*Vector2(.57,.49)-(front-Vector2(0,lift))*detail
 		var origin:=full_origin.lerp(detail_origin,focus)
 		var ground_y:=origin.y+(ground-lift)*scale_factor
-		if quality>0:
-			var reflection_strength:=lerpf(.17,.07,focus)
-			var drop:=VehicleAppearance.body_drop(stage.look)
-			var mirror_origin:=Vector2(origin.x,ground_y+(ground-drop)*scale_factor*.26)
-			var finish: String=["gloss","matte","metallic"][int(stage.look.finish)]
-			var body_path:=str(d.body)%[int(stage.look.paint),finish]
-			for displacement in [-2.0,2.0,0.0]:
-				draw_set_transform(mirror_origin+Vector2(displacement,absf(displacement)*.6),0.0,Vector2(1,-.26))
-				VehicleRenderer.layer(self,body_path,Vector2.ZERO,scale_factor,Color(.68,.81,.94,reflection_strength*(1.0 if displacement==0.0 else .24)))
-			draw_set_transform(Vector2.ZERO)
-		VehicleRenderer.draw(self,origin,scale_factor/.232,g.profile.vehicle_id,stage.look,g.car,false,Vector2.ZERO,0,false,quality,false,false,null,1.0,true)
+		stage.reflection.visible=quality>0
+		stage.reflection.origin=origin
+		stage.reflection.car_scale=scale_factor/.232
+		stage.reflection.position=Vector2(0,ground_y*1.26)
+		stage.reflection.modulate=Color(.78,.81,.85,lerpf(.14,.06,focus))
+		stage.reflection.queue_redraw()
+		VehicleRenderer.draw(self,origin,scale_factor/.232,g.profile.vehicle_id,stage.look,g.car,false,Vector2.ZERO,0,false,quality,false,false,null,1.0,true,stage.light_phase)
 		draw_rect(background,Color("3a5367"),false)
 		draw_line(Vector2(0,area.y-1),Vector2(area.x*.24,area.y-1),Color("cf906a"),2)
+
+class ReflectionArt extends Node2D:
+	var stage: CustomizationStage
+	var origin := Vector2.ZERO
+	var car_scale := 1.0
+
+	func _draw() -> void:
+		var g:=stage.game
+		VehicleRenderer.draw(self,origin,car_scale,g.profile.vehicle_id,stage.look,g.car,false,Vector2.ZERO,0,false,0,false,false,null,1.0,true)
 
 func configure(g: Node2D,appearance: Dictionary,minimum_height: float) -> void:
 	game=g
@@ -66,9 +76,16 @@ func configure(g: Node2D,appearance: Dictionary,minimum_height: float) -> void:
 	art=StageArt.new()
 	art.stage=self
 	add_child(art)
+	reflection=ReflectionArt.new()
+	reflection.stage=self
+	reflection.scale=Vector2(1,-.26)
+	add_child(reflection)
 	resized.connect(art.queue_redraw)
 	pose=custom.camera_pose
 	var target:=custom.camera_target()
+	if not game.profile.reduced_motion:
+		light_phase=-.018
+		create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT).tween_property(self,"light_phase",0.0,.4)
 	if game.profile.reduced_motion or pose.is_equal_approx(target):
 		pose=target
 	else:

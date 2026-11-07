@@ -1,7 +1,8 @@
 class_name GarageShowroom
 extends Control
 
-const SCENE_PATH := "res://assets/ui/night_garage.svg"
+const SCENE_PATH := "res://assets/ui/private_showroom_landscape.webp"
+const PORTRAIT_PATH := "res://assets/ui/private_showroom_portrait.webp"
 
 class StageArt extends Node2D:
 	var stage: GarageShowroom
@@ -9,55 +10,37 @@ class StageArt extends Node2D:
 	func _draw() -> void:
 		var area := stage.size
 		if area.x<10 or area.y<10: return
-		draw_texture_rect(stage.scene,Rect2(Vector2.ZERO,area),false)
-		var tall := area.x/area.y<1.3
-		var sign := Vector2(area.x*.5,area.y*.394)
-		draw_string(AutomotiveUI.DISPLAY,sign-Vector2(92,0),"R E D L I N E",HORIZONTAL_ALIGNMENT_CENTER,184,18,Color("d0ecf5"))
-		if stage.quality>0:
-			var pool := Rect2(area*Vector2(.12,.55),area*Vector2(.76,.38))
-			AutomotiveUI.glow(self,pool,Color(.45,.69,.82,.19))
-		for index in 2:
-			var center := .20 if index==0 else .80
-			var position := Vector2(area.x*center,area.y*(.632 if tall else .615))
-			var width := minf(area.x*(.37 if tall else .31),area.y*.91)
-			var caption: String="%02d / OPEN"%(index+2)
-			if index<stage.parked.size():
-				var entry: Dictionary=stage.parked[index]
-				draw_car(entry,position,width,false)
-				caption="%02d / PARKED"%(index+2)
-			draw_bay_caption(Vector2(position.x,area.y*.29),caption,area.x)
-		var foreground := Vector2(area.x*.5,area.y*(.847 if tall else .85))
-		var hero_width := minf(area.x*(.82 if tall else .55),area.y*1.55)
-		draw_car(stage.active,foreground,hero_width,true)
-		draw_rect(Rect2(Vector2.ZERO,area),Color("547789"),false,1)
-		draw_line(Vector2(0,area.y-1),Vector2(area.x*.22,area.y-1),Color("eb756a"),2,true)
+		LiquidGlass.draw_cover(self,stage.scene,Rect2(Vector2.ZERO,area))
+		# Protect the overlays locally while leaving the interior sharp.
+		shade_band(Rect2(0,0,area.x,area.y*.24),Color(.018,.025,.032,.82),Color.TRANSPARENT)
+		shade_band(Rect2(0,area.y*.65,area.x,area.y*.35),Color.TRANSPARENT,Color(.012,.018,.025,.93))
 
-	func draw_bay_caption(position: Vector2,caption: String,stage_width: float) -> void:
-		var width:=minf(114,stage_width*.19)
-		var badge:=Rect2(position-Vector2(width*.5,0),Vector2(width,20))
-		draw_rect(badge,Color(.036,.077,.108,.86))
-		draw_line(badge.position,badge.position+Vector2(width,0),Color(.42,.69,.75,.66),1)
-		draw_string(AutomotiveUI.NUMBERS,badge.position+Vector2(0,14),caption,HORIZONTAL_ALIGNMENT_CENTER,width,12,AutomotiveUI.BLUE)
+	func shade_band(rect: Rect2,top: Color,bottom: Color) -> void:
+		draw_polygon(PackedVector2Array([rect.position,Vector2(rect.end.x,rect.position.y),rect.end,Vector2(rect.position.x,rect.end.y)]),PackedColorArray([top,top,bottom,bottom]))
 
-	func draw_car(entry: Dictionary,position: Vector2,width: float,hero: bool) -> void:
+class DisplayedCar extends Node2D:
+	var entry: Dictionary
+	var width: float
+	var quality: int
+	var hero: bool
+	var light_phase := 0.0:
+		set(value):
+			light_phase=value
+			queue_redraw()
+
+	func _draw() -> void:
 		var data := VehicleAppearance.definition(entry.id)
 		if data.is_empty(): return
-		var scale_factor := width/1000.0
-		var left := position.x-width*.5
 		var car: Drivetrain=entry.car
+		var factor := width/1000.0
 		var radius_scale := WheelVisuals.radius_scale(car,GameCatalog.spec(entry.id))
 		var rear := VehicleAppearance.point(data.rear)
 		var front := VehicleAppearance.point(data.front)
 		var radii: Array=data.get("wheel_radii",[data.radius,data.radius])
 		var ground := maxf(rear.y+float(radii[0])*radius_scale,front.y+float(radii[1])*radius_scale)
 		var lift := float(data.radius)*(radius_scale-1.0)
-		var origin := Vector2(left,position.y-(ground-lift)*scale_factor)
-		if stage.quality>0:
-			var reflection_offset := (ground-VehicleAppearance.body_drop(entry.look))*scale_factor*.31
-			draw_set_transform(Vector2(left,position.y+reflection_offset),0.0,Vector2(1,-.31))
-			VehicleRenderer.layer(self,str(data.body)%[int(entry.look.paint),["gloss","matte","metallic"][int(entry.look.finish)]],Vector2.ZERO,scale_factor,Color(.54,.76,.89,.20 if hero else .11))
-			draw_set_transform(Vector2.ZERO)
-		VehicleRenderer.draw(self,origin,width/232.0,entry.id,entry.look,car,false,Vector2.ZERO,0,false,stage.quality,not hero)
+		var origin := Vector2(-width*.5,-(ground-lift)*factor)
+		VehicleRenderer.draw(self,origin,width/232.0,entry.id,entry.look,car,false,Vector2.ZERO,0,false,quality,not hero,false,null,1.0,true,light_phase)
 
 class FloorLight extends Node2D:
 	var drift := 0.0:
@@ -67,16 +50,22 @@ class FloorLight extends Node2D:
 
 	func _draw() -> void:
 		var area: Vector2=get_parent().size
-		var bounds:=Rect2(area*Vector2(.12+drift,.85),area*Vector2(.58,.14))
-		AutomotiveUI.glow(self,bounds,Color(.36,.71,.82,.19))
+		var bounds:=Rect2(area*Vector2(.12+drift,.70),area*Vector2(.58,.10))
+		AutomotiveUI.glow(self,bounds,Color(.93,.72,.49,.07))
 
 var scene: Texture2D
 var active: Dictionary
 var parked: Array[Dictionary]=[]
 var quality: int
+var portrait := false
+var compact := false
+var displays: Array[DisplayedCar]=[]
+var reflections: Array[DisplayedCar]=[]
 
 func setup(game: Node2D,minimum_height: float) -> void:
-	scene=load(SCENE_PATH)
+	portrait=game.is_portrait()
+	compact=not portrait and game.get_window().size.y<500
+	scene=load(PORTRAIT_PATH if portrait else SCENE_PATH)
 	quality=game.profile.effects_quality
 	active={"id":game.profile.vehicle_id,"car":game.car,"look":game.profile.appearance_for(game.profile.vehicle_id)}
 	for id in game.profile.garage:
@@ -91,10 +80,52 @@ func setup(game: Node2D,minimum_height: float) -> void:
 	var art:=StageArt.new()
 	art.stage=self
 	add_child(art)
+	var cars: Array[Dictionary]=parked.duplicate()
+	cars.append(active)
+	for index in cars.size():
+		if quality>0:
+			var reflection:=DisplayedCar.new()
+			reflection.entry=cars[index]
+			reflection.hero=index==cars.size()-1
+			reflection.quality=0
+			reflection.scale=Vector2(1,-.26)
+			reflection.modulate=Color(.78,.81,.85,.14 if reflection.hero else .07)
+			add_child(reflection)
+			reflections.append(reflection)
+		var display:=DisplayedCar.new()
+		display.entry=cars[index]
+		display.hero=index==cars.size()-1
+		display.quality=quality
+		add_child(display)
+		displays.append(display)
+		if not game.profile.reduced_motion:
+			display.light_phase=-.025
+			display.create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT).tween_property(display,"light_phase",0.0,.38)
+			if display.hero:
+				display.modulate.a=.82
+				display.create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT).tween_property(display,"modulate:a",1.0,.24)
 	resized.connect(art.queue_redraw)
+	resized.connect(layout_cars)
+	layout_cars()
 	if quality>0 and not game.profile.reduced_motion:
 		var sweep:=FloorLight.new()
 		add_child(sweep)
 		var lighting:=create_tween().set_loops().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 		lighting.tween_property(sweep,"drift",.20,6.0).from(-.08)
 		lighting.tween_property(sweep,"drift",-.08,6.0)
+
+func layout_cars() -> void:
+	for index in displays.size():
+		var display:=displays[index]
+		var center := (.30 if index==0 else .70) if portrait else (.20 if index==0 else .80)
+		if compact: center=.12 if index==0 else .54
+		display.position=Vector2(size.x*center,size.y*(.555 if portrait else .57))
+		display.width=size.x*(.35 if portrait else (.20 if compact else .28))
+		if display.hero:
+			display.position=Vector2(size.x*(.32 if compact else .5),size.y*(.65 if portrait else .695))
+			display.width=minf(size.x*(.86 if portrait else (.53 if compact else .60)),size.y*1.17)
+		display.queue_redraw()
+		if not reflections.is_empty():
+			reflections[index].position=display.position
+			reflections[index].width=display.width
+			reflections[index].queue_redraw()

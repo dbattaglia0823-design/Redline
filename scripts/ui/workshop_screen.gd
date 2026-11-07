@@ -158,6 +158,7 @@ func sync() -> void:
 		signature=key
 		for child in get_children():
 			if child is CanvasItem: child.hide()
+			remove_child(child)
 			child.queue_free()
 		targets.clear(); build()
 	var next_scene := str([game.screen,game.tab,game.menu.hub.categories,game.menu.dealer.class_picker,
@@ -344,6 +345,12 @@ func container(rect: Rect2) -> VBoxContainer:
 func build() -> void:
 	var browse: bool=game.menu.hub.categories
 	var workbench: bool=game.tab=="performance"
+	if not workbench:
+		var stage:=GarageShowroom.new()
+		stage.name="GarageShowroom"
+		add_child(stage)
+		stage.size=size
+		stage.setup(game,0)
 	var height:=1110.0 if portrait else (612.0 if short_catalog() else 630.0)
 	if workbench and not browse: height=1244.0 if portrait else 716.0
 	var body:=container(Rect2(24,18,size.x-48,height) if portrait or short_catalog() else Rect2(36,20,size.x-72,height))
@@ -391,35 +398,40 @@ func garage(body: VBoxContainer) -> void:
 	count.custom_minimum_size.x=AutomotiveUI.NUMBERS.get_string_size(count.text,HORIZONTAL_ALIGNMENT_LEFT,-1,15).x
 	count.size_flags_horizontal=Control.SIZE_SHRINK_END
 	heading.add_child(count)
-	var layout: BoxContainer=AutomotiveUI.row(body,18) if short_catalog() else AutomotiveUI.column(body,12)
-	layout.size_flags_vertical=Control.SIZE_EXPAND_FILL
-	var stage:=GarageShowroom.new()
-	stage.name="GarageShowroom"
-	layout.add_child(stage)
-	stage.setup(game,500 if portrait else (350 if short_catalog() else 284))
-	if short_catalog(): stage.size_flags_stretch_ratio=1.75
-	var console:=AutomotiveUI.column(layout,10)
+	var panel:=PanelContainer.new()
+	panel.name="GarageConsole"
+	add_child(panel)
+	panel.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	panel.position=Vector2(24,868) if portrait else (Vector2(size.x*.65,212) if short_catalog() else Vector2(36,550))
+	panel.size=Vector2(552,184) if portrait else (Vector2(size.x*.35-24,390) if short_catalog() else Vector2(size.x-72,108))
+	var skin:=AutomotiveUI.surface(Color(.025,.037,.047,.88),Color(.59,.69,.72,.30),18)
+	skin.content_margin_left=18
+	skin.content_margin_right=18
+	skin.content_margin_top=16
+	skin.content_margin_bottom=16
+	panel.add_theme_stylebox_override("panel",skin)
+	var stacked:=portrait or short_catalog()
+	var console: BoxContainer=AutomotiveUI.column(panel,14) if stacked else AutomotiveUI.row(panel,22)
 	var spec:=GameCatalog.spec(game.profile.vehicle_id)
-	var identity:=AutomotiveUI.row(console,14)
-	var badge:=AutomotiveUI.label(PerformanceClasses.label(game.profile),18,AutomotiveUI.BLUE,true)
-	var nameplate:=AutomotiveUI.column(identity,2)
-	var caption: BoxContainer=AutomotiveUI.row(nameplate,8) if portrait else nameplate
-	caption.add_child(AutomotiveUI.label("ACTIVE BAY  /  "+str(spec.drive),14,AutomotiveUI.ORANGE,true))
-	nameplate.add_child(AutomotiveUI.label(str(spec.name),32 if not short_catalog() else 28))
-	badge.custom_minimum_size.x=AutomotiveUI.NUMBERS.get_string_size(badge.text,HORIZONTAL_ALIGNMENT_LEFT,-1,18).x
-	badge.size_flags_horizontal=Control.SIZE_SHRINK_END
-	badge.size_flags_vertical=Control.SIZE_SHRINK_CENTER
-	var badge_row: Control=caption if portrait or short_catalog() else identity
-	badge_row.add_child(badge)
-	console.add_child(HSeparator.new())
-	var change: BoxContainer=AutomotiveUI.column(console,9) if portrait or short_catalog() else AutomotiveUI.row(console,20)
-	garage_stats(change,4)
-	garage_action(change,"hub_owned","Change Car","dealer",true)
+	var nameplate:=AutomotiveUI.column(console,3)
+	nameplate.size_flags_vertical=Control.SIZE_SHRINK_CENTER
+	nameplate.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	nameplate.add_child(AutomotiveUI.label("ACTIVE BAY  /  "+str(spec.drive),14,AutomotiveUI.ORANGE,true))
+	var title:=AutomotiveUI.label(str(spec.name),28 if not portrait else 30)
+	title.text_overrun_behavior=TextServer.OVERRUN_TRIM_ELLIPSIS
+	nameplate.add_child(title)
+	nameplate.add_child(AutomotiveUI.label(PerformanceClasses.label(game.profile),14,AutomotiveUI.BLUE,true))
+	var stats:=AutomotiveUI.column(console,0)
+	if not stacked: stats.size_flags_horizontal=Control.SIZE_SHRINK_CENTER
+	stats.size_flags_vertical=Control.SIZE_SHRINK_CENTER
+	garage_stats(stats,4 if not short_catalog() else 2)
+	garage_action(console,"hub_owned","Change Car","dealer",true)
 	var change_button: Button=targets.hub_owned
-	change_button.custom_minimum_size.y=82 if portrait or short_catalog() else 60
-	if not portrait and not short_catalog():
-		change_button.custom_minimum_size.x=268
+	change_button.custom_minimum_size.y=82 if stacked else 72
+	if not stacked:
+		change_button.custom_minimum_size.x=240
 		change_button.size_flags_horizontal=Control.SIZE_SHRINK_END
+		change_button.size_flags_vertical=Control.SIZE_SHRINK_CENTER
 
 func garage_action(parent: Node,id: String,title: String,icon_key: String,primary: bool=false) -> void:
 	var control:=button(parent,id,title,primary)

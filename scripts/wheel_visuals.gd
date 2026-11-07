@@ -42,16 +42,25 @@ static func draw_compound_mark(g: Node2D,center: Vector2,radius: float,compound:
 	if compound>=2:
 		g.draw_arc(center,radius*.89,phase+PI,phase+PI+.83,10,ink,maxf(1,radius*.036),true)
 
-static func draw_wheel(g: Node2D, center: Vector2, radius: float, scale: float, rim: int, state: Dictionary, quality: int, look: Dictionary = {}, studio: bool = false) -> void:
+static func draw_studio_reflection(g: Node2D,center: Vector2,radius: float,light: Color) -> void:
+	# Broad glints stay inside the metal, leaving the tire and caliper intact.
+	for band in 3:
+		var ring:=radius*(.76+band*.065)
+		g.draw_arc(center,ring,PI*1.12,PI*1.80,18,Color(.96,.91,.81,.06*light.get_luminance()),maxf(.6,radius*.075),true)
+		g.draw_arc(center,ring,PI*.12,PI*.80,18,Color(.02,.03,.04,.10),maxf(.6,radius*.08),true)
+
+static func draw_wheel(g: Node2D, center: Vector2, radius: float, scale: float, rim: int, state: Dictionary, quality: int, look: Dictionary = {}, studio: bool = false, light: Color = Color.WHITE) -> void:
 	var segments: int = [16,24,36][clampi(quality,0,2)]
+	if studio and quality>0: segments=48 if quality==1 else 80
 	var color: Color = [Color("c5cdd2"),Color("b8a077"),Color("6d7b88")][clampi(rim,0,2)]
+	if studio: color*=light
 	g.draw_circle(center,radius,Color("091019"))
 	if int(look.get("sidewall",0)) == 1: g.draw_arc(center,radius*.88,0,TAU,segments,Color("c9ccc6"),1.4*scale,true)
 	elif int(look.get("sidewall",0)) == 2:
 		for n in 8:
 			var a: float = float(state.angle)+n*TAU/8
 			g.draw_arc(center,radius*.87,a,a+.12,4,Color("d9dace",1-float(state.blur)*.75),1.7*scale,true)
-	g.draw_arc(center,radius-scale,PI*1.1,TAU*.97,segments,Color("46505a"),scale,true)
+	g.draw_arc(center,radius-scale,PI*1.1,TAU*.97,segments,Color("34393e") if studio else Color("46505a"),scale,true)
 	g.draw_circle(center,radius*.76,Color("1d2731"))
 	g.draw_circle(center,radius*.62,Color("71818a"))
 	if studio:
@@ -72,6 +81,7 @@ static func draw_wheel(g: Node2D, center: Vector2, radius: float, scale: float, 
 			g.draw_circle(center+Vector2(cos(a),sin(a))*radius*.49,.7*scale,Color("263640"))
 	# Fixed brake caliper and lighting; rotating spokes are a separate layer.
 	var caliper: Color = [Color("cc5430"),Color("e53942"),Color("edc343"),Color("bac5cf")][int(look.get("caliper",0))]
+	if studio: caliper*=light
 	if studio:
 		var shape:=PackedVector2Array()
 		for point in [Vector2(.31,-.31),Vector2(.47,-.35),Vector2(.57,-.23),Vector2(.57,.22),Vector2(.46,.32),Vector2(.31,.25)]:
@@ -101,12 +111,18 @@ static func draw_wheel(g: Node2D, center: Vector2, radius: float, scale: float, 
 			var width: float=float([1.35,2.4,1.35,1.75,3.1][design])*scale
 			if studio:
 				width=radius*float([.055,.10,.055,.075,.13][design])
-				g.draw_line(foot+Vector2(0,1)*radius*.025,tip+Vector2(0,1)*radius*.025,spoke_color.darkened(.55),width*1.2,true)
-			g.draw_line(foot,tip,spoke_color,width,true)
+				var side:=direction.orthogonal()*width*.5
+				var shadow:=Vector2(radius*.012,radius*.024)
+				g.draw_colored_polygon(PackedVector2Array([foot-side*.72+shadow,foot+side*.72+shadow,tip+side+shadow,tip-side+shadow]),spoke_color.darkened(.62))
+				var face:=spoke_color.darkened(.10+.13*maxf(0.0,sin(a+offset)))
+				g.draw_colored_polygon(PackedVector2Array([foot-side*.72,foot+side*.72,tip+side,tip-side]),face)
+				g.draw_line(foot+side*.72,tip+side,face.darkened(.30),maxf(.6,radius*.008),true)
+			else: g.draw_line(foot,tip,spoke_color,width,true)
 			if studio:
 				var glint:=Vector2(-.008,-.014)*radius
-				g.draw_line(foot+glint,tip+glint,spoke_color.lightened(.40),width*.18,true)
-				g.draw_line(foot.lerp(tip,.64),tip,Color(.95,.97,1,.30),width*.13,true)
+				var highlight:=.12+.18*maxf(0.0,-sin(a+offset))
+				g.draw_line(foot+glint,tip+glint,spoke_color.lightened(highlight),width*.18,true)
+				g.draw_line(foot.lerp(tip,.64),tip,Color(.98,.94,.85,.16),width*.13,true)
 	g.draw_circle(center,radius*.16,Color("263340"))
 	g.draw_circle(center,radius*.08,Color("dbe3e8"))
 	if studio:

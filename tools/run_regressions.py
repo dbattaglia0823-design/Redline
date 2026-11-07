@@ -13,7 +13,7 @@ HEADLESS = (
     "test_driving_feedback", "test_transmissions", "test_parts_lineup", "test_customization",
     "test_upgrade_model", "test_advanced_tuning", "benchmark_launch_balance",
 )
-GRAPHICAL = ("test_save_recovery_ui", "test_championships_ui", "test_race_hud", "test_upgrade_redesign", "test_native_workshop", "test_customization_ui", "test_main_navigation")
+GRAPHICAL = ("test_save_recovery_ui", "test_championships_ui", "test_race_hud", "test_upgrade_redesign", "test_native_workshop", "test_customization_ui", "test_main_navigation", "test_vehicle_lighting")
 
 
 def main():
