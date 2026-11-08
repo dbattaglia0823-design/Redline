@@ -114,7 +114,9 @@ func _on_action(action: String, payload: Dictionary) -> void:
 	elif action == "skills.select_node":
 		if item is Dictionary: selected = str(item.get("id", selected))
 	elif action == "skills.unlock":
-		if profile.unlock_driver_skill(selected): pass
+		if profile.unlock_driver_skill(selected):
+			var game := get_parent()
+			if game != null: game.refresh_car()
 	refresh()
 
 func refresh() -> void:
