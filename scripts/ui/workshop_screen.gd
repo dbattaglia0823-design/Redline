@@ -10,6 +10,7 @@ var targets: Dictionary={}
 var saved_scrolls := MenuScrollState.new()
 var scroll_scope := ""
 var scroll_revision := 0
+var scroll_restore_pending := false
 var portrait:=false
 var notice: PanelContainer
 var notice_label: Label
@@ -188,6 +189,7 @@ func _restore_menu_scrolls(context: String, revision: int) -> void:
 	await get_tree().process_frame
 	if not is_inside_tree() or revision!=scroll_revision or not visible or _scroll_context()!=context: return
 	saved_scrolls.restore(self,context)
+	scroll_restore_pending=false
 
 func sync() -> void:
 	visible=supports()
@@ -196,10 +198,13 @@ func sync() -> void:
 	var key:=state_key()
 	if game.tab=="performance": key+=confirm_quote
 	if key!=signature:
-		if scroll_scope!="": saved_scrolls.remember(self,scroll_scope)
+		# If another interaction occurs before the previous layout frame, keep the
+		# original position rather than overwriting it with a temporary zero.
+		if scroll_scope!="" and not scroll_restore_pending: saved_scrolls.remember(self,scroll_scope)
 		var next_scope:=_scroll_context()
 		scroll_scope=next_scope
 		scroll_revision+=1
+		scroll_restore_pending=true
 		signature=key
 		for child in get_children():
 			if child is CanvasItem: child.hide()
