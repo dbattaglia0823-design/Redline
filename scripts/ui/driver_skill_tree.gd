@@ -7,7 +7,7 @@ const INK = Color("f2eee4")
 const MUTED = Color("aab5c4")
 
 var profile: DriverProfile
-var renderer: Control
+var renderer
 var backdrop: ColorRect
 var close_button: Button
 var category := "Launch"
