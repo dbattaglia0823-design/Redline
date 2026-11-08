@@ -37,10 +37,19 @@ class PreviewArt extends Node2D:
 			draw_rect(Rect2(0,area.y-2,area.x,2),Color("2c292c"))
 			draw_rect(Rect2(0,area.y-2,minf(area.x*.21,112),2),AutomotiveUI.ORANGE)
 		var s: float=minf(area.x/255.0,maxf(1,area.y-10)/84.0)
-		var origin:=Vector2((area.x-s*232)*.5,(area.y-s*83.5)*.5)
+		var d:=VehicleAppearance.definition(view.model)
+		var radius_factor:=WheelVisuals.radius_scale(view.car,GameCatalog.spec(view.model)) if view.car!=null else 1.0
+		var rear:=VehicleAppearance.point(d.rear)
+		var front:=VehicleAppearance.point(d.front)
+		var radii: Array=d.get("wheel_radii",[d.radius,d.radius])
+		var ground:=maxf(rear.y+float(radii[0])*radius_factor,front.y+float(radii[1])*radius_factor)
+		var lift:=float(d.radius)*(radius_factor-1.0)
+		var draw_scale:=s*.232
+		# Position from tire contact, not nominal image height, so ride-height
+		# and per-model dimensions cannot make the tires float above the floor.
+		var floor_y:=area.y*(.88 if view.showroom else .80)
+		var origin:=Vector2((area.x-draw_scale*1000.0)*.5,floor_y-(ground-lift)*draw_scale)
 		if view.showroom:
-			# Width-limited portrait heroes sit lower in the bay, on the floor.
-			origin.y += maxf(0,area.y-s*105.0)*.14
 			VehicleRenderer.showroom_light(self,Rect2(Vector2.ZERO,area),view.game.profile.effects_quality)
 		VehicleRenderer.draw(self,origin+offset,s,view.model,view.look,view.car,false,Vector2.ZERO,0,false,view.game.profile.effects_quality,false,false,null,reveal,not view.road_preview,offset.x*.001)
 
