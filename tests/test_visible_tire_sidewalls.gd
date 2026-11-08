@@ -19,10 +19,12 @@ func _initialize() -> void:
 		replacements += 1
 		var radii: Array=d.get("wheel_radii",[d.radius,d.radius])
 		var rims: Array=d.get("rim_radius",[])
+		var wheels: Array=d.get("stock_wheels",[])
 		check(rims.size()==2,id+": expected two wheel rim radii")
-		if rims.size()!=2: continue
+		check(wheels.size()==2,id+": expected two authored tires")
+		if rims.size()!=2 or wheels.size()!=2: continue
 		for axle in 2:
-			var path: String=str(d.stock_wheels[axle])
+			var path: String=str(wheels[axle])
 			check(ResourceLoader.exists(path),id+": missing tire source "+str(axle))
 			if not ResourceLoader.exists(path): continue
 			var source: Texture2D=VehicleAppearance.texture(path)
