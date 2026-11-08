@@ -8,7 +8,7 @@ import subprocess
 from tempfile import TemporaryDirectory
 
 HEADLESS = (
-    "test_dealer_vehicle_type_tabs", "test_save_recovery", "test_career_save_migration", "test_championships", "test_betting_progression", "test_economy", "test_quality_model",
+    "test_menu_scroll_state", "test_dealer_vehicle_type_tabs", "test_save_recovery", "test_career_save_migration", "test_championships", "test_betting_progression", "test_economy", "test_quality_model",
     "test_career_economy_sim", "test_roster", "test_physics", "test_racing_physics_audit", "test_traction_expansion",
     "test_driving_feedback", "test_transmissions", "test_launch_induction_audio", "test_high_power_gearbox", "test_parts_lineup", "test_customization",
     "test_upgrade_model", "test_advanced_tuning", "benchmark_launch_balance", "benchmark_physics_audit",
