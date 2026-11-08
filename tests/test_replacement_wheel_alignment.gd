@@ -18,6 +18,7 @@ func _initialize() -> void:
 		"gr86": [[23,0],[36,1]],
 		"supra_gr": [[12,0],[19,-1]],
 		"turbo_s": [[-9,-14],[23,-20]],
+		"mclaren": [[-13,-19],[25,-19]],
 	}
 	for id in calibrated:
 		var d: Dictionary=VehicleAppearance.definition(id)
