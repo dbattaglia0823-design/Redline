@@ -17,6 +17,7 @@ const FINISH := 402.336
 var font: Font
 var mono: Font
 var profile := DriverProfile.new()
+var skill_tree: Control
 var car := Drivetrain.new()
 var rival := Drivetrain.new()
 var sound: EngineAudio
@@ -103,6 +104,9 @@ func _ready() -> void:
 	font = AutomotiveUI.BODY
 	mono = AutomotiveUI.NUMBERS
 	profile.load_profile()
+	skill_tree = preload("res://scripts/ui/driver_skill_tree.gd").new()
+	add_child(skill_tree)
+	skill_tree.setup(profile)
 	glass.reduced_motion = profile.reduced_motion
 	refresh_car()
 	selected_opponent = mini(4, int(profile.career_wins[0]))
@@ -490,7 +494,7 @@ func complete_race() -> void:
 	result_improvement=maxf(0.0,float(event_record.get("last_et",elapsed))-elapsed) if not staging.red_light else 0.0
 	result_record = not staging.red_light and (quarter_record or (event_id!="" and elapsed<float(event_record.get("best_et",INF))))
 	if not staging.red_light and quarter_record: profile.best=player_finish
-	var payout:=profile.award_race(active_contract,result_win,staging.red_light,staging.elapsed(player_finish),player_reaction,finish_speed,int(active_contract.get("legacy_career",event_index)),int(active_contract.get("legacy_rival",selected_opponent)))
+	var payout:=profile.award_race(active_contract,result_win,staging.red_light,staging.elapsed(player_finish),player_reaction,finish_speed,int(active_contract.get("legacy_career",event_index)),int(active_contract.get("legacy_rival",selected_opponent)),perfect_shifts)
 	if payout.is_empty(): return
 	result_bonus=int(payout.bonus); result_base_pay=int(payout.base)-result_bonus; result_bet_return=int(payout.bet_return); result_reward=int(payout.reward); result_xp=int(payout.xp)
 	result_trophy=bool(payout.get("trophy",false))
@@ -501,6 +505,7 @@ func complete_race() -> void:
 	controls.clear()
 
 func go_garage() -> void:
+	if skill_tree != null: skill_tree.close()
 	menu_dirty = true
 	tab = "garage"
 	if screen == "race" and finish_hold_left > 0.0: complete_race()
@@ -600,6 +605,9 @@ func handle_key_input(event: InputEventKey) -> void:
 					glass.focused = str(ids[(ids.size()-1 if event.shift_pressed else 0) if current < 0 else posmod(current+(-1 if event.shift_pressed else 1),ids.size())])
 
 func _input(event: InputEvent) -> void:
+	if skill_tree != null and skill_tree.visible:
+		if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE: skill_tree.close()
+		return
 	if event is InputEventJoypadButton or event is InputEventJoypadMotion:
 		gamepad.handle(self,event)
 		get_viewport().set_input_as_handled()
@@ -661,6 +669,9 @@ func activate_at(pos: Vector2, pointer: String, allow_menu: bool = true) -> void
 			return
 
 func action(id: String) -> void:
+	if id == "driver_skills":
+		if skill_tree != null: skill_tree.show_tree()
+		return
 	if native_workshop!=null and native_workshop.template_action(id): return
 	if id in ["garage_previous","garage_next"]:
 		var owned: Array=GameCatalog.CAR_IDS.filter(func(model): return profile.garage.has(model))
@@ -951,6 +962,7 @@ func draw_style() -> void:
 	native_workshop.sync()
 
 func draw_driver() -> void:
+	button("driver_skills", "SKILL TREE  /  %d PTS" % profile.available_skill_points(), Rect2(36, 183, 324, 52), true)
 	button("reduced_motion","MOTION: REDUCED" if profile.reduced_motion else "MOTION: FULL",Rect2(738,103,210,48))
 	button("effects_quality","EFFECTS: "+["LOW","MEDIUM","HIGH"][profile.effects_quality],Rect2(962,103,204,48))
 	box(Rect2(36, 256, 1130, 399))
