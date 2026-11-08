@@ -46,6 +46,13 @@ func update_vehicle(car: Drivetrain,paused: bool=false) -> void:
 		voice.last_grind_serial=source.grind_serial; voice.grind_left=0.0
 		voice._blowoff_armed=false; voice._overrun_armed=false
 		voice.pop=0; voice.blowoff=0; voice.shift_tick=0
+		# Never carry a vent tail, cooldown, or boost spool across car/engine swaps.
+		voice._blowoff_pressure=0; voice._blowoff_cooldown=0
+		voice._blowoff_flutter=0; voice._blowoff_phase=0; voice._blowoff_flutter_phase=0
+		voice._blowoff_noise_low=0; voice._blowoff_noise_high=0
+		voice._turbo_air_low=0; voice._turbo_air_high=0
+		voice._turbo_spool=0; voice.blowoff_gain=0
+		voice.last_blowoff_reason=""
 		_last_vehicle=id
 		_last_source_id=source.get_instance_id()
 	voice.set_from_vehicle(source,enabled and not paused)
