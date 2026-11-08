@@ -1,0 +1,39 @@
+{
+  "vehicle_id": "mustang",
+  "display_name": "Ford Mustang GT",
+  "body_pattern": "res://assets/vehicles/mustang/body_%d_%s.png",
+  "paint_indices": {
+    "0": "#eb704e",
+    "1": "#b8d6cb",
+    "2": "#e8dfc6",
+    "3": "#7b93cf",
+    "4": "#e7b44d",
+    "5": "#c68aad"
+  },
+  "finishes": [
+    "gloss",
+    "matte",
+    "metallic"
+  ],
+  "wheel_radii": [
+    77,
+    77
+  ],
+  "rear": [
+    245,
+    274
+  ],
+  "front": [
+    789,
+    274
+  ],
+  "pivot": [
+    517.0,
+    274
+  ],
+  "wheel_art": "retain existing game wheels",
+  "caliper_color": "fixed in body, requires game code change to disable UI",
+  "window_tint": "retain game tint overlays pending new mask",
+  "status": "body_art_included",
+  "warning": "Not plug-and-play. Existing game uses 18 variants and other layered textures."
+}

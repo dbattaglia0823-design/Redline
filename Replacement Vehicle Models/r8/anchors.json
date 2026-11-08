@@ -1,0 +1,32 @@
+{
+  "vehicle_id": "r8",
+  "display_name": "Audi R8",
+  "coordinate_space": [
+    1000,
+    360
+  ],
+  "rear_center": [
+    215,
+    274
+  ],
+  "front_center": [
+    775,
+    277
+  ],
+  "wheel_radius": 73,
+  "wheel_radii": [
+    73,
+    73
+  ],
+  "wheel_radius_outer_pixels": 73,
+  "pivot": [
+    495.0,
+    274
+  ],
+  "rim_radius": [
+    51.1,
+    51.1
+  ],
+  "anchor_source": "Existing REDLINE assets/vehicles/manifest.json; NOT recalibrated to this new body artwork",
+  "alignment_status": "provisional, visually inspect and tune centers and scale in Godot"
+}

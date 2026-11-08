@@ -1,0 +1,35 @@
+{
+  "vehicle_id": "chiron",
+  "display_name": "Bugatti Chiron",
+  "coordinate_space": [
+    1000,
+    360
+  ],
+  "rear_center": [
+    201,
+    274
+  ],
+  "front_center": [
+    782,
+    274
+  ],
+  "radius": 82,
+  "wheel_radii": [
+    82,
+    82
+  ],
+  "pivot": [
+    491.5,
+    274
+  ],
+  "rim_radius": [
+    57.4,
+    57.4
+  ],
+  "source": "REDLINE manifest, not calibrated to new generated artwork",
+  "status": "PROVISIONAL; tune in game",
+  "wheel_radius": 82,
+  "wheel_radius_outer_pixels": 82,
+  "anchor_source": "Existing REDLINE manifest; not recalibrated to this new body artwork",
+  "alignment_status": "provisional, visually inspect and tune centers and scale in Godot"
+}

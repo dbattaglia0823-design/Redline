@@ -1,0 +1,35 @@
+{
+  "vehicle_id": "mclaren",
+  "display_name": "McLaren",
+  "coordinate_space": [
+    1000,
+    360
+  ],
+  "rear_center": [
+    216,
+    274
+  ],
+  "front_center": [
+    763,
+    274
+  ],
+  "radius": 84,
+  "wheel_radii": [
+    84,
+    84
+  ],
+  "pivot": [
+    489.5,
+    274
+  ],
+  "rim_radius": [
+    58.8,
+    58.8
+  ],
+  "source": "REDLINE manifest, not calibrated to new generated artwork",
+  "status": "PROVISIONAL; tune in game",
+  "wheel_radius": 84,
+  "wheel_radius_outer_pixels": 84,
+  "anchor_source": "Existing REDLINE manifest; not recalibrated to this new body artwork",
+  "alignment_status": "provisional, visually inspect and tune centers and scale in Godot"
+}

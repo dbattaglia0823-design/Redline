@@ -1,0 +1,35 @@
+{
+  "vehicle_id": "redeye",
+  "display_name": "Dodge Challenger Hellcat Redeye",
+  "coordinate_space": [
+    1000,
+    360
+  ],
+  "rear_center": [
+    243,
+    274
+  ],
+  "front_center": [
+    801,
+    277
+  ],
+  "radius": 77,
+  "wheel_radii": [
+    77,
+    77
+  ],
+  "pivot": [
+    522.0,
+    274
+  ],
+  "rim_radius": [
+    53.9,
+    53.9
+  ],
+  "source": "REDLINE manifest, not calibrated to new generated artwork",
+  "status": "PROVISIONAL; tune in game",
+  "wheel_radius": 77,
+  "wheel_radius_outer_pixels": 77,
+  "anchor_source": "Existing REDLINE manifest; not recalibrated to this new body artwork",
+  "alignment_status": "provisional, visually inspect and tune centers and scale in Godot"
+}

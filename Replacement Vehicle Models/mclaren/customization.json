@@ -1,0 +1,49 @@
+{
+  "vehicle_id": "mclaren",
+  "display_name": "McLaren 720S",
+  "coordinate_space": [
+    1000,
+    360
+  ],
+  "body_pattern": "res://assets/vehicles/mclaren/body_%d_%s.png",
+  "paint_indices": {
+    "0": "#eb704e",
+    "1": "#b8d6cb",
+    "2": "#e8dfc6",
+    "3": "#7b93cf",
+    "4": "#e7b44d",
+    "5": "#c68aad"
+  },
+  "finishes": [
+    "gloss",
+    "matte",
+    "metallic"
+  ],
+  "existing_rim_designs": "keep from existing game",
+  "wheel_art": "keep existing REDLINE stock_wheels textures",
+  "caliper_color": "fixed in source artwork (no choice)",
+  "glass_tint": "retain existing game tint system or reauthor for exact silhouette fit",
+  "finish_note": "Generated image color grades; visually approximate rather than physically-based materials",
+  "integration_status": "not plug and play; paint mask, anchor and overlays require review",
+  "rear_center": [
+    216,
+    274
+  ],
+  "front_center": [
+    763,
+    274
+  ],
+  "wheel_radius": 84,
+  "wheel_radii": [
+    84,
+    84
+  ],
+  "pivot": [
+    489.5,
+    274
+  ],
+  "rim_radius": [
+    58.8,
+    58.8
+  ]
+}

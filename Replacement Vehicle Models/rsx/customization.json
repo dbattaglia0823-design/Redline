@@ -1,0 +1,46 @@
+{
+  "vehicle_id": "rsx",
+  "name": "Acura RSX",
+  "asset_size": [
+    1000,
+    360
+  ],
+  "body_template": "body_%d_%s.png",
+  "paint_count": 6,
+  "paint_names": [
+    "EMBER",
+    "SEAFOAM",
+    "BONE",
+    "INDIGO",
+    "SAFFRON",
+    "ORCHID"
+  ],
+  "finish_names": [
+    "gloss",
+    "matte",
+    "metallic"
+  ],
+  "supports_existing_rim_customization": true,
+  "supports_existing_paint_customization": true,
+  "supports_existing_finish_customization": true,
+  "supports_existing_tint_customization": true,
+  "supports_caliper_color_customization": false,
+  "rear_anchor": [
+    217,
+    274
+  ],
+  "front_anchor": [
+    767,
+    274
+  ],
+  "radius": 76,
+  "wheel_radii": [
+    76,
+    76
+  ],
+  "pivot": [
+    492.0,
+    274
+  ],
+  "integration_note": "Replace the current body assets for this vehicle ID and keep the existing REDLINE rim/wheel system. Use the anchor values here for wheel placement."
+}

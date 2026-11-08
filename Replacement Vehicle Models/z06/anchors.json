@@ -1,0 +1,35 @@
+{
+  "vehicle_id": "z06",
+  "display_name": "Chevrolet Corvette Z06",
+  "coordinate_space": [
+    1000,
+    360
+  ],
+  "rear_center": [
+    211,
+    274
+  ],
+  "front_center": [
+    766,
+    278
+  ],
+  "radius": 79,
+  "wheel_radii": [
+    79,
+    79
+  ],
+  "pivot": [
+    488.5,
+    274
+  ],
+  "rim_radius": [
+    55.3,
+    55.3
+  ],
+  "source": "REDLINE manifest, not calibrated to new generated artwork",
+  "status": "PROVISIONAL; tune in game",
+  "wheel_radius": 79,
+  "wheel_radius_outer_pixels": 79,
+  "anchor_source": "Existing REDLINE manifest; not recalibrated to this new body artwork",
+  "alignment_status": "provisional, visually inspect and tune centers and scale in Godot"
+}

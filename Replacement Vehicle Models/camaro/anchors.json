@@ -1,0 +1,35 @@
+{
+  "vehicle_id": "camaro",
+  "display_name": "Chevrolet Camaro",
+  "coordinate_space": [
+    1000,
+    360
+  ],
+  "rear_center": [
+    235,
+    274
+  ],
+  "front_center": [
+    796,
+    274
+  ],
+  "radius": 78,
+  "wheel_radii": [
+    78,
+    78
+  ],
+  "pivot": [
+    515.5,
+    274
+  ],
+  "rim_radius": [
+    54.6,
+    54.6
+  ],
+  "source": "REDLINE manifest, not calibrated to new generated artwork",
+  "status": "PROVISIONAL; tune in game",
+  "wheel_radius": 78,
+  "wheel_radius_outer_pixels": 78,
+  "anchor_source": "Existing REDLINE manifest; not recalibrated to this new body artwork",
+  "alignment_status": "provisional, visually inspect and tune centers and scale in Godot"
+}

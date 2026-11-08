@@ -1,0 +1,34 @@
+{
+  "vehicle_id": "miata",
+  "name": "Mazda MX-5 Miata",
+  "asset_size": [
+    1000,
+    360
+  ],
+  "rear": [
+    237,
+    274
+  ],
+  "front": [
+    793,
+    274
+  ],
+  "radius": 75,
+  "wheel_radii": [
+    75,
+    75
+  ],
+  "pivot": [
+    515.0,
+    274
+  ],
+  "wheel_anchors_status": "exact current REDLINE manifest anchors",
+  "design_status": "photorealistic body replacement using current REDLINE wheel anchors",
+  "body_template": "body_%d_%s.png",
+  "body_parts": [
+    "body",
+    "paint variants",
+    "fixed caliper hardware",
+    "separate front/rear wheel sprites"
+  ]
+}

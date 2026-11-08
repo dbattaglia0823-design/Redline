@@ -1,0 +1,35 @@
+{
+  "vehicle_id": "z350",
+  "name": "Nissan 350Z",
+  "asset_size": [
+    1000,
+    360
+  ],
+  "rear": [
+    222,
+    274
+  ],
+  "front": [
+    814,
+    274
+  ],
+  "radius": 79,
+  "wheel_radii": [
+    79,
+    79
+  ],
+  "pivot": [
+    518.0,
+    274
+  ],
+  "wheel_anchors_status": "exact current REDLINE manifest anchors",
+  "design_status": "Model-specific generated photoreal body; untested in Godot.",
+  "body_template": "body_%d_%s.png",
+  "body_parts": [
+    "body",
+    "paint variants",
+    "fixed caliper hardware",
+    "separate front/rear wheel sprites"
+  ],
+  "anchor_status": "Existing game manifest coordinates; not independently calibrated against generated source image."
+}

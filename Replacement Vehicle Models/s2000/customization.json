@@ -1,0 +1,36 @@
+{
+  "vehicle_id": "s2000",
+  "name": "Honda S2000",
+  "asset_size": [
+    1000,
+    360
+  ],
+  "body_template": "body_%d_%s.png",
+  "paint_count": 6,
+  "paint_names": [
+    "Ember",
+    "Seafoam",
+    "Bone",
+    "Indigo",
+    "Saffron",
+    "Orchid"
+  ],
+  "finishes": [
+    "gloss",
+    "matte",
+    "metallic"
+  ],
+  "wheel_anchors": {
+    "rear": [
+      246,
+      274
+    ],
+    "front": [
+      799,
+      274
+    ],
+    "radius": 76
+  },
+  "caliper_color_option": false,
+  "compatible_with_current_game": "Requires explicit manifest integration, wheel-anchor calibration, and paint mask verification; not drop-in tested."
+}

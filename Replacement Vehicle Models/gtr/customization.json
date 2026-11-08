@@ -1,0 +1,53 @@
+{
+  "vehicle_id": "gtr",
+  "display_name": "Nissan GT-R",
+  "coordinate_space": [
+    1000,
+    360
+  ],
+  "rear_center": [
+    233,
+    274
+  ],
+  "front_center": [
+    788,
+    274
+  ],
+  "wheel_radius": 76,
+  "wheel_radii": [
+    76,
+    76
+  ],
+  "wheel_radius_outer_pixels": 76,
+  "pivot": [
+    510.5,
+    274
+  ],
+  "rim_radius": [
+    53.2,
+    53.2
+  ],
+  "anchor_source": "Existing REDLINE assets/vehicles/manifest.json; NOT recalibrated to this new body artwork",
+  "alignment_status": "provisional, visually inspect and tune centers and scale in Godot",
+  "body_pattern": "res://assets/vehicles/gtr/body_%d_%s.png",
+  "paint_indices": {
+    "0": "#eb704e",
+    "1": "#b8d6cb",
+    "2": "#e8dfc6",
+    "3": "#7b93cf",
+    "4": "#e7b44d",
+    "5": "#c68aad"
+  },
+  "finishes": [
+    "gloss",
+    "matte",
+    "metallic"
+  ],
+  "existing_rim_designs": "keep from existing game",
+  "wheel_art": "keep existing REDLINE stock_wheels textures",
+  "caliper_color": "fixed in source artwork (no choice)",
+  "glass_tint": "not baked into variants; retain existing window tint layers in the game",
+  "finish_note": "Generated image color grades; visually approximate rather than physically-based materials",
+  "existing_other_layers": "retain original vehicle layers for tint, lighting and spoilers until manually reauthored",
+  "integration_status": "not plug and play; paint mask, anchor and overlays require review"
+}

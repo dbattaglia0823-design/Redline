@@ -1,0 +1,31 @@
+{
+  "vehicle_id": "mustang",
+  "display_name": "Ford Mustang GT",
+  "coordinate_space": [
+    1000,
+    360
+  ],
+  "rear_center": [
+    245,
+    274
+  ],
+  "front_center": [
+    789,
+    274
+  ],
+  "radius": 77,
+  "wheel_radii": [
+    77,
+    77
+  ],
+  "pivot": [
+    517.0,
+    274
+  ],
+  "rim_radius": [
+    53.9,
+    53.9
+  ],
+  "source": "REDLINE manifest, not calibrated to new generated artwork",
+  "status": "PROVISIONAL; tune in game"
+}

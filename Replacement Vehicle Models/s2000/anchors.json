@@ -1,0 +1,35 @@
+{
+  "vehicle_id": "s2000",
+  "name": "Honda S2000",
+  "asset_size": [
+    1000,
+    360
+  ],
+  "rear": [
+    246,
+    274
+  ],
+  "front": [
+    799,
+    274
+  ],
+  "radius": 76,
+  "wheel_radii": [
+    76,
+    76
+  ],
+  "pivot": [
+    522.5,
+    274
+  ],
+  "wheel_anchors_status": "exact current REDLINE manifest anchors",
+  "design_status": "Model-specific generated photoreal body; untested in Godot.",
+  "body_template": "body_%d_%s.png",
+  "body_parts": [
+    "body",
+    "paint variants",
+    "fixed caliper hardware",
+    "separate front/rear wheel sprites"
+  ],
+  "anchor_status": "Existing game manifest coordinates; not independently calibrated against generated source image."
+}

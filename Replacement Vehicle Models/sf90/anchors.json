@@ -1,0 +1,35 @@
+{
+  "vehicle_id": "sf90",
+  "display_name": "Ferrari SF90",
+  "coordinate_space": [
+    1000,
+    360
+  ],
+  "rear_center": [
+    203,
+    274
+  ],
+  "front_center": [
+    755,
+    275
+  ],
+  "radius": 86,
+  "wheel_radii": [
+    86,
+    86
+  ],
+  "pivot": [
+    479.0,
+    274
+  ],
+  "rim_radius": [
+    60.2,
+    60.2
+  ],
+  "source": "REDLINE manifest, not calibrated to new generated artwork",
+  "status": "PROVISIONAL; tune in game",
+  "wheel_radius": 86,
+  "wheel_radius_outer_pixels": 86,
+  "anchor_source": "Existing REDLINE manifest; not recalibrated to this new body artwork",
+  "alignment_status": "provisional, visually inspect and tune centers and scale in Godot"
+}

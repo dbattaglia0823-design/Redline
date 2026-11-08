@@ -1,0 +1,32 @@
+{
+  "vehicle_id": "m3",
+  "display_name": "BMW M3",
+  "coordinate_space": [
+    1000,
+    360
+  ],
+  "rear_center": [
+    242,
+    274
+  ],
+  "front_center": [
+    816,
+    274
+  ],
+  "wheel_radius": 77,
+  "wheel_radii": [
+    77,
+    77
+  ],
+  "wheel_radius_outer_pixels": 77,
+  "pivot": [
+    529.0,
+    274
+  ],
+  "rim_radius": [
+    53.9,
+    53.9
+  ],
+  "anchor_source": "Existing REDLINE assets/vehicles/manifest.json; NOT recalibrated to this new body artwork",
+  "alignment_status": "provisional, visually inspect and tune centers and scale in Godot"
+}
