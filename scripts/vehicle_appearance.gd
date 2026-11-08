@@ -87,6 +87,15 @@ static func texture(path: String) -> Texture2D:
 	_frame_textures[path]=_textures[path]
 	return _textures[path]
 
+static func body_variant_path(definition: Dictionary, paint: int, finish: String) -> String:
+	var proposed: String = str(definition.body) % [paint, finish]
+	if ResourceLoader.exists(proposed): return proposed
+	var backup: String = str(definition.get("fallback_body", ""))
+	if backup != "":
+		var legacy: String = backup % [paint, finish]
+		if ResourceLoader.exists(legacy): return legacy
+	return proposed
+
 static func point(value: Array) -> Vector2: return Vector2(float(value[0]),float(value[1]))
 static func body_drop(look: Dictionary) -> float: return [0.0,7.0,-4.0][int(look.stance)]
 
@@ -119,7 +128,7 @@ static func validate(id: String) -> Array[String]:
 		if not ResourceLoader.exists(str(layers.get(name,""))): errors.append("Missing texture "+name)
 	for paint in 6:
 		for finish in ["gloss","matte","metallic"]:
-			if not ResourceLoader.exists(str(d.body) % [paint,finish]): errors.append("Missing body variant")
+			if not ResourceLoader.exists(body_variant_path(d,paint,finish)): errors.append("Missing body variant")
 			if d.has("race_body") and not ResourceLoader.exists(str(d.race_body) % [paint,finish]): errors.append("Missing integrated-wheel race body")
 	if d.has("race_body"):
 		for rim in d.get("rim_radius",[]):
