@@ -127,7 +127,7 @@ func classes(body: VBoxContainer) -> void:
 	for i in 6:
 		var letter: String = PerformanceClasses.ORDER[i]
 		var ids: Array = d.class_ids(letter) if d.vehicle_type == "cars" else []
-		var card := AutomotiveUI.content_card(cards, 236 if portrait else 225)
+		var card := AutomotiveUI.content_card(cards, 236 if portrait else 205)
 		AutomotiveUI.class_decal(card, letter, i)
 		bind(card, "shop_class_" + letter)
 		var content: VBoxContainer = card.get_meta("content")
@@ -137,7 +137,7 @@ func classes(body: VBoxContainer) -> void:
 				var available: Array = ids.filter(func(id): return not game.profile.garage.has(id))
 				var offers: Array = ids if available.is_empty() else available
 				var cheapest: String = offers[0]
-				vehicle(content, cheapest, d.factory(cheapest), VehicleAppearance.normalize({}, 2, 0), 110 if portrait else 104, false)
+				vehicle(content, cheapest, d.factory(cheapest), VehicleAppearance.normalize({}, 2, 0), 110 if portrait else 88, false)
 				content.add_child(AutomotiveUI.label("Collection complete" if available.is_empty() else "Available from $%d" % GameCatalog.spec(cheapest).price, 16))
 				content.add_child(AutomotiveUI.label("%d cars · %d owned" % [ids.size(), ids.size() - available.size()], 14, AutomotiveUI.MUTED))
 			else:
@@ -148,7 +148,7 @@ func classes(body: VBoxContainer) -> void:
 			var image := TextureRect.new()
 			image.name = "MotorcyclePreview_" + letter
 			image.texture = d._preview_texture(path)
-			image.custom_minimum_size.y = 118 if portrait else 108
+			image.custom_minimum_size.y = 118 if portrait else (78 if compact_landscape() else 90)
 			image.size_flags_vertical = Control.SIZE_EXPAND_FILL
 			image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
@@ -160,7 +160,7 @@ func classes(body: VBoxContainer) -> void:
 			var preview := preload("res://scripts/ui/watercraft_class_preview.gd").new()
 			preview.name = "WatercraftPreview_" + letter
 			preview.craft_class = letter
-			preview.custom_minimum_size.y = 118 if portrait else 108
+			preview.custom_minimum_size.y = 118 if portrait else (78 if compact_landscape() else 90)
 			preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			content.add_child(preview)
 			content.add_child(AutomotiveUI.label(str(d.WATERCRAFT_LABELS.get(letter, "Watercraft")), 16, AutomotiveUI.BLUE))
