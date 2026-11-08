@@ -344,19 +344,33 @@ func next_effect_sample() -> float:
 func induction_sample() -> float:
 	var pressure:=lerpf(maxf(0,boost),maxf(boost,throttle*.22)+_super_bypass,supercharger_blend)
 	if pressure<.00001 or induction_mix<=0: return 0.0
-	var turbo_hz: float=(950+boost*(1700+target_turbo*600))*_compressor_scale
-	var hz:=clampf(lerpf(turbo_hz,rpm/60*_super_ratio,supercharger_blend),100,8000)
-	turbo_phase=fposmod(turbo_phase+hz/RATE,1)
-	_super_sub_phase=fposmod(_super_sub_phase+hz*.5/RATE,1)
-	_super_mod_phase=fposmod(_super_mod_phase+rpm/60*2/RATE,1)
-	var p:=turbo_phase*TAU
-	var alias_guard:=1-smoothstep(8000,10000,hz*2)
-	var harmonics:=lerpf(.20,_super_harmonic,supercharger_blend)*alias_guard
-	var tone:=sin(p)+sin(p*2)*harmonics+sin(_super_sub_phase*TAU)*_super_sub*supercharger_blend
-	tone*=1+sin(_super_mod_phase*TAU)*_super_roughness*supercharger_blend
-	var level:=lerpf(.010+target_turbo*.006,_super_level,supercharger_blend)
-	var air:=lerpf(.025*_intake_gain,_super_air*_intake_gain,supercharger_blend)
-	return (tone*level+intake_filter*air)*pressure
+	# Turbo spool follows physical pressure, pedal demand, and RPM.
+	# Leave the existing model-specific supercharger sound on its own path.
+	var spool_target := clampf(boost * (0.40 + 0.60 * throttle) / 1.1, 0.0, 1.0)
+	_turbo_spool = lerpf(_turbo_spool, spool_target, 0.0022)
+	var turbo_hz: float = (760.0 + rpm * 0.10 + _turbo_spool * (2100.0 + target_turbo * 760.0)) * _compressor_scale
+	var hz := clampf(lerpf(turbo_hz, rpm / 60.0 * _super_ratio, supercharger_blend), 100.0, 8000.0)
+	turbo_phase = fposmod(turbo_phase + hz / RATE, 1.0)
+	_super_sub_phase = fposmod(_super_sub_phase + hz * 0.5 / RATE, 1.0)
+	_super_mod_phase = fposmod(_super_mod_phase + rpm / 60.0 * 2.0 / RATE, 1.0)
+	var p := turbo_phase * TAU
+	var alias_guard := 1.0 - smoothstep(8000.0, 10000.0, hz * 2.0)
+	if _turbo_active and _induction_type == "":
+		# Rising compressor whistle above a soft, band-limited intake rush.
+		_turbo_air_high += (filtered_noise - _turbo_air_high) * 0.36
+		_turbo_air_low += (filtered_noise - _turbo_air_low) * 0.060
+		var rush := _turbo_air_high - _turbo_air_low
+		var whistle := sin(p) + sin(p * 2.0 + 0.32) * 0.25 * alias_guard
+		whistle += sin(p * 3.0 + 0.73) * 0.08 * (1.0 - smoothstep(5500.0, 8000.0, hz * 3.0))
+		var whistle_level := (0.015 + target_turbo * 0.007) * (0.60 + 0.55 * _turbo_spool)
+		var rush_level := (0.028 + target_turbo * 0.008) * (0.45 + 0.55 * load_value)
+		return (whistle * whistle_level + rush * rush_level) * pressure * _intake_gain
+	var harmonics := lerpf(0.20, _super_harmonic, supercharger_blend) * alias_guard
+	var tone := sin(p) + sin(p * 2.0) * harmonics + sin(_super_sub_phase * TAU) * _super_sub * supercharger_blend
+	tone *= 1.0 + sin(_super_mod_phase * TAU) * _super_roughness * supercharger_blend
+	var level := lerpf(0.010 + target_turbo * 0.006, _super_level, supercharger_blend)
+	var air := lerpf(0.025 * _intake_gain, _super_air * _intake_gain, supercharger_blend)
+	return (tone * level + intake_filter * air) * pressure
 
 func render(count: int) -> PackedFloat32Array:
 	var result := PackedFloat32Array()
