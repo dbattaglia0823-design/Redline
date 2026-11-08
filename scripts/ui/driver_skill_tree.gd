@@ -108,7 +108,7 @@ func refresh() -> void:
 	var selected_node: Dictionary = DriverSkills.node_for(selected)
 	if selected_node.is_empty(): return
 	var rank := int(profile.skill_ranks.get(selected, 0))
-	var prereqs: Array = []
+	var prereqs: PackedStringArray = PackedStringArray()
 	for required in selected_node.requires:
 		var other := DriverSkills.node_for(str(required))
 		prereqs.append(str(other.get("name", required)))
