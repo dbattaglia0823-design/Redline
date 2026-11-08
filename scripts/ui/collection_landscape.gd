@@ -15,8 +15,9 @@ func build() -> void:
 		# Reuse the existing class-card builder, dropping its repeated heading.
 		ui.classes(body)
 		body.get_child(1).hide(); body.get_child(2).hide()
-		for card in body.get_child(3).get_children():
-			card.custom_minimum_size.y=240
+		# Child 3 is now the vehicle-type tabs; do not hide it or treat it as the class grid.
+		for card in body.get_child(4).get_children():
+			card.custom_minimum_size.y=186
 			for child in card.get_meta("content").get_children():
 				if child is Label: child.add_theme_font_size_override("font_size",22)
 		return
