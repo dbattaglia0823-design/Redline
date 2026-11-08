@@ -60,7 +60,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance",
       "spoiler",
@@ -129,7 +128,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance",
       "spoiler",
@@ -198,7 +196,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance",
       "spoiler",
@@ -267,7 +264,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance",
       "spoiler",
@@ -336,7 +332,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance",
       "spoiler",
@@ -405,7 +400,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance",
       "spoiler",
@@ -474,7 +468,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance",
       "spoiler",
@@ -543,7 +536,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance",
       "spoiler",
@@ -612,7 +604,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance",
       "spoiler",
@@ -681,7 +672,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance",
       "spoiler",
@@ -750,7 +740,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance",
       "spoiler",
@@ -819,7 +808,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance",
       "spoiler",
@@ -888,7 +876,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -899,8 +886,8 @@
     ],
     "race_body": "res://assets/vehicles/miata/race_body_%d_%s.png",
     "rim_radius": [
-      54.0,
-      54.0
+      54,
+      54
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -970,7 +957,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -1052,7 +1038,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -1134,7 +1119,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -1216,7 +1200,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -1298,7 +1281,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -1380,7 +1362,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -1462,7 +1443,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -1473,8 +1453,8 @@
     ],
     "race_body": "res://assets/vehicles/s2000/race_body_%d_%s.png",
     "rim_radius": [
-      57.0,
-      57.0
+      57,
+      57
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -1544,7 +1524,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -1626,7 +1605,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -1708,7 +1686,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -1790,7 +1767,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -1872,7 +1848,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -1884,7 +1859,7 @@
     "race_body": "res://assets/vehicles/sti/race_body_%d_%s.png",
     "rim_radius": [
       53.2,
-      57.0
+      57
     ],
     "art_pipeline_version": 2,
     "texture_size": [
@@ -1958,7 +1933,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -2040,7 +2014,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -2122,7 +2095,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -2204,7 +2176,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -2286,7 +2257,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -2368,7 +2338,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -2450,7 +2419,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -2532,7 +2500,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -2618,7 +2585,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -2700,7 +2666,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -2786,7 +2751,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -2868,7 +2832,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -2954,7 +2917,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -3040,7 +3002,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -3122,7 +3083,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -3208,7 +3168,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
@@ -3294,7 +3253,6 @@
       "finish",
       "design",
       "rim",
-      "caliper",
       "tint",
       "stance"
     ],
