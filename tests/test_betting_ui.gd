@@ -10,11 +10,11 @@ func run() -> void:
 		root.size=dimensions
 		game.profile.credits=2000000; game.go_garage(); game.tab="races"; game.career_board.open(); game.career_board.select_series("S"); game.career_board.selected="class_S_9"
 		await frame()
-		check(game.current_contract().max_bet==1000000,"S boss does not expose the raised cap")
+		check(game.current_contract().max_bet==400000,"S boss does not expose the new $400,000 cap")
 		await tap("bet_more",dimensions.x<1000)
-		check(game.wager==10000 and game.profile.credits==2000000,"High-stakes button uses an unsuitable step or spends before entry")
+		check(game.wager==4000 and game.profile.credits==2000000,"High-stakes button uses an unsuitable step or spends before entry")
 		await tap("bet_slider",dimensions.x<1000)
-		check(abs(game.wager-500000)<=10000,"Large wager slider midpoint is incorrect")
+		check(abs(game.wager-200000)<=4000,"Large wager slider midpoint is incorrect")
 		var slider: Dictionary={}
 		for item in game.buttons:
 			if item.id=="bet_slider": slider=item; break
@@ -27,14 +27,14 @@ func run() -> void:
 			if event is InputEventMouseButton: event.button_index=MOUSE_BUTTON_LEFT
 			root.push_input(event,true)
 		await frame()
-		check(game.wager==1000000,"Pointer input cannot select the exact million-credit cap")
+		check(game.wager==400000,"Pointer input cannot select the exact $400,000 cap")
 		root.get_texture().get_image().save_png("res://.qa/championship-economy/screens/high_stakes_%d.png"%dimensions.x)
 		await tap("race",dimensions.x<1000)
-		check(game.screen=="race" and game.active_stake==1000000 and game.profile.credits==1000000,"High stake was not charged exactly once on entry")
+		check(game.screen=="race" and game.active_stake==400000 and game.profile.credits==1600000,"High stake was not charged exactly once on entry")
 		game.profile.forfeit_wager(); game.go_garage(); game.tab="races"; game.career_board.select_series("S"); game.career_board.selected="class_S_9"
 		game.profile.credits=0; game.wager=0
 		await frame()
 		check(not game.action_enabled("bet_more") and game.action_enabled("race"),"Bankruptcy blocked free races or enabled unfunded bets")
 	game.stop_presentation_audio(); game.queue_free(); await process_frame
-	print("MILLION-CREDIT WAGERS / DESKTOP / PHONE / TOUCH / FREE RACING: ","FAIL" if failed else "PASS")
+	print("CAPPED $400K WAGERS / DESKTOP / PHONE / TOUCH / FREE RACING: ","FAIL" if failed else "PASS")
 	quit(1 if failed else 0)
