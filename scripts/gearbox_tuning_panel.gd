@@ -39,6 +39,19 @@ func setup(tuning: TuningLab) -> void:
 	var column:=VBoxContainer.new(); margin.add_child(column); column.add_theme_constant_override("separation",10)
 	heading=Label.new(); heading.add_theme_font_size_override("font_size",21); column.add_child(heading)
 	summary=Label.new(); summary.add_theme_font_size_override("font_size",14); summary.modulate=GlassPalette.MUTED; column.add_child(summary)
+	# Quick presets stay visible regardless of which tuning section is scrolled.
+	var quick_row:=HBoxContainer.new()
+	quick_row.add_theme_constant_override("separation",10)
+	column.add_child(quick_row)
+	for setup in ["street","drag","safe"]:
+		var control:=Button.new()
+		control.text=setup.capitalize()+" setup"
+		control.tooltip_text="Apply "+setup.capitalize()+" tuning to installed hardware"
+		control.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+		control.custom_minimum_size.y=48
+		control.pressed.connect(lab.action.bind("tt_quick_"+setup))
+		quick_row.add_child(control)
+		quick_buttons[setup]=control
 	scroll=ScrollContainer.new(); scroll.name="GearboxScroll"; scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED; scroll.follow_focus=false; scroll.scroll_deadzone=10; column.add_child(scroll)
 	list=VBoxContainer.new(); list.size_flags_horizontal=Control.SIZE_EXPAND_FILL; list.add_theme_constant_override("separation",10); scroll.add_child(list)
@@ -114,23 +127,8 @@ func reveal_row(column: Control) -> void:
 func rebuild_group(_group: String) -> void:
 	rows.clear()
 	sections.clear()
-	quick_buttons.clear()
 	reset_shift_button=null
 	for child in list.get_children(): list.remove_child(child); child.queue_free()
-	# Former per-upgrade preset shortcuts now live in the single Tuning screen.
-	var quick_heading:=label(list,"QUICK SETUPS",18)
-	quick_heading.modulate=GlassPalette.BLUE
-	var quick_row:=HBoxContainer.new()
-	quick_row.add_theme_constant_override("separation",10)
-	list.add_child(quick_row)
-	for setup in ["street","drag","safe"]:
-		var control:=Button.new()
-		control.text=setup.capitalize()
-		control.size_flags_horizontal=Control.SIZE_EXPAND_FILL
-		control.custom_minimum_size.y=56
-		control.pressed.connect(lab.action.bind("tt_quick_"+setup))
-		quick_row.add_child(control)
-		quick_buttons[setup]=control
 	for group_name in TuningSetup.GROUPS:
 		var section:=label(list,group_name.to_upper(),20)
 		section.modulate=GlassPalette.BLUE
