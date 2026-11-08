@@ -16,8 +16,8 @@ func _initialize() -> void:
 		if int(d.get("art_pipeline_version",0))<2: continue
 		ids+=1
 		var radii: Array=d.get("wheel_radii",[d.radius,d.radius])
-		var rear:=VehicleAppearance.point(d.rear)
-		var front:=VehicleAppearance.point(d.front)
+		var rear:=VehicleAppearance.visual_wheel_anchor(d,0)
+		var front:=VehicleAppearance.visual_wheel_anchor(d,1)
 		var ground:=maxf(rear.y+float(radii[0]),front.y+float(radii[1]))
 		check(ground>300.0 and ground<400.0,id+": floor contact outside expected game art space")
 		check(VehicleAppearance.body_drop({"stance":0}) == 0.0,id+": stock stance changed")
