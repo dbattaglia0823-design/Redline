@@ -65,6 +65,22 @@ var grind_left := 0.0
 var grind_phase := 0.0
 var _blowoff_armed := false
 var _overrun_armed := false
+# Transient compressor relief belongs to the current engine and is driven by
+# its live pressure, not by arbitrary shift or button-press sound cues.
+var _blowoff_pressure := 0.0
+var _blowoff_cooldown := 0.0
+var _blowoff_decay := 0.9996
+var _blowoff_flutter := 0.0
+var _blowoff_noise_low := 0.0
+var _blowoff_noise_high := 0.0
+var _blowoff_phase := 0.0
+var _turbo_air_low := 0.0
+var _turbo_air_high := 0.0
+var _turbo_active := false
+var _turbo_spool := 0.0
+var _turbo_whistle := 0.0
+var blowoff_events := 0
+var last_blowoff_reason := ""
 # bass, upper-harmonic balance, firing-pulse modulation, intake resonance
 var _character := Vector4(1.0,1.0,0.075,1.0)
 var _target_character := Vector4(1.0,1.0,0.075,1.0)
@@ -121,6 +137,7 @@ func set_from_vehicle(car: Drivetrain, audible: bool = true) -> void:
 	target_nitrous_flow = car.nitrous_delivery
 	target_supercharger = 1.0 if car._supercharger != "" else 0.0
 	_induction_type = car._supercharger
+	_turbo_active = car._supercharger == "" and car.boost_target(car.redline_rpm, 1.0) > 0.05
 	_gearbox_kind = car.transmission_kind
 	_gear_whine_level = {"sequential":.012,"drag":.007,"dct":.0027,"automatic":.0018}.get(car.transmission_kind,.0015)
 	var blower:=EngineAudioProfile.supercharger_character(car)
@@ -166,22 +183,60 @@ func set_from_vehicle(car: Drivetrain, audible: bool = true) -> void:
 		_:
 			profile_name = "I4 compact" if car.base_torque < 225.0 else "I4 street"
 			_target_character = Vector4(0.90,1.12,0.09,1.18) if car.base_torque < 225.0 else Vector4(1.0,1.0,0.075,1.0)
+	var can_relieve: bool = _turbo_active or car._supercharger == "centrifugal"
+	if not audible or not can_relieve:
+		_blowoff_armed = false
+		_blowoff_pressure = 0.0
+	var charged: bool = can_relieve and car.throttle > 0.58 and car.boost > 0.09
+	if charged:
+		_blowoff_armed = true
+		_blowoff_pressure = maxf(_blowoff_pressure, car.boost)
 	if last_shift_serial < 0: last_shift_serial = car.shift_serial
 	elif car.shift_serial != last_shift_serial:
-		# A real loaded shift can ignite a small exhaust transient; a neutral tap cannot.
-		if car.last_shift_rpm > 2800.0 and car.last_shift_load > 0.25 and car.exhaust_stage>0:
-			pop = maxf(pop,0.20+target_exhaust*0.35+target_engine*0.10)
-		shift_tick = float({"manual":.11,"sequential":.20,"dct":.08,"automatic":.12,"drag":.19}.get(car.transmission_kind,.12))*(.5+clampf(car.last_shift_load,0,1))
+		# A loaded upshift vents even when auto/DCT torque cut keeps the gas down.
+		if car.last_shift_rpm > 2800.0 and car.last_shift_load > 0.25 and car.exhaust_stage > 0:
+			pop = maxf(pop, 0.20 + target_exhaust * 0.35 + target_engine * 0.10)
+		shift_tick = float({"manual":.11,"sequential":.20,"dct":.08,"automatic":.12,"drag":.19}.get(car.transmission_kind,.12)) * (.5 + clampf(car.last_shift_load,0,1))
+		if audible and can_relieve and car.shift_direction >= 0 and car.last_shift_load > 0.22 and car.last_shift_rpm > 2400.0:
+			trigger_blowoff(maxf(car.boost, _blowoff_pressure), "shift", car._supercharger == "centrifugal")
+			_blowoff_armed = false
+			_blowoff_pressure = 0.0
 		last_shift_serial = car.shift_serial
-	if car._supercharger not in ["","centrifugal"]: _blowoff_armed=false
-	if car.throttle > 0.6 and car.boost > 0.1 and car._supercharger in ["","centrifugal"]: _blowoff_armed = true
-	if _blowoff_armed and car.throttle < 0.3:
-		blowoff = clampf(car.boost*1.5,0.18,0.7)
+	if audible and can_relieve and _blowoff_armed and car.throttle < 0.30:
+		trigger_blowoff(maxf(car.boost, _blowoff_pressure), "lift", car._supercharger == "centrifugal")
 		_blowoff_armed = false
+		_blowoff_pressure = 0.0
 	if car.throttle > 0.65 and car.engine_load > 0.4: _overrun_armed = true
 	if _overrun_armed and car.throttle < 0.18:
 		if car.rpm > 3400.0 and car.exhaust_stage > 0: pop = maxf(pop,target_exhaust*0.24)
 		_overrun_armed = false
+
+func trigger_blowoff(pressure: float, reason: String, centrifugal: bool = false) -> void:
+	if _blowoff_cooldown > 0.0 or pressure < 0.09: return
+	# Pressure controls intensity and length. Shift vents are short/bright;
+	# throttle lifts have a longer, airy tail and light compressor flutter.
+	var strength := clampf((pressure - 0.06) / 0.95, 0.0, 1.0)
+	blowoff = maxf(blowoff, (0.18 + 0.68 * sqrt(strength)) * (0.55 if centrifugal else 1.0))
+	_blowoff_decay = 0.99934 if reason == "shift" else 0.99964
+	_blowoff_flutter = (0.22 if reason == "shift" else 0.60) * strength
+	_blowoff_cooldown = 0.13 if reason == "shift" else 0.16
+	blowoff_events += 1
+	last_blowoff_reason = reason
+
+func blowoff_sample(noise: float) -> float:
+	_blowoff_cooldown = maxf(0.0, _blowoff_cooldown - 1.0 / RATE)
+	if blowoff < 0.00005: return 0.0
+	# A bright band-limited pressure hiss layered with a descending chirp.
+	# The short, gated pulse adds a flutter only to high-pressure relief.
+	_blowoff_noise_low += (noise - _blowoff_noise_low) * 0.075
+	_blowoff_noise_high += (noise - _blowoff_noise_high) * 0.34
+	var air := _blowoff_noise_high - _blowoff_noise_low
+	_blowoff_phase = fposmod(_blowoff_phase + (420.0 + 1300.0 * blowoff) / RATE, 1.0)
+	var flutter := 1.0 - _blowoff_flutter * 0.46 * (0.5 + 0.5 * sin(_blowoff_phase * TAU * 0.053))
+	var chirp := sin(_blowoff_phase * TAU) * (0.055 + _blowoff_flutter * 0.040)
+	var sample := (air * 0.37 + chirp) * blowoff * flutter
+	blowoff *= _blowoff_decay
+	return sample
 
 func next_sample() -> float:
 	rpm += (target_rpm-rpm)*0.00565 # ~8 ms; never reset firing phase on a shift.
@@ -237,10 +292,10 @@ func next_sample() -> float:
 	pop_gain += (pop-pop_gain)*0.018
 	blowoff_gain += (blowoff-blowoff_gain)*0.008
 	shift_tick_gain += (shift_tick-shift_tick_gain)*0.025
-	var transient := filtered_noise*(pop_gain*0.21*exhaust_fx_mix+blowoff_gain*0.24*induction_mix)+noise*shift_tick_gain*0.025*mechanical_mix
+	var bov := blowoff_sample(noise) * induction_mix
+	var transient := filtered_noise * pop_gain * 0.21 * exhaust_fx_mix + noise * shift_tick_gain * 0.025 * mechanical_mix + bov
 	var nitro := intake_filter*0.07*nitro_gain*nitro_mix
 	pop *= 0.9990
-	blowoff *= 0.9996
 	shift_tick *= 0.9965
 	var sample := tanh(((filtered*amplitude+overrun)*engine_mix+induction*induction_mix+tire*tire_mix+gear_whine*mechanical_mix+transient+nitro+grind_sample())*gain)
 	peak_jump = maxf(peak_jump,absf(sample-last_sample))
@@ -278,7 +333,8 @@ func next_effect_sample() -> float:
 	var induction := induction_sample()*induction_mix
 	var tire: float=(sin(tire_phase*TAU)*.014+filtered_noise*.07)*slip*tire_mix if slip*tire_mix>.00001 else 0.0
 	var whine:=sin(gear_phase*TAU)*_gear_whine_level*target_clutch*load_value if target_clutch*load_value*mechanical_mix>.00001 else 0.0
-	var transients:=filtered_noise*(pop_gain*.21*exhaust_fx_mix+blowoff_gain*.24*induction_mix)+noise*shift_tick_gain*.025*mechanical_mix
+	var bov := blowoff_sample(noise) * induction_mix
+	var transients := filtered_noise * pop_gain * .21 * exhaust_fx_mix + noise * shift_tick_gain * .025 * mechanical_mix + bov
 	var electric:=sin(_hybrid_phase*TAU)*clampf(hybrid_power/162000,0,1)*.009*mechanical_mix if hybrid_power>1 else 0.0
 	pop*=.9990; blowoff*=.9996; shift_tick*=.9965
 	var value:=tanh((induction+tire+whine*mechanical_mix+transients+intake_filter*.07*nitro_gain*nitro_mix+electric+grind_sample())*gain)
