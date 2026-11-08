@@ -71,7 +71,7 @@ func _initialize() -> void:
 	for id in Championships.catalog():
 		var record: Dictionary = Championships.event(str(id))
 		check(int(record.get("max_bet",0))<=400000, "Race record exceeds wager limit: " + str(id))
-	var layout := JSON.parse_string(FileAccess.get_file_as_string("res://data/driver_skill_tree.layout.json"))
+	var layout: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/driver_skill_tree.layout.json"))
 	check(layout is Dictionary and layout.get("version") == 2, "Toolkit layout missing")
 	print("DRIVER SKILLS / RACE CAPS: ","PASS" if failures == 0 else "FAIL")
 	quit(0 if failures == 0 else 1)
