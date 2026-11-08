@@ -134,6 +134,7 @@ var combustion_fraction := 1.0
 var extra_grip := 0.0
 # Transient driver-only bonuses, recalculated when the selected build is refreshed.
 var driver_perks: Dictionary = {}
+var _driver_base_shift_duration := 0.0
 var extra_mass := 0.0
 var load_transfer_scale := 0.18
 var tire_grip := 0.0
@@ -666,8 +667,9 @@ func telemetry() -> Dictionary:
 
 func apply_driver_skills(ranks: Dictionary, driver_level: int) -> void:
 	# Call once after configure_build; no cumulative effects across refreshes.
+	if _driver_base_shift_duration <= 0.0: _driver_base_shift_duration = shift_duration
 	driver_perks = DriverSkills.performance_modifiers(ranks, driver_level)
-	shift_duration = maxf(0.035, shift_duration*(1.0-float(driver_perks.get("shift",0.0))))
+	shift_duration = maxf(0.035, _driver_base_shift_duration*(1.0-float(driver_perks.get("shift",0.0))))
 
 func effective_grip() -> float:
 	return (grip_coefficient*1.16+extra_grip+(tire_grip if tire_grip>0 else tire_stage*.115))*pressure_grip*(1.0+float(driver_perks.get("grip",0.0)))
@@ -716,6 +718,7 @@ func reset_modifiers() -> void:
 func configure_build(build: Dictionary, vehicle: String = "kaze", plan: bool = true) -> void:
 	# Always begin from the immutable vehicle data; repeated menu refreshes cannot stack parts.
 	driver_perks.clear()
+	_driver_base_shift_duration = 0.0
 	var chassis := _chassis_spec
 	var normalized := VehicleParts.normalize(build,vehicle,gearbox_stage)
 	configure_vehicle(GameCatalog.with_engine(chassis,normalized.get("engine_id","")))
