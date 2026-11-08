@@ -60,7 +60,8 @@ func bounds(name: String) -> void:
 		for j in range(i+1,studio_targets.size()):
 			check(not studio_targets[i].rect.intersects(studio_targets[j].rect),"Overlapping "+name+" / "+studio_targets[i].id+" / "+studio_targets[j].id)
 	var groups: Array=game.buttons.filter(func(item): return str(item.id).begins_with("custom_group_"))
-	check(groups.size()==4,"Studio needs four primary groups")
+	check(groups.size()==3,"Studio needs paint, wheels, and tint groups")
+	check(not game.native_workshop.targets.has("custom_group_calipers"),"Retired caliper group remains")
 
 func run() -> void:
 	root.size=Vector2i(1200,760)
@@ -105,17 +106,14 @@ func run() -> void:
 	await frame()
 	check(stage().pose.y>1.1,"Zoom did not move the camera")
 	screenshot("desktop_wheel")
-	await click("custom_group_calipers")
-	await click("custom_pick_1")
-	await click("custom_install")
-	check(game.profile.appearance.caliper==1 and stage().look.design==4,"Caliper purchase did not preserve wheel draft")
+	check(not game.native_workshop.targets.has("custom_group_calipers"),"Caliper group remains selectable")
 	await click("custom_camera")
 	await create_timer(.5).timeout
 	await frame()
 	check(stage().pose.x<.01,"Full car override did not move the camera")
 	var restored:=DriverProfile.new()
 	restored.load_profile()
-	check(restored.appearance.caliper==1 and restored.appearance.finish==2 and restored.paint==0,"Save loaded draft rather than installed parts")
+	check(restored.appearance.caliper==0 and restored.appearance.finish==2 and restored.paint==0,"Save loaded draft rather than installed parts")
 
 	root.size=Vector2i(390,844)
 	await frame()
@@ -173,10 +171,8 @@ func run() -> void:
 		check(stage()!=null and stage().look.paint==4,"Paint preview failed on "+id)
 		custom.action("custom_group_wheels")
 		custom.action("custom_pick_2")
-		custom.action("custom_group_calipers")
-		custom.action("custom_pick_1")
 		await frame()
-		check(stage()!=null and stage().pose.x==1 and stage().look.design==2 and stage().look.caliper==1,"Wheel preview failed on "+id)
+		check(stage()!=null and stage().pose.x==1 and stage().look.design==2,"Wheel preview failed on "+id)
 		if id in ["gtr","chiron"]: screenshot(id+"_wheel")
 		roster_count+=1
 	check(VehicleAppearance._textures.size()<=32,"Texture cache exceeded its cap")
