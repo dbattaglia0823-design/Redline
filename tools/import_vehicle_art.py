@@ -108,7 +108,8 @@ def prepare(model,definition,config):
     return original,body,mask,glass,lamp_layer,tint,stripe,anchors
 
 def backup(ids):
-    target=ROOT/'checkpoints/vehicle-presentation-20261104/installed_art.zip'
+    target=ROOT/'.qa/vehicle_art_backups/installed_art.zip'
+    target.parent.mkdir(parents=True,exist_ok=True)
     if target.exists(): return
     with zipfile.ZipFile(target,'w',compression=zipfile.ZIP_STORED) as archive:
         for model in ids:

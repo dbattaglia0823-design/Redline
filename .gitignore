@@ -14,3 +14,15 @@ reference/
 *.log
 
 /builds/
+
+# Regenerable QA output and temporary backups. Do not commit generated previews.
+/checkpoints/
+/tools/__pycache__/
+*.pyc
+/validation/vehicle_art/*
+!/validation/vehicle_art/.gdignore
+/validation/studio_roster/*
+!/validation/studio_roster/.gdignore
+/validation/track_environments/*
+!/validation/track_environments/.gdignore
+/validation/audio_listening/*.wav

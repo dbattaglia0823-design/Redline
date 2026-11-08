@@ -96,10 +96,9 @@ runs use writable user data. Close also saves/stops an active recording. Basic
 upgrade sound previews remain compact and do not expose developer controls.
 
 `tools/prune_engine_banks.py` audits stale generator files; `--apply` moves them
-into the ignored checkpoint rather than deleting them, and updates the asset
+into the gitignored `.qa/retired_engine_banks` directory rather than deleting them, and updates the asset
 manifest. This pass retired 720 unused old-anchor WAVs (36,573,660 source bytes).
-The active manifest contains 3,360 WAVs. Original v1 banks are also archived at
-`checkpoints/audio-realism-20261104/original_banks.zip`.
+The active manifest contains 3,360 WAVs. Historic generator snapshots can be recovered from Git history; baseline audio captures are retained in `validation/audio_baseline`.
 
 Listening and physical-device interruption/latency testing remain necessary.
 The historical workflow below describes the first family-only bank pass.

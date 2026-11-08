@@ -34,7 +34,7 @@ for identity in roster:
  lifted=samples[round(1.05*rate):round(1.25*rate)]
  values['loaded_rms']=float(np.sqrt(np.mean(loaded**2)));values['lift_rms']=float(np.sqrt(np.mean(lifted**2)))
  values['load_to_lift_db']=20*math.log10(max(1e-9,values['lift_rms'])/max(1e-9,values['loaded_rms']))
- before=ROOT/'checkpoints/audio-realism-20261104/before'/path.name
+ before=ROOT/'validation/audio_baseline'/path.name
  if before.exists():
   br,bs=read(before);values['previous_capture_peak']=metrics(br,bs)['peak']
  rows.append({'id':identity,'engine':roster[identity]['engine'],**values})
