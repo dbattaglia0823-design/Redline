@@ -87,7 +87,7 @@ func _watercraft_preview(rect: Rect2, letter: String) -> void:
 		g.draw_colored_polygon(hull,Color("718da1"))
 		g.draw_colored_polygon(PackedVector2Array([Vector2(x+length*.36,y+2),Vector2(x+length*.49,y-25),Vector2(x+length*.73,y-25),Vector2(x+length*.83,y+2)]),Color("d9e3df"))
 		g.draw_line(Vector2(x+length*.49,y-23),Vector2(x+length*.49,y-36),color,3)
-	g.draw_line(Vector2(x+12,y+39),Vector2(x+length-12,y+39),Color("63afbe",0.65),3)
+	g.draw_line(Vector2(x+12,y+39),Vector2(x+length-12,y+39),Color(0.388,0.686,0.745,0.65),3)
 
 func _draw_vehicle_type_tabs(mobile: bool) -> void:
 	var x0:=24.0 if mobile else 36.0
