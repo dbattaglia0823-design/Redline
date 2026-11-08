@@ -29,7 +29,7 @@ func _initialize() -> void:
 			var expected: Array=calibrated[id][index]
 			check(visual.is_equal_approx(physical+Vector2(expected[0],expected[1])),id+": visual wheel center incorrect")
 			var spec:=GameCatalog.spec(id)
-			check(physical.x==float(spec.wheelbase[index]) if index==0 else physical.x==float(spec.wheelbase[1]),id+": physical wheelbase changed")
+			check(physical.x==float(spec.wheelbase[index]),id+": physical wheelbase changed")
 		check(VehicleAppearance.validate(id).is_empty(),id+": manifest failed validation "+str(VehicleAppearance.validate(id)))
 	for id in GameCatalog.CAR_IDS:
 		var d: Dictionary=VehicleAppearance.definition(id)
