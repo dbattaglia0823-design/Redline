@@ -17,7 +17,7 @@ const FINISH := 402.336
 var font: Font
 var mono: Font
 var profile := DriverProfile.new()
-var skill_tree: Control
+var skill_tree
 var car := Drivetrain.new()
 var rival := Drivetrain.new()
 var sound: EngineAudio
