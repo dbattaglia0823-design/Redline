@@ -8,8 +8,16 @@ func check(ok: bool, message: String) -> void:
 		push_error(message)
 
 func _initialize() -> void:
-	check(DriverSkills.NODES.size() == 12, "Missing driver skill nodes")
+	check(DriverSkills.NODES.size() == 28, "Missing driver skill nodes")
 	check(DriverSkills.CATEGORIES.size() == 4, "Missing skill categories")
+	for cat in DriverSkills.CATEGORIES:
+		check(DriverSkills.NODES.filter(func(node): return node.category == cat).size() == 7, "Wrong category node count: " + cat)
+	var known: Dictionary = {}
+	for node in DriverSkills.NODES:
+		check(not known.has(node.id), "Duplicate skill ID")
+		known[node.id] = true
+		for required in node.requires:
+			check(DriverSkills.node_for(str(required)).size() > 0, "Missing prerequisite: " + str(required))
 	var fresh: Dictionary = {}
 	check(DriverSkills.available(fresh, 1) == 0, "Level one should have no unearned points")
 	check(not DriverSkills.can_unlock(fresh, 1, "launch_basics"), "Level one unlocked without XP")
@@ -22,6 +30,16 @@ func _initialize() -> void:
 	check(not DriverSkills.can_unlock(fresh, 5, "tree_reaction"), "Max rank exceeded")
 	check(is_equal_approx(DriverSkills.xp_bonus(fresh, 5, true, false, 0.15, 0), 0.15), "Launch bonus incorrect")
 	check(is_equal_approx(DriverSkills.xp_bonus(fresh, 5, true, true, -0.03, 0), 0.05), "Red light bonus incorrect")
+	check(not DriverSkills.can_unlock(fresh, 5, "perfect_start"), "Advanced branch skipped prerequisites")
+	var branch: Dictionary = {}
+	branch = DriverSkills.unlock(branch, 10, "launch_basics")
+	branch = DriverSkills.unlock(branch, 10, "launch_repeatability")
+	check(DriverSkills.can_unlock(branch, 10, "amber_reader"), "New branch is unreachable")
+	branch = DriverSkills.unlock(branch, 10, "amber_reader")
+	check(not DriverSkills.can_unlock(branch, 10, "launch_specialist"), "Cross-branch requirement bypassed")
+	branch = DriverSkills.unlock(branch, 10, "tree_reaction")
+	check(DriverSkills.can_unlock(branch, 10, "launch_specialist"), "Cross-branch unlock unavailable")
+	check(is_equal_approx(DriverSkills.xp_bonus(branch, 10, false, false, 0.25, 0), 0.23), "New launch bonuses did not apply")
 	var invalid := {"holeshot":1, "unknown":4, "launch_basics":10}
 	check(DriverSkills.sanitize(invalid, 3) == {"launch_basics":1}, "Invalid skills not sanitized")
 	check(DriverSkills.sanitize({"launch_basics":1,"tree_reaction":1}, 1).is_empty(), "Unearned ranks survive a level reduction")
