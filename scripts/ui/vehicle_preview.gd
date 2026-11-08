@@ -39,8 +39,8 @@ class PreviewArt extends Node2D:
 		var s: float=minf(area.x/255.0,maxf(1,area.y-10)/84.0)
 		var d:=VehicleAppearance.definition(view.model)
 		var radius_factor:=WheelVisuals.radius_scale(view.car,GameCatalog.spec(view.model)) if view.car!=null else 1.0
-		var rear:=VehicleAppearance.point(d.rear)
-		var front:=VehicleAppearance.point(d.front)
+		var rear:=VehicleAppearance.visual_wheel_anchor(d,0)
+		var front:=VehicleAppearance.visual_wheel_anchor(d,1)
 		var radii: Array=d.get("wheel_radii",[d.radius,d.radius])
 		var ground:=maxf(rear.y+float(radii[0])*radius_factor,front.y+float(radii[1])*radius_factor)
 		var lift:=float(d.radius)*(radius_factor-1.0)

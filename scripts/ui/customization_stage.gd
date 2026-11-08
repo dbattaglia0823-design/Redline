@@ -33,8 +33,8 @@ class StageArt extends Node2D:
 		if quality>0:
 			AutomotiveUI.glow(self,Rect2(area*Vector2(.06,.38),area*Vector2(.88,.50)),Color(.38,.58,.76,.22))
 		var radius_factor:=WheelVisuals.radius_scale(g.car,GameCatalog.spec(g.profile.vehicle_id))
-		var rear:=VehicleAppearance.point(d.rear)
-		var front:=VehicleAppearance.point(d.front)
+		var rear:=VehicleAppearance.visual_wheel_anchor(d,0)
+		var front:=VehicleAppearance.visual_wheel_anchor(d,1)
 		var radii: Array=d.get("wheel_radii",[d.radius,d.radius])
 		var ground:=maxf(rear.y+float(radii[0])*radius_factor,front.y+float(radii[1])*radius_factor)
 		var lift:=float(d.radius)*(radius_factor-1.0)

@@ -97,6 +97,18 @@ static func body_variant_path(definition: Dictionary, paint: int, finish: String
 	return proposed
 
 static func point(value: Array) -> Vector2: return Vector2(float(value[0]),float(value[1]))
+# Artwork-only offsets align rim/tire sprites to hubs baked into replacement PNGs.
+# Gameplay wheelbase, tire physics, and smoke simulation retain canonical anchors.
+static func visual_wheel_anchor(d: Dictionary,index: int) -> Vector2:
+	var original: Array=d.rear if index==0 else d.front
+	var offsets: Variant=d.get("visual_wheel_offsets",[])
+	if not offsets is Array or offsets.size()!=2: return point(original)
+	var value: Variant=offsets[index]
+	if not value is Array or value.size()!=2: return point(original)
+	if not (value[0] is int or value[0] is float) or not (value[1] is int or value[1] is float): return point(original)
+	if not is_finite(float(value[0])) or not is_finite(float(value[1])): return point(original)
+	return point(original)+point(value)
+
 static func body_drop(look: Dictionary) -> float: return [0.0,7.0,-4.0][int(look.stance)]
 
 static func validate(id: String) -> Array[String]:
@@ -107,6 +119,22 @@ static func validate(id: String) -> Array[String]:
 		var p: Array = d.get(key,[])
 		if p.size() != 2 or float(p[0]) < 0 or float(p[0]) > 1000 or float(p[1]) < 0 or float(p[1]) > 360: errors.append("Invalid anchor "+key)
 	if float(d.get("radius",0)) < 20 or float(d.get("radius",0)) > 100: errors.append("Invalid tire radius")
+	if d.has("visual_wheel_offsets"):
+		var offsets: Variant=d.visual_wheel_offsets
+		if not offsets is Array or offsets.size()!=2:
+			errors.append("Invalid visual wheel offset count")
+		else:
+			for i in 2:
+				if not offsets[i] is Array or offsets[i].size()!=2:
+					errors.append("Invalid visual wheel offset pair")
+				elif not (offsets[i][0] is int or offsets[i][0] is float) or not (offsets[i][1] is int or offsets[i][1] is float):
+					errors.append("Invalid visual wheel offset values")
+				elif not is_finite(float(offsets[i][0])) or not is_finite(float(offsets[i][1])):
+					errors.append("Non-finite visual wheel offset")
+				else:
+					var adjusted:=visual_wheel_anchor(d,i)
+					if adjusted.x<0 or adjusted.x>1000 or adjusted.y<0 or adjusted.y>360:
+						errors.append("Visual wheel hub outside artwork")
 	for path in d.get("stock_wheels",[]):
 		if not ResourceLoader.exists(str(path)): errors.append("Missing authored wheel texture")
 	if d.has("stock_wheels") and d.stock_wheels.size()!=2: errors.append("Expected front and rear wheel textures")

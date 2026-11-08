@@ -896,7 +896,17 @@
     ],
     "master": "res://assets/vehicles/miata/master.png",
     "fallback_body": "res://assets/vehicles/miata/body_%d_%s.png",
-    "replacement_source": "res://Replacement Vehicle Models/miata/"
+    "replacement_source": "res://Replacement Vehicle Models/miata/",
+    "visual_wheel_offsets": [
+      [
+        -7,
+        -5
+      ],
+      [
+        12,
+        -4
+      ]
+    ]
   },
   "civic_si": {
     "size": [
@@ -1228,7 +1238,17 @@
     ],
     "master": "res://assets/vehicles/brz/master.png",
     "fallback_body": "res://assets/vehicles/brz/body_%d_%s.png",
-    "replacement_source": "res://Replacement Vehicle Models/brz/"
+    "replacement_source": "res://Replacement Vehicle Models/brz/",
+    "visual_wheel_offsets": [
+      [
+        23,
+        -6
+      ],
+      [
+        10,
+        -7
+      ]
+    ]
   },
   "integra": {
     "size": [
@@ -1560,7 +1580,17 @@
     ],
     "master": "res://assets/vehicles/gr86/master.png",
     "fallback_body": "res://assets/vehicles/gr86/body_%d_%s.png",
-    "replacement_source": "res://Replacement Vehicle Models/gr86/"
+    "replacement_source": "res://Replacement Vehicle Models/gr86/",
+    "visual_wheel_offsets": [
+      [
+        23,
+        0
+      ],
+      [
+        36,
+        1
+      ]
+    ]
   },
   "z350": {
     "size": [
@@ -2228,7 +2258,17 @@
     ],
     "master": "res://assets/vehicles/supra_gr/master.png",
     "fallback_body": "res://assets/vehicles/supra_gr/body_%d_%s.png",
-    "replacement_source": "res://Replacement Vehicle Models/supra_gr/"
+    "replacement_source": "res://Replacement Vehicle Models/supra_gr/",
+    "visual_wheel_offsets": [
+      [
+        12,
+        0
+      ],
+      [
+        19,
+        -1
+      ]
+    ]
   },
   "camaro": {
     "size": [
@@ -2991,7 +3031,17 @@
       81
     ],
     "fallback_body": "res://assets/vehicles/turbo_s/body_%d_%s.png",
-    "replacement_source": "res://Replacement Vehicle Models/turbo_s/"
+    "replacement_source": "res://Replacement Vehicle Models/turbo_s/",
+    "visual_wheel_offsets": [
+      [
+        -9,
+        -14
+      ],
+      [
+        23,
+        -20
+      ]
+    ]
   },
   "mclaren": {
     "size": [

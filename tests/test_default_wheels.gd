@@ -44,7 +44,7 @@ func run() -> void:
 			var tire:=RimArt.tire_only(source,float(d.rim_radius[axle])/float(radii[axle]),float(radii[axle])).get_image()
 			check(tire.get_pixel(tire.get_width()/2,tire.get_height()/2).a==0,"Baked hub remains in tire layer: "+id)
 			check(tire.get_pixel(tire.get_width()/2,0).a==0,"Bodywork remains above tire: "+id)
-			var center:=VehicleAppearance.point(d.rear if axle==0 else d.front)
+			var center:=VehicleAppearance.visual_wheel_anchor(d,axle)
 			var r:=ceili(float(radii[axle])+3)
 			var crop:=still.get_region(Rect2i(Vector2i(center)-Vector2i.ONE*r,Vector2i.ONE*r*2)); crop.resize(130,130,Image.INTERPOLATE_LANCZOS)
 			closeups.blit_rect(crop,Rect2i(0,0,130,130),Vector2i((i%5)*280+axle*140,(i/5)*180+22))

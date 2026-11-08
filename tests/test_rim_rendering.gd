@@ -30,8 +30,9 @@ func run() -> void:
 				if still.get_pixel(x,y)==moving.get_pixel(x,y): continue
 				changed+=1; var inside:=false
 				for index in 2:
-					var center: Vector2=canvas.ORIGIN+VehicleAppearance.point(d.rear if index==0 else d.front)*scale
-					var r: float=float(d.radius)*scale
+					var center: Vector2=canvas.ORIGIN+VehicleAppearance.visual_wheel_anchor(d,index)*scale
+					var radii: Array=d.get("wheel_radii",[d.radius,d.radius])
+					var r: float=float(radii[index])*scale*WheelVisuals.radius_scale(canvas.car,GameCatalog.spec(id))
 					var dist:=Vector2(x,y).distance_to(center)
 					if dist<r+3: inside=true
 				if not inside: escaped+=1

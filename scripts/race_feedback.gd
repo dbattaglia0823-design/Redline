@@ -177,7 +177,7 @@ func update(dt: float, car: Drivetrain, paused: bool, spec: Dictionary, origin: 
 		var wheel_index := 1 if car.drivetrain == "FWD" else 0
 		if car.drivetrain == "AWD": wheel_index = _particle_serial%2
 		var definition := VehicleAppearance.definition(str(spec.get("id","")))
-		var anchor := VehicleAppearance.point(definition.rear if wheel_index==0 else definition.front) if not definition.is_empty() else Vector2(float(spec.wheelbase[wheel_index]),float(spec.wheel_y))
+		var anchor := VehicleAppearance.visual_wheel_anchor(definition,wheel_index) if not definition.is_empty() else Vector2(float(spec.wheelbase[wheel_index]),float(spec.wheel_y))
 		var stock_radius: float = float(definition.get("wheel_radii",[spec.wheel_radius,spec.wheel_radius])[wheel_index])
 		var lift := float(definition.get("radius",spec.wheel_radius))*(WheelVisuals.radius_scale(car,spec)-1)
 		var x := origin.x+anchor.x*0.232*1.65
