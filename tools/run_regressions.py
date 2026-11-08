@@ -13,7 +13,7 @@ HEADLESS = (
     "test_driving_feedback", "test_transmissions", "test_launch_induction_audio", "test_high_power_gearbox", "test_parts_lineup", "test_customization",
     "test_upgrade_model", "test_advanced_tuning", "benchmark_launch_balance", "benchmark_physics_audit",
 )
-GRAPHICAL = ("test_betting_ui", "test_vehicle_texture_lifetime", "test_toolkit_vehicle_ui", "test_launch_audio_playback", "test_default_wheels", "test_rim_rendering", "test_tuning_interaction", "test_gamepad", "test_save_recovery_ui", "test_championships_ui", "test_race_hud", "test_upgrade_redesign", "test_native_workshop", "test_customization_ui", "test_customization_expansion", "test_main_navigation", "test_vehicle_lighting", "test_track_environments", "test_pressure_units", "test_controls_and_imperial", "test_dealer_classes_ui")
+GRAPHICAL = ("test_menu_scroll_ui", "test_betting_ui", "test_vehicle_texture_lifetime", "test_toolkit_vehicle_ui", "test_launch_audio_playback", "test_default_wheels", "test_rim_rendering", "test_tuning_interaction", "test_gamepad", "test_save_recovery_ui", "test_championships_ui", "test_race_hud", "test_upgrade_redesign", "test_native_workshop", "test_customization_ui", "test_customization_expansion", "test_main_navigation", "test_vehicle_lighting", "test_track_environments", "test_pressure_units", "test_controls_and_imperial", "test_dealer_classes_ui")
 
 
 def main():
