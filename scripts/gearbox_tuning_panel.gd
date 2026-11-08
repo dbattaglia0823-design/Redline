@@ -9,6 +9,8 @@ var ratio_box: VBoxContainer
 var heading: Label
 var summary: Label
 var rows: Dictionary = {}
+var quick_buttons: Dictionary = {}
+var reset_shift_button: Button
 var count := -1
 var panel_group := ""
 var sections: Dictionary = {}
@@ -112,7 +114,23 @@ func reveal_row(column: Control) -> void:
 func rebuild_group(_group: String) -> void:
 	rows.clear()
 	sections.clear()
+	quick_buttons.clear()
+	reset_shift_button=null
 	for child in list.get_children(): list.remove_child(child); child.queue_free()
+	# Former per-upgrade preset shortcuts now live in the single Tuning screen.
+	var quick_heading:=label(list,"QUICK SETUPS",18)
+	quick_heading.modulate=GlassPalette.BLUE
+	var quick_row:=HBoxContainer.new()
+	quick_row.add_theme_constant_override("separation",10)
+	list.add_child(quick_row)
+	for setup in ["street","drag","safe"]:
+		var control:=Button.new()
+		control.text=setup.capitalize()
+		control.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+		control.custom_minimum_size.y=56
+		control.pressed.connect(lab.action.bind("tt_quick_"+setup))
+		quick_row.add_child(control)
+		quick_buttons[setup]=control
 	for group_name in TuningSetup.GROUPS:
 		var section:=label(list,group_name.to_upper(),20)
 		section.modulate=GlassPalette.BLUE
@@ -124,6 +142,11 @@ func rebuild_group(_group: String) -> void:
 			ratio_box.add_theme_constant_override("separation",10)
 			list.add_child(ratio_box)
 			rebuild_ratios()
+			reset_shift_button=Button.new()
+			reset_shift_button.text="Reset to automatic shift points"
+			reset_shift_button.custom_minimum_size.y=52
+			reset_shift_button.pressed.connect(lab.action.bind("tt_reset_shift"))
+			list.add_child(reset_shift_button)
 			continue
 		for key in TuningSetup.GROUPS[group_name]:
 			if key=="boost_gear":
@@ -206,6 +229,11 @@ func sync() -> void:
 		jump_to_section.call_deferred(group)
 	heading.text="Complete vehicle tuning"
 	summary.text="All installed settings · category buttons jump to a section"
+	for preset in quick_buttons:
+		var control: Button=quick_buttons[preset]
+		control.disabled=not lab.enabled("tt_quick_"+preset)
+	if is_instance_valid(reset_shift_button):
+		reset_shift_button.disabled=not lab.enabled("tt_reset_shift")
 	for key in rows:
 		var row: Dictionary=rows[key]; var limits:=bounds(key); var value:=current(key)
 		var lock:=reason(key)
