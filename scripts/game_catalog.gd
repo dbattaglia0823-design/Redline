@@ -45,8 +45,8 @@ const CAREER_NAMES: Array[String] = ["DOCKSIDE RUN", "MIDNIGHT CLUB", "CITY FINA
 const CAREER_LEVELS: Array[int] = [1,3,5]
 # Fixed engine tiers preserve the established factory race classes.
 const ENGINE_CLASSES := {
-	"miata":"E", "civic_si":"E",
-	"brz":"D", "gti":"D", "gti_vr6":"D", "integra":"D", "rsx":"D",
+	"miata":"E", "civic_si":"E", "gti_vr6":"E",
+	"brz":"D", "gti":"D", "integra":"D", "rsx":"D",
 	"evo":"C", "gr86":"C", "s2000":"C", "sti":"C", "type_r":"C", "z350":"C",
 	"golf_r":"B", "m3":"B", "supra":"B", "supra_gr":"B",
 	"camaro":"A", "gtr":"A", "mustang":"A", "r8":"A", "redeye":"A", "z400":"A",

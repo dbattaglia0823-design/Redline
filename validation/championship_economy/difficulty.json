@@ -76,6 +76,7 @@
 			],
 			"stock_times": {
 				"civic_si": 16.0975839664172,
+				"gti_vr6": 15.1447388247366,
 				"miata": 16.2417395613572
 			},
 			"target_s": 16.6417395613572
@@ -691,7 +692,7 @@
 
 				},
 				"owned_transmissions": [
-					"oem_gti_vr6"
+					"oem_brz"
 				],
 				"parts": {
 
@@ -699,7 +700,7 @@
 				"performance_stages": {
 
 				},
-				"transmission": "oem_gti_vr6",
+				"transmission": "oem_brz",
 				"transmission_parts": {
 
 				},
@@ -711,12 +712,12 @@
 				}
 			},
 			"id": "class_D_0",
-			"model": "gti_vr6",
+			"model": "brz",
 			"old_quarter_ai_s": 16.5624859498981,
 			"old_race_s": 16.5624859498981,
-			"quarter_ai_s": 15.5447388246929,
-			"race_s": 15.5447388246929,
-			"reaction_s": 0.58,
+			"quarter_ai_s": 15.3304123391834,
+			"race_s": 15.3304123391834,
+			"reaction_s": 0.579999999999981,
 			"recipe": 0.0,
 			"stages": [
 				0.0,
@@ -731,11 +732,10 @@
 			"stock_times": {
 				"brz": 14.9304123926966,
 				"gti": 14.6808247840756,
-				"gti_vr6": 15.1447388247366,
 				"integra": 14.8931850056054,
 				"rsx": 14.8364292100448
 			},
-			"target_s": 15.5447388247366
+			"target_s": 15.3304123926966
 		},
 		{
 			"bet_cap": 6000.0,
@@ -1128,7 +1128,7 @@
 
 				},
 				"owned_transmissions": [
-					"oem_gti_vr6"
+					"oem_integra"
 				],
 				"parts": {
 					"clutch": "clutch_carbon",
@@ -1143,7 +1143,7 @@
 				"performance_stages": {
 
 				},
-				"transmission": "oem_gti_vr6",
+				"transmission": "oem_integra",
 				"transmission_parts": {
 
 				},
@@ -1156,27 +1156,27 @@
 				}
 			},
 			"id": "class_D_7",
-			"model": "gti_vr6",
+			"model": "integra",
 			"old_quarter_ai_s": 15.0245605307673,
 			"old_race_s": 15.0245605307673,
-			"quarter_ai_s": 11.2939849394303,
-			"race_s": 11.2939849394303,
-			"reaction_s": 0.381105677268655,
+			"quarter_ai_s": 11.2924210732205,
+			"race_s": 11.2924210732205,
+			"reaction_s": 0.466336534982769,
 			"recipe": 6.0,
 			"stages": [
-				3.0,
-				3.0,
-				0.0,
-				2.0,
-				5.0,
-				3.0,
-				0.0,
-				0.0
+				3,
+				3,
+				0,
+				2,
+				5,
+				3,
+				0,
+				0
 			],
 			"stock_times": {
 
 			},
-			"target_s": 11.2952225213649
+			"target_s": 11.2948554177698
 		},
 		{
 			"bet_cap": 68000.0,

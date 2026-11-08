@@ -7,10 +7,10 @@ const BUILD_LABELS := ["Factory","Stage 1 street build","Stage 1 performance bui
 var report: Array=[]
 var old: Dictionary={}
 
-func driver(model: String,stages: Array,build: Dictionary) -> Dictionary:
+static func driver(model: String,stages: Array,build: Dictionary) -> Dictionary:
 	return {"model":model,"stages":stages,"hardware":build,"driver_model":2,"reaction":.18,"pedal":1.0,"skill":3,"shift_error":0,"traction_skill":.95,"driver_seed":0,"launch_style":"balanced","nitrous":int(stages[7])>0,"nitrous_gear":2}
 
-func fixture(model: String,level: int) -> Dictionary:
+static func fixture(model: String,level: int) -> Dictionary:
 	var stages: Array=[
 		[0,0,0,0,0,0,0,0],[1,0,0,0,1,0,0,0],
 		[1,1,0,0,1,1,0,0],[2,1,0,1,2,1,0,0],

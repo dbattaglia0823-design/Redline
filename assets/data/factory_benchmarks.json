@@ -776,7 +776,7 @@
   },
   "gti_vr6": {
     "capacity_nm": 430.5,
-    "class": "D",
+    "class": "E",
     "clutch_slip_s": 0.283333333333334,
     "effective_shift_loss_s": 0.475,
     "efficiency": 0.92,

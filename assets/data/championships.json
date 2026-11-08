@@ -9,18 +9,32 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Rhea North",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_z400"
       ],
-      "parts": {},
-      "performance_stages": {},
+      "parts": {
+
+      },
+      "performance_stages": {
+
+      },
       "transmission": "oem_z400",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_A_0",
     "identity": "Stock-class opener",
@@ -71,18 +85,32 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Dante Moss",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_camaro"
       ],
-      "parts": {},
-      "performance_stages": {},
+      "parts": {
+
+      },
+      "performance_stages": {
+
+      },
       "transmission": "oem_camaro",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_A_1",
     "identity": "Progressive race build",
@@ -133,22 +161,34 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Mika Frost",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "street_tires"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_camaro"
       ],
       "parts": {
         "tires": "street_tires"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_camaro",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_A_2",
     "identity": "Progressive race build",
@@ -199,18 +239,32 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Gia Ash",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_redeye"
       ],
-      "parts": {},
-      "performance_stages": {},
+      "parts": {
+
+      },
+      "performance_stages": {
+
+      },
       "transmission": "oem_redeye",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_A_3",
     "identity": "Progressive race build",
@@ -261,22 +315,34 @@
     "driver_seed": 0.0,
     "event_name": "Crew captain / Axel Ward",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "street_tires"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_redeye"
       ],
       "parts": {
         "tires": "street_tires"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_redeye",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_A_4",
     "identity": "Progressive race build",
@@ -327,13 +393,17 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Kei Harlow",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "uhp_tires",
         "street_susp",
         "clutch_twin"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_r8"
       ],
@@ -342,11 +412,19 @@
         "suspension": "street_susp",
         "tires": "uhp_tires"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_r8",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_A_5",
     "identity": "Progressive race build",
@@ -397,7 +475,9 @@
     "driver_seed": 0.0,
     "event_name": "Motor only / Alma West",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "competition_radial",
         "drag_susp",
@@ -406,7 +486,9 @@
         "fuel_street",
         "ecu"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_mustang"
       ],
@@ -418,10 +500,16 @@
         "suspension": "drag_susp",
         "tires": "competition_radial"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_mustang",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 25.0
@@ -477,7 +565,9 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Remi Chen",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "competition_radial",
         "drag_susp",
@@ -486,7 +576,9 @@
         "fuel_street",
         "ecu"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_gtr"
       ],
@@ -498,10 +590,16 @@
         "suspension": "drag_susp",
         "tires": "competition_radial"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_gtr",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 25.0
@@ -556,7 +654,9 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Isa Ford",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "pro_drag_radial",
         "pro_drag_susp",
@@ -567,7 +667,9 @@
         "turbo_hybrid",
         "gear_strength"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_mustang"
       ],
@@ -581,10 +683,16 @@
         "suspension": "pro_drag_susp",
         "tires": "pro_drag_radial"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_mustang",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 24.0
@@ -640,7 +748,9 @@
     "driver_seed": 0.0,
     "event_name": "Championship / Roman Slate",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "drag_slicks",
         "pro_drag_susp",
@@ -650,7 +760,9 @@
         "intake_velocity",
         "ecu_track"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_r8"
       ],
@@ -663,10 +775,16 @@
         "suspension": "pro_drag_susp",
         "tires": "drag_slicks"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_r8",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 23.0
@@ -723,18 +841,32 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Ellis Stone",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_supra"
       ],
-      "parts": {},
-      "performance_stages": {},
+      "parts": {
+
+      },
+      "performance_stages": {
+
+      },
       "transmission": "oem_supra",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_B_0",
     "identity": "Stock-class opener",
@@ -785,22 +917,34 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Lex Byrne",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "street_tires"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_supra"
       ],
       "parts": {
         "tires": "street_tires"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_supra",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_B_1",
     "identity": "Progressive race build",
@@ -851,13 +995,17 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Cora Wynn",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "uhp_tires",
         "street_susp",
         "clutch_twin"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_supra"
       ],
@@ -866,11 +1014,19 @@
         "suspension": "street_susp",
         "tires": "uhp_tires"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_supra",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_B_2",
     "identity": "Progressive race build",
@@ -921,13 +1077,17 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Jett Hale",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "uhp_tires",
         "street_susp",
         "clutch_twin"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_golf_r"
       ],
@@ -936,11 +1096,19 @@
         "suspension": "street_susp",
         "tires": "uhp_tires"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_golf_r",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_B_3",
     "identity": "Progressive race build",
@@ -991,14 +1159,18 @@
     "driver_seed": 0.0,
     "event_name": "Crew captain / Remy Sol",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "street_radial",
         "coilovers",
         "clutch_twin",
         "ecu"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_m3"
       ],
@@ -1008,11 +1180,19 @@
         "suspension": "coilovers",
         "tires": "street_radial"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_m3",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_B_4",
     "identity": "Progressive race build",
@@ -1063,14 +1243,18 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Mina Shaw",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "street_radial",
         "coilovers",
         "clutch_twin",
         "ecu"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_supra_gr"
       ],
@@ -1080,11 +1264,19 @@
         "suspension": "coilovers",
         "tires": "street_radial"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_supra_gr",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_B_5",
     "identity": "Progressive race build",
@@ -1135,7 +1327,9 @@
     "driver_seed": 0.0,
     "event_name": "Motor only / Owen Kade",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "pro_drag_radial",
         "pro_drag_susp",
@@ -1146,7 +1340,9 @@
         "turbo_hybrid",
         "gear_strength"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_supra"
       ],
@@ -1160,10 +1356,16 @@
         "suspension": "pro_drag_susp",
         "tires": "pro_drag_radial"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_supra",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 24.0
@@ -1219,7 +1421,9 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Zoe Knight",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "pro_drag_radial",
         "pro_drag_susp",
@@ -1230,7 +1434,9 @@
         "turbo_hybrid",
         "gear_strength"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_golf_r"
       ],
@@ -1244,10 +1450,16 @@
         "suspension": "pro_drag_susp",
         "tires": "pro_drag_radial"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_golf_r",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 24.0
@@ -1302,7 +1514,9 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Ari Bennett",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "pro_drag_radial",
         "pro_drag_susp",
@@ -1313,7 +1527,9 @@
         "turbo_hybrid",
         "gear_strength"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_supra_gr"
       ],
@@ -1327,10 +1543,16 @@
         "suspension": "pro_drag_susp",
         "tires": "pro_drag_radial"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_supra_gr",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 24.0
@@ -1386,7 +1608,9 @@
     "driver_seed": 0.0,
     "event_name": "Championship / Vivian Sable",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "pro_drag_slicks",
         "active_drag_susp",
@@ -1403,7 +1627,9 @@
         "gear_pro",
         "gear_response"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_supra"
       ],
@@ -1423,10 +1649,16 @@
         "suspension": "active_drag_susp",
         "tires": "pro_drag_slicks"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_supra",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 21.0
@@ -1483,18 +1715,32 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Vera Cruz",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_s2000"
       ],
-      "parts": {},
-      "performance_stages": {},
+      "parts": {
+
+      },
+      "performance_stages": {
+
+      },
       "transmission": "oem_s2000",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_C_0",
     "identity": "Stock-class opener",
@@ -1545,18 +1791,32 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Benji Lane",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_type_r"
       ],
-      "parts": {},
-      "performance_stages": {},
+      "parts": {
+
+      },
+      "performance_stages": {
+
+      },
       "transmission": "oem_type_r",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_C_1",
     "identity": "Progressive race build",
@@ -1607,22 +1867,34 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Ada Kestrel",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "street_tires"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_type_r"
       ],
       "parts": {
         "tires": "street_tires"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_type_r",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_C_2",
     "identity": "Progressive race build",
@@ -1673,13 +1945,17 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Quinn Sato",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "uhp_tires",
         "street_susp",
         "clutch_twin"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_evo"
       ],
@@ -1688,11 +1964,19 @@
         "suspension": "street_susp",
         "tires": "uhp_tires"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_evo",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_C_3",
     "identity": "Progressive race build",
@@ -1743,13 +2027,17 @@
     "driver_seed": 0.0,
     "event_name": "Crew captain / Mara Voss",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "uhp_tires",
         "street_susp",
         "clutch_twin"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_z350"
       ],
@@ -1758,11 +2046,19 @@
         "suspension": "street_susp",
         "tires": "uhp_tires"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_z350",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_C_4",
     "identity": "Progressive race build",
@@ -1813,7 +2109,9 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Hana Rook",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "competition_radial",
         "drag_susp",
@@ -1822,7 +2120,9 @@
         "fuel_street",
         "ecu"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_s2000"
       ],
@@ -1834,10 +2134,16 @@
         "suspension": "drag_susp",
         "tires": "competition_radial"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_s2000",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 25.0
@@ -1892,7 +2198,9 @@
     "driver_seed": 0.0,
     "event_name": "Motor only / Miles Ito",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "competition_radial",
         "drag_susp",
@@ -1901,7 +2209,9 @@
         "fuel_street",
         "ecu"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_type_r"
       ],
@@ -1913,10 +2223,16 @@
         "suspension": "drag_susp",
         "tires": "competition_radial"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_type_r",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 25.0
@@ -1972,7 +2288,9 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Noor Silva",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "pro_drag_radial",
         "pro_drag_susp",
@@ -1983,7 +2301,9 @@
         "turbo_hybrid",
         "gear_strength"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_s2000"
       ],
@@ -1997,10 +2317,16 @@
         "suspension": "pro_drag_susp",
         "tires": "pro_drag_radial"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_s2000",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 24.0
@@ -2055,7 +2381,9 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Tess Ardent",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "pro_drag_radial",
         "pro_drag_susp",
@@ -2066,7 +2394,9 @@
         "turbo_hybrid",
         "gear_strength"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_type_r"
       ],
@@ -2080,10 +2410,16 @@
         "suspension": "pro_drag_susp",
         "tires": "pro_drag_radial"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_type_r",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 24.0
@@ -2139,7 +2475,9 @@
     "driver_seed": 0.0,
     "event_name": "Championship / Sana Torres",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "pro_drag_slicks",
         "active_drag_susp",
@@ -2151,7 +2489,9 @@
         "gear_strength",
         "gear_pro"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_evo"
       ],
@@ -2166,10 +2506,16 @@
         "suspension": "active_drag_susp",
         "tires": "pro_drag_slicks"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_evo",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 21.0
@@ -2218,7 +2564,7 @@
   },
   "class_D_0": {
     "build_label": "Factory",
-    "calibrated_quarter_s": 15.5447388246929,
+    "calibrated_quarter_s": 15.3304123391834,
     "completion_bonus": 0.0,
     "crew": "Apex Syndicate",
     "distance": 402.336,
@@ -2226,36 +2572,50 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Jules Park",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
-        "oem_gti_vr6"
+        "oem_brz"
       ],
-      "parts": {},
-      "performance_stages": {},
-      "transmission": "oem_gti_vr6",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "parts": {
+
+      },
+      "performance_stages": {
+
+      },
+      "transmission": "oem_brz",
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_D_0",
     "identity": "Stock-class opener",
     "launch_style": "balanced",
     "max_bet": 4000.0,
-    "model": "gti_vr6",
+    "model": "brz",
     "name": "Jules Park",
     "nickname": "The Apprentice",
     "nitrous": false,
     "nitrous_gear": 2.0,
     "paint_index": 2.0,
     "pedal": 1.0,
-    "potential_et": 14.6457162899289,
-    "potential_s": 14.9614059261,
+    "potential_et": 14.4255701379447,
+    "potential_s": 14.7471278143865,
     "preferred_class": "D",
     "purse": 0.0,
     "race_class": "D",
-    "reaction": 0.58,
+    "reaction": 0.579999999999981,
     "reaction_spread": 0.012,
     "round": 0.0,
     "series": "D",
@@ -2288,18 +2648,32 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Bea Holt",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_gti"
       ],
-      "parts": {},
-      "performance_stages": {},
+      "parts": {
+
+      },
+      "performance_stages": {
+
+      },
       "transmission": "oem_gti",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_D_1",
     "identity": "Progressive race build",
@@ -2350,22 +2724,34 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Rio Vega",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "street_tires"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_gti"
       ],
       "parts": {
         "tires": "street_tires"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_gti",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_D_2",
     "identity": "Progressive race build",
@@ -2416,13 +2802,17 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Cass Morrow",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "uhp_tires",
         "street_susp",
         "clutch_twin"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_integra"
       ],
@@ -2431,11 +2821,19 @@
         "suspension": "street_susp",
         "tires": "uhp_tires"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_integra",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_D_3",
     "identity": "Progressive race build",
@@ -2486,14 +2884,18 @@
     "driver_seed": 0.0,
     "event_name": "Crew captain / Theo Flint",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "street_radial",
         "coilovers",
         "clutch_twin",
         "ecu"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_integra"
       ],
@@ -2503,11 +2905,19 @@
         "suspension": "coilovers",
         "tires": "street_radial"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_integra",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_D_4",
     "identity": "Progressive race build",
@@ -2558,7 +2968,9 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Drew Tan",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "competition_radial",
         "drag_susp",
@@ -2567,7 +2979,9 @@
         "fuel_street",
         "ecu"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_integra"
       ],
@@ -2579,10 +2993,16 @@
         "suspension": "drag_susp",
         "tires": "competition_radial"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_integra",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 25.0
@@ -2637,7 +3057,9 @@
     "driver_seed": 0.0,
     "event_name": "Motor only / Yara Bell",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "pro_drag_radial",
         "pro_drag_susp",
@@ -2648,7 +3070,9 @@
         "turbo_hybrid",
         "gear_strength"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_gti"
       ],
@@ -2662,10 +3086,16 @@
         "suspension": "pro_drag_susp",
         "tires": "pro_drag_radial"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_gti",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 24.0
@@ -2713,15 +3143,17 @@
   },
   "class_D_7": {
     "build_label": "Stage 3 pro build",
-    "calibrated_quarter_s": 11.2939849394303,
+    "calibrated_quarter_s": 11.2924210732205,
     "completion_bonus": 0.0,
     "crew": "Apex Syndicate",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Finn Okada",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "pro_drag_radial",
         "pro_drag_susp",
@@ -2732,9 +3164,11 @@
         "turbo_hybrid",
         "gear_strength"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
-        "oem_gti_vr6"
+        "oem_integra"
       ],
       "parts": {
         "clutch": "clutch_carbon",
@@ -2746,10 +3180,16 @@
         "suspension": "pro_drag_susp",
         "tires": "pro_drag_radial"
       },
-      "performance_stages": {},
-      "transmission": "oem_gti_vr6",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "performance_stages": {
+
+      },
+      "transmission": "oem_integra",
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 24.0
@@ -2759,33 +3199,33 @@
     "identity": "Progressive race build",
     "launch_style": "balanced",
     "max_bet": 50000.0,
-    "model": "gti_vr6",
+    "model": "integra",
     "name": "Finn Okada",
     "nickname": "The Late Charger",
     "nitrous": false,
-    "nitrous_gear": 2.0,
+    "nitrous_gear": 2,
     "paint_index": 3.0,
     "pedal": 1.0,
-    "potential_et": 10.6874718567084,
-    "potential_s": 10.907740329367,
+    "potential_et": 10.5842182989914,
+    "potential_s": 10.8212791398688,
     "preferred_class": "D",
     "purse": 0.0,
     "race_class": "D",
-    "reaction": 0.381105677268655,
+    "reaction": 0.466336534982769,
     "reaction_spread": 0.012,
     "round": 7.0,
     "series": "D",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      3.0,
-      3.0,
-      0.0,
-      2.0,
-      5.0,
-      3.0,
-      0.0,
-      0.0
+      3,
+      3,
+      0,
+      2,
+      5,
+      3,
+      0,
+      0
     ],
     "track_index": 0.0,
     "traction_skill": 0.95,
@@ -2804,7 +3244,9 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Lena Pike",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "pro_drag_slicks",
         "active_drag_susp",
@@ -2819,7 +3261,9 @@
         "gear_strength",
         "gear_pro"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_gti"
       ],
@@ -2837,10 +3281,16 @@
         "suspension": "active_drag_susp",
         "tires": "pro_drag_slicks"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_gti",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 21.0
@@ -2896,7 +3346,9 @@
     "driver_seed": 0.0,
     "event_name": "Championship / Reese Calder",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "pro_drag_slicks",
         "active_drag_susp",
@@ -2911,7 +3363,9 @@
         "gear_strength",
         "gear_pro"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_rsx"
       ],
@@ -2929,10 +3383,16 @@
         "suspension": "active_drag_susp",
         "tires": "pro_drag_slicks"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_rsx",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 21.0
@@ -2989,18 +3449,32 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Dex Rowan",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_miata"
       ],
-      "parts": {},
-      "performance_stages": {},
+      "parts": {
+
+      },
+      "performance_stages": {
+
+      },
       "transmission": "oem_miata",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_E_0",
     "identity": "Stock-class opener",
@@ -3051,22 +3525,34 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Nia Reyes",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "street_tires"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_miata"
       ],
       "parts": {
         "tires": "street_tires"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_miata",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_E_1",
     "identity": "Progressive race build",
@@ -3117,13 +3603,17 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Milo Knox",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "uhp_tires",
         "street_susp",
         "clutch_twin"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_miata"
       ],
@@ -3132,11 +3622,19 @@
         "suspension": "street_susp",
         "tires": "uhp_tires"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_miata",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_E_2",
     "identity": "Progressive race build",
@@ -3187,13 +3685,17 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Iris Vale",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "uhp_tires",
         "street_susp",
         "clutch_twin"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_civic_si"
       ],
@@ -3202,11 +3704,19 @@
         "suspension": "street_susp",
         "tires": "uhp_tires"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_civic_si",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_E_3",
     "identity": "Progressive race build",
@@ -3257,14 +3767,18 @@
     "driver_seed": 0.0,
     "event_name": "Crew captain / Sora Imani",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "street_radial",
         "coilovers",
         "clutch_twin",
         "ecu"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_miata"
       ],
@@ -3274,11 +3788,19 @@
         "suspension": "coilovers",
         "tires": "street_radial"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_miata",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_E_4",
     "identity": "Progressive race build",
@@ -3329,7 +3851,9 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Tali Brooks",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "competition_radial",
         "drag_susp",
@@ -3338,7 +3862,9 @@
         "fuel_street",
         "ecu"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_miata"
       ],
@@ -3350,10 +3876,16 @@
         "suspension": "drag_susp",
         "tires": "competition_radial"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_miata",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 25.0
@@ -3408,7 +3940,9 @@
     "driver_seed": 0.0,
     "event_name": "Motor only / Rory Bishop",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "pro_drag_radial",
         "pro_drag_susp",
@@ -3419,7 +3953,9 @@
         "turbo_hybrid",
         "gear_strength"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_miata"
       ],
@@ -3433,10 +3969,16 @@
         "suspension": "pro_drag_susp",
         "tires": "pro_drag_radial"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_miata",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 24.0
@@ -3492,7 +4034,9 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Luz Navarro",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "pro_drag_radial",
         "pro_drag_susp",
@@ -3503,7 +4047,9 @@
         "turbo_hybrid",
         "gear_strength"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_civic_si"
       ],
@@ -3517,10 +4063,16 @@
         "suspension": "pro_drag_susp",
         "tires": "pro_drag_radial"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_civic_si",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 24.0
@@ -3575,7 +4127,9 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Cal Finch",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "pro_drag_slicks",
         "active_drag_susp",
@@ -3590,7 +4144,9 @@
         "gear_strength",
         "gear_pro"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_civic_si"
       ],
@@ -3608,10 +4164,16 @@
         "suspension": "active_drag_susp",
         "tires": "pro_drag_slicks"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_civic_si",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 21.0
@@ -3667,7 +4229,9 @@
     "driver_seed": 0.0,
     "event_name": "Championship / Anika Steel",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "pro_drag_slicks",
         "active_drag_susp",
@@ -3679,7 +4243,9 @@
         "gear_strength",
         "gear_pro"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_civic_si"
       ],
@@ -3694,10 +4260,16 @@
         "suspension": "active_drag_susp",
         "tires": "pro_drag_slicks"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_civic_si",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 21.0
@@ -3754,18 +4326,32 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Nova Reed",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_z06"
       ],
-      "parts": {},
-      "performance_stages": {},
+      "parts": {
+
+      },
+      "performance_stages": {
+
+      },
       "transmission": "oem_z06",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_S_0",
     "identity": "Stock-class opener",
@@ -3816,22 +4402,34 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Leon Hart",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "street_tires"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_z06"
       ],
       "parts": {
         "tires": "street_tires"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_z06",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_S_1",
     "identity": "Progressive race build",
@@ -3882,13 +4480,17 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Skye Mercer",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "uhp_tires",
         "street_susp",
         "clutch_twin"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_gt500"
       ],
@@ -3897,11 +4499,19 @@
         "suspension": "street_susp",
         "tires": "uhp_tires"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_gt500",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_S_2",
     "identity": "Progressive race build",
@@ -3952,22 +4562,34 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Rex Wren",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "street_tires"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_mclaren"
       ],
       "parts": {
         "tires": "street_tires"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_mclaren",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_S_3",
     "identity": "Progressive race build",
@@ -4018,14 +4640,18 @@
     "driver_seed": 0.0,
     "event_name": "Crew captain / Morgan Black",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "street_radial",
         "coilovers",
         "clutch_twin",
         "ecu"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_turbo_s"
       ],
@@ -4035,11 +4661,19 @@
         "suspension": "coilovers",
         "tires": "street_radial"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_turbo_s",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_S_4",
     "identity": "Progressive race build",
@@ -4090,13 +4724,17 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Cleo Frost",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "uhp_tires",
         "street_susp",
         "clutch_twin"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_chiron"
       ],
@@ -4105,11 +4743,19 @@
         "suspension": "street_susp",
         "tires": "uhp_tires"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_chiron",
-      "transmission_parts": {},
-      "transmission_tunes": {},
-      "tune": {}
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
+      "tune": {
+
+      }
     },
     "id": "class_S_5",
     "identity": "Progressive race build",
@@ -4160,7 +4806,9 @@
     "driver_seed": 0.0,
     "event_name": "Motor only / Pax Adler",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "drag_slicks",
         "pro_drag_susp",
@@ -4170,7 +4818,9 @@
         "intake_velocity",
         "ecu_track"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_gt500"
       ],
@@ -4183,10 +4833,16 @@
         "suspension": "pro_drag_susp",
         "tires": "drag_slicks"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_gt500",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 23.0
@@ -4242,7 +4898,9 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Ren Castillo",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "pro_drag_radial",
         "pro_drag_susp",
@@ -4253,7 +4911,9 @@
         "turbo_hybrid",
         "gear_strength"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_z06"
       ],
@@ -4267,10 +4927,16 @@
         "suspension": "pro_drag_susp",
         "tires": "pro_drag_radial"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_z06",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 24.0
@@ -4325,7 +4991,9 @@
     "driver_seed": 0.0,
     "event_name": "Heat / Zane Hart",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "pro_drag_slicks",
         "active_drag_susp",
@@ -4340,7 +5008,9 @@
         "gear_strength",
         "gear_pro"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_turbo_s"
       ],
@@ -4358,10 +5028,16 @@
         "suspension": "active_drag_susp",
         "tires": "pro_drag_slicks"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_turbo_s",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 21.0
@@ -4417,7 +5093,9 @@
     "driver_seed": 0.0,
     "event_name": "Championship / Valentina Rook",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "pro_drag_slicks",
         "active_drag_susp",
@@ -4429,7 +5107,9 @@
         "gear_strength",
         "gear_pro"
       ],
-      "owned_performance_stages": {},
+      "owned_performance_stages": {
+
+      },
       "owned_transmissions": [
         "oem_sf90"
       ],
@@ -4444,10 +5124,16 @@
         "suspension": "active_drag_susp",
         "tires": "pro_drag_slicks"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "oem_sf90",
-      "transmission_parts": {},
-      "transmission_tunes": {},
+      "transmission_parts": {
+
+      },
+      "transmission_tunes": {
+
+      },
       "tune": {
         "launch_damping": 1.15,
         "tire_pressure": 21.0
@@ -4502,15 +5188,23 @@
     "driver_seed": 0.0,
     "event_name": "Dockside Recovery",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [],
       "owned_transmissions": [
         "oem_miata"
       ],
-      "parts": {},
-      "performance_stages": {},
+      "parts": {
+
+      },
+      "performance_stages": {
+
+      },
       "transmission": "oem_miata",
-      "tune": {}
+      "tune": {
+
+      }
     },
     "id": "open_0",
     "identity": "Patient launch; hesitant shifts",
@@ -4557,15 +5251,23 @@
     "driver_seed": 20.0,
     "event_name": "Tuner Showcase",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [],
       "owned_transmissions": [
         "oem_supra"
       ],
-      "parts": {},
-      "performance_stages": {},
+      "parts": {
+
+      },
+      "performance_stages": {
+
+      },
       "transmission": "oem_supra",
-      "tune": {}
+      "tune": {
+
+      }
     },
     "id": "open_1",
     "identity": "Strong setup; conservative pedal",
@@ -4612,15 +5314,23 @@
     "driver_seed": 40.0,
     "event_name": "All-Wheel Duel",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [],
       "owned_transmissions": [
         "oem_gtr"
       ],
-      "parts": {},
-      "performance_stages": {},
+      "parts": {
+
+      },
+      "performance_stages": {
+
+      },
       "transmission": "oem_gtr",
-      "tune": {}
+      "tune": {
+
+      }
     },
     "id": "open_2",
     "identity": "Aggressive launch; impatient shifts",
@@ -4667,7 +5377,9 @@
     "driver_seed": 60.0,
     "event_name": "Bottle & Drag Gearing",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [
         "ecu"
       ],
@@ -4678,7 +5390,9 @@
       "parts": {
         "ecu": "ecu"
       },
-      "performance_stages": {},
+      "performance_stages": {
+
+      },
       "transmission": "drag3",
       "tune": {
         "launch_rpm": 4200.0
@@ -4729,15 +5443,23 @@
     "driver_seed": 80.0,
     "event_name": "Roadster Cup",
     "hardware": {
-      "fitments": {},
+      "fitments": {
+
+      },
       "owned_parts": [],
       "owned_transmissions": [
         "oem_miata"
       ],
-      "parts": {},
-      "performance_stages": {},
+      "parts": {
+
+      },
+      "performance_stages": {
+
+      },
       "transmission": "oem_miata",
-      "tune": {}
+      "tune": {
+
+      }
     },
     "id": "open_4",
     "identity": "Precise launch, shifts and spray timing",
