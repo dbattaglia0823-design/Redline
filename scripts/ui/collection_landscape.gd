@@ -27,7 +27,7 @@ func build() -> void:
 	if g.tab=="dealer":
 		ui.button(top,"shop_classes","Classes"); ui.button(top,"shop_details","Showroom" if g.menu.dealer.details else "Details")
 	elif g.tab=="owned":
-		ui.button(top,"owned_filter","Engine class: "+("All" if g.menu.hub.owned_filter==0 else PerformanceClasses.ORDER[g.menu.hub.owned_filter-1]))
+		ui.owned_class_dropdown(top)
 		ui.button(top,"owned_sort","Quickest" if g.menu.hub.owned_sort else "Collection order"); ui.button(top,"hub_back","Garage")
 	var main:=AutomotiveUI.row(body,24); main.size_flags_vertical=Control.SIZE_EXPAND_FILL
 	var left:=AutomotiveUI.column(main,8); left.size_flags_stretch_ratio=1.15
@@ -71,20 +71,25 @@ func dealer(left: Node,right: Node,footer: Node) -> void:
 	if ids.size()>4:
 		ui.button(footer,"shop_prev","‹ Page"); ui.button(footer,"shop_next","Page ›")
 func owned(left: Node,right: Node,footer: Node) -> void:
-	var h: GarageHub=g.menu.hub; var ids:=h.owned_ids()
-	if ids.is_empty(): text(left,"No owned cars in this engine class",26); return
+	var h: GarageHub=g.menu.hub
+	var ids:=h.owned_ids()
+	if ids.is_empty():
+		text(left,"No owned cars in this engine class",26)
+		return
 	if not ids.has(h.owned_selection): h.owned_selection=ids[0]
-	h.owned_page=clampi(h.owned_page,0,maxi(0,ceili(ids.size()/4.0)-1))
-	var id: String=h.owned_selection; var c:=h.vehicle(id)
-	hero(left,id,c,g.profile.appearance_for(id))
+	var id: String=h.owned_selection
+	var c:=h.vehicle(id)
+	# Keep the list on the left in narrow landscape, matching desktop.
+	var scrolling:=ui.catalog_scroll(left,"OwnedVehicleScroll",0)
+	scrolling.custom_minimum_size.y=360
+	var cards:=ui.grid(scrolling,1,8)
+	for item in ids:
+		var b:=AutomotiveUI.vehicle_card(cards,g,item,h.vehicle(item),g.profile.appearance_for(item),"Equipped" if item==g.profile.vehicle_id else "Owned",id==item,135)
+		ui.bind(b,"hub_pick_"+item)
+	hero(right,id,c,g.profile.appearance_for(id))
 	var engine_class:=GameCatalog.engine_class(id,c.hardware)
-	var controls: Dictionary={"hpattern":"manual","paddle":"paddle","sequential":"sequential","automatic":"automatic"}
-	text(left,"Engine class %s / %d-speed %s"%[engine_class,c.gear_ratios.size(),controls.get(c.control_mode,c.control_mode)],24,AutomotiveUI.BLUE)
-	var cards:=ui.grid(right,2,8)
-	for i in mini(4,ids.size()-h.owned_page*4):
-		var item: String=ids[h.owned_page*4+i]
-		var b:=AutomotiveUI.vehicle_card(cards,g,item,h.vehicle(item),g.profile.appearance_for(item),"Equipped" if item==g.profile.vehicle_id else "Owned",id==item,156); ui.bind(b,"hub_pick_"+item)
-	text(footer,"Vs active %+.0f hp / %+.0f lb"%[c.peak_horsepower()-g.car.peak_horsepower(),ImperialUnits.pounds(c.mass())-ImperialUnits.pounds(g.car.mass())],24,AutomotiveUI.MUTED)
-	if ids.size()>4: ui.button(footer,"hub_owned_prev","‹ Page"); ui.button(footer,"hub_owned_next","Page ›")
-	ui.button(footer,"tab_style","Customize"); ui.button(footer,"open_tuning","Test track")
+	text(right,"Engine class "+engine_class+" / "+str(c.gear_ratios.size())+"-speed",20,AutomotiveUI.BLUE)
+	text(footer,"Vs active %+.0f hp / %+.0f lb"%[c.peak_horsepower()-g.car.peak_horsepower(),ImperialUnits.pounds(c.mass())-ImperialUnits.pounds(g.car.mass())],21,AutomotiveUI.MUTED)
+	ui.button(footer,"tab_style","Customize")
+	ui.button(footer,"open_tuning","Test track")
 	ui.button(footer,"hub_equip","Equipped" if id==g.profile.vehicle_id else "Drive this car",true)

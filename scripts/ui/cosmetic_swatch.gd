@@ -15,7 +15,7 @@ class SwatchArt extends Node2D:
 		var area:=view.size
 		var look: Dictionary=g.menu.customize.candidate.duplicate(true)
 		look[key]=index
-		if key in ["design","rim","caliper"]:
+		if key in ["design","rim"]:
 			draw_wheel_sample(look,area)
 		elif key=="tint":
 			draw_tint_sample(area,index)

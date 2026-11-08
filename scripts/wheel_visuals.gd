@@ -73,15 +73,19 @@ static func draw_vehicle_wheel(g: Node2D,center: Vector2,radius: float,state: Di
 		for hole in 16:
 			var p:=center+Vector2.from_angle(hole*TAU/16+float(state.angle))*metal_radius*.72
 			g.draw_circle(p,maxf(.5,metal_radius*.019),Color("17212a")*light,true,-1,true)
-	var caliper: Color=[Color("cc5430"),Color("e53942"),Color("edc343"),Color("bac5cf")][int(look.caliper)]*light
-	var shape:=PackedVector2Array()
-	for point in [Vector2(.37,-.39),Vector2(.64,-.40),Vector2(.75,-.27),Vector2(.75,.26),Vector2(.61,.39),Vector2(.37,.31)]: shape.append(center+point*metal_radius)
-	g.draw_colored_polygon(shape,caliper.darkened(.24))
-	g.draw_line(shape[0],shape[1],caliper.lightened(.3),maxf(.8,metal_radius*.035),true)
-	for y in [-.22,.22]:
-		var p:=center+Vector2(.64,y)*metal_radius
-		g.draw_circle(p,metal_radius*.026,Color("202930")*light,true,-1,true)
-		g.draw_circle(p-Vector2.ONE*metal_radius*.008,metal_radius*.012,Color("9ba5ab")*light,true,-1,true)
+	# Photorealistic bodies already contain stationary brake rotors and calipers.
+	# Keep the procedural caliper only for legacy SVG vehicles; otherwise it
+	# duplicates the fixed hardware and appears to move with rim changes.
+	if int(definition.get("art_pipeline_version",0)) < 2:
+		var caliper: Color=[Color("cc5430"),Color("e53942"),Color("edc343"),Color("bac5cf")][int(look.caliper)]*light
+		var shape:=PackedVector2Array()
+		for point in [Vector2(.37,-.39),Vector2(.64,-.40),Vector2(.75,-.27),Vector2(.75,.26),Vector2(.61,.39),Vector2(.37,.31)]: shape.append(center+point*metal_radius)
+		g.draw_colored_polygon(shape,caliper.darkened(.24))
+		g.draw_line(shape[0],shape[1],caliper.lightened(.3),maxf(.8,metal_radius*.035),true)
+		for y in [-.22,.22]:
+			var p:=center+Vector2(.64,y)*metal_radius
+			g.draw_circle(p,metal_radius*.026,Color("202930")*light,true,-1,true)
+			g.draw_circle(p-Vector2.ONE*metal_radius*.008,metal_radius*.012,Color("9ba5ab")*light,true,-1,true)
 	var pixels:=512 if metal_radius>80 and quality>0 else 192
 	var face:=RimArt.face(int(look.design),int(look.rim),pixels)
 	VehicleRenderer.retain_texture(g,face)

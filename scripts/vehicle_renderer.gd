@@ -45,7 +45,7 @@ static func draw(g: Node2D,origin: Vector2,size: float,model: String,look: Dicti
 	contact_shadow(g,base,d,s,radius_factor,quality)
 	draw_wheels(g,base,size,s,model,d,look,car,animate,quality,light,false,studio)
 	g.draw_set_transform(body+pivot,pitch)
-	layer(g,str(d.body) % [int(look.paint),["gloss","matte","metallic"][int(look.finish)]],pivot,s,light)
+	layer(g,VehicleAppearance.body_variant_path(d,int(look.paint),["gloss","matte","metallic"][int(look.finish)]),pivot,s,light)
 	var baked_layers := int(d.get("art_pipeline_version",0))>=2
 	if not baked_layers: layer(g,d.layers.glass,pivot,s,light)
 	if int(look.tint) > 0: layer(g,d.layers.tint,pivot,s,Color(1,1,1,VehicleAppearance.TINT_OPACITY[int(look.tint)]))

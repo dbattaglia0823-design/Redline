@@ -11,12 +11,12 @@ func handle_scroll_touch(event: InputEvent) -> bool:
 	if is_instance_valid(vehicle_template) and vehicle_template.is_visible_in_tree() and vehicle_template.handle_scroll_touch(event): return true
 	# Defer option taps until release so a swipe cannot select an option, and
 	# consume the event once through the same existing action dispatcher.
-	if not visible or game.screen!="garage" or game.tab!="style":
+	if not visible or game.screen!="garage" or game.tab not in ["style","owned"]:
 		scroll_pointer=-1; touch_scroll=null; return super.handle_scroll_touch(event)
 	if event is InputEventScreenTouch and event.canceled and event.index==scroll_pointer:
 		scroll_pointer=-1; touch_scroll=null; return true
 	if event is InputEventScreenTouch and event.pressed and not event.canceled:
-		var scroll: ScrollContainer=find_child("StudioOptions",true,false)
+		var scroll: ScrollContainer=find_child("OwnedVehicleScroll" if game.tab=="owned" else "StudioOptions",true,false)
 		if scroll==null or not scroll.get_global_rect().has_point(event.position): return false
 		if scroll_pointer>=0: return true
 		scroll_pointer=event.index; touch_scroll=scroll; scroll_start=event.position; scroll_offset=scroll.scroll_vertical; scroll_moved=false
@@ -199,15 +199,32 @@ func mechanical_details(parent: Node,c: Drivetrain) -> void:
 		line_label.custom_minimum_size.y=72 if line.begins_with("Ratios:") else 30
 		content.add_child(line_label)
 
+func owned_class_dropdown(parent: Node) -> void:
+	var picker:=OptionButton.new()
+	picker.name="OwnedEngineClassDropdown"
+	picker.custom_minimum_size=Vector2(240,66 if portrait or compact_landscape() else 48)
+	picker.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	picker.add_theme_font_size_override("font_size",18)
+	picker.add_item("All classes",0)
+	for i in PerformanceClasses.ORDER.size():
+		picker.add_item("Class "+str(PerformanceClasses.ORDER[i]),i+1)
+	picker.select(clampi(game.menu.hub.owned_filter,0,PerformanceClasses.ORDER.size()))
+	picker.item_selected.connect(func(index: int):
+		game.menu.hub.owned_filter=index
+		game.menu.hub.owned_page=0
+		game.menu_dirty=true
+		game.queue_redraw()
+	)
+	parent.add_child(picker)
+
 func collection(body: VBoxContainer) -> void:
 	var h: GarageHub=game.menu.hub; var ids:=h.owned_ids()
 	title(body,"Your collection","hub_back")
 	var filters:=AutomotiveUI.row(body)
-	button(filters,"owned_filter","Engine class: "+("All" if h.owned_filter==0 else PerformanceClasses.ORDER[h.owned_filter-1]))
+	owned_class_dropdown(filters)
 	button(filters,"owned_sort","Quickest first" if h.owned_sort else "Collection order")
 	if ids.is_empty(): body.add_child(AutomotiveUI.label("No owned cars in this engine class",22)); return
 	if not ids.has(h.owned_selection): h.owned_selection=ids[0]
-	h.owned_page=clampi(h.owned_page,0,maxi(0,ceili(ids.size()/4.0)-1))
 	var selected: String=h.owned_selection; var c:=h.vehicle(selected)
 	var main: BoxContainer=VBoxContainer.new() if portrait else HBoxContainer.new(); main.add_theme_constant_override("separation",16); main.size_flags_vertical=Control.SIZE_EXPAND_FILL; body.add_child(main)
 	var list: VBoxContainer
@@ -226,12 +243,14 @@ func collection(body: VBoxContainer) -> void:
 	detail.add_child(AutomotiveUI.label("Engine class %s / %d-speed %s"%[engine_class,c.gear_ratios.size(),controls.get(c.control_mode,c.control_mode)],16,AutomotiveUI.BLUE))
 	detail.add_child(AutomotiveUI.label("Vs active  %+.0f hp / %+.0f lb-ft / %+.0f lb"%[c.peak_horsepower()-game.car.peak_horsepower(),ImperialUnits.torque(GarageHub.peak_torque(c))-ImperialUnits.torque(GarageHub.peak_torque(game.car)),ImperialUnits.pounds(c.mass())-ImperialUnits.pounds(game.car.mass())],17,AutomotiveUI.MUTED))
 	if portrait: list=AutomotiveUI.column(main,8)
-	var cards:=grid(list,2 if portrait else 1,8)
-	for i in mini(4,ids.size()-h.owned_page*4):
-		var id: String=ids[h.owned_page*4+i]; var owned_car:=h.vehicle(id)
+	var scrolling:=catalog_scroll(list,"OwnedVehicleScroll",0)
+	scrolling.custom_minimum_size.y=230 if portrait else 360
+	scrolling.size_flags_vertical=Control.SIZE_EXPAND_FILL
+	var cards:=grid(scrolling,2 if portrait else 1,8)
+	for id in ids:
+		var owned_car:=h.vehicle(id)
 		var card:=AutomotiveUI.vehicle_card(cards,game,id,owned_car,game.profile.appearance_for(id),("Equipped · Class " if id==game.profile.vehicle_id else "Owned · Class ")+GameCatalog.engine_class(id,owned_car.hardware),id==selected,108 if portrait else 94)
 		bind(card,"hub_pick_"+id)
-	page_controls(list,true)
 	var actions:=AutomotiveUI.row(body,8)
 	button(actions,"tab_style","Customize active car")
 	button(actions,"open_tuning","Test track")
