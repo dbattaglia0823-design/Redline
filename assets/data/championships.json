@@ -2,408 +2,338 @@
   "class_A_0": {
     "build_label": "Factory",
     "calibrated_quarter_s": 12.7510146591404,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Velocity Club",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Rhea North",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_z400"
       ],
-      "parts": {
-
-      },
-      "performance_stages": {
-
-      },
+      "parts": {},
+      "performance_stages": {},
       "transmission": "oem_z400",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_A_0",
     "identity": "Stock-class opener",
     "launch_style": "balanced",
-    "max_bet": 22000.0,
+    "max_bet": 7000,
     "model": "z400",
     "name": "Rhea North",
     "nickname": "The Apprentice",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 2.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 2,
+    "pedal": 1,
     "potential_et": 11.7772322216341,
     "potential_s": 12.0399178667349,
     "preferred_class": "A",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "A",
     "reaction": 0.58,
     "reaction_spread": 0.012,
-    "round": 0.0,
+    "round": 0,
     "series": "A",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
     ],
-    "track_index": 2.0,
+    "track_index": 2,
     "traction_skill": 0.95,
     "tradeoff": "Reliable staging / slow gear changes",
-    "variant": 0.0,
+    "variant": 0,
     "vehicle_rule": "",
-    "xp": 370.0
+    "xp": 370
   },
   "class_A_1": {
     "build_label": "Factory",
     "calibrated_quarter_s": 12.0093609295583,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Velocity Club",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Dante Moss",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_camaro"
       ],
-      "parts": {
-
-      },
-      "performance_stages": {
-
-      },
+      "parts": {},
+      "performance_stages": {},
       "transmission": "oem_camaro",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_A_1",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 33000.0,
+    "max_bet": 10500,
     "model": "camaro",
     "name": "Dante Moss",
     "nickname": "The Mechanic",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 3.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 3,
+    "pedal": 1,
     "potential_et": 11.3122196657737,
     "potential_s": 11.5773158102087,
     "preferred_class": "A",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "A",
     "reaction": 0.251551900023733,
     "reaction_spread": 0.012,
-    "round": 1.0,
+    "round": 1,
     "series": "A",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
     ],
-    "track_index": 2.0,
+    "track_index": 2,
     "traction_skill": 0.95,
     "tradeoff": "Good grip / cautious on the bottle",
-    "variant": 2.0,
+    "variant": 2,
     "vehicle_rule": "",
-    "xp": 395.0
+    "xp": 395
   },
   "class_A_2": {
     "build_label": "Stage 1 street build",
     "calibrated_quarter_s": 11.4090978088596,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Velocity Club",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Mika Frost",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "street_tires"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_camaro"
       ],
       "parts": {
         "tires": "street_tires"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_camaro",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_A_2",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 48400.0,
+    "max_bet": 15400,
     "model": "camaro",
     "name": "Mika Frost",
     "nickname": "The Sprinter",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 4.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 4,
+    "pedal": 1,
     "potential_et": 10.7985985155315,
     "potential_s": 11.0443938477812,
     "preferred_class": "A",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "A",
     "reaction": 0.267207297115523,
     "reaction_spread": 0.012,
-    "round": 2.0,
+    "round": 2,
     "series": "A",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      1.0,
-      0.0,
-      0.0,
-      0.0,
-      1.0,
-      0.0,
-      0.0,
-      0.0
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
     ],
-    "track_index": 2.0,
+    "track_index": 2,
     "traction_skill": 0.95,
     "tradeoff": "Fast reaction / wheelspin risk",
-    "variant": 1.0,
+    "variant": 1,
     "vehicle_rule": "",
-    "xp": 420.0
+    "xp": 420
   },
   "class_A_3": {
     "build_label": "Factory",
     "calibrated_quarter_s": 10.8977265214223,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Velocity Club",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Gia Ash",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_redeye"
       ],
-      "parts": {
-
-      },
-      "performance_stages": {
-
-      },
+      "parts": {},
+      "performance_stages": {},
       "transmission": "oem_redeye",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_A_3",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 70400.0,
+    "max_bet": 22400,
     "model": "redeye",
     "name": "Gia Ash",
     "nickname": "The Specialist",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 5.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 5,
+    "pedal": 1,
     "potential_et": 10.2646082748475,
     "potential_s": 10.5169742806636,
     "preferred_class": "A",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "A",
     "reaction": 0.251783563822002,
     "reaction_spread": 0.012,
-    "round": 3.0,
+    "round": 3,
     "series": "A",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
     ],
-    "track_index": 2.0,
+    "track_index": 2,
     "traction_skill": 0.95,
     "tradeoff": "Consistent launch / little margin on gearing",
-    "variant": 0.0,
+    "variant": 0,
     "vehicle_rule": "",
-    "xp": 445.0
+    "xp": 445
   },
   "class_A_4": {
     "build_label": "Stage 1 street build",
     "calibrated_quarter_s": 10.387193795122,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Velocity Club",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Crew captain / Axel Ward",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "street_tires"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_redeye"
       ],
       "parts": {
         "tires": "street_tires"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_redeye",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_A_4",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 101200.0,
+    "max_bet": 32200,
     "model": "redeye",
     "name": "Axel Ward",
     "nickname": "Crew Captain",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 0.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 0,
+    "pedal": 1,
     "potential_et": 9.80838663278536,
     "potential_s": 10.0431704658736,
     "preferred_class": "A",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "A",
     "reaction": 0.289840163394162,
     "reaction_spread": 0.012,
-    "round": 4.0,
+    "round": 4,
     "series": "A",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      1.0,
-      0.0,
-      0.0,
-      0.0,
-      1.0,
-      0.0,
-      0.0,
-      0.0
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
     ],
-    "track_index": 2.0,
+    "track_index": 2,
     "traction_skill": 0.95,
     "tradeoff": "Complete build / must be beaten on execution",
-    "variant": 3.0,
+    "variant": 3,
     "vehicle_rule": "",
-    "xp": 470.0
+    "xp": 470
   },
   "class_A_5": {
     "build_label": "Stage 1 performance build",
     "calibrated_quarter_s": 9.87949593988441,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Velocity Club",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Kei Harlow",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "uhp_tires",
         "street_susp",
         "clutch_twin"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_r8"
       ],
@@ -412,72 +342,62 @@
         "suspension": "street_susp",
         "tires": "uhp_tires"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_r8",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_A_5",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 143000.0,
+    "max_bet": 45500,
     "model": "r8",
     "name": "Kei Harlow",
     "nickname": "The Challenger",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 1.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 1,
+    "pedal": 1,
     "potential_et": 9.30504153124282,
     "potential_s": 9.53269370859438,
     "preferred_class": "A",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "A",
     "reaction": 0.334556275447767,
     "reaction_spread": 0.012,
-    "round": 5.0,
+    "round": 5,
     "series": "A",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      1.0,
-      1.0,
-      0.0,
-      0.0,
-      1.0,
-      1.0,
-      0.0,
-      0.0
+      1,
+      1,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0
     ],
-    "track_index": 2.0,
+    "track_index": 2,
     "traction_skill": 0.95,
     "tradeoff": "A sharp first gear and an early move to second.",
-    "variant": 9.0,
+    "variant": 9,
     "vehicle_rule": "",
-    "xp": 530.0
+    "xp": 530
   },
   "class_A_6": {
     "build_label": "Stage 2 competition build",
     "calibrated_quarter_s": 9.414521715567,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Velocity Club",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Motor only / Alma West",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "competition_radial",
         "drag_susp",
@@ -486,9 +406,7 @@
         "fuel_street",
         "ecu"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_mustang"
       ],
@@ -500,74 +418,66 @@
         "suspension": "drag_susp",
         "tires": "competition_radial"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_mustang",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 25.0
+        "tire_pressure": 25
       }
     },
     "id": "class_A_6",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 198000.0,
+    "max_bet": 63000,
     "model": "mustang",
     "name": "Alma West",
     "nickname": "Motor Only",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 2.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 2,
+    "pedal": 1,
     "potential_et": 8.94297823163078,
     "potential_s": 9.12851196818206,
     "preferred_class": "A",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "A",
     "reaction": 0.19952971144105,
     "reaction_spread": 0.012,
-    "round": 6.0,
+    "round": 6,
     "rule": "motor_only",
     "series": "A",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      2.0,
-      2.0,
-      0.0,
-      1.0,
-      3.0,
-      2.0,
-      0.0,
-      0.0
+      2,
+      2,
+      0,
+      1,
+      3,
+      2,
+      0,
+      0
     ],
-    "track_index": 2.0,
+    "track_index": 2,
     "traction_skill": 0.95,
     "tradeoff": "An all-motor setup with a measured launch.",
-    "variant": 4.0,
+    "variant": 4,
     "vehicle_rule": "",
-    "xp": 562.0
+    "xp": 562
   },
   "class_A_7": {
     "build_label": "Stage 2 competition build",
     "calibrated_quarter_s": 8.99838983503192,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Velocity Club",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Remi Chen",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "competition_radial",
         "drag_susp",
@@ -576,9 +486,7 @@
         "fuel_street",
         "ecu"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_gtr"
       ],
@@ -590,73 +498,65 @@
         "suspension": "drag_susp",
         "tires": "competition_radial"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_gtr",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 25.0
+        "tire_pressure": 25
       }
     },
     "id": "class_A_7",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 275000.0,
+    "max_bet": 87500,
     "model": "gtr",
     "name": "Remi Chen",
     "nickname": "The Late Charger",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 3.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 3,
+    "pedal": 1,
     "potential_et": 8.54825901085199,
     "potential_s": 8.73566871516581,
     "preferred_class": "A",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "A",
     "reaction": 0.232161710621327,
     "reaction_spread": 0.012,
-    "round": 7.0,
+    "round": 7,
     "series": "A",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      2.0,
-      2.0,
-      0.0,
-      1.0,
-      3.0,
-      2.0,
-      0.0,
-      0.0
+      2,
+      2,
+      0,
+      1,
+      3,
+      2,
+      0,
+      0
     ],
-    "track_index": 2.0,
+    "track_index": 2,
     "traction_skill": 0.95,
     "tradeoff": "Patient off the line, relentless through the upper gears.",
-    "variant": 3.0,
+    "variant": 3,
     "vehicle_rule": "",
-    "xp": 594.0
+    "xp": 594
   },
   "class_A_8": {
     "build_label": "Stage 3 pro build",
     "calibrated_quarter_s": 8.58327557196258,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Velocity Club",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Isa Ford",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "pro_drag_radial",
         "pro_drag_susp",
@@ -667,9 +567,7 @@
         "turbo_hybrid",
         "gear_strength"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_mustang"
       ],
@@ -683,74 +581,66 @@
         "suspension": "pro_drag_susp",
         "tires": "pro_drag_radial"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_mustang",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 24.0
+        "tire_pressure": 24
       }
     },
     "id": "class_A_8",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 374000.0,
+    "max_bet": 119000,
     "model": "mustang",
     "name": "Isa Ford",
     "nickname": "The Enforcer",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 4.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 4,
+    "pedal": 1,
     "potential_et": 8.16775551192159,
     "potential_s": 8.32924549808252,
     "preferred_class": "A",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "A",
     "reaction": 0.184146792134058,
     "reaction_spread": 0.012,
-    "round": 8.0,
+    "round": 8,
     "series": "A",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      3.0,
-      3.0,
-      0.0,
-      2.0,
-      5.0,
-      3.0,
-      0.0,
-      0.0
+      3,
+      3,
+      0,
+      2,
+      5,
+      3,
+      0,
+      0
     ],
-    "track_index": 2.0,
+    "track_index": 2,
     "traction_skill": 0.95,
     "tradeoff": "Stays close to the shift window under pressure.",
-    "variant": 2.0,
+    "variant": 2,
     "vehicle_rule": "",
-    "xp": 626.0
+    "xp": 626
   },
   "class_A_9": {
     "boss": true,
     "build_label": "Stage 3 race build",
     "calibrated_quarter_s": 8.12050240200101,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Velocity Club",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Championship / Roman Slate",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "drag_slicks",
         "pro_drag_susp",
@@ -760,9 +650,7 @@
         "intake_velocity",
         "ecu_track"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_r8"
       ],
@@ -775,237 +663,201 @@
         "suspension": "pro_drag_susp",
         "tires": "drag_slicks"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_r8",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 23.0
+        "tire_pressure": 23
       }
     },
     "id": "class_A_9",
     "identity": "Fully prepared championship boss",
     "intro": "I built this car for the last hundred meters. See you there.",
     "launch_style": "balanced",
-    "max_bet": 550000.0,
+    "max_bet": 175000,
     "model": "r8",
     "name": "Roman Slate",
     "nickname": "The Velocity King",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 1.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 1,
+    "pedal": 1,
     "potential_et": 7.7049870038247,
     "potential_s": 7.90926004784265,
     "preferred_class": "A",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "A",
     "reaction": 0.205183675613309,
     "reaction_spread": 0.012,
-    "round": 9.0,
+    "round": 9,
     "series": "A",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      3.0,
-      2.0,
-      0.0,
-      2.0,
-      4.0,
-      2.0,
-      0.0,
-      0.0
+      3,
+      2,
+      0,
+      2,
+      4,
+      2,
+      0,
+      0
     ],
-    "track_index": 2.0,
+    "track_index": 2,
     "traction_skill": 0.95,
     "tradeoff": "Tight reaction window and near-optimal shifts.",
-    "variant": 9.0,
+    "variant": 9,
     "vehicle_rule": "",
     "victory": "The Velocity Club has a new champion.",
-    "xp": 658.0
+    "xp": 658
   },
   "class_B_0": {
     "build_label": "Factory",
     "calibrated_quarter_s": 13.5747512544802,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Midnight Works",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Ellis Stone",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_supra"
       ],
-      "parts": {
-
-      },
-      "performance_stages": {
-
-      },
+      "parts": {},
+      "performance_stages": {},
       "transmission": "oem_supra",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_B_0",
     "identity": "Stock-class opener",
     "launch_style": "balanced",
-    "max_bet": 13000.0,
+    "max_bet": 3500,
     "model": "supra",
     "name": "Ellis Stone",
     "nickname": "The Apprentice",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 0.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 0,
+    "pedal": 1,
     "potential_et": 12.7008588908995,
     "potential_s": 12.9914207451497,
     "preferred_class": "B",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "B",
     "reaction": 0.58,
     "reaction_spread": 0.012,
-    "round": 0.0,
+    "round": 0,
     "series": "B",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
     ],
-    "track_index": 1.0,
+    "track_index": 1,
     "traction_skill": 0.95,
     "tradeoff": "Reliable staging / slow gear changes",
-    "variant": 2.0,
+    "variant": 2,
     "vehicle_rule": "",
-    "xp": 310.0
+    "xp": 310
   },
   "class_B_1": {
     "build_label": "Stage 1 street build",
     "calibrated_quarter_s": 12.8335827981935,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Midnight Works",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Lex Byrne",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "street_tires"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_supra"
       ],
       "parts": {
         "tires": "street_tires"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_supra",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_B_1",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 19500.0,
+    "max_bet": 5300,
     "model": "supra",
     "name": "Lex Byrne",
     "nickname": "The Mechanic",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 1.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 1,
+    "pedal": 1,
     "potential_et": 12.0699469789399,
     "potential_s": 12.3377499179474,
     "preferred_class": "B",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "B",
     "reaction": 0.495121162903058,
     "reaction_spread": 0.012,
-    "round": 1.0,
+    "round": 1,
     "series": "B",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      1.0,
-      0.0,
-      0.0,
-      0.0,
-      1.0,
-      0.0,
-      0.0,
-      0.0
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
     ],
-    "track_index": 1.0,
+    "track_index": 1,
     "traction_skill": 0.95,
     "tradeoff": "Good grip / cautious on the bottle",
-    "variant": 0.0,
+    "variant": 0,
     "vehicle_rule": "",
-    "xp": 335.0
+    "xp": 335
   },
   "class_B_2": {
     "build_label": "Stage 1 performance build",
     "calibrated_quarter_s": 12.2333069901559,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Midnight Works",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Cora Wynn",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "uhp_tires",
         "street_susp",
         "clutch_twin"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_supra"
       ],
@@ -1014,80 +866,68 @@
         "suspension": "street_susp",
         "tires": "uhp_tires"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_supra",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_B_2",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 28600.0,
+    "max_bet": 7700,
     "model": "supra",
     "name": "Cora Wynn",
     "nickname": "The Sprinter",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 2.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 2,
+    "pedal": 1,
     "potential_et": 11.4656398140257,
     "potential_s": 11.7193322347309,
     "preferred_class": "B",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "B",
     "reaction": 0.512086215347981,
     "reaction_spread": 0.012,
-    "round": 2.0,
+    "round": 2,
     "series": "B",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      1.0,
-      1.0,
-      0.0,
-      0.0,
-      1.0,
-      1.0,
-      0.0,
-      0.0
+      1,
+      1,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0
     ],
-    "track_index": 1.0,
+    "track_index": 1,
     "traction_skill": 0.95,
     "tradeoff": "Fast reaction / wheelspin risk",
-    "variant": 1.0,
+    "variant": 1,
     "vehicle_rule": "",
-    "xp": 360.0
+    "xp": 360
   },
   "class_B_3": {
     "build_label": "Stage 1 performance build",
     "calibrated_quarter_s": 11.7279527986972,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Midnight Works",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Jett Hale",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "uhp_tires",
         "street_susp",
         "clutch_twin"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_golf_r"
       ],
@@ -1096,81 +936,69 @@
         "suspension": "street_susp",
         "tires": "uhp_tires"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_golf_r",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_B_3",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 41600.0,
+    "max_bet": 11200,
     "model": "golf_r",
     "name": "Jett Hale",
     "nickname": "The Specialist",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 3.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 3,
+    "pedal": 1,
     "potential_et": 11.2598109448192,
     "potential_s": 11.5012882908626,
     "preferred_class": "B",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "B",
     "reaction": 0.217822208606906,
     "reaction_spread": 0.012,
-    "round": 3.0,
+    "round": 3,
     "series": "B",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      1.0,
-      1.0,
-      0.0,
-      0.0,
-      1.0,
-      1.0,
-      0.0,
-      0.0
+      1,
+      1,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0
     ],
-    "track_index": 1.0,
+    "track_index": 1,
     "traction_skill": 0.95,
     "tradeoff": "Consistent launch / little margin on gearing",
-    "variant": 2.0,
+    "variant": 2,
     "vehicle_rule": "",
-    "xp": 385.0
+    "xp": 385
   },
   "class_B_4": {
     "build_label": "Stage 2 track build",
     "calibrated_quarter_s": 11.219970465752,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Midnight Works",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Crew captain / Remy Sol",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "street_radial",
         "coilovers",
         "clutch_twin",
         "ecu"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_m3"
       ],
@@ -1180,81 +1008,69 @@
         "suspension": "coilovers",
         "tires": "street_radial"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_m3",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_B_4",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 59800.0,
+    "max_bet": 16100,
     "model": "m3",
     "name": "Remy Sol",
     "nickname": "Crew Captain",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 4.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 4,
+    "pedal": 1,
     "potential_et": 10.6976111926188,
     "potential_s": 10.920148782813,
     "preferred_class": "B",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "B",
     "reaction": 0.292863525636987,
     "reaction_spread": 0.012,
-    "round": 4.0,
+    "round": 4,
     "series": "B",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      2.0,
-      1.0,
-      0.0,
-      1.0,
-      2.0,
-      1.0,
-      0.0,
-      0.0
+      2,
+      1,
+      0,
+      1,
+      2,
+      1,
+      0,
+      0
     ],
-    "track_index": 1.0,
+    "track_index": 1,
     "traction_skill": 0.95,
     "tradeoff": "Complete build / must be beaten on execution",
-    "variant": 3.0,
+    "variant": 3,
     "vehicle_rule": "",
-    "xp": 410.0
+    "xp": 410
   },
   "class_B_5": {
     "build_label": "Stage 2 track build",
     "calibrated_quarter_s": 10.7074926033946,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Midnight Works",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Mina Shaw",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "street_radial",
         "coilovers",
         "clutch_twin",
         "ecu"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_supra_gr"
       ],
@@ -1264,72 +1080,62 @@
         "suspension": "coilovers",
         "tires": "street_radial"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_supra_gr",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_B_5",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 84500.0,
+    "max_bet": 22800,
     "model": "supra_gr",
     "name": "Mina Shaw",
     "nickname": "The Challenger",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 5.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 5,
+    "pedal": 1,
     "potential_et": 10.140301731413,
     "potential_s": 10.3465128515216,
     "preferred_class": "B",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "B",
     "reaction": 0.304030995144297,
     "reaction_spread": 0.012,
-    "round": 5.0,
+    "round": 5,
     "series": "B",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      2.0,
-      1.0,
-      0.0,
-      1.0,
-      2.0,
-      1.0,
-      0.0,
-      0.0
+      2,
+      1,
+      0,
+      1,
+      2,
+      1,
+      0,
+      0
     ],
-    "track_index": 1.0,
+    "track_index": 1,
     "traction_skill": 0.95,
     "tradeoff": "A sharp first gear and an early move to second.",
-    "variant": 9.0,
+    "variant": 9,
     "vehicle_rule": "",
-    "xp": 470.0
+    "xp": 470
   },
   "class_B_6": {
     "build_label": "Stage 3 pro build",
     "calibrated_quarter_s": 10.2506040519027,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Midnight Works",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Motor only / Owen Kade",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "pro_drag_radial",
         "pro_drag_susp",
@@ -1340,9 +1146,7 @@
         "turbo_hybrid",
         "gear_strength"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_supra"
       ],
@@ -1356,74 +1160,66 @@
         "suspension": "pro_drag_susp",
         "tires": "pro_drag_radial"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_supra",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 24.0
+        "tire_pressure": 24
       }
     },
     "id": "class_B_6",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 117000.0,
+    "max_bet": 31500,
     "model": "supra",
     "name": "Owen Kade",
     "nickname": "Motor Only",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 0.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 0,
+    "pedal": 1,
     "potential_et": 9.78039844897247,
     "potential_s": 10.0037389704249,
     "preferred_class": "B",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "B",
     "reaction": 0.239389284875309,
     "reaction_spread": 0.012,
-    "round": 6.0,
+    "round": 6,
     "rule": "motor_only",
     "series": "B",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      3.0,
-      3.0,
-      0.0,
-      2.0,
-      5.0,
-      3.0,
-      0.0,
-      0.0
+      3,
+      3,
+      0,
+      2,
+      5,
+      3,
+      0,
+      0
     ],
-    "track_index": 1.0,
+    "track_index": 1,
     "traction_skill": 0.95,
     "tradeoff": "An all-motor setup with a measured launch.",
-    "variant": 1.0,
+    "variant": 1,
     "vehicle_rule": "",
-    "xp": 502.0
+    "xp": 502
   },
   "class_B_7": {
     "build_label": "Stage 3 pro build",
     "calibrated_quarter_s": 9.83401324227554,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Midnight Works",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Zoe Knight",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "pro_drag_radial",
         "pro_drag_susp",
@@ -1434,9 +1230,7 @@
         "turbo_hybrid",
         "gear_strength"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_golf_r"
       ],
@@ -1450,73 +1244,65 @@
         "suspension": "pro_drag_susp",
         "tires": "pro_drag_radial"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_golf_r",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 24.0
+        "tire_pressure": 24
       }
     },
     "id": "class_B_7",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 162500.0,
+    "max_bet": 43800,
     "model": "golf_r",
     "name": "Zoe Knight",
     "nickname": "The Late Charger",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 1.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 1,
+    "pedal": 1,
     "potential_et": 9.37928466858138,
     "potential_s": 9.5815207551856,
     "preferred_class": "B",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "B",
     "reaction": 0.24465112687539,
     "reaction_spread": 0.012,
-    "round": 7.0,
+    "round": 7,
     "series": "B",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      3.0,
-      3.0,
-      0.0,
-      2.0,
-      5.0,
-      3.0,
-      0.0,
-      0.0
+      3,
+      3,
+      0,
+      2,
+      5,
+      3,
+      0,
+      0
     ],
-    "track_index": 1.0,
+    "track_index": 1,
     "traction_skill": 0.95,
     "tradeoff": "Patient off the line, relentless through the upper gears.",
-    "variant": 9.0,
+    "variant": 9,
     "vehicle_rule": "",
-    "xp": 534.0
+    "xp": 534
   },
   "class_B_8": {
     "build_label": "Stage 3 pro build",
     "calibrated_quarter_s": 9.41727097657641,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Midnight Works",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Ari Bennett",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "pro_drag_radial",
         "pro_drag_susp",
@@ -1527,9 +1313,7 @@
         "turbo_hybrid",
         "gear_strength"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_supra_gr"
       ],
@@ -1543,74 +1327,66 @@
         "suspension": "pro_drag_susp",
         "tires": "pro_drag_radial"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_supra_gr",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 24.0
+        "tire_pressure": 24
       }
     },
     "id": "class_B_8",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 221000.0,
+    "max_bet": 59500,
     "model": "supra_gr",
     "name": "Ari Bennett",
     "nickname": "The Enforcer",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 2.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 2,
+    "pedal": 1,
     "potential_et": 8.90194312562041,
     "potential_s": 9.0617310543865,
     "preferred_class": "B",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "B",
     "reaction": 0.287135067294866,
     "reaction_spread": 0.012,
-    "round": 8.0,
+    "round": 8,
     "series": "B",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      3.0,
-      3.0,
-      0.0,
-      2.0,
-      5.0,
-      3.0,
-      0.0,
-      0.0
+      3,
+      3,
+      0,
+      2,
+      5,
+      3,
+      0,
+      0
     ],
-    "track_index": 1.0,
+    "track_index": 1,
     "traction_skill": 0.95,
     "tradeoff": "Stays close to the shift window under pressure.",
-    "variant": 4.0,
+    "variant": 4,
     "vehicle_rule": "",
-    "xp": 566.0
+    "xp": 566
   },
   "class_B_9": {
     "boss": true,
     "build_label": "Stage 3 maximum-effort build",
     "calibrated_quarter_s": 8.96116248154033,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Midnight Works",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Championship / Vivian Sable",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "pro_drag_slicks",
         "active_drag_susp",
@@ -1627,9 +1403,7 @@
         "gear_pro",
         "gear_response"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_supra"
       ],
@@ -1649,313 +1423,263 @@
         "suspension": "active_drag_susp",
         "tires": "pro_drag_slicks"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_supra",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 21.0
+        "tire_pressure": 21
       }
     },
     "id": "class_B_9",
     "identity": "Fully prepared championship boss",
     "intro": "The lights go green once. Make it count.",
     "launch_style": "balanced",
-    "max_bet": 325000.0,
+    "max_bet": 87500,
     "model": "supra",
     "name": "Vivian Sable",
     "nickname": "Nightshift",
     "nitrous": true,
-    "nitrous_gear": 2.0,
-    "paint_index": 4.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 4,
+    "pedal": 1,
     "potential_et": 8.18924313063697,
     "potential_s": 8.40723359084238,
     "preferred_class": "B",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "B",
     "reaction": 0.383555381831265,
     "reaction_spread": 0.012,
-    "round": 9.0,
+    "round": 9,
     "series": "B",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      3.0,
-      3.0,
-      0.0,
-      3.0,
-      5.0,
-      3.0,
-      3.0,
-      3.0
+      3,
+      3,
+      0,
+      3,
+      5,
+      3,
+      3,
+      3
     ],
-    "track_index": 1.0,
+    "track_index": 1,
     "traction_skill": 0.95,
     "tradeoff": "Tight reaction window and near-optimal shifts.",
-    "variant": 6.0,
+    "variant": 6,
     "vehicle_rule": "",
     "victory": "Midnight Works hands you the night crown.",
-    "xp": 598.0
+    "xp": 598
   },
   "class_C_0": {
     "build_label": "Factory",
     "calibrated_quarter_s": 14.3958865898965,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Boost District",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Vera Cruz",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_s2000"
       ],
-      "parts": {
-
-      },
-      "performance_stages": {
-
-      },
+      "parts": {},
+      "performance_stages": {},
       "transmission": "oem_s2000",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_C_0",
     "identity": "Stock-class opener",
     "launch_style": "balanced",
-    "max_bet": 7500.0,
+    "max_bet": 2000,
     "model": "s2000",
     "name": "Vera Cruz",
     "nickname": "The Apprentice",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 4.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 4,
+    "pedal": 1,
     "potential_et": 13.5108167588701,
     "potential_s": 13.8125652321553,
     "preferred_class": "C",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "C",
     "reaction": 0.58,
     "reaction_spread": 0.012,
-    "round": 0.0,
+    "round": 0,
     "series": "C",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
     ],
-    "track_index": 1.0,
+    "track_index": 1,
     "traction_skill": 0.95,
     "tradeoff": "Reliable staging / slow gear changes",
-    "variant": 1.0,
+    "variant": 1,
     "vehicle_rule": "",
-    "xp": 250.0
+    "xp": 250
   },
   "class_C_1": {
     "build_label": "Factory",
     "calibrated_quarter_s": 13.6133878443355,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Boost District",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Benji Lane",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_type_r"
       ],
-      "parts": {
-
-      },
-      "performance_stages": {
-
-      },
+      "parts": {},
+      "performance_stages": {},
       "transmission": "oem_type_r",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_C_1",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 11300.0,
+    "max_bet": 3000,
     "model": "type_r",
     "name": "Benji Lane",
     "nickname": "The Mechanic",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 5.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 5,
+    "pedal": 1,
     "potential_et": 13.0226816059349,
     "potential_s": 13.3219036859482,
     "preferred_class": "C",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "C",
     "reaction": 0.265242690111842,
     "reaction_spread": 0.012,
-    "round": 1.0,
+    "round": 1,
     "series": "C",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
     ],
-    "track_index": 1.0,
+    "track_index": 1,
     "traction_skill": 0.95,
     "tradeoff": "Good grip / cautious on the bottle",
-    "variant": 0.0,
+    "variant": 0,
     "vehicle_rule": "",
-    "xp": 275.0
+    "xp": 275
   },
   "class_C_2": {
     "build_label": "Stage 1 street build",
     "calibrated_quarter_s": 12.9813921675413,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Boost District",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Ada Kestrel",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "street_tires"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_type_r"
       ],
       "parts": {
         "tires": "street_tires"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_type_r",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_C_2",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 16500.0,
+    "max_bet": 4400,
     "model": "type_r",
     "name": "Ada Kestrel",
     "nickname": "The Sprinter",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 0.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 0,
+    "pedal": 1,
     "potential_et": 12.3916191893102,
     "potential_s": 12.6701644985123,
     "preferred_class": "C",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "C",
     "reaction": 0.353367795198077,
     "reaction_spread": 0.012,
-    "round": 2.0,
+    "round": 2,
     "series": "C",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      1.0,
-      0.0,
-      0.0,
-      0.0,
-      1.0,
-      0.0,
-      0.0,
-      0.0
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
     ],
-    "track_index": 1.0,
+    "track_index": 1,
     "traction_skill": 0.95,
     "tradeoff": "Fast reaction / wheelspin risk",
-    "variant": 0.0,
+    "variant": 0,
     "vehicle_rule": "",
-    "xp": 300.0
+    "xp": 300
   },
   "class_C_3": {
     "build_label": "Stage 1 performance build",
     "calibrated_quarter_s": 12.4423193209385,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Boost District",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Quinn Sato",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "uhp_tires",
         "street_susp",
         "clutch_twin"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_evo"
       ],
@@ -1964,80 +1688,68 @@
         "suspension": "street_susp",
         "tires": "uhp_tires"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_evo",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_C_3",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 24000.0,
+    "max_bet": 6400,
     "model": "evo",
     "name": "Quinn Sato",
     "nickname": "The Specialist",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 1.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 1,
+    "pedal": 1,
     "potential_et": 12.0135970181022,
     "potential_s": 12.2589880875375,
     "preferred_class": "C",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "C",
     "reaction": 0.182093789728447,
     "reaction_spread": 0.012,
-    "round": 3.0,
+    "round": 3,
     "series": "C",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      1.0,
-      1.0,
-      0.0,
-      0.0,
-      1.0,
-      1.0,
-      0.0,
-      0.0
+      1,
+      1,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0
     ],
-    "track_index": 1.0,
+    "track_index": 1,
     "traction_skill": 0.95,
     "tradeoff": "Consistent launch / little margin on gearing",
-    "variant": 0.0,
+    "variant": 0,
     "vehicle_rule": "",
-    "xp": 325.0
+    "xp": 325
   },
   "class_C_4": {
     "build_label": "Stage 1 performance build",
     "calibrated_quarter_s": 11.9072054764928,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Boost District",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Crew captain / Mara Voss",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "uhp_tires",
         "street_susp",
         "clutch_twin"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_z350"
       ],
@@ -2046,72 +1758,62 @@
         "suspension": "street_susp",
         "tires": "uhp_tires"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_z350",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_C_4",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 34500.0,
+    "max_bet": 9200,
     "model": "z350",
     "name": "Mara Voss",
     "nickname": "Crew Captain",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 2.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 2,
+    "pedal": 1,
     "potential_et": 11.434694097835,
     "potential_s": 11.6732012316606,
     "preferred_class": "C",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "C",
     "reaction": 0.188934779385394,
     "reaction_spread": 0.012,
-    "round": 4.0,
+    "round": 4,
     "series": "C",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      1.0,
-      1.0,
-      0.0,
-      0.0,
-      1.0,
-      1.0,
-      0.0,
-      0.0
+      1,
+      1,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0
     ],
-    "track_index": 1.0,
+    "track_index": 1,
     "traction_skill": 0.95,
     "tradeoff": "Complete build / must be beaten on execution",
-    "variant": 0.0,
+    "variant": 0,
     "vehicle_rule": "",
-    "xp": 350.0
+    "xp": 350
   },
   "class_C_5": {
     "build_label": "Stage 2 competition build",
     "calibrated_quarter_s": 11.3704639465485,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Boost District",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Hana Rook",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "competition_radial",
         "drag_susp",
@@ -2120,9 +1822,7 @@
         "fuel_street",
         "ecu"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_s2000"
       ],
@@ -2134,73 +1834,65 @@
         "suspension": "drag_susp",
         "tires": "competition_radial"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_s2000",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 25.0
+        "tire_pressure": 25
       }
     },
     "id": "class_C_5",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 48800.0,
+    "max_bet": 13000,
     "model": "s2000",
     "name": "Hana Rook",
     "nickname": "The Challenger",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 3.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 3,
+    "pedal": 1,
     "potential_et": 10.9326945653467,
     "potential_s": 11.1788271560391,
     "preferred_class": "C",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "C",
     "reaction": 0.184850432004952,
     "reaction_spread": 0.012,
-    "round": 5.0,
+    "round": 5,
     "series": "C",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      2.0,
-      2.0,
-      0.0,
-      1.0,
-      3.0,
-      2.0,
-      0.0,
-      0.0
+      2,
+      2,
+      0,
+      1,
+      3,
+      2,
+      0,
+      0
     ],
-    "track_index": 1.0,
+    "track_index": 1,
     "traction_skill": 0.95,
     "tradeoff": "A sharp first gear and an early move to second.",
-    "variant": 10.0,
+    "variant": 10,
     "vehicle_rule": "",
-    "xp": 410.0
+    "xp": 410
   },
   "class_C_6": {
     "build_label": "Stage 2 competition build",
     "calibrated_quarter_s": 10.883058423351,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Boost District",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Motor only / Miles Ito",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "competition_radial",
         "drag_susp",
@@ -2209,9 +1901,7 @@
         "fuel_street",
         "ecu"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_type_r"
       ],
@@ -2223,74 +1913,66 @@
         "suspension": "drag_susp",
         "tires": "competition_radial"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_type_r",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 25.0
+        "tire_pressure": 25
       }
     },
     "id": "class_C_6",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 67500.0,
+    "max_bet": 18000,
     "model": "type_r",
     "name": "Miles Ito",
     "nickname": "Motor Only",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 4.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 4,
+    "pedal": 1,
     "potential_et": 10.3563791515598,
     "potential_s": 10.5556393646492,
     "preferred_class": "C",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "C",
     "reaction": 0.309472648883354,
     "reaction_spread": 0.012,
-    "round": 6.0,
+    "round": 6,
     "rule": "motor_only",
     "series": "C",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      2.0,
-      2.0,
-      0.0,
-      1.0,
-      3.0,
-      2.0,
-      0.0,
-      0.0
+      2,
+      2,
+      0,
+      1,
+      3,
+      2,
+      0,
+      0
     ],
-    "track_index": 1.0,
+    "track_index": 1,
     "traction_skill": 0.95,
     "tradeoff": "An all-motor setup with a measured launch.",
-    "variant": 2.0,
+    "variant": 2,
     "vehicle_rule": "",
-    "xp": 442.0
+    "xp": 442
   },
   "class_C_7": {
     "build_label": "Stage 3 pro build",
     "calibrated_quarter_s": 10.4416343919384,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Boost District",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Noor Silva",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "pro_drag_radial",
         "pro_drag_susp",
@@ -2301,9 +1983,7 @@
         "turbo_hybrid",
         "gear_strength"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_s2000"
       ],
@@ -2317,73 +1997,65 @@
         "suspension": "pro_drag_susp",
         "tires": "pro_drag_radial"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_s2000",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 24.0
+        "tire_pressure": 24
       }
     },
     "id": "class_C_7",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 93800.0,
+    "max_bet": 25000,
     "model": "s2000",
     "name": "Noor Silva",
     "nickname": "The Late Charger",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 5.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 5,
+    "pedal": 1,
     "potential_et": 10.0112779548699,
     "potential_s": 10.2308356000048,
     "preferred_class": "C",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "C",
     "reaction": 0.207606937133266,
     "reaction_spread": 0.012,
-    "round": 7.0,
+    "round": 7,
     "series": "C",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      3.0,
-      3.0,
-      0.0,
-      2.0,
-      5.0,
-      3.0,
-      0.0,
-      0.0
+      3,
+      3,
+      0,
+      2,
+      5,
+      3,
+      0,
+      0
     ],
-    "track_index": 1.0,
+    "track_index": 1,
     "traction_skill": 0.95,
     "tradeoff": "Patient off the line, relentless through the upper gears.",
-    "variant": 10.0,
+    "variant": 10,
     "vehicle_rule": "",
-    "xp": 474.0
+    "xp": 474
   },
   "class_C_8": {
     "build_label": "Stage 3 pro build",
     "calibrated_quarter_s": 10.0056982397935,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Boost District",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Tess Ardent",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "pro_drag_radial",
         "pro_drag_susp",
@@ -2394,9 +2066,7 @@
         "turbo_hybrid",
         "gear_strength"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_type_r"
       ],
@@ -2410,74 +2080,66 @@
         "suspension": "pro_drag_susp",
         "tires": "pro_drag_radial"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_type_r",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 24.0
+        "tire_pressure": 24
       }
     },
     "id": "class_C_8",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 127500.0,
+    "max_bet": 34000,
     "model": "type_r",
     "name": "Tess Ardent",
     "nickname": "The Enforcer",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 0.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 0,
+    "pedal": 1,
     "potential_et": 9.53318378780622,
     "potential_s": 9.71731848210245,
     "preferred_class": "C",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "C",
     "reaction": 0.267444780003354,
     "reaction_spread": 0.012,
-    "round": 8.0,
+    "round": 8,
     "series": "C",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      3.0,
-      3.0,
-      0.0,
-      2.0,
-      5.0,
-      3.0,
-      0.0,
-      0.0
+      3,
+      3,
+      0,
+      2,
+      5,
+      3,
+      0,
+      0
     ],
-    "track_index": 1.0,
+    "track_index": 1,
     "traction_skill": 0.95,
     "tradeoff": "Stays close to the shift window under pressure.",
-    "variant": 9.0,
+    "variant": 9,
     "vehicle_rule": "",
-    "xp": 506.0
+    "xp": 506
   },
   "class_C_9": {
     "boss": true,
     "build_label": "Stage 3 nitrous race build",
     "calibrated_quarter_s": 9.51510321346223,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Boost District",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Championship / Sana Torres",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "pro_drag_slicks",
         "active_drag_susp",
@@ -2489,9 +2151,7 @@
         "gear_strength",
         "gear_pro"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_evo"
       ],
@@ -2506,313 +2166,263 @@
         "suspension": "active_drag_susp",
         "tires": "pro_drag_slicks"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_evo",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 21.0
+        "tire_pressure": 21
       }
     },
     "id": "class_C_9",
     "identity": "Fully prepared championship boss",
     "intro": "Every shift on this build is mapped. Show me something I missed.",
     "launch_style": "balanced",
-    "max_bet": 187500.0,
+    "max_bet": 50000,
     "model": "evo",
     "name": "Sana Torres",
     "nickname": "The Architect",
     "nitrous": true,
-    "nitrous_gear": 2.0,
-    "paint_index": 5.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 5,
+    "pedal": 1,
     "potential_et": 8.90244787690854,
     "potential_s": 9.11090033999007,
     "preferred_class": "C",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "C",
     "reaction": 0.228599704469813,
     "reaction_spread": 0.012,
-    "round": 9.0,
+    "round": 9,
     "series": "C",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      3.0,
-      3.0,
-      0.0,
-      3.0,
-      5.0,
-      3.0,
-      0.0,
-      2.0
+      3,
+      3,
+      0,
+      3,
+      5,
+      3,
+      0,
+      2
     ],
-    "track_index": 1.0,
+    "track_index": 1,
     "traction_skill": 0.95,
     "tradeoff": "Tight reaction window and near-optimal shifts.",
-    "variant": 9.0,
+    "variant": 9,
     "vehicle_rule": "",
     "victory": "You outdrove the Architect's perfect setup.",
-    "xp": 538.0
+    "xp": 538
   },
   "class_D_0": {
     "build_label": "Factory",
     "calibrated_quarter_s": 15.3304123391834,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Apex Syndicate",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Jules Park",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_brz"
       ],
-      "parts": {
-
-      },
-      "performance_stages": {
-
-      },
+      "parts": {},
+      "performance_stages": {},
       "transmission": "oem_brz",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_D_0",
     "identity": "Stock-class opener",
     "launch_style": "balanced",
-    "max_bet": 4000.0,
+    "max_bet": 1000,
     "model": "brz",
     "name": "Jules Park",
     "nickname": "The Apprentice",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 2.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 2,
+    "pedal": 1,
     "potential_et": 14.4255701379447,
     "potential_s": 14.7471278143865,
     "preferred_class": "D",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "D",
     "reaction": 0.579999999999981,
     "reaction_spread": 0.012,
-    "round": 0.0,
+    "round": 0,
     "series": "D",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
     ],
-    "track_index": 0.0,
+    "track_index": 0,
     "traction_skill": 0.95,
     "tradeoff": "Reliable staging / slow gear changes",
-    "variant": 0.0,
+    "variant": 0,
     "vehicle_rule": "",
-    "xp": 190.0
+    "xp": 190
   },
   "class_D_1": {
     "build_label": "Factory",
     "calibrated_quarter_s": 14.7058247840721,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Apex Syndicate",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Bea Holt",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_gti"
       ],
-      "parts": {
-
-      },
-      "performance_stages": {
-
-      },
+      "parts": {},
+      "performance_stages": {},
       "transmission": "oem_gti",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_D_1",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 6000.0,
+    "max_bet": 1500,
     "model": "gti",
     "name": "Bea Holt",
     "nickname": "The Mechanic",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 3.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 3,
+    "pedal": 1,
     "potential_et": 14.1423899604768,
     "potential_s": 14.4551739498188,
     "preferred_class": "D",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "D",
     "reaction": 0.204503412834511,
     "reaction_spread": 0.012,
-    "round": 1.0,
+    "round": 1,
     "series": "D",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
     ],
-    "track_index": 0.0,
+    "track_index": 0,
     "traction_skill": 0.95,
     "tradeoff": "Good grip / cautious on the bottle",
-    "variant": 0.0,
+    "variant": 0,
     "vehicle_rule": "",
-    "xp": 215.0
+    "xp": 215
   },
   "class_D_2": {
     "build_label": "Stage 1 street build",
     "calibrated_quarter_s": 14.0222546632336,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Apex Syndicate",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Rio Vega",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "street_tires"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_gti"
       ],
       "parts": {
         "tires": "street_tires"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_gti",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_D_2",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 8800.0,
+    "max_bet": 2200,
     "model": "gti",
     "name": "Rio Vega",
     "nickname": "The Sprinter",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 4.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 4,
+    "pedal": 1,
     "potential_et": 13.4513631821185,
     "potential_s": 13.7314974933251,
     "preferred_class": "D",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "D",
     "reaction": 0.281052398567129,
     "reaction_spread": 0.012,
-    "round": 2.0,
+    "round": 2,
     "series": "D",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      1.0,
-      0.0,
-      0.0,
-      0.0,
-      1.0,
-      0.0,
-      0.0,
-      0.0
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
     ],
-    "track_index": 0.0,
+    "track_index": 0,
     "traction_skill": 0.95,
     "tradeoff": "Fast reaction / wheelspin risk",
-    "variant": 1.0,
+    "variant": 1,
     "vehicle_rule": "",
-    "xp": 240.0
+    "xp": 240
   },
   "class_D_3": {
     "build_label": "Stage 1 performance build",
     "calibrated_quarter_s": 13.4434913795363,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Apex Syndicate",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Cass Morrow",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "uhp_tires",
         "street_susp",
         "clutch_twin"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_integra"
       ],
@@ -2821,81 +2431,69 @@
         "suspension": "street_susp",
         "tires": "uhp_tires"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_integra",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_D_3",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 12800.0,
+    "max_bet": 3200,
     "model": "integra",
     "name": "Cass Morrow",
     "nickname": "The Specialist",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 5.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 5,
+    "pedal": 1,
     "potential_et": 12.769027306777,
     "potential_s": 13.053389429721,
     "preferred_class": "D",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "D",
     "reaction": 0.386887110648525,
     "reaction_spread": 0.012,
-    "round": 3.0,
+    "round": 3,
     "series": "D",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      1.0,
-      1.0,
-      0.0,
-      0.0,
-      1.0,
-      1.0,
-      0.0,
-      0.0
+      1,
+      1,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0
     ],
-    "track_index": 0.0,
+    "track_index": 0,
     "traction_skill": 0.95,
     "tradeoff": "Consistent launch / little margin on gearing",
-    "variant": 3.0,
+    "variant": 3,
     "vehicle_rule": "",
-    "xp": 265.0
+    "xp": 265
   },
   "class_D_4": {
     "build_label": "Stage 2 track build",
     "calibrated_quarter_s": 12.86906818794,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Apex Syndicate",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Crew captain / Theo Flint",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "street_radial",
         "coilovers",
         "clutch_twin",
         "ecu"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_integra"
       ],
@@ -2905,72 +2503,62 @@
         "suspension": "coilovers",
         "tires": "street_radial"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_integra",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_D_4",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 18400.0,
+    "max_bet": 4600,
     "model": "integra",
     "name": "Theo Flint",
     "nickname": "Crew Captain",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 0.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 0,
+    "pedal": 1,
     "potential_et": 12.3361108292434,
     "potential_s": 12.6185982140361,
     "preferred_class": "D",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "D",
     "reaction": 0.242839542486518,
     "reaction_spread": 0.012,
-    "round": 4.0,
+    "round": 4,
     "series": "D",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      2.0,
-      1.0,
-      0.0,
-      1.0,
-      2.0,
-      1.0,
-      0.0,
-      0.0
+      2,
+      1,
+      0,
+      1,
+      2,
+      1,
+      0,
+      0
     ],
-    "track_index": 0.0,
+    "track_index": 0,
     "traction_skill": 0.95,
     "tradeoff": "Complete build / must be beaten on execution",
-    "variant": 3.0,
+    "variant": 3,
     "vehicle_rule": "",
-    "xp": 290.0
+    "xp": 290
   },
   "class_D_5": {
     "build_label": "Stage 2 competition build",
     "calibrated_quarter_s": 12.2902032959567,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Apex Syndicate",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Drew Tan",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "competition_radial",
         "drag_susp",
@@ -2979,9 +2567,7 @@
         "fuel_street",
         "ecu"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_integra"
       ],
@@ -2993,73 +2579,65 @@
         "suspension": "drag_susp",
         "tires": "competition_radial"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_integra",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 25.0
+        "tire_pressure": 25
       }
     },
     "id": "class_D_5",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 26000.0,
+    "max_bet": 6500,
     "model": "integra",
     "name": "Drew Tan",
     "nickname": "The Challenger",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 1.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 1,
+    "pedal": 1,
     "potential_et": 11.6109914797576,
     "potential_s": 11.881171414523,
     "preferred_class": "D",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "D",
     "reaction": 0.40270835222473,
     "reaction_spread": 0.012,
-    "round": 5.0,
+    "round": 5,
     "series": "D",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      2.0,
-      2.0,
-      0.0,
-      1.0,
-      3.0,
-      2.0,
-      0.0,
-      0.0
+      2,
+      2,
+      0,
+      1,
+      3,
+      2,
+      0,
+      0
     ],
-    "track_index": 0.0,
+    "track_index": 0,
     "traction_skill": 0.95,
     "tradeoff": "A sharp first gear and an early move to second.",
-    "variant": 10.0,
+    "variant": 10,
     "vehicle_rule": "",
-    "xp": 350.0
+    "xp": 350
   },
   "class_D_6": {
     "build_label": "Stage 3 pro build",
     "calibrated_quarter_s": 11.7667296167373,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Apex Syndicate",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Motor only / Yara Bell",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "pro_drag_radial",
         "pro_drag_susp",
@@ -3070,9 +2648,7 @@
         "turbo_hybrid",
         "gear_strength"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_gti"
       ],
@@ -3086,134 +2662,35 @@
         "suspension": "pro_drag_susp",
         "tires": "pro_drag_radial"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_gti",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 24.0
+        "tire_pressure": 24
       }
     },
     "id": "class_D_6",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 36000.0,
+    "max_bet": 9000,
     "model": "gti",
     "name": "Yara Bell",
     "nickname": "Motor Only",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 2.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 2,
+    "pedal": 1,
     "potential_et": 10.71591699661,
     "potential_s": 10.9402626828182,
     "preferred_class": "D",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "D",
     "reaction": 0.819581794424046,
     "reaction_spread": 0.012,
-    "round": 6.0,
+    "round": 6,
     "rule": "motor_only",
-    "series": "D",
-    "shift_error": 0.0,
-    "skill": 3.0,
-    "stages": [
-      3.0,
-      3.0,
-      0.0,
-      2.0,
-      5.0,
-      3.0,
-      0.0,
-      0.0
-    ],
-    "track_index": 0.0,
-    "traction_skill": 0.95,
-    "tradeoff": "An all-motor setup with a measured launch.",
-    "variant": 11.0,
-    "vehicle_rule": "",
-    "xp": 382.0
-  },
-  "class_D_7": {
-    "build_label": "Stage 3 pro build",
-    "calibrated_quarter_s": 11.2924210732205,
-    "completion_bonus": 0.0,
-    "crew": "Apex Syndicate",
-    "distance": 402.336,
-    "driver_model": 2,
-    "driver_seed": 0,
-    "event_name": "Heat / Finn Okada",
-    "hardware": {
-      "fitments": {
-
-      },
-      "owned_parts": [
-        "pro_drag_radial",
-        "pro_drag_susp",
-        "clutch_carbon",
-        "billet",
-        "fuel_ethanol",
-        "ecu_race",
-        "turbo_hybrid",
-        "gear_strength"
-      ],
-      "owned_performance_stages": {
-
-      },
-      "owned_transmissions": [
-        "oem_integra"
-      ],
-      "parts": {
-        "clutch": "clutch_carbon",
-        "ecu": "ecu_race",
-        "fuel": "fuel_ethanol",
-        "gear_strength": "gear_strength",
-        "induction": "turbo_hybrid",
-        "internals": "billet",
-        "suspension": "pro_drag_susp",
-        "tires": "pro_drag_radial"
-      },
-      "performance_stages": {
-
-      },
-      "transmission": "oem_integra",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-        "launch_damping": 1.15,
-        "tire_pressure": 24.0
-      }
-    },
-    "id": "class_D_7",
-    "identity": "Progressive race build",
-    "launch_style": "balanced",
-    "max_bet": 50000.0,
-    "model": "integra",
-    "name": "Finn Okada",
-    "nickname": "The Late Charger",
-    "nitrous": false,
-    "nitrous_gear": 2,
-    "paint_index": 3.0,
-    "pedal": 1.0,
-    "potential_et": 10.5842182989914,
-    "potential_s": 10.8212791398688,
-    "preferred_class": "D",
-    "purse": 0.0,
-    "race_class": "D",
-    "reaction": 0.466336534982769,
-    "reaction_spread": 0.012,
-    "round": 7.0,
     "series": "D",
     "shift_error": 0,
     "skill": 3,
@@ -3227,26 +2704,107 @@
       0,
       0
     ],
-    "track_index": 0.0,
+    "track_index": 0,
+    "traction_skill": 0.95,
+    "tradeoff": "An all-motor setup with a measured launch.",
+    "variant": 11,
+    "vehicle_rule": "",
+    "xp": 382
+  },
+  "class_D_7": {
+    "build_label": "Stage 3 pro build",
+    "calibrated_quarter_s": 11.2924210732205,
+    "completion_bonus": 0,
+    "crew": "Apex Syndicate",
+    "distance": 402.336,
+    "driver_model": 2,
+    "driver_seed": 0,
+    "event_name": "Heat / Finn Okada",
+    "hardware": {
+      "fitments": {},
+      "owned_parts": [
+        "pro_drag_radial",
+        "pro_drag_susp",
+        "clutch_carbon",
+        "billet",
+        "fuel_ethanol",
+        "ecu_race",
+        "turbo_hybrid",
+        "gear_strength"
+      ],
+      "owned_performance_stages": {},
+      "owned_transmissions": [
+        "oem_integra"
+      ],
+      "parts": {
+        "clutch": "clutch_carbon",
+        "ecu": "ecu_race",
+        "fuel": "fuel_ethanol",
+        "gear_strength": "gear_strength",
+        "induction": "turbo_hybrid",
+        "internals": "billet",
+        "suspension": "pro_drag_susp",
+        "tires": "pro_drag_radial"
+      },
+      "performance_stages": {},
+      "transmission": "oem_integra",
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {
+        "launch_damping": 1.15,
+        "tire_pressure": 24
+      }
+    },
+    "id": "class_D_7",
+    "identity": "Progressive race build",
+    "launch_style": "balanced",
+    "max_bet": 12500,
+    "model": "integra",
+    "name": "Finn Okada",
+    "nickname": "The Late Charger",
+    "nitrous": false,
+    "nitrous_gear": 2,
+    "paint_index": 3,
+    "pedal": 1,
+    "potential_et": 10.5842182989914,
+    "potential_s": 10.8212791398688,
+    "preferred_class": "D",
+    "purse": 0,
+    "race_class": "D",
+    "reaction": 0.466336534982769,
+    "reaction_spread": 0.012,
+    "round": 7,
+    "series": "D",
+    "shift_error": 0,
+    "skill": 3,
+    "stages": [
+      3,
+      3,
+      0,
+      2,
+      5,
+      3,
+      0,
+      0
+    ],
+    "track_index": 0,
     "traction_skill": 0.95,
     "tradeoff": "Patient off the line, relentless through the upper gears.",
-    "variant": 11.0,
+    "variant": 11,
     "vehicle_rule": "",
-    "xp": 414.0
+    "xp": 414
   },
   "class_D_8": {
     "build_label": "Stage 3 prepared build",
     "calibrated_quarter_s": 10.824016321953,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Apex Syndicate",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Lena Pike",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "pro_drag_slicks",
         "active_drag_susp",
@@ -3261,9 +2819,7 @@
         "gear_strength",
         "gear_pro"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_gti"
       ],
@@ -3281,74 +2837,66 @@
         "suspension": "active_drag_susp",
         "tires": "pro_drag_slicks"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_gti",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 21.0
+        "tire_pressure": 21
       }
     },
     "id": "class_D_8",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 68000.0,
+    "max_bet": 17000,
     "model": "gti",
     "name": "Lena Pike",
     "nickname": "The Enforcer",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 4.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 4,
+    "pedal": 1,
     "potential_et": 9.97106677541021,
     "potential_s": 10.1847343049202,
     "preferred_class": "D",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "D",
     "reaction": 0.630789855797073,
     "reaction_spread": 0.012,
-    "round": 8.0,
+    "round": 8,
     "series": "D",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      3.0,
-      3.0,
-      0.0,
-      3.0,
-      5.0,
-      3.0,
-      0.0,
-      0.0
+      3,
+      3,
+      0,
+      3,
+      5,
+      3,
+      0,
+      0
     ],
-    "track_index": 0.0,
+    "track_index": 0,
     "traction_skill": 0.95,
     "tradeoff": "Stays close to the shift window under pressure.",
-    "variant": 9.0,
+    "variant": 9,
     "vehicle_rule": "",
-    "xp": 446.0
+    "xp": 446
   },
   "class_D_9": {
     "boss": true,
     "build_label": "Stage 3 prepared build",
     "calibrated_quarter_s": 10.2964262815657,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Apex Syndicate",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Championship / Reese Calder",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "pro_drag_slicks",
         "active_drag_susp",
@@ -3363,9 +2911,7 @@
         "gear_strength",
         "gear_pro"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_rsx"
       ],
@@ -3383,237 +2929,201 @@
         "suspension": "active_drag_susp",
         "tires": "pro_drag_slicks"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_rsx",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 21.0
+        "tire_pressure": 21
       }
     },
     "id": "class_D_9",
     "identity": "Fully prepared championship boss",
     "intro": "I take the long way home. At the stripe, I take nothing but first.",
     "launch_style": "balanced",
-    "max_bet": 100000.0,
+    "max_bet": 25000,
     "model": "rsx",
     "name": "Reese Calder",
     "nickname": "The Apex",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 0.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 0,
+    "pedal": 1,
     "potential_et": 9.77882265815297,
     "potential_s": 10.0055420743253,
     "preferred_class": "D",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "D",
     "reaction": 0.286494584418076,
     "reaction_spread": 0.012,
-    "round": 9.0,
+    "round": 9,
     "series": "D",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      3.0,
-      3.0,
-      0.0,
-      3.0,
-      5.0,
-      3.0,
-      0.0,
-      0.0
+      3,
+      3,
+      0,
+      3,
+      5,
+      3,
+      0,
+      0
     ],
-    "track_index": 0.0,
+    "track_index": 0,
     "traction_skill": 0.95,
     "tradeoff": "Tight reaction window and near-optimal shifts.",
-    "variant": 10.0,
+    "variant": 10,
     "vehicle_rule": "",
     "victory": "You broke the Syndicate's winning line.",
-    "xp": 478.0
+    "xp": 478
   },
   "class_E_0": {
     "build_label": "Factory",
     "calibrated_quarter_s": 16.6417294070762,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Dockside Rookies",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Dex Rowan",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_miata"
       ],
-      "parts": {
-
-      },
-      "performance_stages": {
-
-      },
+      "parts": {},
+      "performance_stages": {},
       "transmission": "oem_miata",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_E_0",
     "identity": "Stock-class opener",
     "launch_style": "balanced",
-    "max_bet": 2000.0,
+    "max_bet": 500,
     "model": "miata",
     "name": "Dex Rowan",
     "nickname": "The Apprentice",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 0.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 0,
+    "pedal": 1,
     "potential_et": 15.6988837931856,
     "potential_s": 16.0590578155102,
     "preferred_class": "E",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "E",
     "reaction": 0.579999999999999,
     "reaction_spread": 0.012,
-    "round": 0.0,
+    "round": 0,
     "series": "E",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
     ],
-    "track_index": 0.0,
+    "track_index": 0,
     "traction_skill": 0.95,
     "tradeoff": "Reliable staging / slow gear changes",
-    "variant": 0.0,
+    "variant": 0,
     "vehicle_rule": "",
-    "xp": 130.0
+    "xp": 130
   },
   "class_E_1": {
     "build_label": "Stage 1 street build",
     "calibrated_quarter_s": 15.744968346508,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Dockside Rookies",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Nia Reyes",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "street_tires"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_miata"
       ],
       "parts": {
         "tires": "street_tires"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_miata",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_E_1",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 3000.0,
+    "max_bet": 800,
     "model": "miata",
     "name": "Nia Reyes",
     "nickname": "The Mechanic",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 1.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 1,
+    "pedal": 1,
     "potential_et": 14.8794562220581,
     "potential_s": 15.2078744055086,
     "preferred_class": "E",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "E",
     "reaction": 0.535359835361302,
     "reaction_spread": 0.012,
-    "round": 1.0,
+    "round": 1,
     "series": "E",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      1.0,
-      0.0,
-      0.0,
-      0.0,
-      1.0,
-      0.0,
-      0.0,
-      0.0
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
     ],
-    "track_index": 0.0,
+    "track_index": 0,
     "traction_skill": 0.95,
     "tradeoff": "Good grip / cautious on the bottle",
-    "variant": 0.0,
+    "variant": 0,
     "vehicle_rule": "",
-    "xp": 155.0
+    "xp": 155
   },
   "class_E_2": {
     "build_label": "Stage 1 performance build",
     "calibrated_quarter_s": 15.0189547990497,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Dockside Rookies",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Milo Knox",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "uhp_tires",
         "street_susp",
         "clutch_twin"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_miata"
       ],
@@ -3622,80 +3132,68 @@
         "suspension": "street_susp",
         "tires": "uhp_tires"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_miata",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_E_2",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 4400.0,
+    "max_bet": 1100,
     "model": "miata",
     "name": "Milo Knox",
     "nickname": "The Sprinter",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 2.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 2,
+    "pedal": 1,
     "potential_et": 13.9213276399084,
     "potential_s": 14.223343214846,
     "preferred_class": "E",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "E",
     "reaction": 0.792050441674715,
     "reaction_spread": 0.012,
-    "round": 2.0,
+    "round": 2,
     "series": "E",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      1.0,
-      1.0,
-      0.0,
-      0.0,
-      1.0,
-      1.0,
-      0.0,
-      0.0
+      1,
+      1,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0
     ],
-    "track_index": 0.0,
+    "track_index": 0,
     "traction_skill": 0.95,
     "tradeoff": "Fast reaction / wheelspin risk",
-    "variant": 0.0,
+    "variant": 0,
     "vehicle_rule": "",
-    "xp": 180.0
+    "xp": 180
   },
   "class_E_3": {
     "build_label": "Stage 1 performance build",
     "calibrated_quarter_s": 14.4006537769969,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Dockside Rookies",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Iris Vale",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "uhp_tires",
         "street_susp",
         "clutch_twin"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_civic_si"
       ],
@@ -3704,81 +3202,69 @@
         "suspension": "street_susp",
         "tires": "uhp_tires"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_civic_si",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_E_3",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 6400.0,
+    "max_bet": 1600,
     "model": "civic_si",
     "name": "Iris Vale",
     "nickname": "The Specialist",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 3.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 3,
+    "pedal": 1,
     "potential_et": 13.7441148692659,
     "potential_s": 14.058341936168,
     "preferred_class": "E",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "E",
     "reaction": 0.340473860646029,
     "reaction_spread": 0.012,
-    "round": 3.0,
+    "round": 3,
     "series": "E",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      1.0,
-      1.0,
-      0.0,
-      0.0,
-      1.0,
-      1.0,
-      0.0,
-      0.0
+      1,
+      1,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0
     ],
-    "track_index": 0.0,
+    "track_index": 0,
     "traction_skill": 0.95,
     "tradeoff": "Consistent launch / little margin on gearing",
-    "variant": 0.0,
+    "variant": 0,
     "vehicle_rule": "",
-    "xp": 205.0
+    "xp": 205
   },
   "class_E_4": {
     "build_label": "Stage 2 track build",
     "calibrated_quarter_s": 13.7856118296805,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Dockside Rookies",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Crew captain / Sora Imani",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "street_radial",
         "coilovers",
         "clutch_twin",
         "ecu"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_miata"
       ],
@@ -3788,72 +3274,62 @@
         "suspension": "coilovers",
         "tires": "street_radial"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_miata",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_E_4",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 9200.0,
+    "max_bet": 2300,
     "model": "miata",
     "name": "Sora Imani",
     "nickname": "Crew Captain",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 4.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 4,
+    "pedal": 1,
     "potential_et": 13.2970380867687,
     "potential_s": 13.5919547930117,
     "preferred_class": "E",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "E",
     "reaction": 0.189857943423114,
     "reaction_spread": 0.012,
-    "round": 4.0,
+    "round": 4,
     "series": "E",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      2.0,
-      1.0,
-      0.0,
-      1.0,
-      2.0,
-      1.0,
-      0.0,
-      0.0
+      2,
+      1,
+      0,
+      1,
+      2,
+      1,
+      0,
+      0
     ],
-    "track_index": 0.0,
+    "track_index": 0,
     "traction_skill": 0.95,
     "tradeoff": "Complete build / must be beaten on execution",
-    "variant": 1.0,
+    "variant": 1,
     "vehicle_rule": "",
-    "xp": 230.0
+    "xp": 230
   },
   "class_E_5": {
     "build_label": "Stage 2 competition build",
     "calibrated_quarter_s": 13.1696351175235,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Dockside Rookies",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Tali Brooks",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "competition_radial",
         "drag_susp",
@@ -3862,9 +3338,7 @@
         "fuel_street",
         "ecu"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_miata"
       ],
@@ -3876,73 +3350,65 @@
         "suspension": "drag_susp",
         "tires": "competition_radial"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_miata",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 25.0
+        "tire_pressure": 25
       }
     },
     "id": "class_E_5",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 13000.0,
+    "max_bet": 3300,
     "model": "miata",
     "name": "Tali Brooks",
     "nickname": "The Challenger",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 5.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 5,
+    "pedal": 1,
     "potential_et": 12.5229340070589,
     "potential_s": 12.8042796663376,
     "preferred_class": "E",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "E",
     "reaction": 0.35805417137418,
     "reaction_spread": 0.012,
-    "round": 5.0,
+    "round": 5,
     "series": "E",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      2.0,
-      2.0,
-      0.0,
-      1.0,
-      3.0,
-      2.0,
-      0.0,
-      0.0
+      2,
+      2,
+      0,
+      1,
+      3,
+      2,
+      0,
+      0
     ],
-    "track_index": 0.0,
+    "track_index": 0,
     "traction_skill": 0.95,
     "tradeoff": "A sharp first gear and an early move to second.",
-    "variant": 1.0,
+    "variant": 1,
     "vehicle_rule": "",
-    "xp": 290.0
+    "xp": 290
   },
   "class_E_6": {
     "build_label": "Stage 3 pro build",
     "calibrated_quarter_s": 12.6102270034593,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Dockside Rookies",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Motor only / Rory Bishop",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "pro_drag_radial",
         "pro_drag_susp",
@@ -3953,9 +3419,7 @@
         "turbo_hybrid",
         "gear_strength"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_miata"
       ],
@@ -3969,74 +3433,66 @@
         "suspension": "pro_drag_susp",
         "tires": "pro_drag_radial"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_miata",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 24.0
+        "tire_pressure": 24
       }
     },
     "id": "class_E_6",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 18000.0,
+    "max_bet": 4500,
     "model": "miata",
     "name": "Rory Bishop",
     "nickname": "Motor Only",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 0.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 0,
+    "pedal": 1,
     "potential_et": 11.4539609118407,
     "potential_s": 11.6857676736182,
     "preferred_class": "E",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "E",
     "reaction": 0.91929641690418,
     "reaction_spread": 0.012,
-    "round": 6.0,
+    "round": 6,
     "rule": "motor_only",
     "series": "E",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      3.0,
-      3.0,
-      0.0,
-      2.0,
-      5.0,
-      3.0,
-      0.0,
-      0.0
+      3,
+      3,
+      0,
+      2,
+      5,
+      3,
+      0,
+      0
     ],
-    "track_index": 0.0,
+    "track_index": 0,
     "traction_skill": 0.95,
     "tradeoff": "An all-motor setup with a measured launch.",
-    "variant": 9.0,
+    "variant": 9,
     "vehicle_rule": "",
-    "xp": 322.0
+    "xp": 322
   },
   "class_E_7": {
     "build_label": "Stage 3 pro build",
     "calibrated_quarter_s": 12.1083491677819,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Dockside Rookies",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Luz Navarro",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "pro_drag_radial",
         "pro_drag_susp",
@@ -4047,9 +3503,7 @@
         "turbo_hybrid",
         "gear_strength"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_civic_si"
       ],
@@ -4063,73 +3517,65 @@
         "suspension": "pro_drag_susp",
         "tires": "pro_drag_radial"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_civic_si",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 24.0
+        "tire_pressure": 24
       }
     },
     "id": "class_E_7",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 25000.0,
+    "max_bet": 6300,
     "model": "civic_si",
     "name": "Luz Navarro",
     "nickname": "The Late Charger",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 1.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 1,
+    "pedal": 1,
     "potential_et": 11.3977767881758,
     "potential_s": 11.6461402564004,
     "preferred_class": "E",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "E",
     "reaction": 0.454613609631459,
     "reaction_spread": 0.012,
-    "round": 7.0,
+    "round": 7,
     "series": "E",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      3.0,
-      3.0,
-      0.0,
-      2.0,
-      5.0,
-      3.0,
-      0.0,
-      0.0
+      3,
+      3,
+      0,
+      2,
+      5,
+      3,
+      0,
+      0
     ],
-    "track_index": 0.0,
+    "track_index": 0,
     "traction_skill": 0.95,
     "tradeoff": "Patient off the line, relentless through the upper gears.",
-    "variant": 9.0,
+    "variant": 9,
     "vehicle_rule": "",
-    "xp": 354.0
+    "xp": 354
   },
   "class_E_8": {
     "build_label": "Stage 3 prepared build",
     "calibrated_quarter_s": 11.6045412681073,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Dockside Rookies",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Cal Finch",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "pro_drag_slicks",
         "active_drag_susp",
@@ -4144,9 +3590,7 @@
         "gear_strength",
         "gear_pro"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_civic_si"
       ],
@@ -4164,74 +3608,66 @@
         "suspension": "active_drag_susp",
         "tires": "pro_drag_slicks"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_civic_si",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 21.0
+        "tire_pressure": 21
       }
     },
     "id": "class_E_8",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 34000.0,
+    "max_bet": 8500,
     "model": "civic_si",
     "name": "Cal Finch",
     "nickname": "The Enforcer",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 2.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 2,
+    "pedal": 1,
     "potential_et": 10.7798724628164,
     "potential_s": 10.9883733703528,
     "preferred_class": "E",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "E",
     "reaction": 0.6098087720932,
     "reaction_spread": 0.012,
-    "round": 8.0,
+    "round": 8,
     "series": "E",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      3.0,
-      3.0,
-      0.0,
-      3.0,
-      5.0,
-      3.0,
-      0.0,
-      0.0
+      3,
+      3,
+      0,
+      3,
+      5,
+      3,
+      0,
+      0
     ],
-    "track_index": 0.0,
+    "track_index": 0,
     "traction_skill": 0.95,
     "tradeoff": "Stays close to the shift window under pressure.",
-    "variant": 10.0,
+    "variant": 10,
     "vehicle_rule": "",
-    "xp": 386.0
+    "xp": 386
   },
   "class_E_9": {
     "boss": true,
     "build_label": "Stage 3 nitrous race build",
     "calibrated_quarter_s": 11.0439510732503,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Dockside Rookies",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Championship / Anika Steel",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "pro_drag_slicks",
         "active_drag_susp",
@@ -4243,9 +3679,7 @@
         "gear_strength",
         "gear_pro"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_civic_si"
       ],
@@ -4260,237 +3694,201 @@
         "suspension": "active_drag_susp",
         "tires": "pro_drag_slicks"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_civic_si",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 21.0
+        "tire_pressure": 21
       }
     },
     "id": "class_E_9",
     "identity": "Fully prepared championship boss",
     "intro": "One clean pass. The docks will remember who gets there first.",
     "launch_style": "balanced",
-    "max_bet": 50000.0,
+    "max_bet": 12500,
     "model": "civic_si",
     "name": "Anika Steel",
     "nickname": "The Dockmaster",
     "nitrous": true,
-    "nitrous_gear": 2.0,
-    "paint_index": 3.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 3,
+    "pedal": 1,
     "potential_et": 10.0872224595842,
     "potential_s": 10.2963379924919,
     "preferred_class": "E",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "E",
     "reaction": 0.464090842543685,
     "reaction_spread": 0.012,
-    "round": 9.0,
+    "round": 9,
     "series": "E",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      3.0,
-      3.0,
-      0.0,
-      3.0,
-      5.0,
-      3.0,
-      0.0,
-      2.0
+      3,
+      3,
+      0,
+      3,
+      5,
+      3,
+      0,
+      2
     ],
-    "track_index": 0.0,
+    "track_index": 0,
     "traction_skill": 0.95,
     "tradeoff": "Tight reaction window and near-optimal shifts.",
-    "variant": 10.0,
+    "variant": 10,
     "vehicle_rule": "",
     "victory": "Dockside belongs to a new champion.",
-    "xp": 418.0
+    "xp": 418
   },
   "class_S_0": {
     "build_label": "Factory",
     "calibrated_quarter_s": 11.0449276452734,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Redline Crown",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Nova Reed",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_z06"
       ],
-      "parts": {
-
-      },
-      "performance_stages": {
-
-      },
+      "parts": {},
+      "performance_stages": {},
       "transmission": "oem_z06",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_S_0",
     "identity": "Stock-class opener",
     "launch_style": "balanced",
-    "max_bet": 40000.0,
+    "max_bet": 16000,
     "model": "z06",
     "name": "Nova Reed",
     "nickname": "The Apprentice",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 4.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 4,
+    "pedal": 1,
     "potential_et": 10.1827790564391,
     "potential_s": 10.4368657949706,
     "preferred_class": "S",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "S",
     "reaction": 0.58,
     "reaction_spread": 0.012,
-    "round": 0.0,
+    "round": 0,
     "series": "S",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
     ],
-    "track_index": 2.0,
+    "track_index": 2,
     "traction_skill": 0.95,
     "tradeoff": "Reliable staging / slow gear changes",
-    "variant": 1.0,
+    "variant": 1,
     "vehicle_rule": "",
-    "xp": 430.0
+    "xp": 430
   },
   "class_S_1": {
     "build_label": "Stage 1 street build",
     "calibrated_quarter_s": 10.112882619268,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Redline Crown",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Leon Hart",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "street_tires"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_z06"
       ],
       "parts": {
         "tires": "street_tires"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_z06",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_S_1",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 60000.0,
+    "max_bet": 24000,
     "model": "z06",
     "name": "Leon Hart",
     "nickname": "The Mechanic",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 5.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 5,
+    "pedal": 1,
     "potential_et": 9.73723100946165,
     "potential_s": 9.97299848874716,
     "preferred_class": "S",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "S",
     "reaction": 0.130906771678571,
     "reaction_spread": 0.012,
-    "round": 1.0,
+    "round": 1,
     "series": "S",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      1.0,
-      0.0,
-      0.0,
-      0.0,
-      1.0,
-      0.0,
-      0.0,
-      0.0
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
     ],
-    "track_index": 2.0,
+    "track_index": 2,
     "traction_skill": 0.95,
     "tradeoff": "Good grip / cautious on the bottle",
-    "variant": 0.0,
+    "variant": 0,
     "vehicle_rule": "",
-    "xp": 455.0
+    "xp": 455
   },
   "class_S_2": {
     "build_label": "Stage 1 performance build",
     "calibrated_quarter_s": 9.73538584180564,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Redline Crown",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Skye Mercer",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "uhp_tires",
         "street_susp",
         "clutch_twin"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_gt500"
       ],
@@ -4499,159 +3897,135 @@
         "suspension": "street_susp",
         "tires": "uhp_tires"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_gt500",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_S_2",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 88000.0,
+    "max_bet": 35200,
     "model": "gt500",
     "name": "Skye Mercer",
     "nickname": "The Sprinter",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 0.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 0,
+    "pedal": 1,
     "potential_et": 9.35658816765489,
     "potential_s": 9.58193188387255,
     "preferred_class": "S",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "S",
     "reaction": 0.117877112864224,
     "reaction_spread": 0.012,
-    "round": 2.0,
+    "round": 2,
     "series": "S",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      1.0,
-      1.0,
-      0.0,
-      0.0,
-      1.0,
-      1.0,
-      0.0,
-      0.0
+      1,
+      1,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0
     ],
-    "track_index": 2.0,
+    "track_index": 2,
     "traction_skill": 0.95,
     "tradeoff": "Fast reaction / wheelspin risk",
-    "variant": 1.0,
+    "variant": 1,
     "vehicle_rule": "",
-    "xp": 480.0
+    "xp": 480
   },
   "class_S_3": {
     "build_label": "Stage 1 street build",
     "calibrated_quarter_s": 9.40307012685263,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Redline Crown",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Rex Wren",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "street_tires"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_mclaren"
       ],
       "parts": {
         "tires": "street_tires"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_mclaren",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_S_3",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 128000.0,
+    "max_bet": 51200,
     "model": "mclaren",
     "name": "Rex Wren",
     "nickname": "The Specialist",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 1.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 1,
+    "pedal": 1,
     "potential_et": 9.0208993155998,
     "potential_s": 9.24797401394523,
     "preferred_class": "S",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "S",
     "reaction": 0.182744413727534,
     "reaction_spread": 0.012,
-    "round": 3.0,
+    "round": 3,
     "series": "S",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      1.0,
-      0.0,
-      0.0,
-      0.0,
-      1.0,
-      0.0,
-      0.0,
-      0.0
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
     ],
-    "track_index": 2.0,
+    "track_index": 2,
     "traction_skill": 0.95,
     "tradeoff": "Consistent launch / little margin on gearing",
-    "variant": 1.0,
+    "variant": 1,
     "vehicle_rule": "",
-    "xp": 505.0
+    "xp": 505
   },
   "class_S_4": {
     "build_label": "Stage 2 track build",
     "calibrated_quarter_s": 8.95174285389741,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Redline Crown",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Crew captain / Morgan Black",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "street_radial",
         "coilovers",
         "clutch_twin",
         "ecu"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_turbo_s"
       ],
@@ -4661,80 +4035,68 @@
         "suspension": "coilovers",
         "tires": "street_radial"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_turbo_s",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_S_4",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 184000.0,
+    "max_bet": 73600,
     "model": "turbo_s",
     "name": "Morgan Black",
     "nickname": "Crew Captain",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 2.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 2,
+    "pedal": 1,
     "potential_et": 8.56752651204464,
     "potential_s": 8.76355610143723,
     "preferred_class": "S",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "S",
     "reaction": 0.19155606523777,
     "reaction_spread": 0.012,
-    "round": 4.0,
+    "round": 4,
     "series": "S",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      2.0,
-      1.0,
-      0.0,
-      1.0,
-      2.0,
-      1.0,
-      0.0,
-      0.0
+      2,
+      1,
+      0,
+      1,
+      2,
+      1,
+      0,
+      0
     ],
-    "track_index": 2.0,
+    "track_index": 2,
     "traction_skill": 0.95,
     "tradeoff": "Complete build / must be beaten on execution",
-    "variant": 3.0,
+    "variant": 3,
     "vehicle_rule": "",
-    "xp": 530.0
+    "xp": 530
   },
   "class_S_5": {
     "build_label": "Stage 1 performance build",
     "calibrated_quarter_s": 8.50109709983334,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Redline Crown",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Cleo Frost",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "uhp_tires",
         "street_susp",
         "clutch_twin"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_chiron"
       ],
@@ -4743,72 +4105,62 @@
         "suspension": "street_susp",
         "tires": "uhp_tires"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_chiron",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
-      "tune": {
-
-      }
+      "transmission_parts": {},
+      "transmission_tunes": {},
+      "tune": {}
     },
     "id": "class_S_5",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 260000.0,
+    "max_bet": 104000,
     "model": "chiron",
     "name": "Cleo Frost",
     "nickname": "The Challenger",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 3.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 3,
+    "pedal": 1,
     "potential_et": 8.11808770640753,
     "potential_s": 8.33307264906954,
     "preferred_class": "S",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "S",
     "reaction": 0.199127252791167,
     "reaction_spread": 0.012,
-    "round": 5.0,
+    "round": 5,
     "series": "S",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      1.0,
-      1.0,
-      0.0,
-      0.0,
-      1.0,
-      1.0,
-      0.0,
-      0.0
+      1,
+      1,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0
     ],
-    "track_index": 2.0,
+    "track_index": 2,
     "traction_skill": 0.95,
     "tradeoff": "A sharp first gear and an early move to second.",
-    "variant": 6.0,
+    "variant": 6,
     "vehicle_rule": "",
-    "xp": 590.0
+    "xp": 590
   },
   "class_S_6": {
     "build_label": "Stage 3 race build",
     "calibrated_quarter_s": 8.09114410868612,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Redline Crown",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Motor only / Pax Adler",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "drag_slicks",
         "pro_drag_susp",
@@ -4818,9 +4170,7 @@
         "intake_velocity",
         "ecu_track"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_gt500"
       ],
@@ -4833,74 +4183,66 @@
         "suspension": "pro_drag_susp",
         "tires": "drag_slicks"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_gt500",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 23.0
+        "tire_pressure": 23
       }
     },
     "id": "class_S_6",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 360000.0,
+    "max_bet": 144000,
     "model": "gt500",
     "name": "Pax Adler",
     "nickname": "Motor Only",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 4.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 4,
+    "pedal": 1,
     "potential_et": 7.71452778317944,
     "potential_s": 7.90417526065998,
     "preferred_class": "S",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "S",
     "reaction": 0.191640404405769,
     "reaction_spread": 0.012,
-    "round": 6.0,
+    "round": 6,
     "rule": "motor_only",
     "series": "S",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      3.0,
-      2.0,
-      0.0,
-      2.0,
-      4.0,
-      2.0,
-      0.0,
-      0.0
+      3,
+      2,
+      0,
+      2,
+      4,
+      2,
+      0,
+      0
     ],
-    "track_index": 2.0,
+    "track_index": 2,
     "traction_skill": 0.95,
     "tradeoff": "An all-motor setup with a measured launch.",
-    "variant": 3.0,
+    "variant": 3,
     "vehicle_rule": "",
-    "xp": 622.0
+    "xp": 622
   },
   "class_S_7": {
     "build_label": "Stage 3 pro build",
     "calibrated_quarter_s": 7.72528255678472,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Redline Crown",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Ren Castillo",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "pro_drag_radial",
         "pro_drag_susp",
@@ -4911,9 +4253,7 @@
         "turbo_hybrid",
         "gear_strength"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_z06"
       ],
@@ -4927,73 +4267,65 @@
         "suspension": "pro_drag_susp",
         "tires": "pro_drag_radial"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_z06",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 24.0
+        "tire_pressure": 24
       }
     },
     "id": "class_S_7",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 500000.0,
+    "max_bet": 200000,
     "model": "z06",
     "name": "Ren Castillo",
     "nickname": "The Late Charger",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 5.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 5,
+    "pedal": 1,
     "potential_et": 7.32967964519853,
     "potential_s": 7.50796442668295,
     "preferred_class": "S",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "S",
     "reaction": 0.188658166853438,
     "reaction_spread": 0.012,
-    "round": 7.0,
+    "round": 7,
     "series": "S",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      3.0,
-      3.0,
-      0.0,
-      2.0,
-      5.0,
-      3.0,
-      0.0,
-      0.0
+      3,
+      3,
+      0,
+      2,
+      5,
+      3,
+      0,
+      0
     ],
-    "track_index": 2.0,
+    "track_index": 2,
     "traction_skill": 0.95,
     "tradeoff": "Patient off the line, relentless through the upper gears.",
-    "variant": 6.0,
+    "variant": 6,
     "vehicle_rule": "",
-    "xp": 654.0
+    "xp": 654
   },
   "class_S_8": {
     "build_label": "Stage 3 prepared build",
     "calibrated_quarter_s": 7.35365815693541,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Redline Crown",
     "distance": 201.168,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Heat / Zane Hart",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "pro_drag_slicks",
         "active_drag_susp",
@@ -5008,9 +4340,7 @@
         "gear_strength",
         "gear_pro"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_turbo_s"
       ],
@@ -5028,74 +4358,66 @@
         "suspension": "active_drag_susp",
         "tires": "pro_drag_slicks"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_turbo_s",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 21.0
+        "tire_pressure": 21
       }
     },
     "id": "class_S_8",
     "identity": "Progressive race build",
     "launch_style": "balanced",
-    "max_bet": 680000.0,
+    "max_bet": 272000,
     "model": "turbo_s",
     "name": "Zane Hart",
     "nickname": "The Enforcer",
     "nitrous": false,
-    "nitrous_gear": 2.0,
-    "paint_index": 0.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 0,
+    "pedal": 1,
     "potential_et": 6.95733498101206,
     "potential_s": 7.11305336218834,
     "preferred_class": "S",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "S",
     "reaction": 0.23327056018699,
     "reaction_spread": 0.012,
-    "round": 8.0,
+    "round": 8,
     "series": "S",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      3.0,
-      3.0,
-      0.0,
-      3.0,
-      5.0,
-      3.0,
-      0.0,
-      0.0
+      3,
+      3,
+      0,
+      3,
+      5,
+      3,
+      0,
+      0
     ],
-    "track_index": 2.0,
+    "track_index": 2,
     "traction_skill": 0.95,
     "tradeoff": "Stays close to the shift window under pressure.",
-    "variant": 6.0,
+    "variant": 6,
     "vehicle_rule": "",
-    "xp": 686.0
+    "xp": 686
   },
   "class_S_9": {
     "boss": true,
     "build_label": "Stage 3 nitrous race build",
     "calibrated_quarter_s": 6.94474761708804,
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "crew": "Redline Crown",
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Championship / Valentina Rook",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "pro_drag_slicks",
         "active_drag_susp",
@@ -5107,9 +4429,7 @@
         "gear_strength",
         "gear_pro"
       ],
-      "owned_performance_stages": {
-
-      },
+      "owned_performance_stages": {},
       "owned_transmissions": [
         "oem_sf90"
       ],
@@ -5124,262 +4444,230 @@
         "suspension": "active_drag_susp",
         "tires": "pro_drag_slicks"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "oem_sf90",
-      "transmission_parts": {
-
-      },
-      "transmission_tunes": {
-
-      },
+      "transmission_parts": {},
+      "transmission_tunes": {},
       "tune": {
         "launch_damping": 1.15,
-        "tire_pressure": 21.0
+        "tire_pressure": 21
       }
     },
     "id": "class_S_9",
     "identity": "Fully prepared championship boss",
     "intro": "Thirty crews came for this lane. Tonight you get your shot.",
     "launch_style": "balanced",
-    "max_bet": 1000000.0,
+    "max_bet": 400000,
     "model": "sf90",
     "name": "Valentina Rook",
     "nickname": "The Crown",
     "nitrous": true,
-    "nitrous_gear": 2.0,
-    "paint_index": 3.0,
-    "pedal": 1.0,
+    "nitrous_gear": 2,
+    "paint_index": 3,
+    "pedal": 1,
     "potential_et": 6.49986733486267,
     "potential_s": 6.67815154839767,
     "preferred_class": "S",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "S",
     "reaction": 0.269512786913851,
     "reaction_spread": 0.012,
-    "round": 9.0,
+    "round": 9,
     "series": "S",
-    "shift_error": 0.0,
-    "skill": 3.0,
+    "shift_error": 0,
+    "skill": 3,
     "stages": [
-      3.0,
-      3.0,
-      0.0,
-      3.0,
-      5.0,
-      3.0,
-      0.0,
-      2.0
+      3,
+      3,
+      0,
+      3,
+      5,
+      3,
+      0,
+      2
     ],
-    "track_index": 2.0,
+    "track_index": 2,
     "traction_skill": 0.95,
     "tradeoff": "Tight reaction window and near-optimal shifts.",
-    "variant": 6.0,
+    "variant": 6,
     "vehicle_rule": "",
     "victory": "The Crown is yours. The strip has a new standard.",
-    "xp": 718.0
+    "xp": 718
   },
   "open_0": {
     "build_label": "Mechanical build 1",
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 0.0,
+    "driver_model": 2,
+    "driver_seed": 0,
     "event_name": "Dockside Recovery",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [],
       "owned_transmissions": [
         "oem_miata"
       ],
-      "parts": {
-
-      },
-      "performance_stages": {
-
-      },
+      "parts": {},
+      "performance_stages": {},
       "transmission": "oem_miata",
-      "tune": {
-
-      }
+      "tune": {}
     },
     "id": "open_0",
     "identity": "Patient launch; hesitant shifts",
     "launch_style": "patient",
-    "max_bet": 2500.0,
+    "max_bet": 500,
     "model": "miata",
     "name": "Dex Rowan",
     "nickname": "The Apprentice",
     "nitrous": false,
-    "paint_index": 0.0,
+    "paint_index": 0,
     "pedal": 0.83,
     "potential_et": 15.6988837931856,
     "potential_s": 16.0590578155102,
     "preferred_class": "E",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "OPEN",
     "reaction": 0.64,
-    "round": 0.0,
+    "round": 0,
     "series": "OPEN",
-    "shift_error": 220.0,
-    "skill": 0.0,
+    "shift_error": 220,
+    "skill": 0,
     "stages": [
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
     ],
-    "track_index": 0.0,
+    "track_index": 0,
     "traction_skill": 0.4,
     "tradeoff": "Reliable staging / slow gear changes",
-    "variant": 1.0,
+    "variant": 1,
     "vehicle_rule": "",
-    "xp": 100.0
+    "xp": 100
   },
   "open_1": {
     "build_label": "Mechanical build 1",
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 20.0,
+    "driver_model": 2,
+    "driver_seed": 20,
     "event_name": "Tuner Showcase",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [],
       "owned_transmissions": [
         "oem_supra"
       ],
-      "parts": {
-
-      },
-      "performance_stages": {
-
-      },
+      "parts": {},
+      "performance_stages": {},
       "transmission": "oem_supra",
-      "tune": {
-
-      }
+      "tune": {}
     },
     "id": "open_1",
     "identity": "Strong setup; conservative pedal",
     "launch_style": "balanced",
-    "max_bet": 35000.0,
+    "max_bet": 9000,
     "model": "supra",
     "name": "Bea Holt",
     "nickname": "The Mechanic",
     "nitrous": false,
-    "paint_index": 1.0,
+    "paint_index": 1,
     "pedal": 0.865,
     "potential_et": 11.6189484246241,
     "potential_s": 11.8722143495022,
     "preferred_class": "B",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "OPEN",
     "reaction": 0.51,
-    "round": 1.0,
+    "round": 1,
     "series": "OPEN",
-    "shift_error": 175.0,
-    "skill": 1.0,
+    "shift_error": 175,
+    "skill": 1,
     "stages": [
-      1.0,
-      0.0,
-      1.0,
-      1.0,
-      2.0,
-      1.0,
-      0.0,
-      0.0
+      1,
+      0,
+      1,
+      1,
+      2,
+      1,
+      0,
+      0
     ],
-    "track_index": 1.0,
+    "track_index": 1,
     "traction_skill": 0.54,
     "tradeoff": "Good grip / cautious on the bottle",
-    "variant": 1.0,
+    "variant": 1,
     "vehicle_rule": "",
-    "xp": 160.0
+    "xp": 160
   },
   "open_2": {
     "build_label": "Mechanical build 1",
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 40.0,
+    "driver_model": 2,
+    "driver_seed": 40,
     "event_name": "All-Wheel Duel",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [],
       "owned_transmissions": [
         "oem_gtr"
       ],
-      "parts": {
-
-      },
-      "performance_stages": {
-
-      },
+      "parts": {},
+      "performance_stages": {},
       "transmission": "oem_gtr",
-      "tune": {
-
-      }
+      "tune": {}
     },
     "id": "open_2",
     "identity": "Aggressive launch; impatient shifts",
     "launch_style": "aggressive",
-    "max_bet": 90000.0,
+    "max_bet": 40000,
     "model": "gtr",
     "name": "Ada Kestrel",
     "nickname": "The Sprinter",
     "nitrous": false,
-    "paint_index": 0.0,
+    "paint_index": 0,
     "pedal": 0.9,
     "potential_et": 9.34664779610901,
     "potential_s": 9.55697028584302,
     "preferred_class": "A",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "OPEN",
     "reaction": 0.38,
-    "round": 2.0,
+    "round": 2,
     "series": "OPEN",
-    "shift_error": 130.0,
-    "skill": 2.0,
+    "shift_error": 130,
+    "skill": 2,
     "stages": [
-      2.0,
-      0.0,
-      2.0,
-      1.0,
-      2.0,
-      1.0,
-      0.0,
-      0.0
+      2,
+      0,
+      2,
+      1,
+      2,
+      1,
+      0,
+      0
     ],
-    "track_index": 2.0,
+    "track_index": 2,
     "traction_skill": 0.68,
     "tradeoff": "Fast reaction / wheelspin risk",
-    "variant": 1.0,
+    "variant": 1,
     "vehicle_rule": "",
-    "xp": 220.0
+    "xp": 220
   },
   "open_3": {
     "build_label": "Mechanical build 1",
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "distance": 804.672,
-    "driver_model": 2.0,
-    "driver_seed": 60.0,
+    "driver_model": 2,
+    "driver_seed": 60,
     "event_name": "Bottle & Drag Gearing",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [
         "ecu"
       ],
@@ -5390,112 +4678,102 @@
       "parts": {
         "ecu": "ecu"
       },
-      "performance_stages": {
-
-      },
+      "performance_stages": {},
       "transmission": "drag3",
       "tune": {
-        "launch_rpm": 4200.0
+        "launch_rpm": 4200
       }
     },
     "id": "open_3",
     "identity": "Smooth clutch and near-optimal shifts",
     "launch_style": "balanced",
-    "max_bet": 180000.0,
+    "max_bet": 80000,
     "model": "camaro",
     "name": "Jett Hale",
     "nickname": "The Specialist",
     "nitrous": true,
-    "paint_index": 1.0,
+    "paint_index": 1,
     "pedal": 0.935,
     "potential_et": 8.63602458929156,
     "potential_s": 8.8396079913282,
     "preferred_class": "A",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "OPEN",
     "reaction": 0.25,
-    "round": 3.0,
+    "round": 3,
     "series": "OPEN",
-    "shift_error": 85.0,
-    "skill": 3.0,
+    "shift_error": 85,
+    "skill": 3,
     "stages": [
-      3.0,
-      1.0,
-      3.0,
-      1.0,
-      5.0,
-      1.0,
-      0.0,
-      1.0
+      3,
+      1,
+      3,
+      1,
+      5,
+      1,
+      0,
+      1
     ],
-    "track_index": 2.0,
+    "track_index": 2,
     "traction_skill": 0.82,
     "tradeoff": "Consistent launch / little margin on gearing",
-    "variant": 1.0,
+    "variant": 1,
     "vehicle_rule": "",
-    "xp": 280.0
+    "xp": 280
   },
   "open_4": {
     "build_label": "Mechanical build 1",
-    "completion_bonus": 0.0,
+    "completion_bonus": 0,
     "distance": 402.336,
-    "driver_model": 2.0,
-    "driver_seed": 80.0,
+    "driver_model": 2,
+    "driver_seed": 80,
     "event_name": "Roadster Cup",
     "hardware": {
-      "fitments": {
-
-      },
+      "fitments": {},
       "owned_parts": [],
       "owned_transmissions": [
         "oem_miata"
       ],
-      "parts": {
-
-      },
-      "performance_stages": {
-
-      },
+      "parts": {},
+      "performance_stages": {},
       "transmission": "oem_miata",
-      "tune": {
-
-      }
+      "tune": {}
     },
     "id": "open_4",
     "identity": "Precise launch, shifts and spray timing",
     "launch_style": "precise",
-    "max_bet": 12000.0,
+    "max_bet": 2500,
     "model": "miata",
     "name": "Axel Ward",
     "nickname": "The Champion",
     "nitrous": false,
-    "paint_index": 0.0,
+    "paint_index": 0,
     "pedal": 0.97,
     "potential_et": 14.1771107494391,
     "potential_s": 14.4854284761321,
     "preferred_class": "E",
-    "purse": 0.0,
+    "purse": 0,
     "race_class": "OPEN",
     "reaction": 0.12,
-    "round": 4.0,
+    "round": 4,
     "series": "OPEN",
-    "shift_error": 40.0,
-    "skill": 3.0,
+    "shift_error": 40,
+    "skill": 3,
     "stages": [
-      1.0,
-      0.0,
-      1.0,
-      1.0,
-      2.0,
-      1.0,
-      0.0,
-      0.0
+      1,
+      0,
+      1,
+      1,
+      2,
+      1,
+      0,
+      0
     ],
-    "track_index": 0.0,
+    "track_index": 0,
     "traction_skill": 0.96,
     "tradeoff": "Complete build / must be beaten on execution",
-    "variant": 1.0,
+    "variant": 1,
     "vehicle_rule": "miata",
-    "xp": 340.0
+    "xp": 340
   }
 }
