@@ -962,7 +962,8 @@ func draw_style() -> void:
 	native_workshop.sync()
 
 func draw_driver() -> void:
-	button("driver_skills", "SKILL TREE  /  %d PTS" % profile.available_skill_points(), Rect2(36, 183, 324, 52), true)
+	button("driver_skills", "OPEN SKILL TREE", Rect2(36, 183, 324, 52), true)
+	text_at("AVAILABLE SKILL POINTS: %d" % profile.available_skill_points(), 385, 216, 19, ORANGE, true)
 	button("reduced_motion","MOTION: REDUCED" if profile.reduced_motion else "MOTION: FULL",Rect2(738,103,210,48))
 	button("effects_quality","EFFECTS: "+["LOW","MEDIUM","HIGH"][profile.effects_quality],Rect2(962,103,204,48))
 	box(Rect2(36, 256, 1130, 399))
