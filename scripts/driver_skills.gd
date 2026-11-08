@@ -5,7 +5,7 @@ extends RefCounted
 const CATEGORIES := ["Launch", "Shifting", "Racecraft", "Career"]
 const NODES := [
 	{"id":"launch_basics","category":"Launch","name":"Grip Fundamentals","description":"+2% tire grip during launches and racing.","requires":[],"max_rank":1,"bonus":0.02,"effect":"grip"},
-	{"id":"tree_reaction","category":"Launch","name":"Staging Control","description":"+1% grip and smoother throttle response off the line.","requires":["launch_basics"],"max_rank":1,"bonus":0.01,"effect":"grip"},
+	{"id":"tree_reaction","category":"Launch","name":"Staging Control","description":"+1% tire grip for more consistent launches.","requires":["launch_basics"],"max_rank":1,"bonus":0.01,"effect":"grip"},
 	{"id":"holeshot","category":"Launch","name":"Holeshot Setup","description":"+3% low-speed launch bite.","requires":["tree_reaction"],"max_rank":1,"bonus":0.03,"effect":"launch"},
 	{"id":"shift_basics","category":"Shifting","name":"Shift Discipline","description":"Reduce shift delay by 2%.","requires":[],"max_rank":1,"bonus":0.02,"effect":"shift"},
 	{"id":"clean_gears","category":"Shifting","name":"Smooth Engagement","description":"Reduce shift delay by another 2%.","requires":["shift_basics"],"max_rank":1,"bonus":0.02,"effect":"shift"},
