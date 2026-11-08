@@ -900,7 +900,7 @@ func navigation_rect() -> Rect2:
 	return Rect2((canvas.x-width)*.5,y,width,height)
 
 func draw_navigation() -> void:
-	var hidden := (tuning!=null and tuning.name_edit!=null) or screen != "garage" or (tab == "performance" and not menu.hub.categories) or menu.hub.dyno_open
+	var hidden := (tuning!=null and tuning.name_edit!=null) or screen != "garage" or (tab == "performance" and not menu.hub.categories) or menu.hub.dyno_open or tab == "owned"
 	dock.visible=not hidden
 	if hidden: return
 	dock.present(navigation_rect(),tab)
