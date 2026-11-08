@@ -5,6 +5,7 @@ uniform sampler2D paint_mask : filter_linear, repeat_disable;
 uniform sampler2D glass_mask : filter_linear, repeat_disable;
 uniform int finish = 0;
 uniform float tint_strength = 0.0;
+uniform bool photoreal_body = false;
 uniform int quality = 2;
 uniform float light_phase = 0.0;
 uniform bool floor_reflection = false;
@@ -23,7 +24,7 @@ void fragment() {
 	// shadows and the architectural background retain their own lighting.
 	if (aspect > 2.7 && aspect < 2.85 && pixels.x >= 500) {
 		float paint = texture(paint_mask, UV).a;
-		float glass = texture(glass_mask, UV).a;
+		float glass = photoreal_body ? 0.0 : texture(glass_mask, UV).a;
 		// The replacement PNG contains its own windows. Restrict tint to
 		// dark neutral pixels in the upper cabin instead of the old tint layer.
 		float chroma = max(source.r, max(source.g, source.b)) - min(source.r, min(source.g, source.b));
