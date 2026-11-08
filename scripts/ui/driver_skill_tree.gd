@@ -18,7 +18,6 @@ func setup(p: DriverProfile) -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	z_index = 100
-	size = get_viewport_rect().size
 	visible = false
 	backdrop = ColorRect.new()
 	backdrop.color = Color(0.015, 0.025, 0.043, 0.97)
@@ -86,7 +85,6 @@ func setup(p: DriverProfile) -> void:
 
 func _resize_layout() -> void:
 	if renderer == null: return
-	size = get_viewport_rect().size
 	var available := get_viewport_rect().size - Vector2(24, 24)
 	var factor: float = minf(available.x / 800.0, available.y / 500.0)
 	renderer.scale = Vector2.ONE * minf(factor, 1.5)
