@@ -6,6 +6,7 @@ func check(ok: bool,msg: String) -> void:
 	if not ok: failures += 1; push_error(msg)
 func _initialize() -> void:
 	for id in GameCatalog.CAR_IDS:
+		check(not VehicleAppearance.definition(id).compatible.has("caliper"),id+": caliper picker still available")
 		check(VehicleAppearance.validate(id).is_empty(),id+": "+str(VehicleAppearance.validate(id)))
 		for key in VehicleAppearance.definition(id).compatible:
 			for index in VehicleAppearance.OPTIONS[key].size(): check(VehicleAppearance.compatible(id,key,index),"Missing compatible rendered option")
@@ -20,10 +21,10 @@ func _initialize() -> void:
 	q.install_appearance("finish",1); q.install_appearance("tint",2); q.install_appearance("stance",1)
 	var look := q.appearance.duplicate(true); var parts := q.hardware.duplicate(true); var stages := q.stages.duplicate()
 	q.buy_vehicle("civic_si"); check(q.appearance.design == VehicleAppearance.DEFAULT_DESIGN,"New car inherited old cosmetics")
-	q.install_appearance("caliper",2); q.select_vehicle("miata")
+	check(q.install_appearance("caliper",2) == "Unavailable for this car","Retired caliper choice was accepted"); q.select_vehicle("miata")
 	check(q.appearance == look and q.hardware == parts and q.stages == stages,"Switch lost per-car appearance or mechanical parts")
 	q.save(); p.load_profile(); check(p.appearance == look,"Load lost appearance")
-	p.select_vehicle("civic_si"); check(p.appearance.caliper == 2 and p.appearance.design == VehicleAppearance.DEFAULT_DESIGN,"Independent owned car appearance")
+	p.select_vehicle("civic_si"); check(p.appearance.caliper == 0 and p.appearance.design == VehicleAppearance.DEFAULT_DESIGN,"Independent owned car appearance")
 	p.credits = 0; var before := p.appearance.duplicate(true)
 	p.install_appearance("spoiler",2); check(p.appearance == before and p.credits == 0,"Unaffordable purchase mutated state")
 	p.install_appearance("missing",1); p.install_appearance("paint",-1); p.install_appearance("finish",99)
