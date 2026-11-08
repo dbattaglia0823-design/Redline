@@ -49,43 +49,45 @@ static func draw_studio_reflection(g: Node2D,center: Vector2,radius: float,light
 		g.draw_arc(center,ring,PI*1.12,PI*1.80,18,Color(.96,.91,.81,.06*light.get_luminance()),maxf(.6,radius*.075),true)
 		g.draw_arc(center,ring,PI*.12,PI*.80,18,Color(.02,.03,.04,.10),maxf(.6,radius*.08),true)
 
-static func draw_vehicle_wheel(g: Node2D,center: Vector2,radius: float,state: Dictionary,quality: int,look: Dictionary,definition: Dictionary,index: int,light: Color=Color.WHITE) -> void:
+static func draw_vehicle_wheel(g: Node2D,center: Vector2,radius: float,state: Dictionary,quality: int,look: Dictionary,definition: Dictionary,index: int,light: Color=Color.WHITE,rim_only: bool=false,tire_only: bool=false) -> void:
 	var radii: Array=definition.get("wheel_radii",[definition.radius,definition.radius])
 	var metal_radii: Array=definition.get("rim_radius",[float(definition.radius)*.70,float(definition.radius)*.70])
 	var rim_fraction:=float(metal_radii[index])/float(radii[index])
-	var authored: Texture2D
-	if definition.has("stock_wheels"): authored=VehicleAppearance.texture(str(definition.stock_wheels[index]))
-	if authored!=null:
-		var tire:=RimArt.tire_only(authored,rim_fraction,float(radii[index]))
-		VehicleRenderer.retain_texture(g,tire)
-		var extent:=radius*(1.0+2.0/float(radii[index]))
-		g.draw_texture_rect(tire,Rect2(center-Vector2.ONE*extent,Vector2.ONE*extent*2),false,light)
-	else:
-		g.draw_circle(center,radius,Color("10151b")*light,true,-1,true)
-		g.draw_arc(center,radius*.94,PI*1.10,PI*1.88,48,Color("3b4145")*light,maxf(1,radius*.025),true)
-	var metal_radius:=radius*rim_fraction
-	g.draw_circle(center,metal_radius,Color("0a1016")*light,true,-1,true)
-	g.draw_circle(center,metal_radius*.86,Color("34414b")*light,true,-1,true)
-	for ring in (12 if quality==2 else 6):
-		var r:=metal_radius*(.36+ring*.037)
-		g.draw_arc(center,r,0,TAU,64,Color(.63,.68,.70,.12)*light,maxf(.4,metal_radius*.008),true)
-	if quality>0:
-		for hole in 16:
-			var p:=center+Vector2.from_angle(hole*TAU/16+float(state.angle))*metal_radius*.72
-			g.draw_circle(p,maxf(.5,metal_radius*.019),Color("17212a")*light,true,-1,true)
-	# Photorealistic bodies already contain stationary brake rotors and calipers.
-	# Keep the procedural caliper only for legacy SVG vehicles; otherwise it
-	# duplicates the fixed hardware and appears to move with rim changes.
-	if int(definition.get("art_pipeline_version",0)) < 2:
-		var caliper: Color=[Color("cc5430"),Color("e53942"),Color("edc343"),Color("bac5cf")][int(look.caliper)]*light
-		var shape:=PackedVector2Array()
-		for point in [Vector2(.37,-.39),Vector2(.64,-.40),Vector2(.75,-.27),Vector2(.75,.26),Vector2(.61,.39),Vector2(.37,.31)]: shape.append(center+point*metal_radius)
-		g.draw_colored_polygon(shape,caliper.darkened(.24))
-		g.draw_line(shape[0],shape[1],caliper.lightened(.3),maxf(.8,metal_radius*.035),true)
-		for y in [-.22,.22]:
-			var p:=center+Vector2(.64,y)*metal_radius
-			g.draw_circle(p,metal_radius*.026,Color("202930")*light,true,-1,true)
-			g.draw_circle(p-Vector2.ONE*metal_radius*.008,metal_radius*.012,Color("9ba5ab")*light,true,-1,true)
+	if not rim_only:
+		var authored: Texture2D
+		if definition.has("stock_wheels"): authored=VehicleAppearance.texture(str(definition.stock_wheels[index]))
+		if authored!=null:
+			var tire:=RimArt.tire_only(authored,rim_fraction,float(radii[index]))
+			VehicleRenderer.retain_texture(g,tire)
+			var extent:=radius*(1.0+2.0/float(radii[index]))
+			g.draw_texture_rect(tire,Rect2(center-Vector2.ONE*extent,Vector2.ONE*extent*2),false,light)
+		else:
+			g.draw_circle(center,radius,Color("10151b")*light,true,-1,true)
+			g.draw_arc(center,radius*.94,PI*1.10,PI*1.88,48,Color("3b4145")*light,maxf(1,radius*.025),true)
+		var metal_radius:=radius*rim_fraction
+		g.draw_circle(center,metal_radius,Color("0a1016")*light,true,-1,true)
+		g.draw_circle(center,metal_radius*.86,Color("34414b")*light,true,-1,true)
+		for ring in (12 if quality==2 else 6):
+			var r:=metal_radius*(.36+ring*.037)
+			g.draw_arc(center,r,0,TAU,64,Color(.63,.68,.70,.12)*light,maxf(.4,metal_radius*.008),true)
+		if quality>0:
+			for hole in 16:
+				var p:=center+Vector2.from_angle(hole*TAU/16+float(state.angle))*metal_radius*.72
+				g.draw_circle(p,maxf(.5,metal_radius*.019),Color("17212a")*light,true,-1,true)
+		# Photorealistic bodies already contain stationary brake rotors and calipers.
+		# Keep the procedural caliper only for legacy SVG vehicles; otherwise it
+		# duplicates the fixed hardware and appears to move with rim changes.
+		if int(definition.get("art_pipeline_version",0)) < 2:
+			var caliper: Color=[Color("cc5430"),Color("e53942"),Color("edc343"),Color("bac5cf")][int(look.caliper)]*light
+			var shape:=PackedVector2Array()
+			for point in [Vector2(.37,-.39),Vector2(.64,-.40),Vector2(.75,-.27),Vector2(.75,.26),Vector2(.61,.39),Vector2(.37,.31)]: shape.append(center+point*metal_radius)
+			g.draw_colored_polygon(shape,caliper.darkened(.24))
+			g.draw_line(shape[0],shape[1],caliper.lightened(.3),maxf(.8,metal_radius*.035),true)
+			for y in [-.22,.22]:
+				var p:=center+Vector2(.64,y)*metal_radius
+				g.draw_circle(p,metal_radius*.026,Color("202930")*light,true,-1,true)
+				g.draw_circle(p-Vector2.ONE*metal_radius*.008,metal_radius*.012,Color("9ba5ab")*light,true,-1,true)
+	if tire_only: return
 	var pixels:=512 if metal_radius>80 and quality>0 else 192
 	var face:=RimArt.face(int(look.design),int(look.rim),pixels)
 	VehicleRenderer.retain_texture(g,face)
