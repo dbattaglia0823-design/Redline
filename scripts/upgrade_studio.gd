@@ -49,6 +49,9 @@ func restore(index: int) -> void:
 				break
 	if remembered.has(index):
 		for key in remembered[index]: g.workshop.set(key,remembered[index][key])
+	# Never reopen a removed per-upgrade tuning page after a hot reload.
+	if g.workshop.mode=="tune":
+		g.workshop.mode="basic" if index in GarageHub.STAGE_CATEGORIES else "hardware"
 
 func status(index: int) -> String:
 	var h: GarageHub=g.menu.hub; var count:=0
