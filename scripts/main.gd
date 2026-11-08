@@ -819,7 +819,8 @@ func action_enabled(id: String) -> bool:
 	if id == "custom_discard": return menu.customize.has_preview()
 	if id == "custom_zoom_in": return menu.customize.zoom_step<2
 	if id == "custom_zoom_out": return menu.customize.zoom_step>-1
-	if id.begins_with("shop_class_"): return not menu.dealer.class_ids(id.trim_prefix("shop_class_")).is_empty()
+	if id.begins_with("shop_class_"):
+		return true if menu.dealer.vehicle_type!="cars" else not menu.dealer.class_ids(id.trim_prefix("shop_class_")).is_empty()
 	if id in ["race","retry"]:
 		if profile.save_blocked: return false
 		return Championships.eligibility(profile,current_contract())==""

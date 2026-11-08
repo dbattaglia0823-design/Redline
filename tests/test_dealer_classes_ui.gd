@@ -22,6 +22,23 @@ func run_checks() -> void:
 	for phone in [false,true]:
 		root.size=Vector2i(390,844) if phone else Vector2i(1200,760); game.toast_left=0; await frame(); game.action("tab_dealer"); await frame()
 		check(game.menu.dealer.class_picker,"Dealer did not open with class cards")
+		check(dealer.vehicle_type=="cars","Dealership did not open with Cars tab")
+		check(game.buttons.filter(func(item):return str(item.id).begins_with("dealer_type_")).size()==3,"Missing vehicle type tabs")
+		var original_car: String=game.profile.vehicle_id
+		var original_credits: int=game.profile.credits
+		await click("dealer_type_bikes")
+		check(dealer.vehicle_type=="bikes" and dealer.class_picker,"Bikes tab did not keep class index")
+		check(game.buttons.filter(func(item):return str(item.id).begins_with("shop_class_")).size()==6,"Bikes tab missing E-S classes")
+		await click("shop_class_S")
+		check(dealer.class_picker and game.profile.credits==original_credits and game.profile.vehicle_id==original_car,"Unreleased bikes entered car inventory or altered progress")
+		await click("dealer_type_watercraft")
+		check(dealer.vehicle_type=="watercraft" and dealer.class_picker,"Boats/Jet skis tab did not keep class index")
+		check(game.buttons.filter(func(item):return str(item.id).begins_with("shop_class_")).size()==6,"Watercraft tab missing E-S classes")
+		await click("shop_class_E")
+		check(dealer.class_picker and game.profile.credits==original_credits,"Watercraft placeholder modified progress")
+		await click("dealer_type_cars")
+		check(dealer.vehicle_type=="cars" and dealer.class_picker,"Cars tab did not return to class index")
+
 		check(game.buttons.filter(func(b):return str(b.id).begins_with("shop_class_")).size()==6,"Missing E-S cards")
 		var image:=root.get_texture().get_image()
 		var probe: Vector2=(Vector2(44,190) if phone else Vector2(56,276))*Vector2(image.get_size())/Vector2(root.content_scale_size)
@@ -54,7 +71,7 @@ func run_checks() -> void:
 			check(game.profile.garage.has("civic_si") and game.profile.credits==money-int(GameCatalog.spec("civic_si").price),"Class inventory purchase failed")
 		root.get_texture().get_image().save_png("res://validation/dealer_classes/inventory_"+("phone" if phone else "desktop")+".png")
 		game.action("tab_garage"); game.action("tab_dealer"); await frame()
-		check(game.menu.dealer.class_picker,"Dealer nav bypassed the class screen")
+		check(game.menu.dealer.class_picker and dealer.vehicle_type=="cars","Dealer nav bypassed the Cars class screen")
 	var saved:=DriverProfile.new(); saved.load_profile(); check(saved.garage.has("civic_si"),"Purchase from class inventory did not persist")
 	print("DEALER CLASS CARDS / TOUCH / KEYBOARD / ALL CLASSES / BACK / PURCHASE: ",checks," / ","PASS" if failures==0 else "FAIL")
 	game.stop_presentation_audio(); await create_timer(.12).timeout; game.queue_free(); await process_frame; await process_frame; quit(0 if failures==0 else 1)

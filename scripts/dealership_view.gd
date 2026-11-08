@@ -6,6 +6,22 @@ var age := 1.0
 var page := 0
 var class_filter := 0
 var class_picker := true
+var vehicle_type := "cars"
+var preview_textures: Dictionary = {}
+const VEHICLE_TYPES := ["cars", "bikes", "watercraft"]
+const VEHICLE_TYPE_LABELS := ["Cars", "Bikes", "Boats/Jet skis"]
+const BIKE_IMAGES := {
+	"E": "res://Bike Images and Templates/yamaha_r7_2026/preview_game.png",
+	"D": "res://Bike Images and Templates/honda_cbr600rr/preview_game.png",
+	"C": "res://Bike Images and Templates/suzuki_gsx_r750/preview_game.png",
+	"B": "res://Bike Images and Templates/kawasaki_zx6r_new/preview_game.png",
+	"A": "res://Bike Images and Templates/kawasaki_zx10r_2026/preview_game.png",
+	"S": "res://Bike Images and Templates/honda_cbr1000rr_r_fireblade_sp/preview_game.png"
+}
+const WATERCRAFT_LABELS := {
+	"E": "Recreational jet ski", "D": "Performance jet ski", "C": "Race jet ski",
+	"B": "Sport boat", "A": "Powerboat", "S": "Offshore race boat"
+}
 var remembered: Dictionary = {}
 var equip := true
 var details := false
@@ -28,29 +44,90 @@ func class_ids(letter: String) -> Array[String]:
 func filtered() -> Array[String]:
 	return class_ids(CLASSES[class_filter]) if class_filter>0 else GameCatalog.CAR_IDS.duplicate()
 func open() -> void:
+	vehicle_type = "cars"
 	show_classes()
+func select_vehicle_type(next_type: String) -> void:
+	if not VEHICLE_TYPES.has(next_type): return
+	vehicle_type=next_type
+	class_picker=true
+	details=false
+	age=0
 func show_classes() -> void:
 	if not class_picker and class_filter>0: remembered[CLASSES[class_filter]]=GameCatalog.CAR_IDS[g.dealer_index]
 	class_picker=true; details=false; age=0
 func enter_class(letter: String) -> void:
+	if vehicle_type != "cars":
+		g.show_toast("Motorcycles coming soon" if vehicle_type=="bikes" else "Boats and jet skis coming soon")
+		return
 	var ids:=class_ids(letter)
 	if ids.is_empty(): return
 	class_filter=CLASSES.find(letter); class_picker=false; details=false
 	var selected: String=remembered.get(letter,ids[0])
 	if not ids.has(selected): selected=ids[0]
 	g.dealer_index=GameCatalog.CAR_IDS.find(selected); page=int(ids.find(selected)/4); age=0
+func _preview_texture(path: String) -> Texture2D:
+	if not preview_textures.has(path):
+		preview_textures[path]=load(path) if ResourceLoader.exists(path) else null
+	return preview_textures[path]
+
+func _watercraft_preview(rect: Rect2, letter: String) -> void:
+	# A small, clearly non-playable vector illustration until boat artwork exists.
+	var center:=rect.position+rect.size*Vector2(0.5,0.57)
+	var length:=minf(rect.size.x*.68,210.0)
+	var x:=center.x-length*.5
+	var y:=center.y
+	var color:=Color("a8c4d2")
+	if letter in ["E","D","C"]:
+		var hull:=PackedVector2Array([Vector2(x,y+12),Vector2(x+length*.81,y+12),Vector2(x+length,y-3),Vector2(x+length*.83,y+27),Vector2(x+length*.21,y+29)])
+		g.draw_colored_polygon(hull,Color("718da1"))
+		g.draw_colored_polygon(PackedVector2Array([Vector2(x+length*.33,y+12),Vector2(x+length*.48,y-14),Vector2(x+length*.67,y-14),Vector2(x+length*.76,y+12)]),Color("d9e3df"))
+		g.draw_line(Vector2(x+length*.48,y-11),Vector2(x+length*.38,y-27),color,4)
+	else:
+		var hull:=PackedVector2Array([Vector2(x,y+2),Vector2(x+length,y+2),Vector2(x+length*.83,y+32),Vector2(x+length*.20,y+32)])
+		g.draw_colored_polygon(hull,Color("718da1"))
+		g.draw_colored_polygon(PackedVector2Array([Vector2(x+length*.36,y+2),Vector2(x+length*.49,y-25),Vector2(x+length*.73,y-25),Vector2(x+length*.83,y+2)]),Color("d9e3df"))
+		g.draw_line(Vector2(x+length*.49,y-23),Vector2(x+length*.49,y-36),color,3)
+	g.draw_line(Vector2(x+12,y+39),Vector2(x+length-12,y+39),Color(0.388,0.686,0.745,0.65),3)
+
+func _draw_vehicle_type_tabs(mobile: bool) -> void:
+	var x0:=24.0 if mobile else 36.0
+	var y0:=91.0 if mobile else 169.0
+	var total_width:=552.0 if mobile else 1129.0
+	var gap:=8.0 if mobile else 12.0
+	var width: float=(total_width-gap*2)/3
+	var height:=65.0 if mobile else 44.0
+	for i in VEHICLE_TYPES.size():
+		var kind: String=VEHICLE_TYPES[i]
+		b("dealer_type_"+kind,VEHICLE_TYPE_LABELS[i],Rect2(x0+i*(width+gap),y0,width,height),vehicle_type==kind)
+
 func draw_classes(mobile: bool=false) -> void:
+	_draw_vehicle_type_tabs(mobile)
 	for i in 6:
-		var letter: String=CLASSES[i+1]; var ids:=class_ids(letter)
-		var r:=Rect2(24+(i%2)*284,100+int(i/2)*280,268,268) if mobile else Rect2(36+(i%3)*384,196+int(i/3)*230,362,212)
+		var letter: String=CLASSES[i+1]
+		var ids:=class_ids(letter) if vehicle_type=="cars" else []
+		var r:=Rect2(24+(i%2)*284,182+int(i/2)*258,268,246) if mobile else Rect2(36+(i%3)*384,223+int(i/3)*220,362,202)
 		g.button("shop_class_"+letter,"",r,false,false)
-		t(letter,r.position.x+20,r.position.y+54,44,GlassPalette.BLUE)
-		g.fit_text("Engine class "+letter,r.position.x+78,r.position.y+42,r.size.x-98,22 if mobile else 24)
-		t("%d cars"%ids.size(),r.position.x+80,r.position.y+65,17 if mobile else 13,g.MUTED)
-		if ids.is_empty(): continue
-		var cheapest: String=ids[0]
-		g.draw_car(r.position+Vector2(12,78 if mobile else 65),1.05 if mobile else 1.4,g.PAINTS[2],0,0,false,cheapest)
-		t("From $%d"%int(GameCatalog.spec(cheapest).price),r.position.x+20,r.end.y-47 if mobile else r.end.y-20,20 if mobile else 15)
+		t("CLASS "+letter,r.position.x+16,r.position.y+32,29 if mobile else 25)
+		if vehicle_type=="cars":
+			if not ids.is_empty():
+				var cheapest: String=ids[0]
+				g.draw_car(r.position+Vector2(13,62 if mobile else 49),.95 if mobile else 1.3,g.PAINTS[2],0,0,false,cheapest)
+				t("Available from $%d"%int(GameCatalog.spec(cheapest).price),r.position.x+15,r.end.y-44 if mobile else r.end.y-33,17 if mobile else 15)
+			t("%d cars"%ids.size(),r.position.x+15,r.end.y-19 if mobile else r.end.y-12,14 if mobile else 13,g.MUTED)
+		elif vehicle_type=="bikes":
+			var image_path: String=BIKE_IMAGES.get(letter,"")
+			var picture:=_preview_texture(image_path)
+			if picture!=null:
+				var size: Vector2=picture.get_size()
+				var area:=Rect2(r.position+Vector2(18,49),Vector2(r.size.x-36,128 if mobile else 100))
+				var factor: float=minf(area.size.x/maxf(1.0,size.x),area.size.y/maxf(1.0,size.y))
+				var fitted:=size*factor
+				g.draw_texture_rect(picture,Rect2(area.position+(area.size-fitted)*0.5,fitted),false)
+			t("Motorcycles - coming soon",r.position.x+15,r.end.y-35,16 if mobile else 14,g.MUTED)
+		else:
+			_watercraft_preview(r,letter)
+			t(WATERCRAFT_LABELS[letter],r.position.x+15,r.end.y-40,17 if mobile else 15)
+			t("Coming soon",r.position.x+15,r.end.y-17,14 if mobile else 13,g.MUTED)
 func estimate(id: String) -> Dictionary:
 	return RaceAI.estimate({"model":id,"stages":GameCatalog.blank_stages(),"hardware":GameCatalog.factory_build(id),"reaction":.25,"pedal":1.0,"skill":2,"shift_error":0,"traction_skill":.8})
 func navigate(direction: int) -> void:
@@ -120,7 +197,9 @@ func draw_details(s: Dictionary,c: Drivetrain) -> void:
 	if float(s.get("hybrid_kw",0))>0: lines[7]="Electric assist: %.0f hp / %.0f BTU battery; dyno shows combustion engine." % [s.hybrid_kw/.7457,s.hybrid_kwh*3412.141633]
 	for i in lines.size(): t(lines[i],56,263+i*38,17,g.MUTED if i >= 7 else g.INK)
 func action(id: String) -> bool:
-	if id.begins_with("shop_class_"): enter_class(id.trim_prefix("shop_class_"))
+	if id.begins_with("dealer_type_"):
+		select_vehicle_type(id.trim_prefix("dealer_type_"))
+	elif id.begins_with("shop_class_"): enter_class(id.trim_prefix("shop_class_"))
 	elif id=="shop_classes": show_classes()
 	elif id == "shop_car_prev" or id == "shop_car_next": navigate(-1 if id == "shop_car_prev" else 1)
 	elif id == "shop_prev" or id == "shop_next":
