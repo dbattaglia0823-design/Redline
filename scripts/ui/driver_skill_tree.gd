@@ -53,6 +53,22 @@ func setup(p: DriverProfile) -> void:
 		style.set_border_width_all(1)
 		style.set_corner_radius_all(14)
 		panel.add_theme_stylebox_override("panel", style)
+	# Keep remaining points visible while browsing and after spending them.
+	var points_label: Label = renderer.controls.get("node_12") as Label
+	if points_label != null:
+		points_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		points_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		points_label.add_theme_color_override("font_color", ACCENT)
+		points_label.add_theme_font_size_override("font_size", 17)
+		var points_style := StyleBoxFlat.new()
+		points_style.bg_color = Color("2a241c")
+		points_style.border_color = ACCENT
+		points_style.set_border_width_all(1)
+		points_style.set_corner_radius_all(10)
+		points_style.content_margin_left = 6.0
+		points_style.content_margin_right = 6.0
+		points_label.add_theme_stylebox_override("normal", points_style)
+		points_label.z_index = 3
 	var detail: Label = renderer.controls.get("node_6") as Label
 	if detail != null: detail.vertical_alignment = VERTICAL_ALIGNMENT_TOP
 	close_button = Button.new()
@@ -126,7 +142,7 @@ func refresh() -> void:
 		"selected_description":description,
 		"level":"LEVEL %d" % profile.level(),
 		"xp_progress":percent,
-		"points":"%d POINTS" % profile.available_skill_points()
+		"points":"%d AVAILABLE" % profile.available_skill_points()
 	}})
 	var unlock: Button = renderer.controls.get("node_8") as Button
 	if unlock != null:
