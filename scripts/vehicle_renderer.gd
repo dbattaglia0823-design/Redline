@@ -74,8 +74,13 @@ static func draw(g: Node2D,origin: Vector2,size: float,model: String,look: Dicti
 			g.draw_colored_polygon(PackedVector2Array([tail+Vector2(0,-2),tail+Vector2(-length,-1),tail+Vector2(-length*.5,3),tail+Vector2(0,2)]),Color(1,.45,.18,flash))
 			g.draw_line(tail,tail-Vector2(length*.45,0),Color(.7,.85,1,flash),1.5,true)
 	g.draw_set_transform(Vector2.ZERO)
-	# For new body artwork, draw the rim faces over the baked brake hardware.
-	if baked_layers: draw_wheels(g,base,size,s,model,d,look,car,animate,quality,light,false,studio,true)
+	# Replacement body textures contain opaque brake/wheel-well pixels. The
+	# original back tire pass can be hidden behind this artwork, leaving floating
+	# bare rims. Paint only the masked rubber sidewalls again in front, then the
+	# rotating rim faces; never paint a second brake disc over baked hardware.
+	if baked_layers:
+		draw_wheels(g,base,size,s,model,d,look,car,animate,quality,light,false,studio,false,true)
+		draw_wheels(g,base,size,s,model,d,look,car,animate,quality,light,false,studio,true)
 	draw_wheels(g,base,size,s,model,d,look,car,animate,quality,light,true,studio,false)
 
 static func contact_shadow(g: Node2D,base: Vector2,d: Dictionary,s: float,radius_factor: float,quality: int) -> void:
@@ -99,7 +104,7 @@ static func showroom_light(g: Node2D,bounds: Rect2,quality: int) -> void:
 	AutomotiveUI.glow(g,Rect2(bounds.position+area*Vector2(.04,.13),area*Vector2(.92,.88)),Color(.24,.49,.74,.22))
 	AutomotiveUI.glow(g,Rect2(bounds.position+area*Vector2(.09,.60),area*Vector2(.82,.34)),Color(.36,.65,.86,.19))
 
-static func draw_wheels(g: Node2D,base: Vector2,size: float,s: float,model: String,d: Dictionary,look: Dictionary,car: Drivetrain,animate: bool,quality: int,light: Color,reflections_only: bool,studio: bool = false,rims_only: bool = false) -> void:
+static func draw_wheels(g: Node2D,base: Vector2,size: float,s: float,model: String,d: Dictionary,look: Dictionary,car: Drivetrain,animate: bool,quality: int,light: Color,reflections_only: bool,studio: bool = false,rims_only: bool = false,front_sidewalls: bool = false) -> void:
 	var spec := GameCatalog.spec(model)
 	var radius_factor := WheelVisuals.radius_scale(car,spec) if car != null else 1.0
 	var radii: Array=d.get("wheel_radii",[d.radius,d.radius])
@@ -110,11 +115,11 @@ static func draw_wheels(g: Node2D,base: Vector2,size: float,s: float,model: Stri
 		var radius:=float(radii[index])*s*radius_factor
 		var rim_radius: float = float(d.get("rim_radius",[float(d.radius)*.70,float(d.radius)*.70])[index])*s*radius_factor
 		if not reflections_only:
-			WheelVisuals.draw_vehicle_wheel(g,center,radius,state,quality,look,d,index,light,rims_only,not rims_only and int(d.get("art_pipeline_version",0))>=2)
+			WheelVisuals.draw_vehicle_wheel(g,center,radius,state,quality,look,d,index,light,rims_only,front_sidewalls or (not rims_only and int(d.get("art_pipeline_version",0))>=2))
 		else:
 			if studio and quality>0: WheelVisuals.draw_studio_reflection(g,center,rim_radius,light)
 
-		if not reflections_only and not rims_only and car!=null and car.tire_sidewall_mark>0:
+		if not reflections_only and not rims_only and car!=null and car.tire_sidewall_mark>0 and (front_sidewalls or int(d.get("art_pipeline_version",0))<2):
 			WheelVisuals.draw_compound_mark(g,center,radius,car.tire_sidewall_mark,state,light)
 
 

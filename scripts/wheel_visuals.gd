@@ -65,6 +65,9 @@ static func draw_vehicle_wheel(g: Node2D,center: Vector2,radius: float,state: Di
 		else:
 			g.draw_circle(center,radius,Color("10151b")*light,true,-1,true)
 			g.draw_arc(center,radius*.94,PI*1.10,PI*1.88,48,Color("3b4145")*light,maxf(1,radius*.025),true)
+		# Tire-only passes must not draw the procedural brake disc: replacement
+		# body PNGs already contain the stationary rotor and caliper.
+		if tire_only: return
 		g.draw_circle(center,metal_radius,Color("0a1016")*light,true,-1,true)
 		g.draw_circle(center,metal_radius*.86,Color("34414b")*light,true,-1,true)
 		for ring in (12 if quality==2 else 6):
@@ -87,7 +90,6 @@ static func draw_vehicle_wheel(g: Node2D,center: Vector2,radius: float,state: Di
 				var p:=center+Vector2(.64,y)*metal_radius
 				g.draw_circle(p,metal_radius*.026,Color("202930")*light,true,-1,true)
 				g.draw_circle(p-Vector2.ONE*metal_radius*.008,metal_radius*.012,Color("9ba5ab")*light,true,-1,true)
-	if tire_only: return
 	var pixels:=512 if metal_radius>80 and quality>0 else 192
 	var face:=RimArt.face(int(look.design),int(look.rim),pixels)
 	VehicleRenderer.retain_texture(g,face)

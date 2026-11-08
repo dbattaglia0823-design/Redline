@@ -98,7 +98,8 @@ static func body_variant_path(definition: Dictionary, paint: int, finish: String
 
 static func point(value: Array) -> Vector2: return Vector2(float(value[0]),float(value[1]))
 # Artwork-only offsets align rim/tire sprites to hubs baked into replacement PNGs.
-# Gameplay wheelbase, tire physics, and smoke simulation retain canonical anchors.
+# Drivetrain wheelbase and tire physics retain canonical anchors; graphical smoke
+# follows the calibrated visible tire centers.
 static func visual_wheel_anchor(d: Dictionary,index: int) -> Vector2:
 	var original: Array=d.rear if index==0 else d.front
 	var offsets: Variant=d.get("visual_wheel_offsets",[])

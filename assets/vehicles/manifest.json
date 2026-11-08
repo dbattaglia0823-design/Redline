@@ -2308,7 +2308,17 @@
     ],
     "master": "res://assets/vehicles/mclaren/master.png",
     "fallback_body": "res://assets/vehicles/mclaren/body_%d_%s.png",
-    "replacement_source": "res://Replacement Vehicle Models/mclaren/"
+    "replacement_source": "res://Replacement Vehicle Models/mclaren/",
+    "visual_wheel_offsets": [
+      [
+        -13,
+        -19
+      ],
+      [
+        25,
+        -19
+      ]
+    ]
   },
   "sf90": {
     "size": [
