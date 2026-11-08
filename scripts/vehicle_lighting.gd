@@ -11,6 +11,7 @@ static func apply(canvas: Node2D,model: String,look: Dictionary,quality: int,pha
 		canvas.material=material
 	var layers: Dictionary=VehicleAppearance.definition(model).layers
 	material.set_shader_parameter("paint_mask",VehicleAppearance.texture(layers.paint_mask))
+	material.set_shader_parameter("photoreal_body",int(VehicleAppearance.definition(model).get("art_pipeline_version",0))>=2)
 	material.set_shader_parameter("glass_mask",VehicleAppearance.texture(layers.glass))
 	material.set_shader_parameter("finish",int(look.finish))
 	var is_replacement: bool=int(VehicleAppearance.definition(model).get("art_pipeline_version",0))>=2
