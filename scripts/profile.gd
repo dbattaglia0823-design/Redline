@@ -6,6 +6,7 @@ const BACKUP_PATH := SAVE_PATH+".bak"
 const SAVE_FORMAT := 1
 var credits := 2400
 var xp := 0
+var skill_ranks: Dictionary = {}
 var wins := 0
 var races := 0
 var best := 0.0
@@ -40,6 +41,18 @@ func level() -> int:
 
 func next_level_xp() -> int:
 	return level() * level() * 150
+
+func available_skill_points() -> int:
+	return DriverSkills.available(skill_ranks, level())
+
+func can_unlock_driver_skill(id: String) -> bool:
+	return not save_blocked and DriverSkills.can_unlock(skill_ranks, level(), id)
+
+func unlock_driver_skill(id: String) -> bool:
+	if not can_unlock_driver_skill(id): return false
+	skill_ranks = DriverSkills.unlock(skill_ranks, level(), id)
+	save()
+	return save_error == ""
 
 func snapshot_vehicle() -> void:
 	hardware.performance_stages[hardware.transmission] = int(stages[4])
@@ -123,6 +136,7 @@ func load_profile() -> void:
 	retired_garage = data.get("retired_garage",{}).duplicate(true)
 	credits = maxi(0, int(data.get("credits", 2400)))
 	xp = maxi(0, int(data.get("xp", 0)))
+	skill_ranks = DriverSkills.sanitize(data.get("skill_ranks", {}), level())
 	wins = maxi(0, int(data.get("wins", 0)))
 	races = maxi(wins, int(data.get("races", 0)))
 	best = maxf(0.0, float(data.get("best", 0.0)))
@@ -354,7 +368,7 @@ func save() -> void:
 	if file==null:
 		save_error="Could not save progress"
 		return
-	var payload: Dictionary={"test_runs":RunArchive.pack(test_runs),"career_version":3,"legacy_class_access":legacy_class_access,"championship_wins":championship_wins,"career_claims":career_claims,"career_serial":career_serial,"event_records":event_records,"roster_version":2,"traction_version":1,"retired_garage":retired_garage,"credits":credits,"xp":xp,"wins":wins,"races":races,"best":best,"paint":paint,"wheels":wheels,"stages":stages,"owned_stages":owned_stages,"muted":muted,"effects_quality":effects_quality,"reduced_motion":reduced_motion,"metric_speed":metric_speed,"vehicle_id":vehicle_id,"garage":garage,"career_wins":career_wins,"pending_wager":pending_wager}
+	var payload: Dictionary={"test_runs":RunArchive.pack(test_runs),"career_version":3,"legacy_class_access":legacy_class_access,"championship_wins":championship_wins,"career_claims":career_claims,"career_serial":career_serial,"event_records":event_records,"roster_version":2,"traction_version":1,"retired_garage":retired_garage,"credits":credits,"xp":xp,"skill_ranks":skill_ranks,"wins":wins,"races":races,"best":best,"paint":paint,"wheels":wheels,"stages":stages,"owned_stages":owned_stages,"muted":muted,"effects_quality":effects_quality,"reduced_motion":reduced_motion,"metric_speed":metric_speed,"vehicle_id":vehicle_id,"garage":garage,"career_wins":career_wins,"pending_wager":pending_wager}
 	payload.wheel_default_version=1
 	payload.save_format=SAVE_FORMAT
 	# Canonicalize JSON numbers before hashing so the reader hashes the same values.
@@ -740,7 +754,7 @@ static func normalize_tune_presets(value: Variant) -> Dictionary:
 		out[slot]={"name":str(row.get("name",slot)).left(28),"transmission":str(row.get("transmission","")),"tune":tune}
 	return out
 
-func award_race(contract: Dictionary,won: bool,red: bool,et: float,reaction: float,trap: float,legacy_career: int,legacy_rival: int) -> Dictionary:
+func award_race(contract: Dictionary,won: bool,red: bool,et: float,reaction: float,trap: float,legacy_career: int,legacy_rival: int,perfect_shifts: int = 0) -> Dictionary:
 	if pending_wager.is_empty() or not is_finite(et) or et<=0: return {}
 	var c: Dictionary=pending_wager.get("contract",{}).duplicate(true)
 	if c.is_empty(): c=contract.duplicate(true)
@@ -752,6 +766,8 @@ func award_race(contract: Dictionary,won: bool,red: bool,et: float,reaction: flo
 	if not red:
 		if c.has("id"): xp_award=int(float(c.xp)*(1.0 if won else .45))
 		else: xp_award=180+legacy_career*80 if won else 100+legacy_career*40
+	if xp_award > 0:
+		xp_award = int(round(float(xp_award) * (1.0 + DriverSkills.xp_bonus(skill_ranks, level(), won, red, reaction, perfect_shifts))))
 	var bonus:=0
 	var trophy_awarded:=false
 	if c.has("id"):
