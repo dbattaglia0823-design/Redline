@@ -55,6 +55,17 @@ func _initialize() -> void:
 	check(is_equal_approx(DriverSkills.money_bonus(economic,15,true,false),.05), "Career money bonus missing")
 	check(is_zero_approx(DriverSkills.money_bonus(economic,15,false,false)), "Money on loss")
 	check(is_zero_approx(DriverSkills.money_bonus(economic,15,true,true)), "Money on red light")
+	var earned := DriverProfile.new()
+	earned.xp = 2400
+	earned.credits = 10000
+	earned.skill_ranks = {"street_rookie":1,"street_learner":1,"night_regular":1}
+	var starter := Championships.event("class_E_0")
+	check(earned.begin_wager(500,starter), "Unable to enter Career bonus race")
+	var paid: Dictionary = earned.award_race(starter,true,false,17.0,.21,82.0,0,0)
+	check(earned.credits == 10525 and int(paid.get("bet_return",0)) == 1025 and int(paid.get("bonus",0)) == 25, "Career money perk did not credit winning wager exactly once")
+	check(earned.begin_wager(500,starter), "Cannot replay Career perk race")
+	paid = earned.award_race(starter,false,false,18.0,.3,78.0,0,0)
+	check(earned.credits == 10025 and int(paid.get("bonus",0)) == 0, "Career cash perk paid a losing race")
 	var p := DriverProfile.new()
 	p.xp = 2400
 	check(p.unlock_driver_skill("launch_basics"), "Cannot spend skill point")
