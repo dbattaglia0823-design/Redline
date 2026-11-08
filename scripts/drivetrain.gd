@@ -132,6 +132,8 @@ var grind_serial := 0
 var shift_direction := 0
 var combustion_fraction := 1.0
 var extra_grip := 0.0
+# Transient driver-only bonuses, recalculated when the selected build is refreshed.
+var driver_perks: Dictionary = {}
 var extra_mass := 0.0
 var load_transfer_scale := 0.18
 var tire_grip := 0.0
@@ -468,7 +470,7 @@ func _substep(dt: float, pedal: float, brake: float, clutch: float, nitrous: boo
 		var current_torque := full_engine_torque(maxf(idle_rpm,wheel_rpm(gear)))*ratio_for(gear)
 		if lower_rpm<automatic_shift_target(gear-1)*.82 and lower_torque>current_torque*1.12:
 			if shift(-1): _auto_dwell = shift_duration+0.35
-	pedal=pow(pedal,throttle_gamma)
+	pedal=pow(pedal,maxf(0.65,throttle_gamma*(1.0-float(driver_perks.get("throttle",0.0)))))
 	if traction_slip_target>0 and wheelspin>traction_slip_target and speed>1.0 and not transbrake_active:
 		pedal*=clampf(1.0-(wheelspin-traction_slip_target)*2.5,.12,1.0)
 	var response := throttle_response/(1.0+engine_stage*0.08)
@@ -520,7 +522,7 @@ func _substep(dt: float, pedal: float, brake: float, clutch: float, nitrous: boo
 		target_clutch = minf(target_clutch,clampf(maxf((rpm-idle_rpm)/4200.0,wheel_rpm(gear)/3000.0),0.0,1.0))
 	elif wheel_rpm(gear) < idle_rpm:
 		target_clutch *= clampf((wheel_rpm(gear)-idle_rpm*0.5)/(idle_rpm*0.5),0,1)
-	clutch_engagement = 0.0 if (clutch > 0.99 and not has_converter) or target_clutch == 0.0 else move_toward(clutch_engagement,target_clutch,dt*(8.0+gearbox_stage*2.0)*shift_firmness*clutch_rate)
+	clutch_engagement = 0.0 if (clutch > 0.99 and not has_converter) or target_clutch == 0.0 else move_toward(clutch_engagement,target_clutch,dt*(8.0+gearbox_stage*2.0)*shift_firmness*clutch_rate*(1.0+float(driver_perks.get("clutch",0.0))))
 	var full_torque := power_torque(rpm,boost)
 	var friction := losses(omega,throttle)
 	var combustion := (full_torque+losses(omega,1.0))*throttle*combustion_fraction
@@ -579,7 +581,7 @@ func _substep(dt: float, pedal: float, brake: float, clutch: float, nitrous: boo
 		var m := mass()
 		drag_force = 0.5*1.225*drag_area*speed*speed
 		var rolling := m*9.81*rolling_coefficient*pressure_rolling if speed > 0.001 else 0.0
-		braking_force = minf(brake*m*8.0*(1.0+brake_stage*0.18),m*9.81*brake_grip())
+		braking_force = minf(brake*m*8.0*(1.0+brake_stage*0.18),m*9.81*brake_grip())*(1.0+float(driver_perks.get("brake",0.0)))
 		var free_v := speed-(drag_force+rolling+braking_force)/m*dt
 		var launch_window := 1.0-smoothstep(3.0,21.0,speed)
 		if tire_slip_loss>0 or suspension_launch_support>0:
@@ -662,8 +664,13 @@ func _substep(dt: float, pedal: float, brake: float, clutch: float, nitrous: boo
 func telemetry() -> Dictionary:
 	return {"time":elapsed,"rpm":rpm,"gear":gear,"mph":speed*MPH_PER_MPS,"distance_m":distance,"engine_nm":engine_torque,"clutch_nm":clutch_torque,"load":engine_load,"clutch":clutch_engagement,"clutch_slip_rpm":clutch_slip_rpm,"wheel_rad_s":wheel_omega,"slip_ratio":slip_ratio,"tire_force_n":traction_force,"traction_limit_n":available_traction,"acceleration_mps2":acceleration,"boost_bar":boost,"nitrous_s":nitrous_remaining,"fuel_cut":fuel_cut,"limiter":limiter,"shift_s":shift_left,"sync_nm":sync_torque,"converter_slip":converter_slip,"converter_pump_nm":converter_pump_nm,"converter_turbine_nm":converter_turbine_nm,"converter_input_w":converter_input_w,"converter_output_w":converter_output_w,"converter_lock":converter_lock,"transbrake":transbrake_active,"engine_c":engine_temperature,"transmission_c":transmission_temperature,"wear":component_wear,"overload":overload,"clutch_overloaded":clutch_overloaded,"transmission_slipping":transmission_slipping,"transmission":transmission_id,"control_mode":control_mode}
 
+func apply_driver_skills(ranks: Dictionary, driver_level: int) -> void:
+	# Call once after configure_build; no cumulative effects across refreshes.
+	driver_perks = DriverSkills.performance_modifiers(ranks, driver_level)
+	shift_duration = maxf(0.035, shift_duration*(1.0-float(driver_perks.get("shift",0.0))))
+
 func effective_grip() -> float:
-	return (grip_coefficient*1.16+extra_grip+(tire_grip if tire_grip>0 else tire_stage*.115))*pressure_grip
+	return (grip_coefficient*1.16+extra_grip+(tire_grip if tire_grip>0 else tire_stage*.115))*pressure_grip*(1.0+float(driver_perks.get("grip",0.0)))
 
 func brake_grip() -> float:
 	return 1.05+(tire_grip*.60 if tire_grip>0 else tire_stage*.06)
@@ -672,7 +679,7 @@ func traction_grip(at_acceleration: float,launch_window: float,spin: float) -> f
 	var transfer := load_transfer_scale*clampf(at_acceleration,-8.0,8.0)/9.81
 	if drivetrain=="FWD": transfer = -transfer
 	elif drivetrain=="AWD": transfer = 0.0
-	return effective_grip()+transfer+(tire_launch_bite+suspension_launch_support*(1.0-.22*spin))*launch_window-tire_slip_loss*smoothstep(.12,1.0,spin)
+	return effective_grip()+transfer+(tire_launch_bite+suspension_launch_support*(1.0-.22*spin)+float(driver_perks.get("launch",0.0)))*launch_window-tire_slip_loss*smoothstep(.12,1.0,spin)*(1.0-float(driver_perks.get("spin",0.0)))
 
 func reset_modifiers() -> void:
 	_torque_factor = 1.0
@@ -708,6 +715,7 @@ func reset_modifiers() -> void:
 
 func configure_build(build: Dictionary, vehicle: String = "kaze", plan: bool = true) -> void:
 	# Always begin from the immutable vehicle data; repeated menu refreshes cannot stack parts.
+	driver_perks.clear()
 	var chassis := _chassis_spec
 	var normalized := VehicleParts.normalize(build,vehicle,gearbox_stage)
 	configure_vehicle(GameCatalog.with_engine(chassis,normalized.get("engine_id","")))
