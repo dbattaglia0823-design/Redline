@@ -14,6 +14,9 @@ func frame() -> void:
 		game._process(.2); await process_frame
 	await RenderingServer.frame_post_draw
 func click(id: String,touch: bool = false) -> void:
+	if id=="tab_performance":
+		game.go_garage(); await frame(); id="garage_upgrades"
+	elif id=="tab_style" and game.tab=="garage": id="garage_customize"
 	var found := false
 	for item in game.buttons:
 		if item.id != id: continue
@@ -90,7 +93,7 @@ func run_checks() -> void:
 	check(game.menu.hub.preview().peak_horsepower()>hp,"Dyno preview disconnected")
 	for point in GarageHub.curve(game.menu.hub.preview()): check(absf(point.y-point.x*point.z/7127.0)<.001,"Dyno fabricated a power sample")
 	await click("hub_dyno_close",true); await click("install_0_2",true)
-	check(game.profile.stages[0]==2 and game.profile.credits==97900,"Touch purchase did not charge exactly once")
+	check(game.profile.stages[0]==2 and game.profile.credits==97200,"Touch purchase did not charge exactly once")
 	game.action("hub_back"); game.tab="driver"; await frame(); await click("reduced_motion",true)
 	var restored := DriverProfile.new(); restored.load_profile()
 	check(restored.reduced_motion and restored.stages[0]==2,"Motion preference broke save compatibility")

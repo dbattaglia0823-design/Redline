@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 2,
+  "template": "Garage",
+  "actions": [
+    "garage.change_vehicle",
+    "garage.next",
+    "garage.previous",
+    "nav.customize",
+    "nav.upgrades"
+  ],
+  "bindings": [
+    "garage.selected.display_name",
+    "garage.selected.name",
+    "garage.selected.stats"
+  ],
+  "nodes": [
+    {
+      "id": "vehicle_preview",
+      "type": "label",
+      "role": "vehicle_preview_placeholder",
+      "actionId": "",
+      "bindingKey": "garage.selected.display_name"
+    },
+    {
+      "id": "previous_vehicle",
+      "type": "button",
+      "role": "previous_item",
+      "actionId": "garage.previous",
+      "bindingKey": ""
+    },
+    {
+      "id": "next_vehicle",
+      "type": "button",
+      "role": "next_item",
+      "actionId": "garage.next",
+      "bindingKey": ""
+    },
+    {
+      "id": "vehicle_name",
+      "type": "label",
+      "role": "detail_title",
+      "actionId": "",
+      "bindingKey": "garage.selected.name"
+    },
+    {
+      "id": "vehicle_stats",
+      "type": "list",
+      "role": "stats_list",
+      "actionId": "",
+      "bindingKey": "garage.selected.stats"
+    },
+    {
+      "id": "open_upgrades",
+      "type": "button",
+      "role": "navigation_action",
+      "actionId": "nav.upgrades",
+      "bindingKey": ""
+    },
+    {
+      "id": "customize_vehicle",
+      "type": "button",
+      "role": "navigation_action",
+      "actionId": "nav.customize",
+      "bindingKey": ""
+    },
+    {
+      "id": "change_vehicle",
+      "type": "button",
+      "role": "secondary_action",
+      "actionId": "garage.change_vehicle",
+      "bindingKey": ""
+    }
+  ]
+}

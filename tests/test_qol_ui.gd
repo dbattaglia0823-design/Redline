@@ -22,6 +22,9 @@ func capture(name: String) -> void:
 	DirAccess.make_dir_recursive_absolute("res://validation/qol")
 	root.get_texture().get_image().save_png("res://validation/qol/"+name+("_phone" if game.is_portrait() else "_desktop")+".png")
 func click(id: String) -> void:
+	if id=="tab_performance":
+		game.go_garage(); await frame(); id="garage_upgrades"
+	elif id=="tab_style" and game.tab=="garage": id="garage_customize"
 	var control: Control=game.native_workshop.targets.get(id)
 	if is_instance_valid(control):
 		var ancestor:=control.get_parent()

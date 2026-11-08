@@ -1,0 +1,72 @@
+{
+  "schema_version": 2,
+  "vehicle_id": "bmw_s1000rr",
+  "canvas_size": [
+    1000,
+    360
+  ],
+  "coordinate_system": "top-left origin; +x right; +y down; sprite wheel centers are local to the 1000x360 body canvas",
+  "default_body": "body_no_wheels_game.png",
+  "profiles": {
+    "clean_generated_body": {
+      "body": "body_no_wheels_game.png",
+      "rear": {
+        "center": [
+          224.0,
+          255.0
+        ],
+        "nominal_radius_px": 97.5,
+        "sprite": "rear_wheel_game.png"
+      },
+      "front": {
+        "center": [
+          768.0,
+          255.0
+        ],
+        "nominal_radius_px": 97.5,
+        "sprite": "front_wheel_game.png"
+      },
+      "ground_y": 352.5,
+      "wheelbase_px": 544.0,
+      "status": "visually tuned against the generated body; minor caliper/axle deviations remain in generated artwork"
+    },
+    "original_reference_body": {
+      "body": "body_game.png",
+      "rear": {
+        "center": [
+          270.508,
+          255.61
+        ],
+        "nominal_radius_px": 97.168,
+        "sprite": "rear_wheel_game.png"
+      },
+      "front": {
+        "center": [
+          729.492,
+          255.61
+        ],
+        "nominal_radius_px": 97.168,
+        "sprite": "front_wheel_game.png"
+      },
+      "ground_y": 352.778,
+      "wheelbase_px": 458.984,
+      "status": "original source-specific extracted wheel centers"
+    }
+  },
+  "customization": {
+    "draw_order": [
+      "rear_wheel",
+      "front_wheel",
+      "body"
+    ],
+    "pivot": "wheel center",
+    "radius_behavior": "scale any compatible wheel art to diameter = 2*nominal_radius_px before rotating",
+    "rotation_source": "use vehicle wheel angular velocity for each wheel independently",
+    "stationary_hardware": "brake calipers, swingarm, chain and forks remain on body layer; any rotating sprockets must be authored separately"
+  },
+  "notes": [
+    "Profiles are not interchangeable: wheel anchors depend on which body art is selected.",
+    "The generated body has hand-tuned aligned centers; it is not a physically exact reconstruction of the axle/caliper positions.",
+    "A customized wheel may need rotor/caliper adjustment to avoid overlap, especially for different rim shapes."
+  ]
+}

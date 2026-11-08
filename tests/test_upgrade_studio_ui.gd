@@ -12,6 +12,8 @@ func frame() -> void:
 	for i in 4: game._process(.2); await process_frame
 	await RenderingServer.frame_post_draw
 func click(id: String) -> void:
+	if id=="tab_performance":
+		game.go_garage(); await frame(); id="garage_upgrades"
 	var control: Control=game.native_workshop.targets.get(id)
 	if is_instance_valid(control):
 		var ancestor:=control.get_parent()

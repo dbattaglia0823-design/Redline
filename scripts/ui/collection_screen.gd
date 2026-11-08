@@ -8,6 +8,7 @@ var scroll_moved:=false
 var touch_scroll: ScrollContainer
 
 func handle_scroll_touch(event: InputEvent) -> bool:
+	if is_instance_valid(vehicle_template) and vehicle_template.is_visible_in_tree() and vehicle_template.handle_scroll_touch(event): return true
 	# Defer option taps until release so a swipe cannot select an option, and
 	# consume the event once through the same existing action dispatcher.
 	if not visible or game.screen!="garage" or game.tab!="style":
@@ -60,11 +61,13 @@ func state_key() -> String:
 		for letter in PerformanceClasses.ORDER: measurements.append(d.class_ids(letter))
 		if not d.class_picker: measurements.append(d.preview_estimate(GameCatalog.CAR_IDS[game.dealer_index]))
 	if game.tab=="owned" and h.owned_sort: measurements=h.owned_ids()
-	return JSON.stringify([size,game.tab,game.profile.vehicle_id,game.profile.garage,game.profile.stages,game.profile.hardware,game.profile.credits,game.profile.xp,game.profile.appearance_for(game.profile.vehicle_id),game.profile.owned_appearance,game.profile.effects_quality,game.profile.save_blocked,game.profile.muted,d.class_picker,d.class_filter,d.page,d.details,d.equip,game.dealer_index,h.owned_selection,h.owned_page,h.owned_filter,h.owned_sort,custom.category,custom.candidate,custom.compare,custom.focus_override,custom.zoom_step,custom.trim_open,measurements])
+	return JSON.stringify([size,game.scale,game.get_window().size,game.tab,game.profile.vehicle_id,game.profile.garage,game.profile.stages,game.profile.hardware,game.profile.credits,game.profile.xp,game.profile.appearance_for(game.profile.vehicle_id),game.profile.owned_appearance,game.profile.effects_quality,game.profile.save_blocked,game.profile.muted,d.class_picker,d.class_filter,d.page,d.details,d.equip,game.dealer_index,h.owned_selection,h.owned_page,h.owned_filter,h.owned_sort,custom.category,custom.candidate,custom.compare,custom.focus_override,custom.zoom_step,custom.trim_open,measurements])
 
 func build() -> void:
 	if game.tab not in ["dealer","owned","style"]: super.build(); return
-	if compact_landscape() and game.tab!="style":
+	if game.tab=="dealer" and not game.menu.dealer.class_picker:
+		dealer(null); build_notice(); return
+	if compact_landscape() and game.tab!="style" and not (game.tab=="dealer" and not game.menu.dealer.class_picker):
 		CollectionLandscape.new(self).build(); build_notice(); return
 	var body:=container(Rect2(24,20,552,1116) if portrait else (Rect2(24,14,size.x-48,612) if compact_landscape() else Rect2(36,20,1128,638)))
 	body.add_theme_constant_override("separation",10 if portrait else 12)
@@ -138,59 +141,11 @@ func page_controls(parent: Node,owned: bool=false) -> void:
 		button(r,"shop_car_prev","‹ Car"); button(r,"shop_car_next","Car ›")
 
 func dealer(body: VBoxContainer) -> void:
-	var d: DealershipView=game.menu.dealer; var ids:=d.filtered()
-	if ids.is_empty(): d.show_classes(); classes(body); return
-	d.page=clampi(d.page,0,maxi(0,ceili(ids.size()/4.0)-1))
-	var id: String=GameCatalog.CAR_IDS[game.dealer_index]
-	if not ids.has(id): id=ids[d.page*4]; game.dealer_index=GameCatalog.CAR_IDS.find(id)
-	d.page=int(ids.find(id)/4)
-	var s:=GameCatalog.spec(id); var c:=d.factory(id)
-	var top:=AutomotiveUI.row(body)
-	var class_back:=button(top,"shop_classes","‹ Class "+GameCatalog.engine_class(id)); class_back.custom_minimum_size.x=120; class_back.size_flags_horizontal=Control.SIZE_SHRINK_BEGIN
-	top.add_child(AutomotiveUI.label(str(s.name),26))
-	var detail_button:=button(top,"shop_details","Showroom" if d.details else "Details"); detail_button.custom_minimum_size.x=114; detail_button.size_flags_horizontal=Control.SIZE_SHRINK_END
-	var main: BoxContainer=VBoxContainer.new() if portrait else HBoxContainer.new(); main.add_theme_constant_override("separation",16); main.size_flags_vertical=Control.SIZE_EXPAND_FILL; body.add_child(main)
-	var left:=AutomotiveUI.column(main,10); left.size_flags_stretch_ratio=2.1
-	if portrait: left.size_flags_vertical=Control.SIZE_EXPAND_FILL
-	var hero:=vehicle(left,id,c,VehicleAppearance.normalize({},2,0),190 if portrait else 245); hero.size_flags_vertical=Control.SIZE_EXPAND_FILL
-	if portrait:
-		left.add_child(AutomotiveUI.label("%s · %s · %s"%[s.year,ImperialUnits.engine_label(s.engine),s.drive],18,AutomotiveUI.MUTED))
-		left.add_child(AutomotiveUI.label("%.0f %shp / %.0f lb-ft / %.0f lb / %.2f grip"%[c.peak_horsepower(),"ICE " if float(s.get("hybrid_kw",0))>0 else "",ImperialUnits.torque(GarageHub.peak_torque(c)),ImperialUnits.pounds(c.mass()),GarageHub.grip(c)],20))
-		if float(s.get("hybrid_kw",0))>0: left.add_child(AutomotiveUI.label("Electric assist: %.0f hp"%(s.hybrid_kw/.7457),17,AutomotiveUI.MUTED))
-		left.add_child(AutomotiveUI.label("Factory · %d-speed %s"%[c.gear_ratios.size(),c.transmission_kind],17,AutomotiveUI.MUTED))
-		var et:=d.preview_estimate(id)
-		left.add_child(AutomotiveUI.label("1/4 est · %.2f s / %.1f mph"%[et.time,et.mph] if not et.is_empty() else "Measuring factory performance…",18,AutomotiveUI.BLUE))
-	var browse:=grid(left,2 if portrait else 4,8)
-	browse.visible=not portrait or not d.details
-	for i in mini(4,ids.size()-d.page*4):
-		var entry: String=ids[d.page*4+i]
-		var state: String="Equipped" if entry==game.profile.vehicle_id else ("Owned" if game.profile.garage.has(entry) else ("Level %d"%GameCatalog.spec(entry).unlock_level if game.profile.level()<int(GameCatalog.spec(entry).unlock_level) else "$%d"%GameCatalog.spec(entry).price))
-		var card:=AutomotiveUI.vehicle_card(browse,game,entry,d.factory(entry),VehicleAppearance.normalize({},2,0),state,entry==id,108 if portrait else 115)
-		bind(card,"dealer_%d"%GameCatalog.CAR_IDS.find(entry))
-	if not portrait or not d.details: page_controls(left)
-	var right: VBoxContainer=left if portrait else AutomotiveUI.panel(main)
-	if not portrait and not d.details:
-		right.add_child(AutomotiveUI.label(str(s.brand)+"  /  "+str(s.year),17,AutomotiveUI.BLUE))
-		right.add_child(AutomotiveUI.label("Factory specification · Engine class "+GameCatalog.engine_class(id),15,AutomotiveUI.MUTED))
-		spec_summary(right,id,c)
-		right.add_child(AutomotiveUI.label(str(s.drive)+" / %d-speed %s"%[c.gear_ratios.size(),c.transmission_kind],16,AutomotiveUI.MUTED))
-		var et:=d.preview_estimate(id)
-		right.add_child(AutomotiveUI.label("1/4 est  %.2f s / %.1f mph"%[et.time,et.mph] if not et.is_empty() else "Measuring…",18,AutomotiveUI.BLUE))
-		right.add_child(AutomotiveUI.label("VERSUS ACTIVE BUILD",12,AutomotiveUI.MUTED))
-		AutomotiveUI.comparison(right,"Power",game.car.peak_horsepower(),c.peak_horsepower(),"hp")
-		AutomotiveUI.comparison(right,"Weight",game.car.mass(),c.mass(),"kg",true)
-	elif portrait:
-		right.add_child(AutomotiveUI.label("Vs active  %+.0f hp / %+.0f lb-ft / %+.0f lb"%[c.peak_horsepower()-game.car.peak_horsepower(),ImperialUnits.torque(GarageHub.peak_torque(c))-ImperialUnits.torque(GarageHub.peak_torque(game.car)),ImperialUnits.pounds(c.mass())-ImperialUnits.pounds(game.car.mass())],16,AutomotiveUI.MUTED))
-	if d.details: mechanical_details(right,c)
-	var owned: bool=game.profile.garage.has(id)
-	var reason: String=""
-	if not owned and game.profile.level()<int(s.unlock_level): reason="Unlocks at driver level %d"%s.unlock_level
-	elif not owned and game.profile.credits<int(s.price): reason=game.missing_credits(int(s.price))
-	right.add_child(AutomotiveUI.label("Currently equipped" if id==game.profile.vehicle_id else ("Owned · ready to drive" if owned else "$%d"%s.price),26,AutomotiveUI.ORANGE))
-	if reason!="": right.add_child(AutomotiveUI.label(reason,16,AutomotiveUI.MUTED))
-	var buy:=AutomotiveUI.row(right)
-	button(buy,"drive_car" if owned else "buy_car","Equipped" if id==game.profile.vehicle_id else ("Drive this car" if owned else "Purchase"),true)
-	if not owned: button(buy,"shop_equip","Equip: "+("Yes" if d.equip else "No"))
+	if dealer_ui_class!=game.menu.dealer.class_filter:
+		dealer_ui_class=game.menu.dealer.class_filter; dealer_query=""; dealer_filter=0
+	vehicle_template=ToolkitVehicleScreen.new(); add_child(vehicle_template)
+	vehicle_template.setup(self,"dealership",Rect2(24 if portrait or compact_landscape() else 36,18,size.x-(48 if portrait or compact_landscape() else 72),1100 if portrait else 614 if compact_landscape() else 630))
+	return
 
 func mechanical_details(parent: Node,c: Drivetrain) -> void:
 	var scroll:=ScrollContainer.new(); scroll.name="MechanicalDetails"; scroll.custom_minimum_size.y=180 if portrait else 300; scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED; parent.add_child(scroll)

@@ -29,5 +29,7 @@ jobs:
             .qa/ci
             .qa/career_economy_progression.json
             .qa/traction_after.json
+            validation/physics_audit
+            validation/championship_economy
           include-hidden-files: true
           if-no-files-found: warn

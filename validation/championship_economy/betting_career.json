@@ -1,0 +1,547 @@
+{
+  "events": [
+    {
+      "credits_after": 3200,
+      "event": "class_E_0",
+      "model": "miata",
+      "player_s": 16.1792431688012,
+      "purchase_and_upgrade_cost": 0,
+      "recovery_runs_so_far": 0,
+      "rival_s": 16.6417294070762
+    },
+    {
+      "credits_after": 3666,
+      "event": "class_E_1",
+      "model": "miata",
+      "player_s": 10.2957474404034,
+      "purchase_and_upgrade_cost": 450,
+      "recovery_runs_so_far": 0,
+      "rival_s": 10.3731645681386
+    },
+    {
+      "credits_after": 2888,
+      "event": "class_E_2",
+      "model": "miata",
+      "player_s": 14.759327669986,
+      "purchase_and_upgrade_cost": 1500,
+      "recovery_runs_so_far": 0,
+      "rival_s": 15.0189547990497
+    },
+    {
+      "credits_after": 2050,
+      "event": "class_E_3",
+      "model": "miata",
+      "player_s": 9.3684339920565,
+      "purchase_and_upgrade_cost": 1350,
+      "recovery_runs_so_far": 0,
+      "rival_s": 9.49174545718204
+    },
+    {
+      "credits_after": 2636,
+      "event": "class_E_4",
+      "model": "miata",
+      "player_s": 13.5677279881678,
+      "purchase_and_upgrade_cost": 4500,
+      "recovery_runs_so_far": 4,
+      "rival_s": 13.7856118296805
+    },
+    {
+      "credits_after": 3637,
+      "event": "class_E_5",
+      "model": "miata",
+      "player_s": 13.156944253563,
+      "purchase_and_upgrade_cost": 5600,
+      "recovery_runs_so_far": 8,
+      "rival_s": 13.1696351175235
+    },
+    {
+      "credits_after": 4049,
+      "event": "class_E_6",
+      "model": "miata",
+      "player_s": 8.43815073892,
+      "purchase_and_upgrade_cost": 600,
+      "recovery_runs_so_far": 8,
+      "rival_s": 8.51438719637791
+    },
+    {
+      "credits_after": 2244,
+      "event": "class_E_7",
+      "model": "civic_si",
+      "player_s": 11.9618827802446,
+      "purchase_and_upgrade_cost": 38750,
+      "recovery_runs_so_far": 16,
+      "rival_s": 12.1083491677819
+    },
+    {
+      "credits_after": 2992,
+      "event": "class_E_8",
+      "model": "civic_si",
+      "player_s": 7.86662388167363,
+      "purchase_and_upgrade_cost": 0,
+      "recovery_runs_so_far": 16,
+      "rival_s": 7.90343378706298
+    },
+    {
+      "credits_after": 25688,
+      "event": "class_E_9",
+      "model": "civic_si",
+      "player_s": 10.7922320460771,
+      "purchase_and_upgrade_cost": 75150,
+      "recovery_runs_so_far": 28,
+      "rival_s": 11.0439510732503
+    },
+    {
+      "credits_after": 21688,
+      "event": "class_D_0",
+      "model": "gti",
+      "player_s": 14.6183247840875,
+      "purchase_and_upgrade_cost": 8000,
+      "recovery_runs_so_far": 28,
+      "rival_s": 15.5447388246929
+    },
+    {
+      "credits_after": 27688,
+      "event": "class_D_1",
+      "model": "gti",
+      "player_s": 9.53789262131981,
+      "purchase_and_upgrade_cost": 0,
+      "recovery_runs_so_far": 28,
+      "rival_s": 9.62539262130413
+    },
+    {
+      "credits_after": 35838,
+      "event": "class_D_2",
+      "model": "gti",
+      "player_s": 13.6356115516731,
+      "purchase_and_upgrade_cost": 650,
+      "recovery_runs_so_far": 28,
+      "rival_s": 14.0222546632336
+    },
+    {
+      "credits_after": 44517,
+      "event": "class_D_3",
+      "model": "gti",
+      "player_s": 8.396354653016,
+      "purchase_and_upgrade_cost": 2450,
+      "recovery_runs_so_far": 28,
+      "rival_s": 8.84743123061762
+    },
+    {
+      "credits_after": 59356,
+      "event": "class_D_4",
+      "model": "gti",
+      "player_s": 12.8599233562029,
+      "purchase_and_upgrade_cost": 0,
+      "recovery_runs_so_far": 28,
+      "rival_s": 12.86906818794
+    },
+    {
+      "credits_after": 55141,
+      "event": "class_D_5",
+      "model": "gti",
+      "player_s": 7.65972447031935,
+      "purchase_and_upgrade_cost": 18000,
+      "recovery_runs_so_far": 28,
+      "rival_s": 8.18386321776888
+    },
+    {
+      "credits_after": 30521,
+      "event": "class_D_6",
+      "model": "brz",
+      "player_s": 7.84005819501247,
+      "purchase_and_upgrade_cost": 32250,
+      "recovery_runs_so_far": 28,
+      "rival_s": 7.91792125741858
+    },
+    {
+      "credits_after": 40694,
+      "event": "class_D_7",
+      "model": "brz",
+      "player_s": 11.0241728570674,
+      "purchase_and_upgrade_cost": 0,
+      "recovery_runs_so_far": 28,
+      "rival_s": 11.2939849394303
+    },
+    {
+      "credits_after": 54258,
+      "event": "class_D_8",
+      "model": "brz",
+      "player_s": 7.20949256736541,
+      "purchase_and_upgrade_cost": 0,
+      "recovery_runs_so_far": 28,
+      "rival_s": 7.25903731150121
+    },
+    {
+      "credits_after": 28410,
+      "event": "class_D_9",
+      "model": "brz",
+      "player_s": 9.91867937088692,
+      "purchase_and_upgrade_cost": 75150,
+      "recovery_runs_so_far": 30,
+      "rival_s": 10.2964262815657
+    },
+    {
+      "credits_after": 21213,
+      "event": "class_C_0",
+      "model": "z350",
+      "player_s": 13.1779626011105,
+      "purchase_and_upgrade_cost": 12500,
+      "recovery_runs_so_far": 30,
+      "rival_s": 14.3958865898965
+    },
+    {
+      "credits_after": 28284,
+      "event": "class_C_1",
+      "model": "z350",
+      "player_s": 8.56785040932426,
+      "purchase_and_upgrade_cost": 0,
+      "recovery_runs_so_far": 30,
+      "rival_s": 9.10615232876136
+    },
+    {
+      "credits_after": 34178,
+      "event": "class_C_2",
+      "model": "z350",
+      "player_s": 12.3283145245086,
+      "purchase_and_upgrade_cost": 2650,
+      "recovery_runs_so_far": 30,
+      "rival_s": 12.9813921675413
+    },
+    {
+      "credits_after": 45570,
+      "event": "class_C_3",
+      "model": "z350",
+      "player_s": 8.02851000091112,
+      "purchase_and_upgrade_cost": 0,
+      "recovery_runs_so_far": 30,
+      "rival_s": 8.12506170075007
+    },
+    {
+      "credits_after": 37293,
+      "event": "class_C_4",
+      "model": "z350",
+      "player_s": 10.2507537510691,
+      "purchase_and_upgrade_cost": 17600,
+      "recovery_runs_so_far": 30,
+      "rival_s": 11.9072054764928
+    },
+    {
+      "credits_after": 49724,
+      "event": "class_C_5",
+      "model": "z350",
+      "player_s": 6.8298713646818,
+      "purchase_and_upgrade_cost": 0,
+      "recovery_runs_so_far": 30,
+      "rival_s": 7.50802417674608
+    },
+    {
+      "credits_after": 17662,
+      "event": "class_C_6",
+      "model": "z350",
+      "player_s": 6.74374752001414,
+      "purchase_and_upgrade_cost": 75150,
+      "recovery_runs_so_far": 32,
+      "rival_s": 7.16991436461075
+    },
+    {
+      "credits_after": 23549,
+      "event": "class_C_7",
+      "model": "z350",
+      "player_s": 9.36067915093602,
+      "purchase_and_upgrade_cost": 0,
+      "recovery_runs_so_far": 32,
+      "rival_s": 10.4416343919384
+    },
+    {
+      "credits_after": 31398,
+      "event": "class_C_8",
+      "model": "z350",
+      "player_s": 6.34187552208858,
+      "purchase_and_upgrade_cost": 0,
+      "recovery_runs_so_far": 32,
+      "rival_s": 6.59004595155816
+    },
+    {
+      "credits_after": 41864,
+      "event": "class_C_9",
+      "model": "z350",
+      "player_s": 9.36067915093602,
+      "purchase_and_upgrade_cost": 0,
+      "recovery_runs_so_far": 32,
+      "rival_s": 9.51510321346223
+    },
+    {
+      "credits_after": 13152,
+      "event": "class_B_0",
+      "model": "m3",
+      "player_s": 13.035746228199,
+      "purchase_and_upgrade_cost": 32000,
+      "recovery_runs_so_far": 32,
+      "rival_s": 13.5747512544802
+    },
+    {
+      "credits_after": 14002,
+      "event": "class_B_1",
+      "model": "m3",
+      "player_s": 7.95573386007134,
+      "purchase_and_upgrade_cost": 2650,
+      "recovery_runs_so_far": 32,
+      "rival_s": 8.50719650633779
+    },
+    {
+      "credits_after": 18669,
+      "event": "class_B_2",
+      "model": "m3",
+      "player_s": 12.1788552195444,
+      "purchase_and_upgrade_cost": 0,
+      "recovery_runs_so_far": 32,
+      "rival_s": 12.2333069901559
+    },
+    {
+      "credits_after": 1425,
+      "event": "class_B_3",
+      "model": "m3",
+      "player_s": 6.74895892356711,
+      "purchase_and_upgrade_cost": 17600,
+      "recovery_runs_so_far": 32,
+      "rival_s": 7.63543620530903
+    },
+    {
+      "credits_after": 1900,
+      "event": "class_B_4",
+      "model": "m3",
+      "player_s": 10.0939952202054,
+      "purchase_and_upgrade_cost": 0,
+      "recovery_runs_so_far": 32,
+      "rival_s": 11.219970465752
+    },
+    {
+      "credits_after": 2533,
+      "event": "class_B_5",
+      "model": "m3",
+      "player_s": 6.74895892356711,
+      "purchase_and_upgrade_cost": 0,
+      "recovery_runs_so_far": 32,
+      "rival_s": 7.03861900207187
+    },
+    {
+      "credits_after": 6361,
+      "event": "class_B_6",
+      "model": "m3",
+      "player_s": 6.63763476995125,
+      "purchase_and_upgrade_cost": 75150,
+      "recovery_runs_so_far": 44,
+      "rival_s": 6.77894130232798
+    },
+    {
+      "credits_after": 8481,
+      "event": "class_B_7",
+      "model": "m3",
+      "player_s": 9.19051789195749,
+      "purchase_and_upgrade_cost": 0,
+      "recovery_runs_so_far": 44,
+      "rival_s": 9.83401324227554
+    },
+    {
+      "credits_after": 18917,
+      "event": "class_B_8",
+      "model": "golf_r",
+      "player_s": 5.83293843213725,
+      "purchase_and_upgrade_cost": 136400,
+      "recovery_runs_so_far": 54,
+      "rival_s": 6.20044355380265
+    },
+    {
+      "credits_after": 25222,
+      "event": "class_B_9",
+      "model": "golf_r",
+      "player_s": 8.80601846827367,
+      "purchase_and_upgrade_cost": 0,
+      "recovery_runs_so_far": 54,
+      "rival_s": 8.96116248154033
+    },
+    {
+      "credits_after": 10057,
+      "event": "class_A_0",
+      "model": "camaro",
+      "player_s": 11.876027596225,
+      "purchase_and_upgrade_cost": 37295,
+      "recovery_runs_so_far": 56,
+      "rival_s": 12.7510146591404
+    },
+    {
+      "credits_after": 13409,
+      "event": "class_A_1",
+      "model": "camaro",
+      "player_s": 7.87178432859501,
+      "purchase_and_upgrade_cost": 0,
+      "recovery_runs_so_far": 56,
+      "rival_s": 8.00511766192834
+    },
+    {
+      "credits_after": 17012,
+      "event": "class_A_2",
+      "model": "camaro",
+      "player_s": 11.0245825223624,
+      "purchase_and_upgrade_cost": 650,
+      "recovery_runs_so_far": 56,
+      "rival_s": 11.4090978088596
+    },
+    {
+      "credits_after": 19416,
+      "event": "class_A_3",
+      "model": "camaro",
+      "player_s": 6.96250694483038,
+      "purchase_and_upgrade_cost": 2450,
+      "recovery_runs_so_far": 56,
+      "rival_s": 7.3161092975565
+    },
+    {
+      "credits_after": 1888,
+      "event": "class_A_4",
+      "model": "camaro",
+      "player_s": 9.27385475761004,
+      "purchase_and_upgrade_cost": 18000,
+      "recovery_runs_so_far": 56,
+      "rival_s": 10.387193795122
+    },
+    {
+      "credits_after": 2517,
+      "event": "class_A_5",
+      "model": "camaro",
+      "player_s": 6.30773553050285,
+      "purchase_and_upgrade_cost": 0,
+      "recovery_runs_so_far": 56,
+      "rival_s": 6.53304035957229
+    },
+    {
+      "credits_after": 10706,
+      "event": "class_A_6",
+      "model": "camaro",
+      "player_s": 6.15691772741013,
+      "purchase_and_upgrade_cost": 71400,
+      "recovery_runs_so_far": 68,
+      "rival_s": 6.22223142214767
+    },
+    {
+      "credits_after": 14274,
+      "event": "class_A_7",
+      "model": "camaro",
+      "player_s": 8.67125200281162,
+      "purchase_and_upgrade_cost": 0,
+      "recovery_runs_so_far": 68,
+      "rival_s": 8.99838983503192
+    },
+    {
+      "credits_after": 80545,
+      "event": "class_A_8",
+      "model": "gtr",
+      "player_s": 5.35452954798903,
+      "purchase_and_upgrade_cost": 277540,
+      "recovery_runs_so_far": 79,
+      "rival_s": 5.66113757804618
+    },
+    {
+      "credits_after": 107393,
+      "event": "class_A_9",
+      "model": "gtr",
+      "player_s": 8.08365138303721,
+      "purchase_and_upgrade_cost": 0,
+      "recovery_runs_so_far": 79,
+      "rival_s": 8.12050240200101
+    },
+    {
+      "credits_after": 49457,
+      "event": "class_S_0",
+      "model": "gt500",
+      "player_s": 10.5201570284257,
+      "purchase_and_upgrade_cost": 70300,
+      "recovery_runs_so_far": 79,
+      "rival_s": 11.0449276452734
+    },
+    {
+      "credits_after": 62409,
+      "event": "class_S_1",
+      "model": "gt500",
+      "player_s": 6.59517168995187,
+      "purchase_and_upgrade_cost": 2650,
+      "recovery_runs_so_far": 79,
+      "rival_s": 6.71809385777634
+    },
+    {
+      "credits_after": 59745,
+      "event": "class_S_2",
+      "model": "gt500",
+      "player_s": 8.93358806510372,
+      "purchase_and_upgrade_cost": 17600,
+      "recovery_runs_so_far": 79,
+      "rival_s": 9.73538584180564
+    },
+    {
+      "credits_after": 79660,
+      "event": "class_S_3",
+      "model": "gt500",
+      "player_s": 6.05048601499528,
+      "purchase_and_upgrade_cost": 0,
+      "recovery_runs_so_far": 79,
+      "rival_s": 6.36622975928392
+    },
+    {
+      "credits_after": 106213,
+      "event": "class_S_4",
+      "model": "gt500",
+      "player_s": 8.93358806510372,
+      "purchase_and_upgrade_cost": 0,
+      "recovery_runs_so_far": 79,
+      "rival_s": 8.95174285389741
+    },
+    {
+      "credits_after": 41417,
+      "event": "class_S_5",
+      "model": "gt500",
+      "player_s": 5.72134479881755,
+      "purchase_and_upgrade_cost": 75150,
+      "recovery_runs_so_far": 79,
+      "rival_s": 5.82025604141758
+    },
+    {
+      "credits_after": 67784,
+      "event": "class_S_6",
+      "model": "demon",
+      "player_s": 5.1895222201502,
+      "purchase_and_upgrade_cost": 181866,
+      "recovery_runs_so_far": 85,
+      "rival_s": 5.3273919493131
+    },
+    {
+      "credits_after": 89512,
+      "event": "class_S_7",
+      "model": "demon",
+      "player_s": 7.64614243817889,
+      "purchase_and_upgrade_cost": 650,
+      "recovery_runs_so_far": 85,
+      "rival_s": 7.72528255678472
+    },
+    {
+      "credits_after": 155845,
+      "event": "class_S_8",
+      "model": "z06",
+      "player_s": 4.76445358610268,
+      "purchase_and_upgrade_cost": 386050,
+      "recovery_runs_so_far": 91,
+      "rival_s": 4.89316638834795
+    },
+    {
+      "credits_after": 54101,
+      "event": "class_S_9",
+      "model": "turbo_s",
+      "player_s": 6.75752878347697,
+      "purchase_and_upgrade_cost": 616150,
+      "recovery_runs_so_far": 96,
+      "rival_s": 6.94474761708804
+    }
+  ],
+  "note": "Competent simulated controls, one-third-bankroll bets, zero race payouts, real purchase APIs and retained per-car upgrades; this measures an attainable route, not human win probability.",
+  "passed": true,
+  "recovery_runs": 96
+}

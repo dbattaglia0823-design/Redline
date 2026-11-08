@@ -1,0 +1,142 @@
+{
+  "version": 2,
+  "name": "Garage",
+  "viewport": {
+    "width": 800,
+    "height": 500
+  },
+  "nodes": [
+    {
+      "id": "heading",
+      "type": "label",
+      "x": 35,
+      "y": 24,
+      "w": 350,
+      "h": 52,
+      "label": "GARAGE",
+      "role": "screen_title",
+      "actionId": "",
+      "bindingKey": ""
+    },
+    {
+      "id": "vehicle_stage",
+      "type": "panel",
+      "x": 32,
+      "y": 92,
+      "w": 470,
+      "h": 326,
+      "label": "",
+      "role": "vehicle_preview_region",
+      "actionId": "",
+      "bindingKey": ""
+    },
+    {
+      "id": "vehicle_preview",
+      "type": "label",
+      "x": 78,
+      "y": 205,
+      "w": 375,
+      "h": 92,
+      "label": "Vehicle preview",
+      "role": "vehicle_preview_placeholder",
+      "actionId": "",
+      "bindingKey": "garage.selected.display_name"
+    },
+    {
+      "id": "previous_vehicle",
+      "type": "button",
+      "x": 49,
+      "y": 356,
+      "w": 86,
+      "h": 53,
+      "label": "Previous",
+      "role": "previous_item",
+      "actionId": "garage.previous",
+      "bindingKey": ""
+    },
+    {
+      "id": "next_vehicle",
+      "type": "button",
+      "x": 399,
+      "y": 356,
+      "w": 85,
+      "h": 53,
+      "label": "Next",
+      "role": "next_item",
+      "actionId": "garage.next",
+      "bindingKey": ""
+    },
+    {
+      "id": "vehicle_info",
+      "type": "panel",
+      "x": 519,
+      "y": 92,
+      "w": 251,
+      "h": 326,
+      "label": "",
+      "role": "vehicle_info_panel",
+      "actionId": "",
+      "bindingKey": ""
+    },
+    {
+      "id": "vehicle_name",
+      "type": "label",
+      "x": 534,
+      "y": 112,
+      "w": 220,
+      "h": 51,
+      "label": "Vehicle",
+      "role": "detail_title",
+      "actionId": "",
+      "bindingKey": "garage.selected.name"
+    },
+    {
+      "id": "vehicle_stats",
+      "type": "list",
+      "x": 536,
+      "y": 173,
+      "w": 218,
+      "h": 125,
+      "label": "Vehicle stats",
+      "role": "stats_list",
+      "actionId": "",
+      "bindingKey": "garage.selected.stats"
+    },
+    {
+      "id": "open_upgrades",
+      "type": "button",
+      "x": 536,
+      "y": 311,
+      "w": 218,
+      "h": 47,
+      "label": "Upgrades",
+      "role": "navigation_action",
+      "actionId": "nav.upgrades",
+      "bindingKey": ""
+    },
+    {
+      "id": "customize_vehicle",
+      "type": "button",
+      "x": 536,
+      "y": 365,
+      "w": 218,
+      "h": 47,
+      "label": "Customize",
+      "role": "navigation_action",
+      "actionId": "nav.customize",
+      "bindingKey": ""
+    },
+    {
+      "id": "change_vehicle",
+      "type": "button",
+      "x": 276,
+      "y": 435,
+      "w": 242,
+      "h": 49,
+      "label": "Change vehicle",
+      "role": "secondary_action",
+      "actionId": "garage.change_vehicle",
+      "bindingKey": ""
+    }
+  ]
+}

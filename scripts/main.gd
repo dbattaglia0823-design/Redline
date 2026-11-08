@@ -38,6 +38,7 @@ var result_improvement := 0.0
 var recovery_prompted := false
 var rival_telemetry := RunTelemetry.new()
 var result_bonus := 0
+var result_trophy := false
 var result_reward := 0
 var result_xp := 0
 var previous_level := 1
@@ -492,6 +493,7 @@ func complete_race() -> void:
 	var payout:=profile.award_race(active_contract,result_win,staging.red_light,staging.elapsed(player_finish),player_reaction,finish_speed,int(active_contract.get("legacy_career",event_index)),int(active_contract.get("legacy_rival",selected_opponent)))
 	if payout.is_empty(): return
 	result_bonus=int(payout.bonus); result_base_pay=int(payout.base)-result_bonus; result_bet_return=int(payout.bet_return); result_reward=int(payout.reward); result_xp=int(payout.xp)
+	result_trophy=bool(payout.get("trophy",false))
 	if finish_speed == 0.0: finish_speed = car.speed*Drivetrain.MPH_PER_MPS
 	car.running = false
 	screen = "results"
@@ -534,7 +536,7 @@ func handle_key_input(event: InputEventKey) -> void:
 	if code==KEY_F7 and screen=="garage" and audio_lab!=null:
 		audio_lab.open_lab(); return
 	if screen == "garage" and code == KEY_TAB and event.ctrl_pressed and not menu.hub.dyno_open:
-		var sections := ["garage","performance","style","dealer","races","driver"]
+		var sections := ["garage","races","dealer","driver"]
 		var current := maxi(0,sections.find(tab))
 		action("tab_"+str(sections[posmod(current+(-1 if event.shift_pressed else 1),sections.size())])); return
 	if screen == "garage" and tab == "owned" and code in [KEY_LEFT,KEY_RIGHT]:
@@ -550,6 +552,7 @@ func handle_key_input(event: InputEventKey) -> void:
 		if code == KEY_N: manual_gear(0); return
 	if screen == "garage" and tab == "dealer" and code in [KEY_LEFT,KEY_RIGHT]:
 		if menu.dealer.details: return
+		if native_workshop!=null and native_workshop.template_action("shop_car_prev" if code==KEY_LEFT else "shop_car_next"): return
 		menu.dealer.navigate(-1 if code == KEY_LEFT else 1)
 		return
 	if code==KEY_ESCAPE and screen=="garage" and tab=="races" and career_board.active:
@@ -658,6 +661,13 @@ func activate_at(pos: Vector2, pointer: String, allow_menu: bool = true) -> void
 			return
 
 func action(id: String) -> void:
+	if native_workshop!=null and native_workshop.template_action(id): return
+	if id in ["garage_previous","garage_next"]:
+		var owned: Array=GameCatalog.CAR_IDS.filter(func(model): return profile.garage.has(model))
+		if owned.size()>1:
+			var index: int=posmod(owned.find(profile.vehicle_id)+(-1 if id=="garage_previous" else 1),owned.size())
+			if profile.select_vehicle(str(owned[index])): refresh_car()
+		return
 	if id=="garage_upgrades": id="tab_performance"
 	if id=="garage_customize": id="tab_style"
 	if native_workshop!=null and native_workshop.catalog_action(id):
@@ -730,15 +740,15 @@ func action(id: String) -> void:
 				tab = "races"
 				selected_opponent = mini(4,int(profile.career_wins[event_index]))
 				if career_board.active:
-					career_board.select_next(result_win and result_bonus>0 and bool(active_contract.get("boss",false)))
+					career_board.select_next(result_win and result_trophy and bool(active_contract.get("boss",false)))
 			"results_upgrades": go_garage(); menu.hub.action("hub_upgrades")
 			"garage": go_garage()
 			"up": paddle(1)
 			"down": paddle(-1)
 			"pause": set_race_paused(true)
 			"resume": set_race_paused(false)
-			"bet_less": wager = maxi(0,wager-50)
-			"bet_more": wager = mini(mini(profile.credits,int(current_contract().get("max_bet",0))),wager+50)
+			"bet_less": wager = maxi(0,wager-Championships.wager_step(mini(profile.credits,int(current_contract().get("max_bet",0)))))
+			"bet_more": wager = mini(mini(profile.credits,int(current_contract().get("max_bet",0))),wager+Championships.wager_step(mini(profile.credits,int(current_contract().get("max_bet",0)))))
 			"buy_car":
 				var id_to_buy: String = GameCatalog.CAR_IDS[dealer_index]
 				if profile.buy_vehicle(id_to_buy):
@@ -868,16 +878,22 @@ func action_enabled(id: String) -> bool:
 		return choice != int(profile.appearance_for(profile.vehicle_id)[key]) and VehicleAppearance.compatible(profile.vehicle_id,key,choice) and profile.credits >= cost
 	return true
 
-func draw_navigation() -> void:
-	var hidden := (tuning!=null and tuning.name_edit!=null) or screen != "garage" or (tab == "performance" and not menu.hub.categories) or menu.hub.dyno_open
-	dock.visible=not hidden
-	if hidden: return
+func navigation_rect() -> Rect2:
 	var canvas:=get_window().content_scale_size
 	var width:=minf(900.0,canvas.x-48) if canvas.x>1200 else minf(744.0,canvas.x-48)
 	var short:=canvas.x>1200 and get_window().size.y<500
 	var height:=100.0 if is_portrait() else (104.0 if short else 78.0)
-	var y:=1160.0 if is_portrait() else (642.0 if short else 669.0)
-	dock.present(Rect2((canvas.x-width)*.5,y,width,height),tab)
+	if is_portrait() or short:
+		var pixels_per_unit:=float(get_window().size.y)/canvas.y*scale.y
+		height=maxf(height,ceilf(44.0/maxf(.1,pixels_per_unit))+18)
+	var y:=float(canvas.y)-height-(40.0 if is_portrait() else 14.0)
+	return Rect2((canvas.x-width)*.5,y,width,height)
+
+func draw_navigation() -> void:
+	var hidden := (tuning!=null and tuning.name_edit!=null) or screen != "garage" or (tab == "performance" and not menu.hub.categories) or menu.hub.dyno_open
+	dock.visible=not hidden
+	if hidden: return
+	dock.present(navigation_rect(),tab)
 
 func _draw() -> void:
 	ui_offset = Vector2.ZERO
@@ -1068,7 +1084,9 @@ func set_wager_from_x(x: float) -> void:
 	for item in buttons:
 		if item.id != "bet_slider": continue
 		var limits: Vector2 = item.get("range",Vector2(item.rect.position.x,item.rect.end.x))
-		wager = clampi(roundi(clampf((x-limits.x)/maxf(1,limits.y-limits.x),0,1)*maximum/50.0)*50,0,maximum)
+		var step_size:=Championships.wager_step(maximum)
+		var fraction:=clampf((x-limits.x)/maxf(1,limits.y-limits.x),0,1)
+		wager = maximum if fraction>=.999 else clampi(roundi(fraction*maximum/step_size)*step_size,0,maximum)
 		return
 
 func finish_rival_simulation() -> void:

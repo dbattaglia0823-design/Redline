@@ -16,7 +16,7 @@ func run() -> void:
 			return
 		event.potential_s=bench.quarter_s
 		event.potential_et=bench.quarter_et_s
-		event.preferred_class=PerformanceClasses.classify(float(bench.quarter_s))
+		event.preferred_class=GameCatalog.engine_class(event.model,event.hardware)
 		var race:=RaceAI.estimate(event,float(event.distance))
 		var comparable:=RaceAI.estimate(event,402.336)
 		report.append({"id":id,"model":event.model,"class":event.series,"distance":event.distance,

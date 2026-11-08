@@ -15,9 +15,10 @@ static func force(car, v: float, g: int) -> float:
 		mult = minf(1.0+(car.converter_multiplication-1.0)*pow(1.0-sr,1.5),0.98/maxf(sr,0.01))
 	var tq: float = car.full_engine_torque(predicted)
 	if predicted >= car.redline_rpm: tq *= maxf(0.0,1.0-(predicted-car.redline_rpm)/400.0)
-	tq = minf(tq,car.input_capacity())
+	tq = minf(tq,minf(car.input_capacity(),car.clutch_capacity()))
 	var raw: float = tq*mult*car.ratio_for(g)*car.trans_efficiency/car.tire_radius
-	var grip: float = car.mass()*9.81*car.effective_grip()
+	var launch_window: float = 1.0-smoothstep(3.0,21.0,v)
+	var grip: float = car.mass()*9.81*car.traction_grip(0.0,launch_window,0.0)
 	return minf(raw,grip)-0.5*1.225*car.drag_area*v*v-car.mass()*9.81*car.rolling_coefficient
 
 static func acceleration_time(car, start: float, ending: float, g: int) -> float:
@@ -83,7 +84,8 @@ static func trial_time(source, targets: Array) -> float:
 	car.shift_map = targets.duplicate()
 	car.reset()
 	var h := 1.0/240.0
-	for tick in 480: car.step(h,clampf(0.10+(3900.0-car.rpm)/2500.0,0.0,1.0),0.0,1.0)
+	var launch: float=RaceAI.launch_target(car)
+	for tick in 480: car.step(h,clampf(0.10+(launch-car.rpm)/2500.0,0.0,1.0),0.0,1.0)
 	car.running = true
 	for tick in 9600:
 		if car.control_mode != "automatic" and car.gear > 0 and car.gear < car.gear_ratios.size() and car.shift_left == 0.0:
@@ -91,9 +93,10 @@ static func trial_time(source, targets: Array) -> float:
 			if car.rpm >= target and car.wheel_rpm(car.gear) >= target*0.90:
 				if car.control_mode == "hpattern": car.select_manual_gear(car.gear+1,1.0)
 				else: car.shift(1)
-		var clutch: float = 1.0 if car.control_mode == "hpattern" and car.shift_left > 0.0 else 0.0
+		var shifting_manual: bool=car.control_mode == "hpattern" and car.shift_left > 0.0
+		var clutch: float = 1.0 if shifting_manual else RaceAI.launch_clutch(car)
 		var previous: float = car.distance
-		car.step(h,0.0 if clutch > 0.0 else 1.0,0.0,clutch)
+		car.step(h,0.0 if shifting_manual else 1.0,0.0,clutch,car.has_nitrous())
 		if car.distance >= 402.336:
 			return car.elapsed-h+h*(402.336-previous)/maxf(0.00001,car.distance-previous)
 	return INF

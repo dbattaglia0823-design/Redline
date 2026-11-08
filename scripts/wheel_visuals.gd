@@ -57,7 +57,7 @@ static func draw_vehicle_wheel(g: Node2D,center: Vector2,radius: float,state: Di
 	if definition.has("stock_wheels"): authored=VehicleAppearance.texture(str(definition.stock_wheels[index]))
 	if authored!=null:
 		var tire:=RimArt.tire_only(authored,rim_fraction,float(radii[index]))
-		g.set_meta("wheel_tire_"+str(index),tire)
+		VehicleRenderer.retain_texture(g,tire)
 		var extent:=radius*(1.0+2.0/float(radii[index]))
 		g.draw_texture_rect(tire,Rect2(center-Vector2.ONE*extent,Vector2.ONE*extent*2),false,light)
 	else:
@@ -84,7 +84,7 @@ static func draw_vehicle_wheel(g: Node2D,center: Vector2,radius: float,state: Di
 		g.draw_circle(p-Vector2.ONE*metal_radius*.008,metal_radius*.012,Color("9ba5ab")*light,true,-1,true)
 	var pixels:=512 if metal_radius>80 and quality>0 else 192
 	var face:=RimArt.face(int(look.design),int(look.rim),pixels)
-	g.set_meta("wheel_face_"+str(index),face)
+	VehicleRenderer.retain_texture(g,face)
 	g.draw_set_transform(center,float(state.spoke_angle))
 	var extent:=metal_radius*256.0/233.0
 	g.draw_texture_rect(face,Rect2(-Vector2.ONE*extent,Vector2.ONE*extent*2),false,Color(light,light.a*(1.0-float(state.blur)*.28)))

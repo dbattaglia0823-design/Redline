@@ -98,11 +98,11 @@ func championship_picker(body: VBoxContainer) -> void:
 		add_label(content,state+"  /  %d of %d"%[wins,Championships.ROUNDS],18,AutomotiveUI.ORANGE if reason!="" else GlassPalette.GREEN)
 		progress_bar(content,wins)
 		add_label(content,"%d races remaining"%(Championships.ROUNDS-wins) if wins<Championships.ROUNDS else "Championship complete",16,AutomotiveUI.MUTED)
-		var detail:=add_label(content,reason if reason!="" else "Boss bonus $%d"%Championships.BONUSES[index],16,AutomotiveUI.MUTED)
+		var detail:=add_label(content,reason if reason!="" else "Boss bet cap $%d"%Championships.bet_cap(letter,9),16,AutomotiveUI.MUTED)
 		detail.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 		detail.text_overrun_behavior=TextServer.OVERRUN_NO_TRIMMING
 		detail.custom_minimum_size.y=40
-	add_label(body,"Rival Challenges pay for every clean finish and can be replayed freely.",18,AutomotiveUI.MUTED)
+	add_label(body,"Rival Challenges are replayable. Win bets for cash; race free for XP.",18,AutomotiveUI.MUTED)
 
 func trophy_icon(color: Color) -> Control:
 	var icon:=AutomotiveUI.TechnicalIcon.new()
@@ -189,11 +189,9 @@ func race_board(body: VBoxContainer) -> void:
 	if not compact_landscape() and not bool(contract.get("boss",false)) and not str(contract.get("tradeoff","")).is_empty():
 		add_label(hero,str(contract.tradeoff),17,AutomotiveUI.MUTED)
 	var distance: float=contract.distance
-	var reward:=" %s   ·   $%d win   /   $%d finish"%[game.distance_label(distance),contract.purse,int(float(contract.purse)*.4)]
-	if int(contract.get("completion_bonus",0))>0:
-		reward+="   ·   "+("Bonus earned" if game.profile.career_claims.has(str(contract.id)) else "$%d first win bonus"%contract.completion_bonus)
+	var reward:="%s   ·   Bet cap $%d   ·   Betting only"%[game.distance_label(distance),int(contract.max_bet)]
 	add_label(hero,reward,17,GlassPalette.GREEN)
-	if board.series=="OPEN": add_label(hero,"Replay any rival · zero wager is free",16,AutomotiveUI.MUTED)
+	if board.series=="OPEN": add_label(hero,"Replay any rival · free races earn XP, no cash",16,AutomotiveUI.MUTED)
 	var reason:=Championships.eligibility(game.profile,contract)
 	if game.profile.save_blocked: reason="Restore progress to enter a race"
 	if reason!="": add_label(body,reason,18,AutomotiveUI.ORANGE)
@@ -209,7 +207,7 @@ func championship_rivals(parent: Node) -> void:
 	var options:=Championships.ids(board.series)
 	for index in options.size():
 		var contract:=Championships.event(str(options[index]))
-		var state:=("$%d win"%int(contract.purse)) if board.series=="OPEN" else board.rung_state(contract)
+		var state:=("Bet cap $%d"%int(contract.max_bet)) if board.series=="OPEN" else board.rung_state(contract)
 		var boss:=bool(contract.get("boss",false))
 		var card:=AutomotiveUI.content_card(parent,92 if portrait or compact_landscape() else 79,board.selected==contract.id)
 		bind(card,"cb_rival_"+str(contract.id))
@@ -244,7 +242,7 @@ func results(body: VBoxContainer) -> void:
 	var heading:=AutomotiveUI.row(body)
 	var outcome:="Red light" if game.staging.red_light else ("You win" if game.result_win else str(game.active_contract.get("name","Rival"))+" wins")
 	var boss_win: bool=game.result_win and bool(game.active_contract.get("boss",false))
-	var trophy_earned: bool=boss_win and game.result_bonus>0
+	var trophy_earned: bool=boss_win and game.result_trophy
 	if boss_win:
 		heading.add_child(trophy_icon(Championships.TROPHY))
 		outcome="REDLINE Champion" if trophy_earned and Championships.trophies(game.profile)==6 else ("Class %s Champion"%game.active_contract.series if trophy_earned else "Boss defeated")
@@ -288,9 +286,9 @@ func results(body: VBoxContainer) -> void:
 	slip.add_child(HSeparator.new())
 	var net: int=game.result_reward-game.active_stake
 	add_label(slip,"NET %s$%d    +%d XP"%["+" if net>=0 else "−",absi(net),game.result_xp],27,GlassPalette.GREEN if net>=0 else AutomotiveUI.ORANGE,true)
-	add_label(slip,"Race pay $%d  /  Stake $%d  /  Returned $%d"%[game.result_base_pay,game.active_stake,game.result_bet_return],16,AutomotiveUI.MUTED)
-	if game.result_bonus>0:
-		add_label(slip,("Championship trophy   /   +$%d" if trophy_earned else "Completion bonus +$%d")%game.result_bonus,18,Championships.TROPHY if trophy_earned else GlassPalette.GREEN)
+	add_label(slip,"Stake $%d  /  Returned $%d (stake included)"%[game.active_stake,game.result_bet_return],16,AutomotiveUI.MUTED)
+	if trophy_earned:
+		add_label(slip,"Championship trophy earned",18,Championships.TROPHY)
 	if boss_win:
 		var victory:=add_label(slip,str(game.active_contract.victory),17,Championships.TROPHY)
 		victory.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
@@ -301,7 +299,7 @@ func results(body: VBoxContainer) -> void:
 		add_label(slip,"Class %s   /   %d of %d cleared"%[series,wins,Championships.ROUNDS],19,AutomotiveUI.BLUE)
 		progress_bar(slip,wins)
 	elif series=="OPEN":
-		add_label(slip,"Rival Challenge · replay for cash",18,AutomotiveUI.BLUE)
+		add_label(slip,"Rival Challenge · replay for betting profit",18,AutomotiveUI.BLUE)
 	add_label(slip,"Driver level %d%s"%[game.profile.level()," · Level up" if game.profile.level()>game.previous_level else ""],16,AutomotiveUI.MUTED)
 	var actions:=grid(body,2 if portrait else 4,10)
 	button(actions,"garage","Garage")

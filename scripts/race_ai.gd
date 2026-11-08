@@ -76,7 +76,7 @@ static func live_contract(contract: Dictionary,run_index: int,opponent_index: in
 	return live
 
 static func launch_target(car: Drivetrain) -> float:
-	if car.launch_control and car.hardware.tune.has("launch_rpm"): return car.launch_rpm
+	if car.launch_control: return car.launch_rpm
 	return minf(car.redline_rpm*.70,maxf(3200,float(car._base_spec.get("torque_rpm",3900))))
 static func launch_clutch(car: Drivetrain) -> float:
 	if not car._base_spec.has("id") or car.has_converter or car.gear!=1 or car.elapsed>4: return 0.0

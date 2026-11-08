@@ -9,6 +9,9 @@ func frame() -> void:
 	for i in 4: await process_frame
 	await RenderingServer.frame_post_draw
 func tap(id: String, touch: bool) -> void:
+	if id=="tab_performance":
+		game.go_garage(); await frame(); id="garage_upgrades"
+	elif id=="tab_style" and game.tab=="garage": id="garage_customize"
 	for b in game.buttons:
 		if b.id!=id: continue
 		var point: Vector2=game.to_global(b.rect.get_center())
@@ -31,10 +34,10 @@ func run() -> void:
 		await create_timer(.33).timeout
 		await frame()
 		var nav: Array=game.buttons.filter(func(b): return str(b.id).begins_with("tab_"))
-		check(nav.map(func(b): return b.id)==["tab_garage","tab_performance","tab_races","tab_dealer","tab_driver"],"Dock order or hit targets changed")
-		if nav.size()==5: check(nav[2].rect.size.x>nav[3].rect.size.x and nav[2].rect.get_center().x<nav[3].rect.get_center().x,"Race emphasis or dealer position is wrong")
-		for id in ["garage_upgrades","garage_customize","open_tuning","race_menu"]:
-			check(not game.native_workshop.targets.has(id),"Extra Garage action "+id)
+		check(nav.map(func(b): return b.id)==["tab_garage","tab_races","tab_dealer","tab_driver"],"Dock order or hit targets changed")
+		if nav.size()==4: check(nav[1].rect.get_center().x<nav[2].rect.get_center().x,"Dealer is not to the right of Race")
+		for id in ["garage_upgrades","garage_customize","hub_owned"]:
+			check(game.native_workshop.targets.has(id),"Missing parent-screen Garage action "+id)
 		root.get_texture().get_image().save_png("res://.qa/navigation/garage_%d.png"%dimensions.x)
 		await tap("hub_owned",dimensions.x<1000)
 		check(game.tab=="owned","Change Car did not open collection")

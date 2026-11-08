@@ -1,156 +1,126 @@
 {
   "builds": {
     "brz": {
-      "factory": "D",
-      "quarter_s": 11.211862566232,
-      "upgraded": "A"
+      "engine_class": "D",
+      "quarter_s": 11.1998880296301
     },
     "camaro": {
-      "factory": "A",
-      "quarter_s": 10.0687100646977,
-      "upgraded": "S"
+      "engine_class": "A",
+      "quarter_s": 10.0682033265427
     },
     "chiron": {
-      "factory": "S",
-      "quarter_s": 7.90299085580272,
-      "upgraded": "S"
+      "engine_class": "S",
+      "quarter_s": 7.90076652362974
     },
     "civic_si": {
-      "factory": "E",
-      "quarter_s": 11.5686150934606,
-      "upgraded": "A"
+      "engine_class": "E",
+      "quarter_s": 11.5800801143499
     },
     "demon": {
-      "factory": "S",
-      "quarter_s": 8.25281688981858,
-      "upgraded": "S"
+      "engine_class": "S",
+      "quarter_s": 8.23212084638867
     },
     "evo": {
-      "factory": "C",
-      "quarter_s": 10.8633951557037,
-      "upgraded": "A"
+      "engine_class": "C",
+      "quarter_s": 10.8789144054714
     },
     "golf_r": {
-      "factory": "B",
-      "quarter_s": 10.5927059038376,
-      "upgraded": "A"
+      "engine_class": "B",
+      "quarter_s": 10.6099004014973
     },
     "gr86": {
-      "factory": "C",
-      "quarter_s": 11.2775320927705,
-      "upgraded": "A"
+      "engine_class": "C",
+      "quarter_s": 11.3012377866199
     },
     "gt500": {
-      "factory": "S",
-      "quarter_s": 8.70883945531409,
-      "upgraded": "S"
+      "engine_class": "S",
+      "quarter_s": 8.70883945531409
     },
     "gti": {
-      "factory": "D",
-      "quarter_s": 11.8373827473135,
-      "upgraded": "A"
+      "engine_class": "D",
+      "quarter_s": 11.8373583864304
     },
     "gti_vr6": {
-      "factory": "D",
-      "quarter_s": 12.0324955417356,
-      "upgraded": "B"
+      "engine_class": "D",
+      "quarter_s": 12.0382230272052
     },
     "gtr": {
-      "factory": "A",
-      "quarter_s": 9.32915591339124,
-      "upgraded": "S"
+      "engine_class": "A",
+      "quarter_s": 9.31321573001125
     },
     "integra": {
-      "factory": "D",
-      "quarter_s": 11.0829948566693,
-      "upgraded": "A"
+      "engine_class": "D",
+      "quarter_s": 11.0924537154664
     },
     "m3": {
-      "factory": "B",
-      "quarter_s": 10.9394248162029,
-      "upgraded": "A"
+      "engine_class": "B",
+      "quarter_s": 10.9431241120177
     },
     "mclaren": {
-      "factory": "S",
-      "quarter_s": 8.2720514284114,
-      "upgraded": "S"
+      "engine_class": "S",
+      "quarter_s": 8.24830004303195
     },
     "miata": {
-      "factory": "E",
-      "quarter_s": 11.3922359062047,
-      "upgraded": "A"
+      "engine_class": "E",
+      "quarter_s": 11.409704368317
     },
     "mustang": {
-      "factory": "A",
-      "quarter_s": 10.0328033017258,
-      "upgraded": "S"
+      "engine_class": "A",
+      "quarter_s": 10.032392892493
     },
     "r8": {
-      "factory": "A",
-      "quarter_s": 9.15818475686885,
-      "upgraded": "S"
+      "engine_class": "A",
+      "quarter_s": 9.15575148856018
     },
     "redeye": {
-      "factory": "A",
-      "quarter_s": 9.38985599825174,
-      "upgraded": "S"
+      "engine_class": "A",
+      "quarter_s": 9.38985471181573
     },
     "rsx": {
-      "factory": "D",
-      "quarter_s": 11.2166008150273,
-      "upgraded": "A"
+      "engine_class": "D",
+      "quarter_s": 11.2163408126329
     },
     "s2000": {
-      "factory": "C",
-      "quarter_s": 11.1342792187571,
-      "upgraded": "A"
+      "engine_class": "C",
+      "quarter_s": 11.1329059932075
     },
     "sf90": {
-      "factory": "S",
-      "quarter_s": 8.26205432426488,
-      "upgraded": "S"
+      "engine_class": "S",
+      "quarter_s": 8.2693200485852
     },
     "sti": {
-      "factory": "C",
-      "quarter_s": 10.6234089912492,
-      "upgraded": "A"
+      "engine_class": "C",
+      "quarter_s": 10.6328918008941
     },
     "supra": {
-      "factory": "B",
-      "quarter_s": 10.8488165329447,
-      "upgraded": "A"
+      "engine_class": "B",
+      "quarter_s": 10.8387003311217
     },
     "supra_gr": {
-      "factory": "B",
-      "quarter_s": 9.89374718520063,
-      "upgraded": "S"
+      "engine_class": "B",
+      "quarter_s": 9.91286357590684
     },
     "turbo_s": {
-      "factory": "S",
-      "quarter_s": 8.73061051574546,
-      "upgraded": "S"
+      "engine_class": "S",
+      "quarter_s": 8.711264313083
     },
     "type_r": {
-      "factory": "C",
-      "quarter_s": 11.1516087033598,
-      "upgraded": "A"
+      "engine_class": "C",
+      "quarter_s": 11.1432513747754
     },
     "z06": {
-      "factory": "S",
-      "quarter_s": 8.97438249920744,
-      "upgraded": "S"
+      "engine_class": "S",
+      "quarter_s": 8.97746802773426
     },
     "z350": {
-      "factory": "C",
-      "quarter_s": 11.1996231854049,
-      "upgraded": "A"
+      "engine_class": "C",
+      "quarter_s": 11.1918371701301
     },
     "z400": {
-      "factory": "A",
-      "quarter_s": 10.524088465943,
-      "upgraded": "A"
+      "engine_class": "A",
+      "quarter_s": 10.5267311387742
     }
   },
-  "checks": 405,
+  "checks": 435,
   "passed": true
 }

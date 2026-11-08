@@ -18,7 +18,7 @@ func configured(profile: DriverProfile) -> Drivetrain:
 
 func _initialize() -> void:
 	var profile := DriverProfile.new()
-	profile.credits=100000
+	profile.credits=1000000
 	var ladders := {
 		"intake":["intake_street","plenum","intake_velocity","intake_race"],
 		"fuel":["fuel_street","fuel_injectors","fuel_ethanol"],

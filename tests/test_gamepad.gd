@@ -29,7 +29,7 @@ func run() -> void:
 	check(not game.gamepad.active,"Stick drift activated navigation")
 	press(JOY_BUTTON_DPAD_DOWN)
 	check(game.gamepad.active and game.glass.focused!="","Controller did not establish menu focus")
-	game.glass.focused="tab_performance"
+	game.glass.focused="garage_upgrades"
 	press(JOY_BUTTON_A)
 	await frame()
 	check(game.tab=="performance","Controller confirm did not activate Upgrade")
@@ -41,7 +41,7 @@ func run() -> void:
 	game.glass.focused="install_0_2"
 	button(JOY_BUTTON_A); button(JOY_BUTTON_A); button(JOY_BUTTON_A,false)
 	await frame()
-	check(game.profile.stages[0]==2 and game.profile.credits==97900,"Controller purchase was missing or charged more than once")
+	check(game.profile.stages[0]==2 and game.profile.credits==97200,"Controller purchase was missing or charged more than once")
 	press(JOY_BUTTON_B); await frame()
 	game.action("tab_performance"); await frame()
 	game.glass.focused="open_tuning"; press(JOY_BUTTON_A)

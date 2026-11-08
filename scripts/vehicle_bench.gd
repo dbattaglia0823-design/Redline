@@ -6,6 +6,7 @@ var beams := RaceStaging.new()
 var car: Drivetrain
 var strategy := "optimized"
 var fixed_rpm := 7000.0
+var finish_mph := 100.0 # Audit runs can continue past the quarter to measure 60–130.
 var done := false
 var ticks := 0
 var result: Dictionary = {}
@@ -51,6 +52,8 @@ func begin(spec: Dictionary, stages: Array, build: Dictionary, policy: String = 
 	_stage = 0
 	result = {"transmission":car.transmission_id,"policy":strategy,"fixed_rpm":fixed_rpm,"zero_60_s":null,"zero_100_s":null,"eighth_s":null,"quarter_s":null,"trap_mph":null,"eighth_mph":null,"mass_kg":car.mass(),"shift_map":car.shift_map.duplicate(),"gears":car.gear_ratios.duplicate(),"efficiency":car.trans_efficiency,"capacity_nm":car.input_capacity()}
 	samples.clear()
+	result["zero_130_s"]=null
+	result["sixty_130_s"]=null
 	shifts.clear()
 	_cut_time = 0.0
 	_shift_time = 0.0
@@ -104,10 +107,11 @@ func step_budget(count: int = 480) -> void:
 		_rpm_integral += car.rpm*H
 		_rpm_min = minf(_rpm_min,car.rpm)
 		_rpm_max = maxf(_rpm_max,car.rpm)
-		for threshold in [60.0,100.0]:
-			var key := "zero_60_s" if threshold == 60.0 else "zero_100_s"
+		for threshold in [60.0,100.0,130.0]:
+			var key := "zero_60_s" if threshold == 60.0 else ("zero_100_s" if threshold == 100.0 else "zero_130_s")
 			var mps: float = threshold/Drivetrain.MPH_PER_MPS
 			if result[key] == null and car.speed >= mps and before_v < mps: result[key] = before_t+H*(mps-before_v)/maxf(0.00001,car.speed-before_v)
+		if result.zero_130_s!=null and result.zero_60_s!=null: result.sixty_130_s=float(result.zero_130_s)-float(result.zero_60_s)
 		for distance in [201.168,402.336]:
 			var key := "eighth_s" if distance < 300.0 else "quarter_s"
 			if result[key] == null and car.distance >= distance:
@@ -119,7 +123,7 @@ func step_budget(count: int = 480) -> void:
 			sample["wheelspin"] = car.wheelspin
 			samples.append(sample)
 		ticks += 1
-		if (result.quarter_s != null and result.zero_100_s != null) or car.elapsed >= 40.0:
+		if (result.quarter_s != null and car.speed*Drivetrain.MPH_PER_MPS >= finish_mph) or car.elapsed >= 40.0:
 			done = true
 			result.merge({"reaction_s":timing.result.reaction_s,"quarter_et_s":timing.result.quarter_s,"eighth_et_s":timing.result.eighth_s,"sixty_ft_s":timing.result.sixty_ft_s})
 			result.merge({"shift_count":shifts.size(),"shifts":shifts.duplicate(true),"shift_time_s":_shift_time,"effective_shift_loss_s":_cut_time,"wheelspin_s":_spin_time,"clutch_slip_s":_clutch_slip_time,"gearbox_slip_s":_gearbox_slip_time,"rpm_min":_rpm_min,"rpm_max":_rpm_max,"rpm_mean":_rpm_integral/car.elapsed,"engine_c":car.engine_temperature,"transmission_c":car.transmission_temperature,"wear":car.component_wear,"safety_clamps":car.safety_clamps})

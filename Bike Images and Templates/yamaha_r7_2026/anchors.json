@@ -1,0 +1,27 @@
+{
+  "name": "2026 Yamaha YZF-R7",
+  "format": "REDLINE 1000x360",
+  "source_dimensions": [
+    543,
+    339
+  ],
+  "game_dimensions": [
+    1000,
+    360
+  ],
+  "wheel_centers": {
+    "rear": [
+      351,
+      267
+    ],
+    "front": [
+      697,
+      267
+    ]
+  },
+  "wheel_radius_game": 76.46,
+  "wheel_diameter_game": 152.92,
+  "wheel_radius_meters": 0.3,
+  "wheel_centers_verified": false,
+  "notes": "Provisional approximate visual anchors from generated sheet; validate in Godot. Two transparent full-canvas wheel layers already placed at anchors. Stationary body overlays wheels."
+}

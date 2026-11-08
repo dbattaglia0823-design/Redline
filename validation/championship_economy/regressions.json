@@ -1,0 +1,74 @@
+{
+  "godot": "4.6.3",
+  "headless": {
+    "import": "pass",
+    "test_save_recovery": "pass",
+    "test_career_save_migration": "pass",
+    "test_championships": "pass",
+    "test_betting_progression": "pass",
+    "test_economy": "pass",
+    "test_quality_model": "pass",
+    "test_career_economy_sim": "pass",
+    "test_roster": "pass",
+    "test_physics": "pass",
+    "test_racing_physics_audit": "pass",
+    "test_traction_expansion": "pass",
+    "test_driving_feedback": "pass",
+    "test_transmissions": "pass",
+    "test_launch_induction_audio": "pass",
+    "test_high_power_gearbox": "pass",
+    "test_parts_lineup": "pass",
+    "test_customization": "pass",
+    "test_upgrade_model": "pass",
+    "test_advanced_tuning": "pass",
+    "benchmark_launch_balance": "pass",
+    "benchmark_physics_audit": "pass"
+  },
+  "post_adjustment_rechecks": {
+    "test_betting_progression": {
+      "status": "pass",
+      "assertions": 335,
+      "log": ".qa/championship-economy/verified-final/test.log"
+    },
+    "test_career_economy_sim": {
+      "status": "pass",
+      "championship_wins": 60,
+      "extra_betting_replays": 96
+    }
+  },
+  "graphical": {
+    "test_championships_ui": {
+      "assertions": "pass",
+      "process_exit": -1073741819,
+      "log": ".qa\\championship-economy\\ui-final-clean\\test_championships_ui\\test.log"
+    },
+    "test_native_workshop": {
+      "assertions": "pass",
+      "process_exit": -1073741819,
+      "log": ".qa\\championship-economy\\ui-verified\\test_native_workshop\\test.log"
+    },
+    "test_gamepad": {
+      "assertions": "pass",
+      "process_exit": -1073741819,
+      "log": ".qa\\championship-economy\\ui-verified\\test_gamepad\\test.log"
+    },
+    "test_betting_ui": {
+      "assertions": "pass",
+      "process_exit": -1073741819,
+      "log": ".qa\\championship-economy\\ui-betting\\test.log"
+    }
+  },
+  "existing_shutdown_issue": {
+    "exit": -1073741819,
+    "hex": "0xC0000005",
+    "pre_change_reproduction": ".qa\\championship-economy\\baseline-exit\\test.log",
+    "minimal_garage_reproduction": ".qa\\championship-economy\\garage-exit-probe\\test.log",
+    "empty_renderer_exit": 0,
+    "note": "Graphical interaction assertions pass; application shutdown crashes with both pre-change and updated source. This update does not claim a clean graphical-process exit."
+  },
+  "actual_distance_comparison": {
+    "followup_matches": 54,
+    "status": "pass",
+    "minimum_margin_s": 0.03
+  }
+}

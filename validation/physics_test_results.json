@@ -4,8 +4,8 @@
 	"frame_rate_max_distance_error_m": 0.0,
 	"idle_rpm": 950.000000000002,
 	"limiter_band": [
-		7434.10502837759,
-		7634.44452133318
+		7434.28888788422,
+		7630.02280559457
 	],
 	"paddle_transitions": [
 		{
@@ -14,36 +14,36 @@
 			"up_locked_error_rpm": 0.0
 		},
 		{
-			"down_locked_error_rpm": 0.0,
+			"down_locked_error_rpm": -0.000000000000909494701772928,
 			"from_gear": 2,
 			"up_locked_error_rpm": 0.0
 		},
 		{
-			"down_locked_error_rpm": 0.00000000000181898940354586,
+			"down_locked_error_rpm": 0.0,
 			"from_gear": 3,
-			"up_locked_error_rpm": 0.0
+			"up_locked_error_rpm": 0.000000000000454747350886464
 		},
 		{
-			"down_locked_error_rpm": 0.000000000000909494701772928,
+			"down_locked_error_rpm": 0.0,
 			"from_gear": 4,
 			"up_locked_error_rpm": 0.000000000000454747350886464
 		},
 		{
 			"down_locked_error_rpm": 0.0,
 			"from_gear": 5,
-			"up_locked_error_rpm": -0.000000000000909494701772928
+			"up_locked_error_rpm": 0.0
 		}
 	],
 	"stock_quarter": {
 		"clamps": 0,
 		"distance": 402.336,
-		"et": 13.471180416551,
-		"mph": 109.526219190608
+		"et": 13.5523620517455,
+		"mph": 108.912236028562
 	},
 	"upgraded_quarter": {
 		"clamps": 0,
 		"distance": 402.336,
-		"et": 9.69343952743896,
-		"mph": 152.092006713557
+		"et": 9.79817636674303,
+		"mph": 150.175166427626
 	}
 }

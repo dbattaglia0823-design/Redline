@@ -1,9 +1,23 @@
 class_name VehicleRenderer
 extends RefCounted
 
+static func retain_texture(canvas: Node2D,texture: Texture2D) -> void:
+	# CanvasItem retains RIDs, not Texture2D resources. Static thumbnails can keep
+	# drawing long after the shared LRU evicts their artwork. Own every texture
+	# used by this canvas until its next redraw (or until the canvas is freed).
+	# Accumulate across cars/reflections drawn on the same canvas in one frame.
+	var frame := Engine.get_process_frames()
+	if int(canvas.get_meta("vehicle_texture_frame",-1))!=frame:
+		canvas.set_meta("vehicle_texture_frame",frame)
+		canvas.set_meta("vehicle_draw_textures",{})
+	var retained: Dictionary=canvas.get_meta("vehicle_draw_textures")
+	retained[texture.get_instance_id()]=texture
+
 static func layer(g: Node2D,path: String,pivot: Vector2,scale: float,modulate: Color = Color.WHITE) -> void:
 	var tex := VehicleAppearance.texture(path)
-	if tex: g.draw_texture_rect(tex,Rect2(-pivot,Vector2(1000,360)*scale),false,modulate)
+	if tex:
+		retain_texture(g,tex)
+		g.draw_texture_rect(tex,Rect2(-pivot,Vector2(1000,360)*scale),false,modulate)
 
 static func draw(g: Node2D,origin: Vector2,size: float,model: String,look: Dictionary,car: Drivetrain,animate: bool,offset: Vector2,pitch: float,flame: bool,quality: int,night: bool = false,braking: bool = false,effects: RaceFeedback = null,reveal: float = 1.0,studio: bool = false,light_phase: float = 0.0) -> void:
 	var d := VehicleAppearance.definition(model)

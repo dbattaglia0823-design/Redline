@@ -40,10 +40,10 @@ func _initialize() -> void:
 	check(p.career_claims.is_empty(),"Red light claimed a completion bonus")
 	check(p.begin_wager(100,event),"Recovery entry after loss rejected")
 	result=p.award_race(event,false,false,18,.4,79,0,0)
-	check(p.credits==2460 and result.base==260 and result.bet_return==0,"Loss wager or finish award inconsistent")
+	check(p.credits==2200 and result.base==0 and result.bet_return==0,"Loss wager or finish award inconsistent")
 	p.begin_wager(200,event); restored=DriverProfile.new(); restored.load_profile()
-	check(restored.credits==2260 and restored.pending_wager.is_empty(),"Interrupted entry refunded or reopened the charged wager")
+	check(restored.credits==2000 and restored.pending_wager.is_empty(),"Interrupted entry refunded or reopened the charged wager")
 	p=DriverProfile.new(); p.credits=10000
-	check(not p.begin_wager(501,event) and p.credits==10000,"Event wager cap bypassed")
+	check(not p.begin_wager(int(event.max_bet)+1,event) and p.credits==10000,"Event wager cap bypassed")
 	print("CAREER SAVE MIGRATION / ORIGINAL PROGRESS / PRESETS / RED LIGHT / WAGERS: ",checks," / ","PASS" if failures==0 else "FAIL")
 	quit(0 if failures==0 else 1)

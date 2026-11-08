@@ -3,15 +3,17 @@ extends "res://tests/test_main_navigation.gd"
 func capture(label: String) -> void:
 	await create_timer(.35).timeout
 	await frame()
-	var showroom: GarageShowroom=game.native_workshop.find_child("GarageShowroom",true,false)
-	var console: PanelContainer=game.native_workshop.find_child("GarageConsole",true,false)
+	var showroom: TextureRect=game.native_workshop.find_child("GarageEnvironment",true,false)
+	var ui: ToolkitVehicleScreen=game.native_workshop.vehicle_template
+	var console: Control=ui.controls.vehicle_info
 	check(showroom!=null and showroom.position==Vector2.ZERO and showroom.size==game.native_workshop.size,"Showroom does not fill the screen")
-	check(showroom.scene!=null,"Garage background did not load")
+	check(showroom.texture!=null and ui.hero.scene_texture!=null,"Garage background did not load")
 	var canvas:=Rect2(Vector2.ZERO,game.native_workshop.size)
-	check(canvas.encloses(console.get_rect()),"Garage console leaves the screen")
+	var console_rect:=Rect2(game.to_local(console.global_position),console.size)
+	check(canvas.encloses(console_rect),"Garage console leaves the screen")
 	for target in game.buttons:
 		check(canvas.encloses(target.rect),"Garage action leaves the screen: "+target.id)
-		if str(target.id).begins_with("tab_"): check(not target.rect.intersects(console.get_rect()),"Console overlaps navigation")
+		if str(target.id).begins_with("tab_"): check(not target.rect.intersects(console_rect),"Console overlaps navigation")
 	root.get_texture().get_image().save_png("res://.qa/garage_showroom/%s_%dx%d.png"%[label,root.size.x,root.size.y])
 
 func run() -> void:

@@ -47,7 +47,7 @@ func _initialize() -> void:
 	gearbox.clutch_engagement=1
 	gearbox.throttle=1
 	gearbox.step(1.0/240,1)
-	check(gearbox.transmission_slipping and gearbox.overload>0 and gearbox.engine_torque<=gearbox.input_capacity(),"Overload did not flag and limit transmitted torque")
+	check(gearbox.transmission_slipping and gearbox.overload>0 and absf(gearbox.clutch_torque)<=gearbox.input_capacity()+.001,"Overload did not flag and limit transmitted torque")
 
 	var automatic := car("automatic_type")
 	automatic.throttle=.65

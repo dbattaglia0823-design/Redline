@@ -20,22 +20,22 @@ func cost(p: DriverProfile,c: Dictionary) -> int:
 	var conversion: bool=str(old_build.transmission)!=str(c.hardware.transmission)
 	for i in 8:
 		if int(c.stages[i])<int(levels[i]): return 999999999
-		var owned_level:=0 if i==4 and conversion else int(levels[i])
-		for tier in range(owned_level+1,int(c.stages[i])+1): charge+=GameCatalog.PART_COSTS[i]*tier
+		var owned_level:=0 if i==4 and conversion else int(old.get("owned_stages",levels)[i])
+		for tier in range(owned_level+1,int(c.stages[i])+1): charge+=GameCatalog.stage_cost(i,tier)
 	if conversion: charge+=int(TransmissionCatalog.spec(c.hardware.transmission).cost)
 	for part in c.hardware.parts.values():
-		if conversion or not old_build.get("parts",{}).values().has(part): charge+=int(VehicleParts.PARTS[part].cost)
+		if conversion or not old_build.get("owned_parts",[]).has(part): charge+=int(VehicleParts.PARTS[part].cost)
 	return charge
 func driver(c: Dictionary,event: Dictionary) -> Dictionary:
 	return {"model":c.model,"stages":c.stages,"hardware":c.hardware,"driver_model":2,"reaction":.12,"pedal":1.0,"skill":3,"shift_error":0,"traction_skill":.95,"nitrous":event.get("rule","")!="motor_only" and int(c.stages[7])>0,"nitrous_gear":1,"driver_seed":0}
 func run() -> void:
 	var replay:=DriverProfile.new()
-	replay.credits=0
+	replay.credits=1000
 	var rival:=Championships.event("open_0")
 	for attempt in 2:
-		check(replay.begin_wager(0,rival),"Zero-credit replay was locked")
+		check(replay.begin_wager(100,rival),"Rival wager was locked")
 		var payout:=replay.award_race(rival,attempt==1,false,17.0,.24,88.0,0,0)
-		check(not payout.is_empty() and payout.reward>0 and Championships.completed(replay)==0,"Rival replay did not earn cash independently")
+		check(not payout.is_empty() and payout.base==0 and payout.bonus==0 and payout.reward==(200 if attempt==1 else 0) and Championships.completed(replay)==0,"Rival replay did not earn cash independently")
 	var pool: Array=[]; var seen: Dictionary={}
 	for id in Championships.catalog():
 		var c:=Championships.event(id)
@@ -93,32 +93,52 @@ func run() -> void:
 					break
 			check(not chosen.is_empty(),"No competitive authored build for "+id)
 			if chosen.is_empty(): break
-			while p.credits<price and extra_runs<30:
+			# Keep a betting bankroll after purchasing: $0 is intentionally not a
+			# source of recovery cash. Replays use the safest already-beatable rival.
+			while p.credits<price+1000 and extra_runs<150:
 				var current:={"model":p.vehicle_id,"stages":p.stages,"hardware":p.hardware}
-				var recovery: Dictionary={}; var a: Dictionary={}; var b: Dictionary={}; var pay:=0
-				for candidate_id in Championships.ids("OPEN"):
+				var recovery: Dictionary={}; var a: Dictionary={}; var pay:=0
+				var available_ids: Array=Championships.ids("OPEN")+Championships.ids(GameCatalog.engine_class(p.vehicle_id,p.hardware))
+				for candidate_id in available_ids:
 					var available:=Championships.event(candidate_id)
-					if Championships.eligibility(p,available)!="" or int(available.purse)<=pay: continue
+					if Championships.eligibility(p,available)!="": continue
+					var stake:=mini(int(available.max_bet),maxi(1,p.credits/3))
+					if stake<=pay: continue
 					var player:=RaceAI.estimate(driver(current,available),float(available.distance)); var opponent:=RaceAI.estimate(available,float(available.distance))
-					if player.time<opponent.time: recovery=available; a=player; b=opponent; pay=int(available.purse)
-				check(not recovery.is_empty(),"No suitable recovery race")
+					if player.time<float(opponent.time)-.05: recovery=available; a=player; pay=stake
+				check(not recovery.is_empty(),"No beatable betting replay for "+id)
 				if recovery.is_empty(): break
-				check(a.time<b.time,"Recovery race is not winnable")
-				check(p.begin_wager(0,recovery),"Recovery race entry failed")
+				var before_cash:=p.credits
+				check(p.begin_wager(pay,recovery),"Betting replay entry failed")
 				var before_progress:=Championships.completed(p)
-				p.award_race(recovery,true,false,float(a.time),.18,float(a.mph),0,0); extra_runs+=1
-				check(Championships.completed(p)==before_progress,"Rival Challenge advanced championship progress")
-			check(p.credits>=price,"Excessive grind before "+id)
-			if p.credits<price: break
-			p.snapshot_vehicle(); p.credits-=price
-			p.vehicle_id=chosen.model; p.stages=chosen.stages.duplicate(); p.hardware=chosen.hardware.duplicate(true)
-			p.garage[p.vehicle_id]={"stages":p.stages.duplicate(),"hardware":p.hardware.duplicate(true)}
-			check(p.begin_wager(0,event),"Progression eligibility failed for "+id)
-			p.award_race(event,true,false,float(estimate.time),.18,float(estimate.mph),0,0)
+				p.award_race(recovery,true,false,float(a.time),.12,float(a.mph),0,0); extra_runs+=1
+				check(p.credits==before_cash+pay,"Replay profit came from something other than the bet")
+				check(Championships.completed(p)==before_progress,"Replay advanced championship progress")
+			check(p.credits>=price+1000,"Cannot fund build and preserve a bankroll before "+id)
+			if p.credits<price+1000: break
+			var before_purchase:=p.credits
+			if not p.garage.has(chosen.model): check(p.buy_vehicle(chosen.model),"Vehicle purchase failed for "+id)
+			else: check(p.select_vehicle(chosen.model),"Owned car selection failed")
+			for category in 8:
+				if int(p.stages[category])!=int(chosen.stages[category]): check(p.upgrade(category,int(chosen.stages[category])),"Upgrade purchase failed for "+id)
+			for slot in p.hardware.parts.keys():
+				if not chosen.hardware.parts.has(slot): p.remove_hardware(slot)
+			for part in chosen.hardware.parts.values():
+				check(p.install_hardware(part).begins_with("Installed"),"Part purchase failed for "+id+" / "+part)
+			p.hardware.tune=chosen.hardware.tune.duplicate(true); p.save()
+			check(p.credits==before_purchase-price,"Quoted build cost differed from actual purchases for "+id)
+			var live:={"model":p.vehicle_id,"stages":p.stages,"hardware":p.hardware}
+			estimate=RaceAI.estimate(driver(live,event),float(event.distance))
+			check(estimate.time<float(bot.time),"Purchased build cannot win "+id)
+			var stake:=mini(int(event.max_bet),maxi(1,p.credits/3))
+			var before_cash:=p.credits
+			check(p.begin_wager(stake,event),"Progression eligibility failed for "+id)
+			p.award_race(event,true,false,float(estimate.time),.12,float(estimate.mph),0,0)
+			check(p.credits==before_cash+stake,"Championship paid income beyond betting for "+id)
 			trials.append({"event":id,"model":p.vehicle_id,"purchase_and_upgrade_cost":price,"player_s":estimate.time,"rival_s":bot.time,"credits_after":p.credits,"recovery_runs_so_far":extra_runs})
 	check(trials.size()==Championships.TOTAL_RACES,"Economy simulation could not finish all championships")
-	check(extra_runs<=12,"More than twelve extra recovery races needed")
+	check(extra_runs<150,"Betting progression needed excessive repeat races")
 	var f:=FileAccess.open("res://.qa/career_economy_progression.json",FileAccess.WRITE)
-	f.store_string(JSON.stringify({"passed":failures==0,"recovery_runs":extra_runs,"events":trials,"note":"Competent simulated controls, zero wagers, exact part-stage costs, retained per-car upgrades; this measures an attainable route, not human win probability."},"  ")); f.close()
+	f.store_string(JSON.stringify({"passed":failures==0,"recovery_runs":extra_runs,"events":trials,"note":"Competent simulated controls, one-third-bankroll bets, zero race payouts, real purchase APIs and retained per-car upgrades; this measures an attainable route, not human win probability."},"  ")); f.close()
 	print("SIMULATED CAREER ECONOMY / ",trials.size()," championships heats / ",extra_runs," recovery races: ","PASS" if failures==0 else "FAIL")
 	quit(0 if failures==0 else 1)

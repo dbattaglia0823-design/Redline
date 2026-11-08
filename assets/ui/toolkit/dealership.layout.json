@@ -1,0 +1,130 @@
+{
+  "version": 2,
+  "name": "Dealership",
+  "viewport": {
+    "width": 800,
+    "height": 500
+  },
+  "nodes": [
+    {
+      "id": "heading",
+      "type": "label",
+      "x": 35,
+      "y": 22,
+      "w": 340,
+      "h": 52,
+      "label": "DEALERSHIP",
+      "role": "screen_title",
+      "actionId": "",
+      "bindingKey": ""
+    },
+    {
+      "id": "currency",
+      "type": "label",
+      "x": 555,
+      "y": 28,
+      "w": 203,
+      "h": 46,
+      "label": "Currency",
+      "role": "balance",
+      "actionId": "",
+      "bindingKey": "dealership.balance"
+    },
+    {
+      "id": "search",
+      "type": "input",
+      "x": 35,
+      "y": 94,
+      "w": 256,
+      "h": 47,
+      "label": "Search vehicles",
+      "role": "filter_search",
+      "actionId": "dealership.search",
+      "bindingKey": "dealership.search"
+    },
+    {
+      "id": "filter",
+      "type": "button",
+      "x": 308,
+      "y": 94,
+      "w": 177,
+      "h": 47,
+      "label": "Filters",
+      "role": "filter_action",
+      "actionId": "dealership.filter",
+      "bindingKey": ""
+    },
+    {
+      "id": "vehicles",
+      "type": "list",
+      "x": 34,
+      "y": 154,
+      "w": 336,
+      "h": 296,
+      "label": "Vehicles",
+      "role": "vehicle_catalog",
+      "actionId": "dealership.select",
+      "bindingKey": "dealership.vehicles"
+    },
+    {
+      "id": "vehicle_details",
+      "type": "panel",
+      "x": 385,
+      "y": 154,
+      "w": 382,
+      "h": 296,
+      "label": "",
+      "role": "vehicle_details_panel",
+      "actionId": "",
+      "bindingKey": ""
+    },
+    {
+      "id": "vehicle_name",
+      "type": "label",
+      "x": 400,
+      "y": 174,
+      "w": 345,
+      "h": 53,
+      "label": "Vehicle name",
+      "role": "detail_title",
+      "actionId": "",
+      "bindingKey": "dealership.selected.name"
+    },
+    {
+      "id": "vehicle_stats",
+      "type": "list",
+      "x": 401,
+      "y": 239,
+      "w": 342,
+      "h": 124,
+      "label": "Specs",
+      "role": "specs_list",
+      "actionId": "",
+      "bindingKey": "dealership.selected.stats"
+    },
+    {
+      "id": "vehicle_price",
+      "type": "label",
+      "x": 403,
+      "y": 375,
+      "w": 166,
+      "h": 46,
+      "label": "Price",
+      "role": "price",
+      "actionId": "",
+      "bindingKey": "dealership.selected.price"
+    },
+    {
+      "id": "purchase",
+      "type": "button",
+      "x": 578,
+      "y": 383,
+      "w": 166,
+      "h": 56,
+      "label": "Purchase",
+      "role": "primary_action",
+      "actionId": "dealership.purchase_request",
+      "bindingKey": ""
+    }
+  ]
+}

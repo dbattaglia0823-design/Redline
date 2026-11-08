@@ -206,8 +206,8 @@ func results() -> void:
 	preview(g.profile.vehicle_id,146,g.car)
 	var net: int = g.result_reward-g.active_stake
 	var rt := ("RED " if g.staging.red_light else "")+"%.3f S" % g.player_reaction if g.staging.released[0] else "--"
-	var pairs := [["ELAPSED / ET","%.3f S" % g.staging.elapsed(g.player_finish)],["REACTION",rt],["TRAP SPEED","%.1f MPH" % g.finish_speed],["RIVAL / ET","%.3f S" % g.staging.elapsed(g.rival_finish,1)],["RIVAL TRAP","%.1f MPH" % g.rival_trap_speed],["RACE PAY","+$%d" % g.result_base_pay],["BET RETURN","$%d" % g.result_bet_return],["NET CASH",("+$" if net>=0 else "-$")+str(absi(net))],["XP","+%d" % g.result_xp]]
-	if g.result_bonus>0: pairs.insert(pairs.size()-1,["FIRST CLEAR BONUS","$%d"%g.result_bonus])
+	var pairs := [["ELAPSED / ET","%.3f S" % g.staging.elapsed(g.player_finish)],["REACTION",rt],["TRAP SPEED","%.1f MPH" % g.finish_speed],["RIVAL / ET","%.3f S" % g.staging.elapsed(g.rival_finish,1)],["RIVAL TRAP","%.1f MPH" % g.rival_trap_speed],["WAGER","$%d" % g.active_stake],["BET RETURN","$%d" % g.result_bet_return],["NET CASH",("+$" if net>=0 else "-$")+str(absi(net))],["XP","+%d" % g.result_xp]]
+	if g.result_trophy: pairs.insert(pairs.size()-1,["CHAMPIONSHIP","TROPHY EARNED"])
 	for i in pairs.size(): t(pairs[i][0],24,430+i*44,22,g.MUTED); t(pairs[i][1],360,430+i*44,23,g.GREEN)
 	b("results_upgrades","UPGRADES",Rect2(24,838,264,76)); b("garage","GARAGE",Rect2(312,838,264,76))
 	b("retry","REMATCH",Rect2(24,936,552,76))

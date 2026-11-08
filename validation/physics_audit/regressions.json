@@ -1,0 +1,41 @@
+{
+  "godot": "4.6.3",
+  "headless": {
+    "import": "pass",
+    "test_save_recovery": "pass",
+    "test_career_save_migration": "pass",
+    "test_championships": "pass",
+    "test_career_economy_sim": "pass",
+    "test_roster": "pass",
+    "test_physics": "pass",
+    "test_racing_physics_audit": "pass",
+    "test_traction_expansion": "pass",
+    "test_driving_feedback": "pass",
+    "test_transmissions": "pass",
+    "test_launch_induction_audio": "pass",
+    "test_high_power_gearbox": "pass",
+    "test_parts_lineup": "pass",
+    "test_customization": "pass",
+    "test_upgrade_model": "pass",
+    "test_advanced_tuning": "pass",
+    "benchmark_launch_balance": "pass",
+    "benchmark_physics_audit": "pass"
+  },
+  "graphical": {
+    "test_race_hud": "pass",
+    "test_championships_ui": "pass"
+  },
+  "focused_assertions": 4628,
+  "reruns": {
+    "test_racing_physics_audit": {
+      "reason": "Added frame-rate replay test needed an explicit float annotation; fixed and rerun successfully.",
+      "log": ".qa/physics-audit/focused-final/test.log"
+    }
+  },
+  "notes": [
+    "All latest checks passed. The initial final-regressions summary preserves the earlier test-script parse failure; the focused rerun supersedes that single entry.",
+    "Original solver reproduced the obsolete class_D_4 elapsed-time class assertion failure in .qa/physics-audit/baseline-championships/test.log.",
+    "All 30 factory benchmark entries were regenerated with the new signature.",
+    "Race HUD verified 5 window sizes and 8 transmission configurations; championship UI verified upgrade/tune/test/race/save flow."
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "id": "honda_cbr1000rr_r_fireblade_sp",
+  "name": "Honda CBR1000RR-R Fireblade SP",
+  "canvas_size": [
+    1000,
+    360
+  ],
+  "rear": [
+    301.5,
+    258.3
+  ],
+  "front": [
+    820.9,
+    256.7
+  ],
+  "rear_radius": 75.1,
+  "front_radius": 75.1,
+  "body": "body_no_wheels_game.png",
+  "rear_wheel": "rear_wheel_game.png",
+  "front_wheel": "front_wheel_game.png",
+  "anchor_status": "estimated from generated sheet and needs in-game fine alignment",
+  "source": "AI generated comparison sheet; extracted as transparent sprites",
+  "note": "Wheel sprites are shared placeholders derived from the BMW prototype; replace with model-specific customizable wheel designs."
+}

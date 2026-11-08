@@ -68,7 +68,7 @@ func _initialize() -> void:
 		for stage in range(1,GameCatalog.max_stage(category)+1):
 			var before: Array=GameCatalog.blank_stages(); before[category]=stage-1
 			var after:=before.duplicate(); after[category]=stage
-			audit.append({"id":"package_%d_%d"%[category,stage],"kind":"package","name":GameCatalog.stage_name(category,stage),"cost_increment":GameCatalog.PART_COSTS[category]*stage,"before":parameters(car("legacy6",[],before)),"after":parameters(car("legacy6",[],after))})
+			audit.append({"id":"package_%d_%d"%[category,stage],"kind":"package","name":GameCatalog.stage_name(category,stage),"cost_increment":GameCatalog.stage_cost(category,stage),"before":parameters(car("legacy6",[],before)),"after":parameters(car("legacy6",[],after))})
 	var b:=VehicleBench.fixture("legacy6",["forged","stroker"])
 	b.parts.erase("internals")
 	check(VehicleParts.compatible("stroker",b,5)!="","Dependency removal is not blocked")

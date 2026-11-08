@@ -20,6 +20,7 @@ func frame() -> void:
 	await RenderingServer.frame_post_draw
 
 func click(id: String,touch: bool=false) -> void:
+	if id=="tab_style" and game.tab=="garage": id="garage_customize"
 	var point:=Vector2.INF
 	for entry in game.buttons:
 		if entry.id==id and not entry.get("disabled",false):

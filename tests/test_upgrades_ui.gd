@@ -21,6 +21,8 @@ func center(id: String) -> Vector2:
 	check(false,"Missing upgrade/control button: "+id)
 	return Vector2(-1,-1)
 func click(id: String) -> void:
+	if id=="tab_performance":
+		game.go_garage(); await refresh(); id="garage_upgrades"
 	var control: Control=game.native_workshop.targets.get(id)
 	if is_instance_valid(control):
 		var ancestor:=control.get_parent()

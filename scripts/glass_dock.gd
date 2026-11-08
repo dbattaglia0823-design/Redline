@@ -1,8 +1,8 @@
 class_name GlassDock
 extends Control
 
-const TABS := [["garage","Garage"],["performance","Upgrade"],["races","Race"],["dealer","Dealership"],["driver","Profile"]]
-const RACE := 2
+const TABS := [["garage","Garage"],["races","Race"],["dealer","Dealership"],["driver","Profile"]]
+const RACE := 1
 var game: Node2D
 var items: Array[DockItem] = []
 var active := "garage"
@@ -94,12 +94,12 @@ func present(rect: Rect2,section: String) -> void:
 	position=rect.position
 	var resized:=size!=rect.size
 	size=rect.size
-	active="garage" if section in ["owned","style"] else ("performance" if section=="tuning" else section)
-	var unit:=(size.x-32.0)/5.5
+	active="garage" if section in ["owned","style","performance","tuning"] else section
+	var unit:=(size.x-28.0)/4.18
 	var x:=8.0
 	selection_target=Rect2()
 	for i in items.size():
-		var width:=unit*(1.5 if i==RACE else 1.0)
+		var width:=unit*(1.18 if i==RACE else 1.0)
 		var inset:=5.0 if i==RACE else 9.0
 		var cell:=Rect2(x,inset,width,size.y-inset*2)
 		items[i].position=cell.position

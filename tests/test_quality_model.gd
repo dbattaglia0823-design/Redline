@@ -28,19 +28,24 @@ func _initialize() -> void:
 	var upgraded := RaceAI.estimate(RaceAI.player_contract(p))
 	check(float(upgraded.time) < float(stock.time)-.15,"Affordable engine stage has no meaningful quarter-mile improvement")
 	var first := GameCatalog.opponent(0,0)
-	var losses_to_engine := ceili(700.0/(int(first.purse)*.4))
-	check(losses_to_engine == 7,"Recovery race economics unexpectedly changed")
+	var cash_before:=p.credits
+	check(p.begin_wager(0,first),"Free entry rejected")
+	p.award_race(first,false,false,18,.25,80,0,0)
+	check(p.credits==cash_before,"Free loss granted race income")
 	var progress: Array = []
 	var next_car: String=DealershipView.new(null).class_ids("E").filter(func(id): return not p.garage.has(id))[0]
 	for race_index in 12:
 		var bot := GameCatalog.opponent(0,mini(race_index,4))
-		var win_pay := int(bot.purse); p.credits += win_pay; p.xp += 180
+		var stake:=mini(int(bot.max_bet),maxi(1,p.credits/3))
+		var before_cash:=p.credits
+		check(p.begin_wager(stake,bot),"Funded bet rejected")
+		p.award_race(bot,true,false,16,.2,90,0,mini(race_index,4))
+		check(p.credits==before_cash+stake,"Race profit differs from wager")
 		p.career_wins[0] = mini(5,race_index+1)
 		progress.append({"wins":race_index+1,"credits":p.credits,"level":p.level()})
-		if race_index == 3: check(p.credits >= int(GameCatalog.spec("mika").price),"Starter collection goal requires excessive wins after the first upgrade")
 	check(p.level() >= 3 and p.credits >= int(GameCatalog.spec(next_car).price),"Twelve early wins cannot fund the cheapest available car")
 	check(p.buy_vehicle(next_car) and p.garage.has("miata"),"Earning a new car erased the starter build")
-	var output := {"passed":failures==0,"sliced_matches_direct":comparisons,"stock_quarter":stock,"engine_stage1_quarter":upgraded,"early_progression":progress,"losses_from_zero_to_first_engine_upgrade":losses_to_engine,"note":"Assisted-driver estimates and modeled win/finish payouts with the revised catalog prices."}
+	var output := {"passed":failures==0,"sliced_matches_direct":comparisons,"stock_quarter":stock,"engine_stage1_quarter":upgraded,"early_progression":progress,"free_loss_cash":0,"note":"Assisted-driver estimates and wager-only profits with stage-scaled upgrade prices."}
 	var f := FileAccess.open("res://validation/quality_model_results.json",FileAccess.WRITE); f.store_string(JSON.stringify(output)); f.close()
 	print("SLICED AI ESTIMATES / EARLY UPGRADE / RECOVERY ECONOMY: ","PASS" if failures==0 else "FAIL")
 	quit(0 if failures==0 else 1)

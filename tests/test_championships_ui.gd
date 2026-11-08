@@ -10,6 +10,8 @@ func frame() -> void:
 	RosterTest.ready(game); game._process(0); game.sync_menu_size(); game.queue_redraw()
 	await process_frame; await process_frame; await RenderingServer.frame_post_draw
 func click(id: String) -> void:
+	if id=="tab_performance":
+		game.go_garage(); await frame(); id="garage_upgrades"
 	var point:=Vector2(-1,-1)
 	for item in game.buttons:
 		if item.id==id: point=game.to_global(item.rect.get_center())
@@ -29,7 +31,11 @@ func bounds(label: String) -> void:
 		check(region.encloses(game.buttons[i].rect),"Offscreen "+label+" / "+str(game.buttons[i].id))
 		for j in range(i+1,game.buttons.size()): check(not game.buttons[i].rect.intersects(game.buttons[j].rect),"Overlapping "+label+" / "+str(game.buttons[i].id)+" / "+str(game.buttons[j].id))
 func race_player(spray: bool = false) -> void:
-	for i in 384: game._physics_process(1.0/120)
+	# Stage the stock engine using actual pedal input; an idle launch is a
+	# driving mistake, rather than the stock car's available performance.
+	for i in 384:
+		key(KEY_W,game.countdown<=0 or game.car.rpm<RaceAI.launch_target(game.car))
+		game._physics_process(1.0/120)
 	key(KEY_W)
 	if spray: key(KEY_SPACE)
 	for i in 10000:
@@ -81,7 +87,7 @@ func run() -> void:
 	root.size=Vector2i(1200,760); await frame(); bounds("desktop time slip")
 	await click("next_rival"); await click("race")
 	check(game.active_distance==201.168,"Championship eighth-mile heat was forced to a quarter mile")
-	await race_player(); check(game.screen=="results" and game.player_finish>0 and game.profile.championship_wins.E==(2 if game.result_win else 1),"Short championship timing or progression failed")
+	await race_player(); check(game.screen=="results" and game.player_finish>0 and game.profile.championship_wins.get("E",0)==(2 if game.result_win else 1),"Short championship timing or progression failed")
 	game.go_garage(); game.tab="races"; game.career_board.select_series("OPEN"); game.career_board.selected="open_3"
 	var championship_progress: int=Championships.completed(game.profile)
 	await frame(); await click("race"); check(game.active_distance==804.672,"Open half-mile distance not honored")
@@ -92,7 +98,8 @@ func run() -> void:
 	check(game.career_board.selected=="open_4","Next Race did not advance to the next open-class rival")
 	# Full mechanical upgrade -> tune -> save -> practice -> championship loop.
 	game.go_garage(); game.profile.credits=80000; game.profile.xp=20000; game.profile.career_wins=[5,5,5]; game.profile.legacy_class_access=["D","C","B","A","S"]; await frame()
-	await click("tab_performance"); await click("hub_category_0"); await click("install_0_1"); await click("hub_back")
+	await click("tab_performance"); await click("hub_category_0"); await click("stage_pick_2"); await click("install_0_2"); await click("hub_back")
+	game.menu.hub.open_upgrade(10); await frame(); await click("hw_pick_street_tires"); await click("hw_buy")
 	game.menu.hub.studio.system=0; game.menu.hub.open_upgrade(4); await frame()
 	await click("hw_pick_ecu"); await click("hw_buy"); await click("upgrade_section_tune"); await click("open_tuning")
 	check(game.tab=="tuning","Upgrades did not connect to tuning")
@@ -109,7 +116,7 @@ func run() -> void:
 	check(game.screen=="practice_results" and not game.tuning.last.is_empty(),"Upgraded practice failed")
 	await click("tt_details"); bounds("practice telemetry"); await click("tt_return"); await click("tt_back")
 	game.go_garage(); game.tab="races"; game.career_board.open(); RosterTest.ready(game)
-	game.career_board.select_series(GameCatalog.engine_class(game.profile.vehicle_id,game.profile.hardware)); await frame(); await click("race"); await race_player()
+	game.career_board.select_series(GameCatalog.engine_class(game.profile.vehicle_id,game.profile.hardware)); game.career_board.selected="class_E_1"; await frame(); await click("race"); await race_player()
 	check(game.screen=="results" and game.result_win,"Tuned build could not compete in its class")
 	game.go_garage(); check(game.profile.buy_vehicle("brz"),"Earned vehicle purchase failed"); game.refresh_car()
 	RosterTest.ready(game); game.tab="races"; game.career_board.open()
@@ -163,7 +170,7 @@ func run() -> void:
 	root.get_texture().get_image().save_png("res://.qa/class_career_expanded/boss_intro.png")
 	await race_player(true)
 	check(game.screen=="results" and game.result_win and Championships.trophies(game.profile)==6,"Final boss battle did not award the sixth trophy")
-	check(game.result_bonus==Championships.BONUSES[-1],"Final boss battle paid the wrong bonus")
+	check(game.result_bonus==0 and game.result_trophy,"Final boss battle did not award a cash-free trophy")
 	check(game.result_base_pay==int(game.active_contract.purse),"Time slip included the trophy bonus in base pay")
 	bounds("boss results")
 	root.get_texture().get_image().save_png("res://.qa/class_career_expanded/boss_victory.png")

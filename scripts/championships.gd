@@ -6,8 +6,12 @@ const TITLES := ["Dockside Rookies","Apex Syndicate","Boost District","Midnight 
 const ROUNDS := 10
 const TOTAL_RACES := 60
 const TROPHY := Color("efc47f")
-const BONUSES := [3600,5800,9500,15000,24000,42000]
-const PAY := [650,1000,1600,2500,4000,6500]
+static func bet_cap(letter: String,round_index: int) -> int:
+	return GameCatalog.championship_bet_cap(letter,round_index)
+
+static func wager_step(cap: int) -> int:
+	# Fine enough for a small bankroll, usable at six/seven-figure boss caps.
+	return maxi(50,roundi(float(cap)/100.0/50.0)*50)
 static var data: Dictionary = {}
 
 static func catalog() -> Dictionary:

@@ -1,0 +1,3902 @@
+{
+	"fixed_hz": 240.0,
+	"open_rivals": [
+		{
+			"id": "open_0",
+			"time": 18.6775443345498
+		},
+		{
+			"id": "open_4",
+			"time": 14.8350059767496
+		},
+		{
+			"id": "open_1",
+			"time": 13.3099419417022
+		},
+		{
+			"id": "open_2",
+			"time": 10.406866404114
+		},
+		{
+			"id": "open_3",
+			"time": 9.46766613623886
+		}
+	],
+	"opening_margin_s": 0.4,
+	"player_reaction_s": 0.18,
+	"races": [
+		{
+			"bet_cap": 2000.0,
+			"class": "E",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_miata"
+				],
+				"parts": {
+
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_miata",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_E_0",
+			"model": "miata",
+			"old_quarter_ai_s": 18.6775443345498,
+			"old_race_s": 18.6775443345498,
+			"quarter_ai_s": 16.6417294070762,
+			"race_s": 16.6417294070762,
+			"reaction_s": 0.579999999999999,
+			"recipe": 0.0,
+			"stages": [
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+				"civic_si": 16.0975839664172,
+				"miata": 16.2417395613572
+			},
+			"target_s": 16.6417395613572
+		},
+		{
+			"bet_cap": 3000.0,
+			"class": "E",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"street_tires"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_miata"
+				],
+				"parts": {
+					"tires": "street_tires"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_miata",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_E_1",
+			"model": "miata",
+			"old_quarter_ai_s": 17.8670226966908,
+			"old_race_s": 11.9018271783058,
+			"quarter_ai_s": 15.744968346508,
+			"race_s": 10.3731645681386,
+			"reaction_s": 0.535359835361302,
+			"recipe": 1.0,
+			"stages": [
+				1.0,
+				0.0,
+				0.0,
+				0.0,
+				1.0,
+				0.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 15.7461624958157
+		},
+		{
+			"bet_cap": 4400.0,
+			"class": "E",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"uhp_tires",
+					"street_susp",
+					"clutch_twin"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_miata"
+				],
+				"parts": {
+					"clutch": "clutch_twin",
+					"suspension": "street_susp",
+					"tires": "uhp_tires"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_miata",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_E_2",
+			"model": "miata",
+			"old_quarter_ai_s": 17.0804408983012,
+			"old_race_s": 17.0804408983012,
+			"quarter_ai_s": 15.0189547990497,
+			"race_s": 15.0189547990497,
+			"reaction_s": 0.792050441674715,
+			"recipe": 2.0,
+			"stages": [
+				1.0,
+				1.0,
+				0.0,
+				0.0,
+				1.0,
+				1.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 15.0185061300633
+		},
+		{
+			"bet_cap": 6400.0,
+			"class": "E",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"uhp_tires",
+					"street_susp",
+					"clutch_twin"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_civic_si"
+				],
+				"parts": {
+					"clutch": "clutch_twin",
+					"suspension": "street_susp",
+					"tires": "uhp_tires"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_civic_si",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_E_3",
+			"model": "civic_si",
+			"old_quarter_ai_s": 16.9224203695341,
+			"old_race_s": 11.1629582577549,
+			"quarter_ai_s": 14.4006537769969,
+			"race_s": 9.49174545718204,
+			"reaction_s": 0.340473860646029,
+			"recipe": 2.0,
+			"stages": [
+				1.0,
+				1.0,
+				0.0,
+				0.0,
+				1.0,
+				1.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 14.4027968975035
+		},
+		{
+			"bet_cap": 9200.0,
+			"class": "E",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"street_radial",
+					"coilovers",
+					"clutch_twin",
+					"ecu"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_miata"
+				],
+				"parts": {
+					"clutch": "clutch_twin",
+					"ecu": "ecu",
+					"suspension": "coilovers",
+					"tires": "street_radial"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_miata",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_E_4",
+			"model": "miata",
+			"old_quarter_ai_s": 16.218751634506,
+			"old_race_s": 16.218751634506,
+			"quarter_ai_s": 13.7856118296805,
+			"race_s": 13.7856118296805,
+			"reaction_s": 0.189857943423114,
+			"recipe": 3.0,
+			"stages": [
+				2.0,
+				1.0,
+				0.0,
+				1.0,
+				2.0,
+				1.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 13.7870876649437
+		},
+		{
+			"bet_cap": 13000.0,
+			"class": "E",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"competition_radial",
+					"drag_susp",
+					"clutch_race",
+					"forged",
+					"fuel_street",
+					"ecu"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_miata"
+				],
+				"parts": {
+					"clutch": "clutch_race",
+					"ecu": "ecu",
+					"fuel": "fuel_street",
+					"internals": "forged",
+					"suspension": "drag_susp",
+					"tires": "competition_radial"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_miata",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 25.0
+				}
+			},
+			"id": "class_E_5",
+			"model": "miata",
+			"old_quarter_ai_s": 16.0774011715248,
+			"old_race_s": 16.0774011715248,
+			"quarter_ai_s": 13.1696351175235,
+			"race_s": 13.1696351175235,
+			"reaction_s": 0.35805417137418,
+			"recipe": 4.0,
+			"stages": [
+				2.0,
+				2.0,
+				0.0,
+				1.0,
+				3.0,
+				2.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 13.171378432384
+		},
+		{
+			"bet_cap": 18000.0,
+			"class": "E",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"pro_drag_radial",
+					"pro_drag_susp",
+					"clutch_carbon",
+					"billet",
+					"fuel_ethanol",
+					"ecu_race",
+					"turbo_hybrid",
+					"gear_strength"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_miata"
+				],
+				"parts": {
+					"clutch": "clutch_carbon",
+					"ecu": "ecu_race",
+					"fuel": "fuel_ethanol",
+					"gear_strength": "gear_strength",
+					"induction": "turbo_hybrid",
+					"internals": "billet",
+					"suspension": "pro_drag_susp",
+					"tires": "pro_drag_radial"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_miata",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 24.0
+				}
+			},
+			"id": "class_E_6",
+			"model": "miata",
+			"old_quarter_ai_s": 16.0275283673974,
+			"old_race_s": 10.5242987041602,
+			"quarter_ai_s": 12.6102270034593,
+			"race_s": 8.51438719637791,
+			"reaction_s": 0.91929641690418,
+			"recipe": 6.0,
+			"stages": [
+				3.0,
+				3.0,
+				0.0,
+				2.0,
+				5.0,
+				3.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 12.6116427664205
+		},
+		{
+			"bet_cap": 25000.0,
+			"class": "E",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"pro_drag_radial",
+					"pro_drag_susp",
+					"clutch_carbon",
+					"billet",
+					"fuel_ethanol",
+					"ecu_race",
+					"turbo_hybrid",
+					"gear_strength"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_civic_si"
+				],
+				"parts": {
+					"clutch": "clutch_carbon",
+					"ecu": "ecu_race",
+					"fuel": "fuel_ethanol",
+					"gear_strength": "gear_strength",
+					"induction": "turbo_hybrid",
+					"internals": "billet",
+					"suspension": "pro_drag_susp",
+					"tires": "pro_drag_radial"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_civic_si",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 24.0
+				}
+			},
+			"id": "class_E_7",
+			"model": "civic_si",
+			"old_quarter_ai_s": 15.6974548246083,
+			"old_race_s": 15.6974548246083,
+			"quarter_ai_s": 12.1083491677819,
+			"race_s": 12.1083491677819,
+			"reaction_s": 0.454613609631459,
+			"recipe": 6.0,
+			"stages": [
+				3.0,
+				3.0,
+				0.0,
+				2.0,
+				5.0,
+				3.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 12.1078806670534
+		},
+		{
+			"bet_cap": 34000.0,
+			"class": "E",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"pro_drag_slicks",
+					"active_drag_susp",
+					"clutch_carbon",
+					"billet",
+					"fuel_ethanol",
+					"ecu_race",
+					"turbo_hybrid",
+					"intake_race",
+					"headers",
+					"charge_airflow",
+					"gear_strength",
+					"gear_pro"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_civic_si"
+				],
+				"parts": {
+					"charge_airflow": "charge_airflow",
+					"clutch": "clutch_carbon",
+					"ecu": "ecu_race",
+					"exhaust": "headers",
+					"fuel": "fuel_ethanol",
+					"gear_pro": "gear_pro",
+					"gear_strength": "gear_strength",
+					"induction": "turbo_hybrid",
+					"intake": "intake_race",
+					"internals": "billet",
+					"suspension": "active_drag_susp",
+					"tires": "pro_drag_slicks"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_civic_si",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 21.0
+				}
+			},
+			"id": "class_E_8",
+			"model": "civic_si",
+			"old_quarter_ai_s": 15.483432133164,
+			"old_race_s": 10.0970805639866,
+			"quarter_ai_s": 11.6045412681073,
+			"race_s": 7.90343378706298,
+			"reaction_s": 0.6098087720932,
+			"recipe": 7.0,
+			"stages": [
+				3.0,
+				3.0,
+				0.0,
+				3.0,
+				5.0,
+				3.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 11.6041185676863
+		},
+		{
+			"bet_cap": 50000.0,
+			"class": "E",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"pro_drag_slicks",
+					"active_drag_susp",
+					"clutch_carbon",
+					"billet",
+					"fuel_ethanol",
+					"ecu_race",
+					"turbo_hybrid",
+					"gear_strength",
+					"gear_pro"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_civic_si"
+				],
+				"parts": {
+					"clutch": "clutch_carbon",
+					"ecu": "ecu_race",
+					"fuel": "fuel_ethanol",
+					"gear_pro": "gear_pro",
+					"gear_strength": "gear_strength",
+					"induction": "turbo_hybrid",
+					"internals": "billet",
+					"suspension": "active_drag_susp",
+					"tires": "pro_drag_slicks"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_civic_si",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 21.0
+				}
+			},
+			"id": "class_E_9",
+			"model": "civic_si",
+			"old_quarter_ai_s": 15.1879656367813,
+			"old_race_s": 15.1879656367813,
+			"quarter_ai_s": 11.0439510732503,
+			"race_s": 11.0439510732503,
+			"reaction_s": 0.464090842543685,
+			"recipe": 8.0,
+			"stages": [
+				3.0,
+				3.0,
+				0.0,
+				3.0,
+				5.0,
+				3.0,
+				0.0,
+				2.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 11.0443829017229
+		},
+		{
+			"bet_cap": 4000.0,
+			"class": "D",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_gti_vr6"
+				],
+				"parts": {
+
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_gti_vr6",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_D_0",
+			"model": "gti_vr6",
+			"old_quarter_ai_s": 16.5624859498981,
+			"old_race_s": 16.5624859498981,
+			"quarter_ai_s": 15.5447388246929,
+			"race_s": 15.5447388246929,
+			"reaction_s": 0.58,
+			"recipe": 0.0,
+			"stages": [
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+				"brz": 14.9304123926966,
+				"gti": 14.6808247840756,
+				"gti_vr6": 15.1447388247366,
+				"integra": 14.8931850056054,
+				"rsx": 14.8364292100448
+			},
+			"target_s": 15.5447388247366
+		},
+		{
+			"bet_cap": 6000.0,
+			"class": "D",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_gti"
+				],
+				"parts": {
+
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_gti",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_D_1",
+			"model": "gti",
+			"old_quarter_ai_s": 16.3329702436241,
+			"old_race_s": 10.8651297543014,
+			"quarter_ai_s": 14.7058247840721,
+			"race_s": 9.62539262130413,
+			"reaction_s": 0.204503412834511,
+			"recipe": 0.0,
+			"stages": [
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 14.7053281969101
+		},
+		{
+			"bet_cap": 8800.0,
+			"class": "D",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"street_tires"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_gti"
+				],
+				"parts": {
+					"tires": "street_tires"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_gti",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_D_2",
+			"model": "gti",
+			"old_quarter_ai_s": 15.7302261270622,
+			"old_race_s": 15.7302261270622,
+			"quarter_ai_s": 14.0222546632336,
+			"race_s": 14.0222546632336,
+			"reaction_s": 0.281052398567129,
+			"recipe": 1.0,
+			"stages": [
+				1.0,
+				0.0,
+				0.0,
+				0.0,
+				1.0,
+				0.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 14.0233070618011
+		},
+		{
+			"bet_cap": 12800.0,
+			"class": "D",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"uhp_tires",
+					"street_susp",
+					"clutch_twin"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_integra"
+				],
+				"parts": {
+					"clutch": "clutch_twin",
+					"suspension": "street_susp",
+					"tires": "uhp_tires"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_integra",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_D_3",
+			"model": "integra",
+			"old_quarter_ai_s": 15.6194171540414,
+			"old_race_s": 10.2051266509818,
+			"quarter_ai_s": 13.4434913795363,
+			"race_s": 8.84743123061762,
+			"reaction_s": 0.386887110648525,
+			"recipe": 2.0,
+			"stages": [
+				1.0,
+				1.0,
+				0.0,
+				0.0,
+				1.0,
+				1.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 13.4462122551703
+		},
+		{
+			"bet_cap": 18400.0,
+			"class": "D",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"street_radial",
+					"coilovers",
+					"clutch_twin",
+					"ecu"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_integra"
+				],
+				"parts": {
+					"clutch": "clutch_twin",
+					"ecu": "ecu",
+					"suspension": "coilovers",
+					"tires": "street_radial"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_integra",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_D_4",
+			"model": "integra",
+			"old_quarter_ai_s": 15.4928819578947,
+			"old_race_s": 15.4928819578947,
+			"quarter_ai_s": 12.86906818794,
+			"race_s": 12.86906818794,
+			"reaction_s": 0.242839542486518,
+			"recipe": 3.0,
+			"stages": [
+				2.0,
+				1.0,
+				0.0,
+				1.0,
+				2.0,
+				1.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 12.8691174485396
+		},
+		{
+			"bet_cap": 26000.0,
+			"class": "D",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"competition_radial",
+					"drag_susp",
+					"clutch_race",
+					"forged",
+					"fuel_street",
+					"ecu"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_integra"
+				],
+				"parts": {
+					"clutch": "clutch_race",
+					"ecu": "ecu",
+					"fuel": "fuel_street",
+					"internals": "forged",
+					"suspension": "drag_susp",
+					"tires": "competition_radial"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_integra",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 25.0
+				}
+			},
+			"id": "class_D_5",
+			"model": "integra",
+			"old_quarter_ai_s": 15.3557133402319,
+			"old_race_s": 10.0656118959313,
+			"quarter_ai_s": 12.2902032959567,
+			"race_s": 8.18386321776888,
+			"reaction_s": 0.40270835222473,
+			"recipe": 4.0,
+			"stages": [
+				2.0,
+				2.0,
+				0.0,
+				1.0,
+				3.0,
+				2.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 12.2920226419089
+		},
+		{
+			"bet_cap": 36000.0,
+			"class": "D",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"pro_drag_radial",
+					"pro_drag_susp",
+					"clutch_carbon",
+					"billet",
+					"fuel_ethanol",
+					"ecu_race",
+					"turbo_hybrid",
+					"gear_strength"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_gti"
+				],
+				"parts": {
+					"clutch": "clutch_carbon",
+					"ecu": "ecu_race",
+					"fuel": "fuel_ethanol",
+					"gear_strength": "gear_strength",
+					"induction": "turbo_hybrid",
+					"internals": "billet",
+					"suspension": "pro_drag_susp",
+					"tires": "pro_drag_radial"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_gti",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 24.0
+				}
+			},
+			"id": "class_D_6",
+			"model": "gti",
+			"old_quarter_ai_s": 15.1309184234107,
+			"old_race_s": 9.90524309806972,
+			"quarter_ai_s": 11.7667296167373,
+			"race_s": 7.91792125741858,
+			"reaction_s": 0.819581794424046,
+			"recipe": 6.0,
+			"stages": [
+				3.0,
+				3.0,
+				0.0,
+				2.0,
+				5.0,
+				3.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 11.7673909995173
+		},
+		{
+			"bet_cap": 50000.0,
+			"class": "D",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"pro_drag_radial",
+					"pro_drag_susp",
+					"clutch_carbon",
+					"billet",
+					"fuel_ethanol",
+					"ecu_race",
+					"turbo_hybrid",
+					"gear_strength"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_gti_vr6"
+				],
+				"parts": {
+					"clutch": "clutch_carbon",
+					"ecu": "ecu_race",
+					"fuel": "fuel_ethanol",
+					"gear_strength": "gear_strength",
+					"induction": "turbo_hybrid",
+					"internals": "billet",
+					"suspension": "pro_drag_susp",
+					"tires": "pro_drag_radial"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_gti_vr6",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 24.0
+				}
+			},
+			"id": "class_D_7",
+			"model": "gti_vr6",
+			"old_quarter_ai_s": 15.0245605307673,
+			"old_race_s": 15.0245605307673,
+			"quarter_ai_s": 11.2939849394303,
+			"race_s": 11.2939849394303,
+			"reaction_s": 0.381105677268655,
+			"recipe": 6.0,
+			"stages": [
+				3.0,
+				3.0,
+				0.0,
+				2.0,
+				5.0,
+				3.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 11.2952225213649
+		},
+		{
+			"bet_cap": 68000.0,
+			"class": "D",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"pro_drag_slicks",
+					"active_drag_susp",
+					"clutch_carbon",
+					"billet",
+					"fuel_ethanol",
+					"ecu_race",
+					"turbo_hybrid",
+					"intake_race",
+					"headers",
+					"charge_airflow",
+					"gear_strength",
+					"gear_pro"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_gti"
+				],
+				"parts": {
+					"charge_airflow": "charge_airflow",
+					"clutch": "clutch_carbon",
+					"ecu": "ecu_race",
+					"exhaust": "headers",
+					"fuel": "fuel_ethanol",
+					"gear_pro": "gear_pro",
+					"gear_strength": "gear_strength",
+					"induction": "turbo_hybrid",
+					"intake": "intake_race",
+					"internals": "billet",
+					"suspension": "active_drag_susp",
+					"tires": "pro_drag_slicks"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_gti",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 21.0
+				}
+			},
+			"id": "class_D_8",
+			"model": "gti",
+			"old_quarter_ai_s": 14.6754061016352,
+			"old_race_s": 9.59180631103544,
+			"quarter_ai_s": 10.824016321953,
+			"race_s": 7.25903731150121,
+			"reaction_s": 0.630789855797073,
+			"recipe": 7.0,
+			"stages": [
+				3.0,
+				3.0,
+				0.0,
+				3.0,
+				5.0,
+				3.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 10.8230540432125
+		},
+		{
+			"bet_cap": 100000.0,
+			"class": "D",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"pro_drag_slicks",
+					"active_drag_susp",
+					"clutch_carbon",
+					"billet",
+					"fuel_ethanol",
+					"ecu_race",
+					"turbo_hybrid",
+					"intake_race",
+					"headers",
+					"charge_airflow",
+					"gear_strength",
+					"gear_pro"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_rsx"
+				],
+				"parts": {
+					"charge_airflow": "charge_airflow",
+					"clutch": "clutch_carbon",
+					"ecu": "ecu_race",
+					"exhaust": "headers",
+					"fuel": "fuel_ethanol",
+					"gear_pro": "gear_pro",
+					"gear_strength": "gear_strength",
+					"induction": "turbo_hybrid",
+					"intake": "intake_race",
+					"internals": "billet",
+					"suspension": "active_drag_susp",
+					"tires": "pro_drag_slicks"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_rsx",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 21.0
+				}
+			},
+			"id": "class_D_9",
+			"model": "rsx",
+			"old_quarter_ai_s": 14.4359572017976,
+			"old_race_s": 14.4359572017976,
+			"quarter_ai_s": 10.2964262815657,
+			"race_s": 10.2964262815657,
+			"reaction_s": 0.286494584418076,
+			"recipe": 7.0,
+			"stages": [
+				3.0,
+				3.0,
+				0.0,
+				3.0,
+				5.0,
+				3.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 10.2984224008209
+		},
+		{
+			"bet_cap": 7500.0,
+			"class": "C",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_s2000"
+				],
+				"parts": {
+
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_s2000",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_C_0",
+			"model": "s2000",
+			"old_quarter_ai_s": 15.6910589636507,
+			"old_race_s": 15.6910589636507,
+			"quarter_ai_s": 14.3958865898965,
+			"race_s": 14.3958865898965,
+			"reaction_s": 0.58,
+			"recipe": 0.0,
+			"stages": [
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+				"evo": 13.7512574180008,
+				"gr86": 13.9631807638724,
+				"s2000": 13.9958865948016,
+				"sti": 13.2725200524829,
+				"type_r": 13.5300545110359,
+				"z350": 13.2404626011292
+			},
+			"target_s": 14.3958865948016
+		},
+		{
+			"bet_cap": 11300.0,
+			"class": "C",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_type_r"
+				],
+				"parts": {
+
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_type_r",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_C_1",
+			"model": "type_r",
+			"old_quarter_ai_s": 15.2695331189747,
+			"old_race_s": 10.094096881835,
+			"quarter_ai_s": 13.6133878443355,
+			"race_s": 9.10615232876136,
+			"reaction_s": 0.265242690111842,
+			"recipe": 0.0,
+			"stages": [
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 13.6152972011477
+		},
+		{
+			"bet_cap": 16500.0,
+			"class": "C",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"street_tires"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_type_r"
+				],
+				"parts": {
+					"tires": "street_tires"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_type_r",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_C_2",
+			"model": "type_r",
+			"old_quarter_ai_s": 14.6120136672253,
+			"old_race_s": 14.6120136672253,
+			"quarter_ai_s": 12.9813921675413,
+			"race_s": 12.9813921675413,
+			"reaction_s": 0.353367795198077,
+			"recipe": 1.0,
+			"stages": [
+				1.0,
+				0.0,
+				0.0,
+				0.0,
+				1.0,
+				0.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 12.981068318804
+		},
+		{
+			"bet_cap": 24000.0,
+			"class": "C",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"uhp_tires",
+					"street_susp",
+					"clutch_twin"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_evo"
+				],
+				"parts": {
+					"clutch": "clutch_twin",
+					"suspension": "street_susp",
+					"tires": "uhp_tires"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_evo",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_C_3",
+			"model": "evo",
+			"old_quarter_ai_s": 14.5624265508447,
+			"old_race_s": 9.52581217409583,
+			"quarter_ai_s": 12.4423193209385,
+			"race_s": 8.12506170075007,
+			"reaction_s": 0.182093789728447,
+			"recipe": 2.0,
+			"stages": [
+				1.0,
+				1.0,
+				0.0,
+				0.0,
+				1.0,
+				1.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 12.444413110667
+		},
+		{
+			"bet_cap": 34500.0,
+			"class": "C",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"uhp_tires",
+					"street_susp",
+					"clutch_twin"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_z350"
+				],
+				"parts": {
+					"clutch": "clutch_twin",
+					"suspension": "street_susp",
+					"tires": "uhp_tires"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_z350",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_C_4",
+			"model": "z350",
+			"old_quarter_ai_s": 14.5091173180734,
+			"old_race_s": 14.5091173180734,
+			"quarter_ai_s": 11.9072054764928,
+			"race_s": 11.9072054764928,
+			"reaction_s": 0.188934779385394,
+			"recipe": 2.0,
+			"stages": [
+				1.0,
+				1.0,
+				0.0,
+				0.0,
+				1.0,
+				1.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 11.9077579025299
+		},
+		{
+			"bet_cap": 48800.0,
+			"class": "C",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"competition_radial",
+					"drag_susp",
+					"clutch_race",
+					"forged",
+					"fuel_street",
+					"ecu"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_s2000"
+				],
+				"parts": {
+					"clutch": "clutch_race",
+					"ecu": "ecu",
+					"fuel": "fuel_street",
+					"internals": "forged",
+					"suspension": "drag_susp",
+					"tires": "competition_radial"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_s2000",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 25.0
+				}
+			},
+			"id": "class_C_5",
+			"model": "s2000",
+			"old_quarter_ai_s": 14.1785140110889,
+			"old_race_s": 9.29192888465838,
+			"quarter_ai_s": 11.3704639465485,
+			"race_s": 7.50802417674608,
+			"reaction_s": 0.184850432004952,
+			"recipe": 4.0,
+			"stages": [
+				2.0,
+				2.0,
+				0.0,
+				1.0,
+				3.0,
+				2.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 11.3711026943929
+		},
+		{
+			"bet_cap": 67500.0,
+			"class": "C",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"competition_radial",
+					"drag_susp",
+					"clutch_race",
+					"forged",
+					"fuel_street",
+					"ecu"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_type_r"
+				],
+				"parts": {
+					"clutch": "clutch_race",
+					"ecu": "ecu",
+					"fuel": "fuel_street",
+					"internals": "forged",
+					"suspension": "drag_susp",
+					"tires": "competition_radial"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_type_r",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 25.0
+				}
+			},
+			"id": "class_C_6",
+			"model": "type_r",
+			"old_quarter_ai_s": 14.0043186142082,
+			"old_race_s": 9.19819776034641,
+			"quarter_ai_s": 10.883058423351,
+			"race_s": 7.16991436461075,
+			"reaction_s": 0.309472648883354,
+			"recipe": 4.0,
+			"stages": [
+				2.0,
+				2.0,
+				0.0,
+				1.0,
+				3.0,
+				2.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 10.8832343233593
+		},
+		{
+			"bet_cap": 93800.0,
+			"class": "C",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"pro_drag_radial",
+					"pro_drag_susp",
+					"clutch_carbon",
+					"billet",
+					"fuel_ethanol",
+					"ecu_race",
+					"turbo_hybrid",
+					"gear_strength"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_s2000"
+				],
+				"parts": {
+					"clutch": "clutch_carbon",
+					"ecu": "ecu_race",
+					"fuel": "fuel_ethanol",
+					"gear_strength": "gear_strength",
+					"induction": "turbo_hybrid",
+					"internals": "billet",
+					"suspension": "pro_drag_susp",
+					"tires": "pro_drag_radial"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_s2000",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 24.0
+				}
+			},
+			"id": "class_C_7",
+			"model": "s2000",
+			"old_quarter_ai_s": 13.6036395751528,
+			"old_race_s": 13.6036395751528,
+			"quarter_ai_s": 10.4416343919384,
+			"race_s": 10.4416343919384,
+			"reaction_s": 0.207606937133266,
+			"recipe": 6.0,
+			"stages": [
+				3.0,
+				3.0,
+				0.0,
+				2.0,
+				5.0,
+				3.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 10.444152789429
+		},
+		{
+			"bet_cap": 127500.0,
+			"class": "C",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"pro_drag_radial",
+					"pro_drag_susp",
+					"clutch_carbon",
+					"billet",
+					"fuel_ethanol",
+					"ecu_race",
+					"turbo_hybrid",
+					"gear_strength"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_type_r"
+				],
+				"parts": {
+					"clutch": "clutch_carbon",
+					"ecu": "ecu_race",
+					"fuel": "fuel_ethanol",
+					"gear_strength": "gear_strength",
+					"induction": "turbo_hybrid",
+					"internals": "billet",
+					"suspension": "pro_drag_susp",
+					"tires": "pro_drag_radial"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_type_r",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 24.0
+				}
+			},
+			"id": "class_C_8",
+			"model": "type_r",
+			"old_quarter_ai_s": 13.5357365846105,
+			"old_race_s": 8.89492189141751,
+			"quarter_ai_s": 10.0056982397935,
+			"race_s": 6.59004595155816,
+			"reaction_s": 0.267444780003354,
+			"recipe": 6.0,
+			"stages": [
+				3.0,
+				3.0,
+				0.0,
+				2.0,
+				5.0,
+				3.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 10.0050712554987
+		},
+		{
+			"bet_cap": 187500.0,
+			"class": "C",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"pro_drag_slicks",
+					"active_drag_susp",
+					"clutch_carbon",
+					"billet",
+					"fuel_ethanol",
+					"ecu_race",
+					"turbo_hybrid",
+					"gear_strength",
+					"gear_pro"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_evo"
+				],
+				"parts": {
+					"clutch": "clutch_carbon",
+					"ecu": "ecu_race",
+					"fuel": "fuel_ethanol",
+					"gear_pro": "gear_pro",
+					"gear_strength": "gear_strength",
+					"induction": "turbo_hybrid",
+					"internals": "billet",
+					"suspension": "active_drag_susp",
+					"tires": "pro_drag_slicks"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_evo",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 21.0
+				}
+			},
+			"id": "class_C_9",
+			"model": "evo",
+			"old_quarter_ai_s": 13.1718761747329,
+			"old_race_s": 13.1718761747329,
+			"quarter_ai_s": 9.51510321346223,
+			"race_s": 9.51510321346223,
+			"reaction_s": 0.228599704469813,
+			"recipe": 8.0,
+			"stages": [
+				3.0,
+				3.0,
+				0.0,
+				3.0,
+				5.0,
+				3.0,
+				0.0,
+				2.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 9.51720288446506
+		},
+		{
+			"bet_cap": 13000.0,
+			"class": "B",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_supra"
+				],
+				"parts": {
+
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_supra",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_B_0",
+			"model": "supra",
+			"old_quarter_ai_s": 14.8233018437806,
+			"old_race_s": 14.8233018437806,
+			"quarter_ai_s": 13.5747512544802,
+			"race_s": 13.5747512544802,
+			"reaction_s": 0.58,
+			"recipe": 0.0,
+			"stages": [
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+				"golf_r": 12.9403831456662,
+				"m3": 13.0982462282125,
+				"supra": 13.1747512570955,
+				"supra_gr": 12.4604783582896
+			},
+			"target_s": 13.5747512570955
+		},
+		{
+			"bet_cap": 19500.0,
+			"class": "B",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"street_tires"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_supra"
+				],
+				"parts": {
+					"tires": "street_tires"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_supra",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_B_1",
+			"model": "supra",
+			"old_quarter_ai_s": 14.3320058047872,
+			"old_race_s": 9.43348144785934,
+			"quarter_ai_s": 12.8335827981935,
+			"race_s": 8.50719650633779,
+			"reaction_s": 0.495121162903058,
+			"recipe": 1.0,
+			"stages": [
+				1.0,
+				0.0,
+				0.0,
+				0.0,
+				1.0,
+				0.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 12.8362039927322
+		},
+		{
+			"bet_cap": 28600.0,
+			"class": "B",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"uhp_tires",
+					"street_susp",
+					"clutch_twin"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_supra"
+				],
+				"parts": {
+					"clutch": "clutch_twin",
+					"suspension": "street_susp",
+					"tires": "uhp_tires"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_supra",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_B_2",
+			"model": "supra",
+			"old_quarter_ai_s": 13.8777103648203,
+			"old_race_s": 13.8777103648203,
+			"quarter_ai_s": 12.2333069901559,
+			"race_s": 12.2333069901559,
+			"reaction_s": 0.512086215347981,
+			"recipe": 2.0,
+			"stages": [
+				1.0,
+				1.0,
+				0.0,
+				0.0,
+				1.0,
+				1.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 12.236134340437
+		},
+		{
+			"bet_cap": 41600.0,
+			"class": "B",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"uhp_tires",
+					"street_susp",
+					"clutch_twin"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_golf_r"
+				],
+				"parts": {
+					"clutch": "clutch_twin",
+					"suspension": "street_susp",
+					"tires": "uhp_tires"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_golf_r",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_B_3",
+			"model": "golf_r",
+			"old_quarter_ai_s": 13.8074847310976,
+			"old_race_s": 9.03897917563843,
+			"quarter_ai_s": 11.7279527986972,
+			"race_s": 7.63543620530903,
+			"reaction_s": 0.217822208606906,
+			"recipe": 2.0,
+			"stages": [
+				1.0,
+				1.0,
+				0.0,
+				0.0,
+				1.0,
+				1.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 11.7283830961873
+		},
+		{
+			"bet_cap": 59800.0,
+			"class": "B",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"street_radial",
+					"coilovers",
+					"clutch_twin",
+					"ecu"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_m3"
+				],
+				"parts": {
+					"clutch": "clutch_twin",
+					"ecu": "ecu",
+					"suspension": "coilovers",
+					"tires": "street_radial"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_m3",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_B_4",
+			"model": "m3",
+			"old_quarter_ai_s": 13.3216429352585,
+			"old_race_s": 13.3216429352585,
+			"quarter_ai_s": 11.219970465752,
+			"race_s": 11.219970465752,
+			"reaction_s": 0.292863525636987,
+			"recipe": 3.0,
+			"stages": [
+				2.0,
+				1.0,
+				0.0,
+				1.0,
+				2.0,
+				1.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 11.2206318519375
+		},
+		{
+			"bet_cap": 84500.0,
+			"class": "B",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"street_radial",
+					"coilovers",
+					"clutch_twin",
+					"ecu"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_supra_gr"
+				],
+				"parts": {
+					"clutch": "clutch_twin",
+					"ecu": "ecu",
+					"suspension": "coilovers",
+					"tires": "street_radial"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_supra_gr",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_B_5",
+			"model": "supra_gr",
+			"old_quarter_ai_s": 13.3055227532899,
+			"old_race_s": 8.78272821012805,
+			"quarter_ai_s": 10.7074926033946,
+			"race_s": 7.03861900207187,
+			"reaction_s": 0.304030995144297,
+			"recipe": 3.0,
+			"stages": [
+				2.0,
+				1.0,
+				0.0,
+				1.0,
+				2.0,
+				1.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 10.7128806076877
+		},
+		{
+			"bet_cap": 117000.0,
+			"class": "B",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"pro_drag_radial",
+					"pro_drag_susp",
+					"clutch_carbon",
+					"billet",
+					"fuel_ethanol",
+					"ecu_race",
+					"turbo_hybrid",
+					"gear_strength"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_supra"
+				],
+				"parts": {
+					"clutch": "clutch_carbon",
+					"ecu": "ecu_race",
+					"fuel": "fuel_ethanol",
+					"gear_strength": "gear_strength",
+					"induction": "turbo_hybrid",
+					"internals": "billet",
+					"suspension": "pro_drag_susp",
+					"tires": "pro_drag_radial"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_supra",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 24.0
+				}
+			},
+			"id": "class_B_6",
+			"model": "supra",
+			"old_quarter_ai_s": 12.8656068280607,
+			"old_race_s": 8.34893107990647,
+			"quarter_ai_s": 10.2506040519027,
+			"race_s": 6.77894130232798,
+			"reaction_s": 0.239389284875309,
+			"recipe": 6.0,
+			"stages": [
+				3.0,
+				3.0,
+				0.0,
+				2.0,
+				5.0,
+				3.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 10.2512885674607
+		},
+		{
+			"bet_cap": 162500.0,
+			"class": "B",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"pro_drag_radial",
+					"pro_drag_susp",
+					"clutch_carbon",
+					"billet",
+					"fuel_ethanol",
+					"ecu_race",
+					"turbo_hybrid",
+					"gear_strength"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_golf_r"
+				],
+				"parts": {
+					"clutch": "clutch_carbon",
+					"ecu": "ecu_race",
+					"fuel": "fuel_ethanol",
+					"gear_strength": "gear_strength",
+					"induction": "turbo_hybrid",
+					"internals": "billet",
+					"suspension": "pro_drag_susp",
+					"tires": "pro_drag_radial"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_golf_r",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 24.0
+				}
+			},
+			"id": "class_B_7",
+			"model": "golf_r",
+			"old_quarter_ai_s": 12.6652691399337,
+			"old_race_s": 12.6652691399337,
+			"quarter_ai_s": 9.83401324227554,
+			"race_s": 9.83401324227554,
+			"reaction_s": 0.24465112687539,
+			"recipe": 6.0,
+			"stages": [
+				3.0,
+				3.0,
+				0.0,
+				2.0,
+				5.0,
+				3.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 9.83585573125634
+		},
+		{
+			"bet_cap": 221000.0,
+			"class": "B",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"pro_drag_radial",
+					"pro_drag_susp",
+					"clutch_carbon",
+					"billet",
+					"fuel_ethanol",
+					"ecu_race",
+					"turbo_hybrid",
+					"gear_strength"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_supra_gr"
+				],
+				"parts": {
+					"clutch": "clutch_carbon",
+					"ecu": "ecu_race",
+					"fuel": "fuel_ethanol",
+					"gear_strength": "gear_strength",
+					"induction": "turbo_hybrid",
+					"internals": "billet",
+					"suspension": "pro_drag_susp",
+					"tires": "pro_drag_radial"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_supra_gr",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 24.0
+				}
+			},
+			"id": "class_B_8",
+			"model": "supra_gr",
+			"old_quarter_ai_s": 12.5461748614673,
+			"old_race_s": 8.16189322212995,
+			"quarter_ai_s": 9.41727097657641,
+			"race_s": 6.20044355380265,
+			"reaction_s": 0.287135067294866,
+			"recipe": 6.0,
+			"stages": [
+				3.0,
+				3.0,
+				0.0,
+				2.0,
+				5.0,
+				3.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 9.42042289505199
+		},
+		{
+			"bet_cap": 325000.0,
+			"class": "B",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"pro_drag_slicks",
+					"active_drag_susp",
+					"clutch_carbon",
+					"billet",
+					"fuel_ethanol",
+					"ecu_race",
+					"turbo_race",
+					"intake_race",
+					"charge_pressure",
+					"charge_airflow",
+					"charge_cooling",
+					"gear_strength",
+					"gear_pro",
+					"gear_response"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_supra"
+				],
+				"parts": {
+					"charge_airflow": "charge_airflow",
+					"charge_cooling": "charge_cooling",
+					"charge_pressure": "charge_pressure",
+					"clutch": "clutch_carbon",
+					"ecu": "ecu_race",
+					"fuel": "fuel_ethanol",
+					"gear_pro": "gear_pro",
+					"gear_response": "gear_response",
+					"gear_strength": "gear_strength",
+					"induction": "turbo_race",
+					"intake": "intake_race",
+					"internals": "billet",
+					"suspension": "active_drag_susp",
+					"tires": "pro_drag_slicks"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_supra",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 21.0
+				}
+			},
+			"id": "class_B_9",
+			"model": "supra",
+			"old_quarter_ai_s": 12.3749969502159,
+			"old_race_s": 12.3749969502159,
+			"quarter_ai_s": 8.96116248154033,
+			"race_s": 8.96116248154033,
+			"reaction_s": 0.383555381831265,
+			"recipe": 9.0,
+			"stages": [
+				3.0,
+				3.0,
+				0.0,
+				3.0,
+				5.0,
+				3.0,
+				3.0,
+				3.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 8.95883085482493
+		},
+		{
+			"bet_cap": 22000.0,
+			"class": "A",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_z400"
+				],
+				"parts": {
+
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_z400",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_A_0",
+			"model": "z400",
+			"old_quarter_ai_s": 13.2665817143447,
+			"old_race_s": 13.2665817143447,
+			"quarter_ai_s": 12.7510146591404,
+			"race_s": 12.7510146591404,
+			"reaction_s": 0.58,
+			"recipe": 0.0,
+			"stages": [
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+				"camaro": 11.938527596225,
+				"gtr": 11.0195861137876,
+				"mustang": 11.867205422255,
+				"r8": 10.955277936573,
+				"redeye": 10.826893188089,
+				"z400": 12.3510146591405
+			},
+			"target_s": 12.7510146591405
+		},
+		{
+			"bet_cap": 33000.0,
+			"class": "A",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_camaro"
+				],
+				"parts": {
+
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_camaro",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_A_1",
+			"model": "camaro",
+			"old_quarter_ai_s": 12.8823770460196,
+			"old_race_s": 8.50947103037159,
+			"quarter_ai_s": 12.0093609295583,
+			"race_s": 8.00511766192834,
+			"reaction_s": 0.251551900023733,
+			"recipe": 0.0,
+			"stages": [
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 12.0100794962487
+		},
+		{
+			"bet_cap": 48400.0,
+			"class": "A",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"street_tires"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_camaro"
+				],
+				"parts": {
+					"tires": "street_tires"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_camaro",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_A_2",
+			"model": "camaro",
+			"old_quarter_ai_s": 12.2648352719192,
+			"old_race_s": 12.2648352719192,
+			"quarter_ai_s": 11.4090978088596,
+			"race_s": 11.4090978088596,
+			"reaction_s": 0.267207297115523,
+			"recipe": 1.0,
+			"stages": [
+				1.0,
+				0.0,
+				0.0,
+				0.0,
+				1.0,
+				0.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 11.4080696763991
+		},
+		{
+			"bet_cap": 70400.0,
+			"class": "A",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_redeye"
+				],
+				"parts": {
+
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_redeye",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_A_3",
+			"model": "redeye",
+			"old_quarter_ai_s": 12.2058873012237,
+			"old_race_s": 8.12895199092471,
+			"quarter_ai_s": 10.8977265214223,
+			"race_s": 7.3161092975565,
+			"reaction_s": 0.251783563822002,
+			"recipe": 0.0,
+			"stages": [
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 10.898676751911
+		},
+		{
+			"bet_cap": 101200.0,
+			"class": "A",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"street_tires"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_redeye"
+				],
+				"parts": {
+					"tires": "street_tires"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_redeye",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_A_4",
+			"model": "redeye",
+			"old_quarter_ai_s": 12.153048008237,
+			"old_race_s": 12.153048008237,
+			"quarter_ai_s": 10.387193795122,
+			"race_s": 10.387193795122,
+			"reaction_s": 0.289840163394162,
+			"recipe": 1.0,
+			"stages": [
+				1.0,
+				0.0,
+				0.0,
+				0.0,
+				1.0,
+				0.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 10.3892838274229
+		},
+		{
+			"bet_cap": 143000.0,
+			"class": "A",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"uhp_tires",
+					"street_susp",
+					"clutch_twin"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_r8"
+				],
+				"parts": {
+					"clutch": "clutch_twin",
+					"suspension": "street_susp",
+					"tires": "uhp_tires"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_r8",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_A_5",
+			"model": "r8",
+			"old_quarter_ai_s": 12.067733275447,
+			"old_race_s": 8.08350192879826,
+			"quarter_ai_s": 9.87949593988441,
+			"race_s": 6.53304035957229,
+			"reaction_s": 0.334556275447767,
+			"recipe": 2.0,
+			"stages": [
+				1.0,
+				1.0,
+				0.0,
+				0.0,
+				1.0,
+				1.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 9.87989090293476
+		},
+		{
+			"bet_cap": 198000.0,
+			"class": "A",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"competition_radial",
+					"drag_susp",
+					"clutch_race",
+					"forged",
+					"fuel_street",
+					"ecu"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_mustang"
+				],
+				"parts": {
+					"clutch": "clutch_race",
+					"ecu": "ecu",
+					"fuel": "fuel_street",
+					"internals": "forged",
+					"suspension": "drag_susp",
+					"tires": "competition_radial"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_mustang",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 25.0
+				}
+			},
+			"id": "class_A_6",
+			"model": "mustang",
+			"old_quarter_ai_s": 11.9913912738938,
+			"old_race_s": 7.74602372782934,
+			"quarter_ai_s": 9.414521715567,
+			"race_s": 6.22223142214767,
+			"reaction_s": 0.19952971144105,
+			"recipe": 4.0,
+			"stages": [
+				2.0,
+				2.0,
+				0.0,
+				1.0,
+				3.0,
+				2.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 9.41680642612739
+		},
+		{
+			"bet_cap": 275000.0,
+			"class": "A",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"competition_radial",
+					"drag_susp",
+					"clutch_race",
+					"forged",
+					"fuel_street",
+					"ecu"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_gtr"
+				],
+				"parts": {
+					"clutch": "clutch_race",
+					"ecu": "ecu",
+					"fuel": "fuel_street",
+					"internals": "forged",
+					"suspension": "drag_susp",
+					"tires": "competition_radial"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_gtr",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 25.0
+				}
+			},
+			"id": "class_A_7",
+			"model": "gtr",
+			"old_quarter_ai_s": 11.6066301519394,
+			"old_race_s": 11.6066301519394,
+			"quarter_ai_s": 8.99838983503192,
+			"race_s": 8.99838983503192,
+			"reaction_s": 0.232161710621327,
+			"recipe": 4.0,
+			"stages": [
+				2.0,
+				2.0,
+				0.0,
+				1.0,
+				3.0,
+				2.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 9.00003039700075
+		},
+		{
+			"bet_cap": 374000.0,
+			"class": "A",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"pro_drag_radial",
+					"pro_drag_susp",
+					"clutch_carbon",
+					"billet",
+					"fuel_ethanol",
+					"ecu_race",
+					"turbo_hybrid",
+					"gear_strength"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_mustang"
+				],
+				"parts": {
+					"clutch": "clutch_carbon",
+					"ecu": "ecu_race",
+					"fuel": "fuel_ethanol",
+					"gear_strength": "gear_strength",
+					"induction": "turbo_hybrid",
+					"internals": "billet",
+					"suspension": "pro_drag_susp",
+					"tires": "pro_drag_radial"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_mustang",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 24.0
+				}
+			},
+			"id": "class_A_8",
+			"model": "mustang",
+			"old_quarter_ai_s": 11.464312880543,
+			"old_race_s": 7.71758219464138,
+			"quarter_ai_s": 8.58327557196258,
+			"race_s": 5.66113757804618,
+			"reaction_s": 0.184146792134058,
+			"recipe": 6.0,
+			"stages": [
+				3.0,
+				3.0,
+				0.0,
+				2.0,
+				5.0,
+				3.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 8.58325436787411
+		},
+		{
+			"bet_cap": 550000.0,
+			"class": "A",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"drag_slicks",
+					"pro_drag_susp",
+					"clutch_race",
+					"forged",
+					"fuel_injectors",
+					"intake_velocity",
+					"ecu_track"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_r8"
+				],
+				"parts": {
+					"clutch": "clutch_race",
+					"ecu": "ecu_track",
+					"fuel": "fuel_injectors",
+					"intake": "intake_velocity",
+					"internals": "forged",
+					"suspension": "pro_drag_susp",
+					"tires": "drag_slicks"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_r8",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 23.0
+				}
+			},
+			"id": "class_A_9",
+			"model": "r8",
+			"old_quarter_ai_s": 10.8433473223313,
+			"old_race_s": 10.8433473223313,
+			"quarter_ai_s": 8.12050240200101,
+			"race_s": 8.12050240200101,
+			"reaction_s": 0.205183675613309,
+			"recipe": 5.0,
+			"stages": [
+				3.0,
+				2.0,
+				0.0,
+				2.0,
+				4.0,
+				2.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 8.12016989106674
+		},
+		{
+			"bet_cap": 40000.0,
+			"class": "S",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_z06"
+				],
+				"parts": {
+
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_z06",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_S_0",
+			"model": "z06",
+			"old_quarter_ai_s": 11.8591180292105,
+			"old_race_s": 11.8591180292105,
+			"quarter_ai_s": 11.0449276452734,
+			"race_s": 11.0449276452734,
+			"reaction_s": 0.58,
+			"recipe": 0.0,
+			"stages": [
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+				"chiron": 9.2628598447203,
+				"demon": 9.54804010221569,
+				"gt500": 10.5826570284257,
+				"mclaren": 9.86473269009167,
+				"sf90": 9.58232903792423,
+				"turbo_s": 10.43082944423,
+				"z06": 10.6449276452735
+			},
+			"target_s": 11.0449276452735
+		},
+		{
+			"bet_cap": 60000.0,
+			"class": "S",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"street_tires"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_z06"
+				],
+				"parts": {
+					"tires": "street_tires"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_z06",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_S_1",
+			"model": "z06",
+			"old_quarter_ai_s": 10.2349076725336,
+			"old_race_s": 6.91219744790527,
+			"quarter_ai_s": 10.112882619268,
+			"race_s": 6.71809385777634,
+			"reaction_s": 0.130906771678571,
+			"recipe": 1.0,
+			"stages": [
+				1.0,
+				0.0,
+				0.0,
+				0.0,
+				1.0,
+				0.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 10.1149076725336
+		},
+		{
+			"bet_cap": 88000.0,
+			"class": "S",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"uhp_tires",
+					"street_susp",
+					"clutch_twin"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_gt500"
+				],
+				"parts": {
+					"clutch": "clutch_twin",
+					"suspension": "street_susp",
+					"tires": "uhp_tires"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_gt500",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_S_2",
+			"model": "gt500",
+			"old_quarter_ai_s": 9.85324787273805,
+			"old_race_s": 9.85324787273805,
+			"quarter_ai_s": 9.73538584180564,
+			"race_s": 9.73538584180564,
+			"reaction_s": 0.117877112864224,
+			"recipe": 2.0,
+			"stages": [
+				1.0,
+				1.0,
+				0.0,
+				0.0,
+				1.0,
+				1.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 9.73324787273805
+		},
+		{
+			"bet_cap": 128000.0,
+			"class": "S",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"street_tires"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_mclaren"
+				],
+				"parts": {
+					"tires": "street_tires"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_mclaren",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_S_3",
+			"model": "mclaren",
+			"old_quarter_ai_s": 9.82645189704573,
+			"old_race_s": 6.48625561085241,
+			"quarter_ai_s": 9.40307012685263,
+			"race_s": 6.36622975928392,
+			"reaction_s": 0.182744413727534,
+			"recipe": 1.0,
+			"stages": [
+				1.0,
+				0.0,
+				0.0,
+				0.0,
+				1.0,
+				0.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 9.40581454058016
+		},
+		{
+			"bet_cap": 184000.0,
+			"class": "S",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"street_radial",
+					"coilovers",
+					"clutch_twin",
+					"ecu"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_turbo_s"
+				],
+				"parts": {
+					"clutch": "clutch_twin",
+					"ecu": "ecu",
+					"suspension": "coilovers",
+					"tires": "street_radial"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_turbo_s",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_S_4",
+			"model": "turbo_s",
+			"old_quarter_ai_s": 9.44528203371217,
+			"old_race_s": 9.44528203371217,
+			"quarter_ai_s": 8.95174285389741,
+			"race_s": 8.95174285389741,
+			"reaction_s": 0.19155606523777,
+			"recipe": 3.0,
+			"stages": [
+				2.0,
+				1.0,
+				0.0,
+				1.0,
+				2.0,
+				1.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 8.95505843678951
+		},
+		{
+			"bet_cap": 260000.0,
+			"class": "S",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"uhp_tires",
+					"street_susp",
+					"clutch_twin"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_chiron"
+				],
+				"parts": {
+					"clutch": "clutch_twin",
+					"suspension": "street_susp",
+					"tires": "uhp_tires"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_chiron",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+
+				}
+			},
+			"id": "class_S_5",
+			"model": "chiron",
+			"old_quarter_ai_s": 8.98845060105327,
+			"old_race_s": 5.9588038866343,
+			"quarter_ai_s": 8.50109709983334,
+			"race_s": 5.82025604141758,
+			"reaction_s": 0.199127252791167,
+			"recipe": 2.0,
+			"stages": [
+				1.0,
+				1.0,
+				0.0,
+				0.0,
+				1.0,
+				1.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 8.50430233299885
+		},
+		{
+			"bet_cap": 360000.0,
+			"class": "S",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"drag_slicks",
+					"pro_drag_susp",
+					"clutch_race",
+					"forged",
+					"fuel_injectors",
+					"intake_velocity",
+					"ecu_track"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_gt500"
+				],
+				"parts": {
+					"clutch": "clutch_race",
+					"ecu": "ecu_track",
+					"fuel": "fuel_injectors",
+					"intake": "intake_velocity",
+					"internals": "forged",
+					"suspension": "pro_drag_susp",
+					"tires": "drag_slicks"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_gt500",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 23.0
+				}
+			},
+			"id": "class_S_6",
+			"model": "gt500",
+			"old_quarter_ai_s": 8.82570905185134,
+			"old_race_s": 5.84369560386503,
+			"quarter_ai_s": 8.09114410868612,
+			"race_s": 5.3273919493131,
+			"reaction_s": 0.191640404405769,
+			"recipe": 5.0,
+			"stages": [
+				3.0,
+				2.0,
+				0.0,
+				2.0,
+				4.0,
+				2.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 8.09452405682553
+		},
+		{
+			"bet_cap": 500000.0,
+			"class": "S",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"pro_drag_radial",
+					"pro_drag_susp",
+					"clutch_carbon",
+					"billet",
+					"fuel_ethanol",
+					"ecu_race",
+					"turbo_hybrid",
+					"gear_strength"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_z06"
+				],
+				"parts": {
+					"clutch": "clutch_carbon",
+					"ecu": "ecu_race",
+					"fuel": "fuel_ethanol",
+					"gear_strength": "gear_strength",
+					"induction": "turbo_hybrid",
+					"internals": "billet",
+					"suspension": "pro_drag_susp",
+					"tires": "pro_drag_radial"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_z06",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 24.0
+				}
+			},
+			"id": "class_S_7",
+			"model": "z06",
+			"old_quarter_ai_s": 8.58305537978931,
+			"old_race_s": 8.58305537978931,
+			"quarter_ai_s": 7.72528255678472,
+			"race_s": 7.72528255678472,
+			"reaction_s": 0.188658166853438,
+			"recipe": 6.0,
+			"stages": [
+				3.0,
+				3.0,
+				0.0,
+				2.0,
+				5.0,
+				3.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 7.72572360826954
+		},
+		{
+			"bet_cap": 680000.0,
+			"class": "S",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"pro_drag_slicks",
+					"active_drag_susp",
+					"clutch_carbon",
+					"billet",
+					"fuel_ethanol",
+					"ecu_race",
+					"turbo_hybrid",
+					"intake_race",
+					"headers",
+					"charge_airflow",
+					"gear_strength",
+					"gear_pro"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_turbo_s"
+				],
+				"parts": {
+					"charge_airflow": "charge_airflow",
+					"clutch": "clutch_carbon",
+					"ecu": "ecu_race",
+					"exhaust": "headers",
+					"fuel": "fuel_ethanol",
+					"gear_pro": "gear_pro",
+					"gear_strength": "gear_strength",
+					"induction": "turbo_hybrid",
+					"intake": "intake_race",
+					"internals": "billet",
+					"suspension": "active_drag_susp",
+					"tires": "pro_drag_slicks"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_turbo_s",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 21.0
+				}
+			},
+			"id": "class_S_8",
+			"model": "turbo_s",
+			"old_quarter_ai_s": 8.21801720220336,
+			"old_race_s": 5.60596178696967,
+			"quarter_ai_s": 7.35365815693541,
+			"race_s": 4.89316638834795,
+			"reaction_s": 0.23327056018699,
+			"recipe": 7.0,
+			"stages": [
+				3.0,
+				3.0,
+				0.0,
+				3.0,
+				5.0,
+				3.0,
+				0.0,
+				0.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 7.35692315971355
+		},
+		{
+			"bet_cap": 1000000.0,
+			"class": "S",
+			"hardware": {
+				"fitments": {
+
+				},
+				"owned_parts": [
+					"pro_drag_slicks",
+					"active_drag_susp",
+					"clutch_carbon",
+					"billet",
+					"fuel_ethanol",
+					"ecu_race",
+					"turbo_hybrid",
+					"gear_strength",
+					"gear_pro"
+				],
+				"owned_performance_stages": {
+
+				},
+				"owned_transmissions": [
+					"oem_sf90"
+				],
+				"parts": {
+					"clutch": "clutch_carbon",
+					"ecu": "ecu_race",
+					"fuel": "fuel_ethanol",
+					"gear_pro": "gear_pro",
+					"gear_strength": "gear_strength",
+					"induction": "turbo_hybrid",
+					"internals": "billet",
+					"suspension": "active_drag_susp",
+					"tires": "pro_drag_slicks"
+				},
+				"performance_stages": {
+
+				},
+				"transmission": "oem_sf90",
+				"transmission_parts": {
+
+				},
+				"transmission_tunes": {
+
+				},
+				"tune": {
+					"launch_damping": 1.15,
+					"tire_pressure": 21.0
+				}
+			},
+			"id": "class_S_9",
+			"model": "sf90",
+			"old_quarter_ai_s": 7.7891516575553,
+			"old_race_s": 7.7891516575553,
+			"quarter_ai_s": 6.94474761708804,
+			"race_s": 6.94474761708804,
+			"reaction_s": 0.269512786913851,
+			"recipe": 8.0,
+			"stages": [
+				3.0,
+				3.0,
+				0.0,
+				3.0,
+				5.0,
+				3.0,
+				0.0,
+				2.0
+			],
+			"stock_times": {
+
+			},
+			"target_s": 6.94714488354023
+		}
+	],
+	"round_fractions": [
+		0.0,
+		0.16,
+		0.29,
+		0.4,
+		0.51,
+		0.62,
+		0.72,
+		0.81,
+		0.9,
+		1.0
+	]
+}

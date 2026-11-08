@@ -19,6 +19,25 @@ var catalog_offset: int=0
 var option_offset: int=0
 var detail_offset: int=0
 var confirm_quote: String=""
+var vehicle_template: ToolkitVehicleScreen
+var dealer_query := ""
+var dealer_filter := 0
+var dealer_ui_class := -1
+
+func template_action(id: String) -> bool:
+	if not is_instance_valid(vehicle_template) or not vehicle_template.is_visible_in_tree() or vehicle_template.screen_type!="dealership": return false
+	if id in ["shop_car_prev","shop_car_next"]:
+		var ids: Array=vehicle_template.visible_inventory().map(func(item): return item.id)
+		if not ids.is_empty():
+			var current: int=ids.find(GameCatalog.CAR_IDS[game.dealer_index])
+			var next: int=(0 if id=="shop_car_next" else ids.size()-1) if current<0 else posmod(current+(-1 if id=="shop_car_prev" else 1),ids.size())
+			game.action("dealer_%d"%GameCatalog.CAR_IDS.find(ids[next]))
+		return true
+	if id!="dealer_catalog_filter": return false
+	dealer_filter=(dealer_filter+1)%3
+	vehicle_template.catalog_items=vehicle_template.visible_inventory()
+	vehicle_template.rebuild_catalog()
+	return true
 var quote_build_key: String=""
 var quote_car: Drivetrain
 var upgrade_pointer: int=-1
@@ -308,7 +327,7 @@ func state_key() -> String:
 			var quote:=active_quote()
 			candidate=quote_preview(quote) if quote.reason=="" else game.car
 		projection=str(studio.build_runs(candidate).map(func(run): return [run.get("zero_60_s"),run.get("quarter_et_s",run.get("quarter_s")),run.get("sixty_ft_s"),run.get("wheelspin_s")]))
-	return JSON.stringify([size,game.tab,game.profile.vehicle_id,game.profile.credits,game.profile.xp,game.profile.stages,game.profile.owned_stages,game.profile.hardware,game.profile.appearance_for(game.profile.vehicle_id),game.menu.hub.categories,game.menu.hub.selected,game.menu.hub.studio.system,w.mode,w.slot_index,w.parts_page,w.preview_stage,w.selected_hardware,w.selected_trans,w.filter_index,w.page,w.details,game.profile.muted,game.profile.effects_quality,game.profile.reduced_motion,game.profile.garage if game.tab=="garage" else {},projection,PerformanceClasses.label(game.profile)])
+	return JSON.stringify([size,game.scale,game.get_window().size,game.tab,game.profile.vehicle_id,game.profile.credits,game.profile.xp,game.profile.stages,game.profile.owned_stages,game.profile.hardware,game.profile.appearance_for(game.profile.vehicle_id),game.menu.hub.categories,game.menu.hub.selected,game.menu.hub.studio.system,w.mode,w.slot_index,w.parts_page,w.preview_stage,w.selected_hardware,w.selected_trans,w.filter_index,w.page,w.details,game.profile.muted,game.profile.effects_quality,game.profile.reduced_motion,game.profile.garage if game.tab=="garage" else {},projection,PerformanceClasses.label(game.profile)])
 
 func _process(_delta: float) -> void:
 	if not visible: return
@@ -347,11 +366,14 @@ func build() -> void:
 	var browse: bool=game.menu.hub.categories
 	var workbench: bool=game.tab=="performance"
 	if not workbench:
-		var stage:=GarageShowroom.new()
-		stage.name="GarageShowroom"
-		add_child(stage)
-		stage.size=size
-		stage.setup(game,0)
+		var background:=TextureRect.new(); add_child(background)
+		background.name="GarageEnvironment"
+		background.texture=load(GarageShowroom.PORTRAIT_PATH if portrait else GarageShowroom.SCENE_PATH)
+		background.expand_mode=TextureRect.EXPAND_IGNORE_SIZE; background.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		background.size=size; background.modulate=Color(.45,.48,.52); background.mouse_filter=Control.MOUSE_FILTER_IGNORE
+		vehicle_template=ToolkitVehicleScreen.new(); add_child(vehicle_template)
+		vehicle_template.setup(self,"garage",Rect2(24 if portrait or short_catalog() else 36,18,size.x-(48 if portrait or short_catalog() else 72),1100 if portrait else 614 if short_catalog() else 630))
+		build_notice(); return
 	var height:=1110.0 if portrait else (612.0 if short_catalog() else 630.0)
 	if workbench and not browse: height=1244.0 if portrait else 716.0
 	var body:=container(Rect2(24,18,size.x-48,height) if portrait or short_catalog() else Rect2(36,20,size.x-72,height))
@@ -360,9 +382,6 @@ func build() -> void:
 		if browse: overview(body)
 		elif game.menu.hub.selected in [5,7]: system_shop(body,game.menu.hub.selected==7)
 		else: detail_workspace(body)
-	else:
-		header(body)
-		garage(body)
 	build_notice()
 
 func short_catalog() -> bool:
@@ -386,70 +405,15 @@ func build_notice() -> void:
 	var notice_y := (1116 if portrait else (590 if short_catalog() else 622)) if system_detail else (74 if portrait else 66)
 	notice.position=Vector2(24 if portrait else 350,notice_y)
 	notice.size=Vector2(552,62) if portrait else Vector2(500,48)
+	if is_instance_valid(vehicle_template) and vehicle_template.is_inside_tree() and vehicle_template.controls.has("vehicle_preview"):
+		var preview: Control=vehicle_template.controls.vehicle_preview
+		notice.position=vehicle_template.position+preview.position+Vector2(12,10)
+		notice.size=Vector2(minf(500,preview.size.x-24),62 if portrait else 48)
 	notice_skin=AutomotiveUI.surface(Color("15252c"),Color(AutomotiveUI.BLUE,.64),12)
 	notice.add_theme_stylebox_override("panel",notice_skin)
 	notice_label=AutomotiveUI.label(("✓   " if game.toast_confirmed else "")+game.toast,18,AutomotiveUI.INK); notice.add_child(notice_label)
+	notice_label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART; notice_label.max_lines_visible=2
 	notice.visible=game.toast_left>0
-
-func garage(body: VBoxContainer) -> void:
-	body.add_theme_constant_override("separation",12)
-	var heading:=AutomotiveUI.row(body)
-	AutomotiveUI.section_mark(heading,"01   /   PRIVATE GARAGE","garage",AutomotiveUI.BLUE)
-	var count:=AutomotiveUI.label("%02d OWNED  /  %02d DISPLAYED"%[game.profile.garage.size(),mini(3,game.profile.garage.size())],15,AutomotiveUI.BLUE,true)
-	count.custom_minimum_size.x=AutomotiveUI.NUMBERS.get_string_size(count.text,HORIZONTAL_ALIGNMENT_LEFT,-1,15).x
-	count.size_flags_horizontal=Control.SIZE_SHRINK_END
-	heading.add_child(count)
-	var panel:=PanelContainer.new()
-	panel.name="GarageConsole"
-	add_child(panel)
-	panel.mouse_filter=Control.MOUSE_FILTER_IGNORE
-	panel.position=Vector2(24,868) if portrait else (Vector2(size.x*.65,212) if short_catalog() else Vector2(36,550))
-	panel.size=Vector2(552,184) if portrait else (Vector2(size.x*.35-24,390) if short_catalog() else Vector2(size.x-72,108))
-	var skin:=AutomotiveUI.surface(Color(.025,.037,.047,.88),Color(.59,.69,.72,.30),18)
-	skin.content_margin_left=18
-	skin.content_margin_right=18
-	skin.content_margin_top=16
-	skin.content_margin_bottom=16
-	panel.add_theme_stylebox_override("panel",skin)
-	var stacked:=portrait or short_catalog()
-	var console: BoxContainer=AutomotiveUI.column(panel,14) if stacked else AutomotiveUI.row(panel,22)
-	var spec:=GameCatalog.spec(game.profile.vehicle_id)
-	var nameplate:=AutomotiveUI.column(console,3)
-	nameplate.size_flags_vertical=Control.SIZE_SHRINK_CENTER
-	nameplate.size_flags_horizontal=Control.SIZE_EXPAND_FILL
-	nameplate.add_child(AutomotiveUI.label("ACTIVE BAY  /  "+str(spec.drive),14,AutomotiveUI.ORANGE,true))
-	var title:=AutomotiveUI.label(str(spec.name),28 if not portrait else 30)
-	title.text_overrun_behavior=TextServer.OVERRUN_TRIM_ELLIPSIS
-	nameplate.add_child(title)
-	nameplate.add_child(AutomotiveUI.label(PerformanceClasses.label(game.profile),14,AutomotiveUI.BLUE,true))
-	var stats:=AutomotiveUI.column(console,0)
-	if not stacked: stats.size_flags_horizontal=Control.SIZE_SHRINK_CENTER
-	stats.size_flags_vertical=Control.SIZE_SHRINK_CENTER
-	garage_stats(stats,4 if not short_catalog() else 2)
-	garage_action(console,"hub_owned","Change Car","dealer",true)
-	var change_button: Button=targets.hub_owned
-	change_button.custom_minimum_size.y=82 if stacked else 72
-	if not stacked:
-		change_button.custom_minimum_size.x=240
-		change_button.size_flags_horizontal=Control.SIZE_SHRINK_END
-		change_button.size_flags_vertical=Control.SIZE_SHRINK_CENTER
-
-func garage_action(parent: Node,id: String,title: String,icon_key: String,primary: bool=false) -> void:
-	var control:=button(parent,id,title,primary)
-	control.icon=AutomotiveUI.action_icon(icon_key,Color("21171a") if primary else AutomotiveUI.BLUE)
-	control.add_theme_constant_override("h_separation",9)
-	control.add_theme_constant_override("icon_max_width",23)
-
-func garage_stats(parent: Node,columns: int) -> void:
-	var grid:=GridContainer.new()
-	grid.columns=columns
-	grid.add_theme_constant_override("h_separation",12 if short_catalog() else 28)
-	grid.add_theme_constant_override("v_separation",14)
-	parent.add_child(grid)
-	AutomotiveUI.stat(grid,"ENGINE POWER" if float(game.car._base_spec.get("hybrid_kw",0))>0 else "POWER","%.0f"%game.car.peak_horsepower(),"hp")
-	AutomotiveUI.stat(grid,"TORQUE","%.0f"%ImperialUnits.torque(GarageHub.peak_torque(game.car)),"lb-ft")
-	AutomotiveUI.stat(grid,"GRIP","%.2f"%GarageHub.grip(game.car),"")
-	AutomotiveUI.stat(grid,"WEIGHT","%.0f"%ImperialUnits.pounds(game.car.mass()),"lb")
 
 func catalog_scroll(parent: Node, label: String, offset: int) -> ScrollContainer:
 	var scroll:=ScrollContainer.new()

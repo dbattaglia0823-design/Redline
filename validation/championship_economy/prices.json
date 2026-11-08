@@ -1,0 +1,369 @@
+{
+  "stage_multipliers": [
+    0,
+    1,
+    3,
+    8,
+    18,
+    36
+  ],
+  "components": [
+    {
+      "id": "gear_strength",
+      "slot": "gear_strength",
+      "name": "Hardened internals",
+      "before": 3600,
+      "after": 5500
+    },
+    {
+      "id": "gear_efficiency",
+      "slot": "gear_efficiency",
+      "name": "Low-friction bearings",
+      "before": 2100,
+      "after": 4000
+    },
+    {
+      "id": "gear_cooling",
+      "slot": "gear_cooling",
+      "name": "Thermal protection",
+      "before": 2800,
+      "after": 4500
+    },
+    {
+      "id": "gear_response",
+      "slot": "gear_response",
+      "name": "Shift calibration",
+      "before": 3200,
+      "after": 6500
+    },
+    {
+      "id": "gear_pro",
+      "slot": "gear_pro",
+      "name": "Billet gearset and case",
+      "before": 8200,
+      "after": 24000
+    },
+    {
+      "id": "charge_pressure",
+      "slot": "charge_pressure",
+      "name": "Pressure upgrade",
+      "before": 3400,
+      "after": 6500
+    },
+    {
+      "id": "charge_response",
+      "slot": "charge_response",
+      "name": "Response calibration",
+      "before": 2600,
+      "after": 5000
+    },
+    {
+      "id": "charge_airflow",
+      "slot": "charge_airflow",
+      "name": "High-flow charge piping",
+      "before": 2300,
+      "after": 4000
+    },
+    {
+      "id": "charge_cooling",
+      "slot": "charge_cooling",
+      "name": "Charge cooling",
+      "before": 3000,
+      "after": 6000
+    },
+    {
+      "id": "forged",
+      "slot": "internals",
+      "name": "Forged rotating assembly",
+      "before": 2800,
+      "after": 2800
+    },
+    {
+      "id": "billet",
+      "slot": "internals",
+      "name": "Billet race assembly",
+      "before": 6600,
+      "after": 12000
+    },
+    {
+      "id": "stroker",
+      "slot": "displacement",
+      "name": "8% stroker kit",
+      "before": 4200,
+      "after": 9000
+    },
+    {
+      "id": "compression",
+      "slot": "compression",
+      "name": "High-compression pistons",
+      "before": 2500,
+      "after": 6000
+    },
+    {
+      "id": "intake_street",
+      "slot": "intake",
+      "name": "High-flow air filter",
+      "before": 750,
+      "after": 750
+    },
+    {
+      "id": "plenum",
+      "slot": "intake",
+      "name": "High-flow intake plenum",
+      "before": 1550,
+      "after": 2250
+    },
+    {
+      "id": "intake_velocity",
+      "slot": "intake",
+      "name": "Velocity stack intake",
+      "before": 2900,
+      "after": 6750
+    },
+    {
+      "id": "intake_race",
+      "slot": "intake",
+      "name": "Race intake manifold",
+      "before": 4800,
+      "after": 18000
+    },
+    {
+      "id": "fuel_street",
+      "slot": "fuel",
+      "name": "High-flow fuel system",
+      "before": 1700,
+      "after": 1700
+    },
+    {
+      "id": "fuel_injectors",
+      "slot": "fuel",
+      "name": "Performance pump and injectors",
+      "before": 3100,
+      "after": 5100
+    },
+    {
+      "id": "fuel_ethanol",
+      "slot": "fuel",
+      "name": "Ethanol-ready race fuel kit",
+      "before": 5100,
+      "after": 15300
+    },
+    {
+      "id": "ecu_street",
+      "slot": "ecu",
+      "name": "Street ECU",
+      "before": 950,
+      "after": 950
+    },
+    {
+      "id": "ecu",
+      "slot": "ecu",
+      "name": "Programmable ECU",
+      "before": 2300,
+      "after": 2850
+    },
+    {
+      "id": "ecu_track",
+      "slot": "ecu",
+      "name": "Track ECU",
+      "before": 3800,
+      "after": 8550
+    },
+    {
+      "id": "ecu_race",
+      "slot": "ecu",
+      "name": "Motorsport ECU",
+      "before": 5700,
+      "after": 22000
+    },
+    {
+      "id": "turbo_hybrid",
+      "slot": "induction",
+      "name": "Turbocharger",
+      "before": 3200,
+      "after": 3200
+    },
+    {
+      "id": "turbo_race",
+      "slot": "induction",
+      "name": "Large-frame turbo",
+      "before": 7000,
+      "after": 12000
+    },
+    {
+      "id": "roots",
+      "slot": "induction",
+      "name": "Roots supercharger",
+      "before": 6300,
+      "after": 9000
+    },
+    {
+      "id": "centrifugal",
+      "slot": "induction",
+      "name": "Centrifugal supercharger",
+      "before": 7200,
+      "after": 11000
+    },
+    {
+      "id": "boost_control",
+      "slot": "boost",
+      "name": "Electronic boost controller",
+      "before": 1700,
+      "after": 3200
+    },
+    {
+      "id": "clutch_street",
+      "slot": "clutch",
+      "name": "Heavy-duty clutch pack",
+      "before": 1450,
+      "after": 1450
+    },
+    {
+      "id": "clutch_twin",
+      "slot": "clutch",
+      "name": "Twin-plate clutch pack",
+      "before": 2750,
+      "after": 4350
+    },
+    {
+      "id": "clutch_race",
+      "slot": "clutch",
+      "name": "Race clutch / internal packs",
+      "before": 4600,
+      "after": 11600
+    },
+    {
+      "id": "clutch_carbon",
+      "slot": "clutch",
+      "name": "Carbon triple-disc clutch",
+      "before": 7800,
+      "after": 29000
+    },
+    {
+      "id": "lsd",
+      "slot": "differential",
+      "name": "Limited-slip differential",
+      "before": 2100,
+      "after": 2100
+    },
+    {
+      "id": "spool",
+      "slot": "differential",
+      "name": "Straight-line locked differential",
+      "before": 3000,
+      "after": 6500
+    },
+    {
+      "id": "light_wheels",
+      "slot": "wheels",
+      "name": "Lightweight road wheel set",
+      "before": 1600,
+      "after": 1600
+    },
+    {
+      "id": "drag_wheels",
+      "slot": "wheels",
+      "name": "Tall drag wheel set",
+      "before": 3300,
+      "after": 4800
+    },
+    {
+      "id": "street_tires",
+      "slot": "tires",
+      "name": "Performance street tires",
+      "before": 850,
+      "after": 850
+    },
+    {
+      "id": "uhp_tires",
+      "slot": "tires",
+      "name": "Ultra-high-performance tires",
+      "before": 1750,
+      "after": 2300
+    },
+    {
+      "id": "street_radial",
+      "slot": "tires",
+      "name": "Street drag radials",
+      "before": 2800,
+      "after": 6200
+    },
+    {
+      "id": "competition_radial",
+      "slot": "tires",
+      "name": "Competition drag radials",
+      "before": 4450,
+      "after": 15000
+    },
+    {
+      "id": "drag_slicks",
+      "slot": "tires",
+      "name": "Full drag slicks",
+      "before": 6300,
+      "after": 32000
+    },
+    {
+      "id": "pro_drag_radial",
+      "slot": "tires",
+      "name": "Pro drag radials",
+      "before": 7900,
+      "after": 55000
+    },
+    {
+      "id": "pro_drag_slicks",
+      "slot": "tires",
+      "name": "Pro soft-compound slicks",
+      "before": 9900,
+      "after": 90000
+    },
+    {
+      "id": "street_susp",
+      "slot": "suspension",
+      "name": "Sport suspension",
+      "before": 1700,
+      "after": 1700
+    },
+    {
+      "id": "coilovers",
+      "slot": "suspension",
+      "name": "Adjustable coilovers",
+      "before": 2600,
+      "after": 4700
+    },
+    {
+      "id": "drag_susp",
+      "slot": "suspension",
+      "name": "Performance drag suspension",
+      "before": 3700,
+      "after": 12000
+    },
+    {
+      "id": "competition_shocks",
+      "slot": "suspension",
+      "name": "Competition drag shocks and springs",
+      "before": 5350,
+      "after": 26000
+    },
+    {
+      "id": "pro_drag_susp",
+      "slot": "suspension",
+      "name": "Professional drag racing suspension",
+      "before": 7400,
+      "after": 50000
+    },
+    {
+      "id": "active_drag_susp",
+      "slot": "suspension",
+      "name": "Pro four-way drag suspension",
+      "before": 10500,
+      "after": 90000
+    },
+    {
+      "id": "headers",
+      "slot": "exhaust",
+      "name": "Tuned exhaust manifold",
+      "before": 2100,
+      "after": 4200
+    }
+  ]
+}

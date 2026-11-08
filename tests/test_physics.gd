@@ -197,7 +197,7 @@ func _initialize() -> void:
 	for tick in 360: c.step(H,1.0)
 	var loaded_boost := c.boost
 	for tick in 120: c.step(H,0.0)
-	check(loaded_boost > 0.3 and c.boost < loaded_boost*0.2,"Boost spool/decay is disconnected from throttle")
+	check(loaded_boost > 0.02 and loaded_boost < c.boost_target(c.redline_rpm,1.0)*.25 and c.boost < loaded_boost*0.2,"Free-rev boost load limit / throttle decay is disconnected")
 	var stock := quarter(GameCatalog.spec("kaze"),GameCatalog.blank_stages())
 	var built := quarter(GameCatalog.spec("kaze"),[3,3,3,3,3,3,3,3])
 	metrics.stock_quarter = stock

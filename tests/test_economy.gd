@@ -15,7 +15,7 @@ func _initialize() -> void:
 	var p := DriverProfile.new()
 	p.load_profile()
 	check(p.credits == 12345 and p.xp == 675 and p.best == 14.21,"Legacy money and records were not preserved")
-	check(p.stages == [1,2,3,1,2,0,0,0] and p.paint == 4 and p.wheels == 2,"Legacy car build was not migrated")
+	check(p.stages == [1,2,0,1,2,0,0,0] and p.hardware.parts.get("tires")=="street_radial" and p.paint == 4 and p.wheels == 2,"Legacy car build was not migrated")
 	check(p.garage.has("miata"),"Legacy starter car is missing")
 	p.credits = 1000
 	check(not p.begin_wager(-1) and not p.begin_wager(1001),"Invalid wager was allowed")
@@ -45,8 +45,9 @@ func _initialize() -> void:
 	check(not p.buy_vehicle("civic_si") and p.credits == after_purchase,"Duplicate vehicle purchase charged money")
 	p.paint = 1
 	p.wheels = 1
-	check(p.upgrade(1,3) and p.stages[1] == 3 and p.credits == after_purchase-6000,"Tier-three installation did not charge all required tiers")
-	check(not p.upgrade(1,2),"Upgrade allowed a downgrade")
+	check(p.upgrade(1,3) and p.stages[1] == 3 and p.credits == after_purchase-12000,"Tier-three installation did not charge all required tiers")
+	check(p.upgrade(1,2) and p.credits==after_purchase-12000,"Owned lower stage was not free to equip")
+	check(p.upgrade(1,3),"Owned top stage could not be restored")
 	p.select_vehicle("miata")
 	check(p.stages == saved_stages and p.paint == 4 and p.wheels == 2,"Switching cars lost the original build")
 	p.select_vehicle("civic_si")

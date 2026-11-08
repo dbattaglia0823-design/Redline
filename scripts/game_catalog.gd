@@ -18,6 +18,18 @@ const CARS := {
 }
 const PART_NAMES: Array[String] = ["Engine", "Turbo", "Tires", "Weight", "Gearbox", "Exhaust", "Brakes", "Nitrous"]
 const PART_COSTS: Array[int] = [700,1000,600,800,900,450,400,650]
+const STAGE_PRICE_MULTIPLIERS := [0,1,3,8,18,36]
+const CHAMPIONSHIP_BET_BASE := [2000,4000,7500,13000,22000,40000]
+const CHAMPIONSHIP_BET_SCALE := [1.0,1.5,2.2,3.2,4.6,6.5,9.0,12.5,17.0,25.0]
+
+static func championship_bet_cap(letter: String,round_index: int) -> int:
+	var rank: int=["E","D","C","B","A","S"].find(letter)
+	if rank<0: return 0
+	return roundi(float(CHAMPIONSHIP_BET_BASE[rank])*float(CHAMPIONSHIP_BET_SCALE[clampi(round_index,0,9)])/100)*100
+
+static func stage_cost(category: int,tier: int) -> int:
+	if category<0 or category>=PART_COSTS.size() or tier<1 or tier>max_stage(category): return 0
+	return PART_COSTS[category]*STAGE_PRICE_MULTIPLIERS[tier]
 const PART_TIERS := [
 	["Street airflow build", "Performance airflow build", "Race airflow build"],
 	["Quick-spool turbo", "Street hybrid", "Big-frame turbo"],
@@ -116,8 +128,8 @@ static func opponent(career: int, index: int, _profile: DriverProfile = null) ->
 		hardware.transmission = str(row[7]); hardware.owned_transmissions.append(str(row[7]))
 	return {"hardware":hardware,"skill":career,"traction_skill":.35+career*.25,"shift_error":260.0-career*90-index*20,
 		"launch_rpm":3900.0,"driver_seed":career*5+index,"name":BOT_NAMES[career][index],"model":model,"stages":stages,
-		"distance":402.336,"purse":250+career*350+index*110,
-		"max_bet":500+career*750+index*250,"reaction":.65-index*.06 if career==0 else .30-career*.06-index*.012,
+		"distance":402.336,"purse":0,
+		"max_bet":championship_bet_cap(engine_class(model,hardware),mini(9,index*2)),"reaction":.65-index*.06 if career==0 else .30-career*.06-index*.012,
 		"pedal":.80+index*.04 if career==0 else .94+index*.015,"shift_rpm":6800.0+career*80,"shift_delay":.17-career*.035,
 		"race_class":engine_class(model,hardware),"build_label":"Stock" if index==0 and career==0 else "Tuned"}
 

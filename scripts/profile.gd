@@ -380,7 +380,7 @@ func upgrade_cost(index: int, target: int = -1) -> int:
 	var current := int(stages[index])
 	if target < 0: target = current + 1
 	var cost := 0
-	for tier in range(highest_stage(index) + 1, mini(target, GameCatalog.max_stage(index)) + 1): cost += GameCatalog.PART_COSTS[index] * tier
+	for tier in range(highest_stage(index) + 1, mini(target, GameCatalog.max_stage(index)) + 1): cost += GameCatalog.stage_cost(index,tier)
 	return cost
 
 func upgrade_reason(_index: int) -> String:
@@ -507,6 +507,7 @@ func begin_wager(amount: int,contract: Dictionary = {}) -> bool:
 	if contract.has("id"):
 		bound=Championships.event(str(contract.id))
 		if bound.is_empty() or Championships.eligibility(self,bound)!="" or amount>int(bound.max_bet): return false
+	elif bound.has("max_bet") and amount>int(bound.max_bet): return false
 	credits -= amount; career_serial+=1
 	pending_wager = {"amount":amount,"contract":bound,"serial":career_serial}
 	save()
@@ -744,20 +745,24 @@ func award_race(contract: Dictionary,won: bool,red: bool,et: float,reaction: flo
 	var c: Dictionary=pending_wager.get("contract",{}).duplicate(true)
 	if c.is_empty(): c=contract.duplicate(true)
 	won=won and not red
-	var base:=0 if red else (int(c.get("purse",0)) if won else int(float(c.get("purse",0))*.4))
+	# The wager ledger is the sole source of race cash, including old pending
+	# contracts saved before purses and first-clear bonuses were removed.
+	var base:=0
 	var xp_award:=0
 	if not red:
 		if c.has("id"): xp_award=int(float(c.xp)*(1.0 if won else .45))
 		else: xp_award=180+legacy_career*80 if won else 100+legacy_career*40
 	var bonus:=0
+	var trophy_awarded:=false
 	if c.has("id"):
 		var id: String=c.id; var series: String=c.series
 		if won:
 			if series!="OPEN":
 				var current:=Championships.wins(self,series)
 				if int(c.round)==current: championship_wins[series]=mini(Championships.ROUNDS,current+1)
-			if int(c.get("completion_bonus",0))>0 and not career_claims.has(id) and (series=="OPEN" or (bool(c.get("boss",false)) and Championships.wins(self,series)==Championships.ROUNDS)):
-				bonus=int(c.completion_bonus); career_claims.append(id)
+			if series!="OPEN" and bool(c.get("boss",false)) and Championships.wins(self,series)==Championships.ROUNDS and not career_claims.has(id):
+				career_claims.append(id)
+				trophy_awarded=true
 		var record: Dictionary=event_records.get(id,{})
 		record.finishes=int(record.get("finishes",0))+1
 		record.wins=int(record.get("wins",0))+(1 if won else 0)
@@ -768,7 +773,7 @@ func award_race(contract: Dictionary,won: bool,red: bool,et: float,reaction: flo
 	elif won and legacy_career>=0 and legacy_career<3 and legacy_rival==int(career_wins[legacy_career]):
 		career_wins[legacy_career]=mini(5,legacy_rival+1)
 	var bet_return:=settle_wager(won)
-	credits+=maxi(0,base)+maxi(0,bonus); xp+=maxi(0,xp_award); races+=1
+	xp+=maxi(0,xp_award); races+=1
 	if won: wins+=1
 	save()
-	return {"base":base+bonus,"bonus":bonus,"xp":xp_award,"bet_return":bet_return,"reward":base+bonus+bet_return}
+	return {"base":base,"bonus":bonus,"xp":xp_award,"bet_return":bet_return,"reward":bet_return,"trophy":trophy_awarded}

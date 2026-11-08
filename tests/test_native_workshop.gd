@@ -19,6 +19,8 @@ func target(id: String) -> Dictionary:
 		if entry.id==id: return entry
 	check(false,"Missing visible action "+id); return {}
 func click(id: String,touch: bool=false) -> void:
+	if id=="tab_performance":
+		game.go_garage(); await frame(); id="garage_upgrades"
 	var control: Control=game.native_workshop.targets.get(id)
 	if is_instance_valid(control):
 		var ancestor:=control.get_parent()
@@ -47,10 +49,10 @@ func run() -> void:
 	check(fixture.commit_upgrade_quote(-1,-1,"induction","turbo_race",JSON.stringify(initial_quote))=="Not enough credits" and fixture.hardware.parts.is_empty(),"Unaffordable bundle partially installed")
 	fixture.hardware.owned_parts.append("fuel_street")
 	var owned:=fixture.upgrade_quote(-1,-1,"induction","turbo_race")
-	check(owned.cost==7000 and owned.items[0].cost==0 and owned.build.parts.fuel=="fuel_street","Owned support was charged or left unfitted")
+	check(owned.cost==12000 and owned.items[0].cost==0 and owned.build.parts.fuel=="fuel_street","Owned support was charged or left unfitted")
 	fixture.hardware.parts.fuel="fuel_ethanol"
 	var equivalent:=fixture.upgrade_quote(-1,-1,"induction","turbo_race")
-	check(equivalent.cost==7000 and equivalent.items.size()==1,"An equivalent fitted fuel system was replaced")
+	check(equivalent.cost==12000 and equivalent.items.size()==1,"An equivalent fitted fuel system was replaced")
 	check(fixture.commit_upgrade_quote(-1,-1,"induction","turbo_race",JSON.stringify(owned)).begins_with("Build changed"),"A stale quote was accepted")
 	var blocked:=fixture.upgrade_quote(-1,-1,"converter","converter_race")
 	check(blocked.reason=="Unknown component","Retired converter is still available")
@@ -71,7 +73,7 @@ func run() -> void:
 	check(migrated.upgrade(4,0) and migrated.hardware.owned_parts.has("clutch_race") and migrated.hardware.parts.has("clutch"),"Gearbox downgrade changed clutch fitment")
 	check(migrated.upgrade(4,3) and migrated.install_hardware("clutch_race").begins_with("Installed") and migrated.credits==funds,"Reinstalling gearbox tier and clutch charged again")
 	check(migrated.upgrade(0,0) and migrated.select_vehicle("brz") and migrated.highest_stage(0)==1,"Ownership leaked between vehicles")
-	check(migrated.upgrade(0,0) and migrated.upgrade_cost(0,2)==GameCatalog.PART_COSTS[0]*2,"Buying above ownership charged again for a lower tier")
+	check(migrated.upgrade(0,0) and migrated.upgrade_cost(0,2)==GameCatalog.stage_cost(0,2),"Buying above ownership charged again for a lower tier")
 	check(migrated.select_vehicle("miata") and migrated.stages[0]==0 and migrated.highest_stage(0)==3,"Vehicle switch lost equipped or owned tiers")
 	game=load("res://scenes/main.tscn").instantiate(); root.add_child(game); game.set_process(false); game.set_physics_process(false)
 	DirAccess.make_dir_recursive_absolute("res://validation/native_ui")
@@ -95,10 +97,10 @@ func run() -> void:
 		var predicted: float=game.menu.hub.studio.candidate().peak_horsepower()
 		if window.x!=844: root.get_texture().get_image().save_png("res://validation/native_ui/purchase_"+suffix+".png")
 		await click("install_0_2",phone)
-		check(game.profile.credits==97900 and game.profile.stages[0]==2,"Native event purchase did not charge exactly once")
+		check(game.profile.credits==97200 and game.profile.stages[0]==2,"Native event purchase did not charge exactly once")
 		check(is_equal_approx(predicted,game.car.peak_horsepower()),"Preview differs from installed physics")
 		await click("install_0_2",phone)
-		check(game.profile.credits==97900,"Disabled purchase charged twice")
+		check(game.profile.credits==97200,"Disabled purchase charged twice")
 		await click("stage_pick_0",phone)
 		var stock_hp: float=game.menu.hub.studio.candidate().peak_horsepower()
 		check(stock_hp<predicted and game.car.peak_horsepower()==predicted,"Stock preview did not show the downgrade")
@@ -106,15 +108,15 @@ func run() -> void:
 		await click("install_0_0",phone)
 		var downgraded:=DriverProfile.new()
 		downgraded.load_profile()
-		check(downgraded.stages[0]==0 and downgraded.highest_stage(0)==2 and downgraded.credits==97900,"Save lost the equipped or owned tier after downgrade")
+		check(downgraded.stages[0]==0 and downgraded.highest_stage(0)==2 and downgraded.credits==97200,"Save lost the equipped or owned tier after downgrade")
 		check(is_equal_approx(game.car.peak_horsepower(),stock_hp),"Installed downgrade disagreed with the preview")
 		await click("stage_pick_1",phone); await click("install_0_1",phone)
-		check(game.profile.stages[0]==1 and game.profile.credits==97900,"Intermediate tier was not free")
+		check(game.profile.stages[0]==1 and game.profile.credits==97200,"Intermediate tier was not free")
 		await click("stage_pick_2",phone); await click("install_0_2",phone)
-		check(game.profile.stages[0]==2 and game.profile.credits==97900 and is_equal_approx(game.car.peak_horsepower(),predicted),"Re-equipping the purchased tier changed cost or performance")
+		check(game.profile.stages[0]==2 and game.profile.credits==97200 and is_equal_approx(game.car.peak_horsepower(),predicted),"Re-equipping the purchased tier changed cost or performance")
 		await click("hw_pick_forged",phone)
 		await click("hw_buy",phone)
-		check(game.profile.credits==95100,"Native part installation charged incorrectly")
+		check(game.profile.credits==94400,"Native part installation charged incorrectly")
 		check(game.profile.hardware.parts.get("internals","")=="forged","Part was not installed")
 		game.glass.focused="details_toggle"; await frame()
 		var key:=InputEventKey.new(); key.keycode=KEY_ENTER; key.physical_keycode=KEY_ENTER; key.pressed=true; root.push_input(key,true)

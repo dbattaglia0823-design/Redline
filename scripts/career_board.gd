@@ -62,7 +62,7 @@ func draw_classes(p: bool) -> void:
 		text(letter,r.position.x+18,r.position.y+55,42,GlassPalette.BLUE if locked=="" else g.MUTED)
 		text(Championships.TITLES[i],r.position.x+18,r.position.y+88,22 if p else 21)
 		text("%d / %d wins"%[Championships.wins(g.profile,letter),Championships.ROUNDS],r.position.x+18,r.position.y+120,20 if p else 15,g.GREEN)
-		g.fit_text(("TROPHY EARNED" if Championships.wins(g.profile,letter)==Championships.ROUNDS else "Boss bonus $%d"%Championships.BONUSES[i]) if locked=="" else locked,r.position.x+18,r.position.y+151,r.size.x-36,18 if p else 14,g.MUTED)
+		g.fit_text(("TROPHY EARNED" if Championships.wins(g.profile,letter)==Championships.ROUNDS else "Boss bet cap $%d"%Championships.bet_cap(letter,9)) if locked=="" else locked,r.position.x+18,r.position.y+151,r.size.x-36,18 if p else 14,g.MUTED)
 	button("cb_open","RIVAL CHALLENGES / REPLAY FOR CASH",Rect2(24,876,552,88) if p else Rect2(36,562,1130,90) if g.race_touch_layout() else Rect2(36,600,1130,54),true)
 func draw_rival(p: bool) -> void:
 	var c:=contract()
@@ -104,8 +104,7 @@ func draw_rival(p: bool) -> void:
 	g.fit_text(comparison,x,y,552 if p else 744,21 if p else 17,g.GREEN)
 	g.fit_text(str(c.get("intro",c.tradeoff)),x,y+32,552 if p else 744,19 if p else 14,g.MUTED)
 	text(("OPEN" if series=="OPEN" else "CLASS "+series)+" / "+g.distance_label(float(c.distance)),x,y+61,23 if p else 16,GlassPalette.BLUE)
-	text("WIN $%d / FINISH $%d"%[c.purse,int(float(c.purse)*.4)],x,832 if p else 514,23 if p else 17)
-	if int(c.completion_bonus)>0 and (p or not g.race_touch_layout()): text("Bonus earned" if g.profile.career_claims.has(str(c.id)) else "First win bonus $%d"%int(c.completion_bonus),x,872 if p else 546,21 if p else 15,g.GREEN)
+	text("BET CAP $%d / BETTING ONLY"%int(c.max_bet),x,832 if p else 514,23 if p else 17)
 	var short: bool=g.race_touch_layout() and not p
 	var by:=918 if p else (560 if short else 568)
 	button("bet_less","-",Rect2(x,by,80 if p else (90 if short else 48),68 if p else (90 if short else 44)))

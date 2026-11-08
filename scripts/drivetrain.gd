@@ -442,6 +442,14 @@ func step(dt: float, pedal: float, brake: float = 0.0, clutch: float = 0.0, nitr
 		_accumulator -= FIXED_DT
 	_accumulator = maxf(0.0,_accumulator)
 
+func automatic_shift_target(for_gear: int) -> float:
+	var full_target := float(shift_map[for_gear-1]) if for_gear>0 and for_gear<=shift_map.size() else redline_rpm-100.0
+	# Drag schedules always use the measured full-load curve. Road automatics
+	# upshift earlier at light load, with a separate kickdown hysteresis below.
+	if transmission_kind=="drag": return full_target
+	var light_target := minf(full_target,idle_rpm+(redline_rpm-idle_rpm)*.34)
+	return lerpf(light_target,full_target,smoothstep(.30,.85,throttle))
+
 func _substep(dt: float, pedal: float, brake: float, clutch: float, nitrous: bool, transbrake: bool) -> void:
 	substeps += 1
 	_sim_time += dt
@@ -449,13 +457,17 @@ func _substep(dt: float, pedal: float, brake: float, clutch: float, nitrous: boo
 	_manual_clutch = clutch
 	transbrake_active = transbrake and has_transbrake and speed < 0.5 and gear == 1
 	_auto_dwell = maxf(0.0,_auto_dwell-dt)
-	if control_mode == "automatic" and running and not transbrake_active and throttle > 0.45 and shift_left <= 0.0 and _auto_dwell == 0.0 and gear > 0 and gear < gear_ratios.size():
-		var target := float(shift_map[gear-1]) if shift_map.size() >= gear else redline_rpm-100.0
+	if control_mode == "automatic" and running and not transbrake_active and throttle > 0.08 and shift_left <= 0.0 and _auto_dwell == 0.0 and gear > 0 and gear < gear_ratios.size():
+		var target := automatic_shift_target(gear)
 		if rpm >= target and wheel_rpm(gear) >= target*(0.84 if has_converter else 0.90):
 			shift(1)
 			_auto_dwell = shift_duration+0.12
-	if control_mode == "automatic" and running and not transbrake_active and throttle > 0.65 and shift_left <= 0.0 and _auto_dwell == 0.0 and gear > 1 and wheel_rpm(gear) < idle_rpm+1300.0:
-		if shift(-1): _auto_dwell = shift_duration+0.35
+	if control_mode == "automatic" and running and not transbrake_active and throttle > 0.65 and shift_left <= 0.0 and _auto_dwell == 0.0 and gear > 1:
+		var lower_rpm := wheel_rpm(gear-1)
+		var lower_torque := full_engine_torque(lower_rpm)*ratio_for(gear-1)
+		var current_torque := full_engine_torque(maxf(idle_rpm,wheel_rpm(gear)))*ratio_for(gear)
+		if lower_rpm<automatic_shift_target(gear-1)*.82 and lower_torque>current_torque*1.12:
+			if shift(-1): _auto_dwell = shift_duration+0.35
 	pedal=pow(pedal,throttle_gamma)
 	if traction_slip_target>0 and wheelspin>traction_slip_target and speed>1.0 and not transbrake_active:
 		pedal*=clampf(1.0-(wheelspin-traction_slip_target)*2.5,.12,1.0)
@@ -482,6 +494,16 @@ func _substep(dt: float, pedal: float, brake: float, clutch: float, nitrous: boo
 	fuel_cut = limiter or (shifting and not traditional_manual) or launch_cut
 	combustion_fraction = 0.0 if limiter or launch_cut else (shift_retention if shifting and not traditional_manual else 1.0)
 	var target_boost := boost_target(rpm,throttle)
+	if _supercharger=="":
+		# Exhaust-driven compressors need load, unlike mechanically driven blowers.
+		# Launch control supplies anti-lag load; ordinary free revving does not
+		# produce the same pressure as pulling a gear under full load.
+		# Opening already scales the pressure target. Saturate the load envelope
+		# once the engine is pulling, rather than applying throttle twice or
+		# permanently reducing rated boost by the drivetrain efficiency.
+		var charge_load := smoothstep(.05,.50,engine_load)
+		if launch_control and (not running or transbrake_active): charge_load=maxf(charge_load,.50)
+		target_boost *= lerpf(.15,1.0,charge_load)
 	if gear>0 and gear<=boost_by_gear.size(): target_boost=minf(target_boost,float(boost_by_gear[gear-1]))
 	var boost_tau: float = [0.32,0.24,0.38,0.55][turbo_stage] if target_boost > boost else 0.09
 	if _spool_override > 0.0 and target_boost > boost: boost_tau = _spool_override
@@ -522,9 +544,11 @@ func _substep(dt: float, pedal: float, brake: float, clutch: float, nitrous: boo
 	var loaded := running and not shifting and gear>0 and clutch_engagement>.94 and throttle>.35 and not transbrake_active
 	var capacity := input_capacity()
 	overload = maxf(0.0,engine_torque/maxf(1.0,capacity)-1.0) if loaded else 0.0
-	# Only load above the rating is shed. The converter can still multiply
-	# torque normally, and the coupling solver limits its output separately.
-	if overload>0.0: engine_torque = capacity
+	# Engine demand above the input rating records overload and wear. Converter
+	# multiplication remains separate from the finite gearbox/pack capacity.
+	# The finite-capacity coupling below limits transmitted torque. Do not cut
+	# crankshaft torque to the gearbox rating: an overloaded pack must slip and
+	# let the engine flare, rather than acting as an invisible engine governor.
 	clutch_overloaded = false
 	transmission_slipping = loaded and overload>.025
 	engine_temperature += (maxf(0.0,engine_torque)*omega*0.000006-(engine_temperature-85.0)*0.08*_charge_cooling)*dt
@@ -569,7 +593,7 @@ func _substep(dt: float, pedal: float, brake: float, clutch: float, nitrous: boo
 		hybrid_power_w=0.0
 		if float(_base_spec.get("hybrid_kw",0))>0 and hybrid_energy_j>0 and gear>0 and throttle>0 and brake<.05:
 			var force:=minf(6000.0,float(_base_spec.hybrid_kw)*1000.0/maxf(5.0,speed))*throttle
-			hybrid_power_w=minf(force*maxf(5.0,speed),hybrid_energy_j/dt)
+			hybrid_power_w=minf(force*maxf(5.0,speed),hybrid_energy_j*.94/dt)
 			force=hybrid_power_w/maxf(5.0,speed)
 			wheel_omega+=force*tire_radius/wheel_inertia*dt
 			hybrid_energy_j=maxf(0,hybrid_energy_j-hybrid_power_w/.94*dt)
@@ -857,7 +881,10 @@ func converter_step(dt: float, pump: float, coupled: bool, shifting: bool) -> fl
 	var before_energy := 0.5*engine_inertia*pump*pump+0.5*0.12*turbine_omega*turbine_omega
 	var should_lock := transmission_kind != "drag" and gear >= 2 and speed > 12.0 and sr > 0.85 and not shifting
 	converter_lock = move_toward(converter_lock,1.0 if should_lock else 0.0,dt*5.0)
-	var capacity := base_torque*1.10/pow(converter_stall/RPM_PER_RAD,2.0)
+	# Select the default converter against this installed engine's actual torque
+	# at stall, including upgrades/induction. Base NA torque badly undersizes
+	# the converter on boosted engines and lets them flare into the limiter.
+	var capacity := full_engine_torque(converter_stall)*1.10/pow(converter_stall/RPM_PER_RAD,2.0)
 	var slip := clampf((pump-turbine_omega)/maxf(1.0,pump),-1.0,1.0)
 	var tp := capacity*pump*pump*clampf(slip/0.08,-0.25,1.0)*(1.0-converter_lock)
 	tp = clampf(tp,-clutch_capacity(),minf(clutch_capacity(),maxf(0.0,pump)*engine_inertia/dt))

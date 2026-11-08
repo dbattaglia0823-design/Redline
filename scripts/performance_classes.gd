@@ -1,7 +1,7 @@
 class_name PerformanceClasses
 extends RefCounted
 const ORDER := ["E","D","C","B","A","S"]
-const BENCH_VERSION := "competent-launch-v4-traction-balance"
+const BENCH_VERSION := "coupled-drivetrain-v5-load-and-shift-audit"
 static var cache: Dictionary = {}
 static var jobs: Array = []
 static var factories: Dictionary = {}

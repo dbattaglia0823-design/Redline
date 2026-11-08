@@ -15,6 +15,9 @@ func refresh() -> void:
 	await RenderingServer.frame_post_draw
 
 func click(id: String) -> void:
+	if id=="tab_performance":
+		game.go_garage(); await refresh(); id="garage_upgrades"
+	elif id=="tab_style" and game.tab=="garage": id="garage_customize"
 	var position := Vector2(-1,-1)
 	for button in game.buttons:
 		if button.id == id: position = button.rect.get_center()

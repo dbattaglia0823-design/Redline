@@ -4,9 +4,9 @@ An original Godot 4.6 drag-racing prototype inspired by the interaction patterns
 
 ## Liquid Glass interface
 
-Garage navigation is now concentrated in the bottom dock: Upgrades and Customize have no duplicate buttons above it. The selected vehicle is the heading, Change Car sits beside it, and actual performance values share one read-only strip. See `validation/GARAGE_REFINEMENT_REPORT.md` for the latest changes and screenshots.
+Garage and class-specific Dealership browsing now use the Game Development Toolkit's functional layouts with REDLINE's vehicle renderer and purchase controllers. Garage presents the selected car, make/model/year and live stats, with Upgrades, Customize and Change Car actions. Dealership opens its existing engine-class index first, then a searchable catalog and vehicle detail view inside that class. See `tools/TOOLKIT_UI_INTEGRATION.md` for the action/data contract mappings and validation commands.
 
-The existing game now uses a dark glass design system: rounded floating surfaces, restrained orange actions, a compact six-section dock, icon-based upgrade cards, and adaptive detail sheets. Garage, Upgrades, Dyno, Race Board, Collection, Dealership and Customize share the same button styling and action routing.
+The existing game uses a dark glass design system: rounded surfaces, orange actions, icon-based upgrade cards, and adaptive detail sheets. The shared bottom dock has exactly four destinations: Garage, Race, Dealership and Profile. Secondary features remain under Garage. Screens share styling, animations and action routing, with responsive touch targets and safe-area transforms.
 
 Open Driver to choose reduced UI motion or Low effects. Medium/High cache one downsampled background when a sheet opens; Low uses a readable tinted surface without a screen read. No live blur is applied separately to controls. Desktop Tab / Shift+Tab moves focus, Enter or Space activates it, and Escape returns through the existing menu hierarchy. Racing keys are unchanged. F6 toggles a development-only rectangular-surface/old-dock comparison; it does not revert gameplay or the layout redesign.
 
@@ -63,7 +63,7 @@ Nitrous starts with six usable seconds per race, extended by nitrous upgrades. I
 
 ## Garage and workshop
 
-Open Upgrades from the bottom dock. One overview organizes every existing category into Engine & Power, Drivetrain, Chassis & Grip, and Supporting Systems. Categories open a single component sheet with named package, hardware and tuning choices. Close or Escape returns to the same system and selection. Background controls are blocked while a sheet is open. There are no duplicate Garage shortcuts.
+Open Upgrades from Garage. One overview organizes every existing category into Engine & Power, Drivetrain, Chassis & Grip, and Supporting Systems. Categories open a single component sheet with named package, hardware and tuning choices. Close or Escape returns to the same system and selection. Background controls are blocked while a sheet is open.
 
 Engine airflow packages, programmable ECUs and stronger internals have distinct roles. A fitted induction assembly replaces the packaged turbo curve rather than adding a second turbo. Comparisons show actual configured parameters; non-engine upgrades use relevant mechanical values and assisted quarter-mile forecasts rather than a giant unchanged dyno. Live Dyno remains accessible throughout. See `validation/UPGRADE_STUDIO_REPORT.md` and `validation/UPGRADE_PARAMETER_AUDIT.md` for the audit, reference observations, corrections, tests and screenshots.
 
@@ -79,7 +79,7 @@ Three career ladders unlock at levels 1, 3, and 5. Each has five named bot rival
 
 Choose a stake using the slider or +/- buttons. Entry charges the stake immediately. Winning returns twice the stake, including the original stake. Losing, forfeiting, or closing during a run loses the stake. The results slip shows race pay, bet return, and net profit separately. Wagers use fictional local game credits.
 
-Every completed race also pays a race reward, including a smaller finish reward after a loss. A zero-credit wager is always available, so there is no financial softlock. Returning to the race board after a win selects the next unlocked rival.
+Race cash comes only from winning bets. A win returns twice the stake (the original stake plus equal profit); losses, red lights, and abandoned races lose the stake. Free races still earn XP and championship progress, but never money. Spending or losing every credit leaves no racing income until the player has betting funds again; no emergency loan is granted. Returning to the race board after a win selects the next unlocked rival.
 
 The live clock, time-slip totals, 60-foot split and saved records count from green, including driver reaction. This time basis is labeled on the slip; reference calibration separately compares reaction-excluded drag ET.
 
@@ -134,7 +134,7 @@ Garage and mechanical menus use bounded grids with responsive portrait and lands
 
 FIND MATCH on the race board recommends an unlocked opponent using simulated results for your current build and the selected event distance. Opponent horsepower, quarter-mile estimate, skill and difficulty are visible before entry. Estimates assume assisted driving; they are not promised results. Career tiers still unlock at driver levels 1, 3 and 5, and the next rival opens after a win. Dealership purchases remain credit-based.
 
-AI now drives the same configured engine and 2–10-speed hardware simulation, with traction recovery, appropriate manual/automatic inputs, reaction variation and small skill-dependent mistakes. Drag builds use an installed transbrake. Existing zero-stake recovery races, losing-race pay, fictional cash wagers, duplicate-reward guards and interrupted-stake forfeiture remain. Driver badges show First Win, Five Wins and City Champion from saved progress. The result slip shows launch-input reaction alongside the green-to-finish time.
+AI now drives the same configured engine and 2–10-speed hardware simulation, with traction recovery, appropriate manual/automatic inputs, reaction variation and small skill-dependent mistakes. Drag builds use an installed transbrake. Free races award XP and progression; fictional cash wagers are the only race income. Duplicate-payment guards and interrupted-stake forfeiture remain. Driver badges show First Win, Five Wins and City Champion from saved progress. The result slip shows launch-input reaction alongside the green-to-finish time.
 
 See validation/CAREER_REPORT.md and validation/rival_test_results.json for AI calibration, verification and remaining playtesting limits.
 
@@ -163,7 +163,7 @@ Customize reflows to a portrait grid on narrow windows, with a large preview and
 
 ## Gameplay quality pass
 
-Start in the garage and choose Find a Race. New players default to a $0 wager; finishing still earns money and XP. Results offer Garage, Upgrades, Rematch and Next Race. Garage returns to the actual vehicle hub. Builds, tuning, cosmetics, ownership and prior saves remain compatible.
+Start in the garage and choose Find a Race. New players default to a $0 wager; free finishes earn XP, while cash requires a winning bet. Results offer Garage, Upgrades, Rematch and Next Race. Garage returns to the actual vehicle hub. Builds, tuning, cosmetics, ownership and prior saves remain compatible.
 
 Upgrade details are hidden by default, with real component comparisons and the existing live dyno. Transmission configuration opens on the selected gearbox family. Locked tuning hardware is identified before adjustment. Portrait race controls adapt to installed manual, sequential, paddle, DCT, automatic and transbrake hardware; desktop keys remain unchanged. DATA/F3 provides drivetrain telemetry.
 
@@ -203,3 +203,18 @@ See [the gearbox tuning review and desktop/mobile screenshots](validation/UNIFIE
 Run data now saves recent tests per vehicle and distance, with A/B time slips, personal-best markers, setup comparisons and overlaid speed/RPM graphs. Drag either graph to inspect synchronized RPM, speed, wheelspin, clutch slip and acceleration. Diagnostic flags identify traction, clutch-slip, limiter and low-RPM exposure without inventing an elapsed-time penalty. Full numeric tuning groups now use the same minus/slider/plus controls as gearing; presets and optimization remain available.
 
 See [the Test Track analysis review and desktop/mobile captures](validation/TEST_TRACK_ANALYSIS.md). `tests/test_run_analysis.gd` validates measured timing, diagnostics, comparisons and persistent history; graphical `tests/test_run_analysis_ui.gd` checks controls and layouts. Recent traces are bounded and compressed in the existing integrity-checked profile; personal-best summaries remain after older traces rotate out. Physical-phone performance remains unverified.
+
+
+## Racing physics audit
+
+The existing shared 240 Hz drivetrain now supports load-aware turbo pressure, light-throttle automatic shifts and kickdown, engine-matched default converters, and physical clutch/gearbox overload without clipping crankshaft torque. Shift planning shares the benchmark launch procedure and installed nitrous. Existing controls, fixed engine classes, upgrades and saves remain in place.
+
+See the [measured before/after audit](validation/physics_audit/REPORT.md) for 18 factory, upgraded and transmission configurations, including 0–60 mph, 60–130 mph, eighth/quarter-mile times and crossing speeds, shift RPM/duration, traction and coupling diagnostics. All 30 factory estimates were regenerated. Run the headless checks with `python tools/run_regressions.py --godot C:/Godot/godot.exe`, then `python tools/report_physics_audit.py` to tabulate the results. The before snapshot is retained as historical evidence; physical-model limitations and timing conventions are documented in the report.
+
+## Championship difficulty and betting economy
+
+Each class opener is calibrated roughly 0.4 seconds behind that class’s slowest stock car under competent simulated driving. All 30 stock cars are checked against their own opener. Subsequent rivals use progressively stronger real builds; bosses require substantial upgrades, traction and good shifts. Engine classes, race IDs, eighth/quarter/half-mile modes and saved championship progress remain intact.
+
+Bet caps scale by class and round: Class E rises from $2,000 to $50,000; Class S rises from $40,000 to $1,000,000. Purses, finish payments, first-win cash and boss cash bonuses are removed, including old bound race contracts. Trophies, unlocks and XP remain. Free races are available at $0; they do not repair a depleted bankroll.
+
+Upgrade packages now cost base × 1 / 3 / 8, with gearbox tiers extending to ×18 / ×36. Component ladders have wider street/track/race price gaps. Existing owned parts and tiers remain owned and free to re-equip. See [the measured difficulty and economy report](validation/championship_economy/REPORT.md) for stock margins, boss times, caps, prices and the simulated betting-funded career route.

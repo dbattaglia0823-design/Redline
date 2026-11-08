@@ -13,6 +13,9 @@ func frame() -> void:
 	await RenderingServer.frame_post_draw
 func capture(name: String) -> void: root.get_texture().get_image().save_png("res://.qa/quality_"+name+".png")
 func click(id: String,touch: bool = true) -> void:
+	if id=="tab_performance":
+		game.go_garage(); await frame(); id="garage_upgrades"
+	elif id=="tab_style" and game.tab=="garage": id="garage_customize"
 	var point := Vector2(-1,-1)
 	for button in game.buttons:
 		if button.id == id: point = game.to_global(button.rect.get_center())
