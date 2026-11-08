@@ -17,7 +17,7 @@ python tools/validate_vehicle_art.py
 
 `--install miata supra mustang` rebuilds just those vehicles. The first install
 archives existing PNGs, manifest and roster in
-`checkpoints/vehicle-presentation-20261104/installed_art.zip`. Source atlases and
+`.qa/vehicle_art_backups/installed_art.zip`. Source atlases and
 save files are retained. Runtime cosmetic indices and part ownership are stable.
 
 Original normalized legacy masters are `assets/vehicles/<id>/source.png`.
