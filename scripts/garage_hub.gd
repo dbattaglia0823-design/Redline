@@ -15,7 +15,6 @@ var _cars: Dictionary = {}
 var studio: UpgradeStudio
 const CATEGORY_SLOTS := [["internals","displacement","compression"],["intake"],["exhaust"],["fuel"],["ecu"],["induction","charge_pressure","charge_response","charge_airflow","charge_cooling","boost"],[],VehicleParts.TRANSMISSION_UPGRADES,["clutch"],["differential"],["tires"],["suspension"],[],["wheels"],[]]
 const STAGE_CATEGORIES := [0,2,5,6,7,12,14]
-const TUNE_KEYS := {4:["launch_rpm","redline"],5:["boost"],7:["firmness","ratio","shift","final_drive"],8:["clutch_rate"],10:["tire_pressure"],11:["launch_damping"]}
 const CATEGORIES := [["Engine internals",0,0],["Intake",0,3],["Exhaust",5,0],["Fuel system",0,4],["ECU",0,5],["Forced induction",1,0],["Nitrous",7,0],["Transmission",4,-1],["Clutch",4,1],["Differential / gearing",2,1],["Tires",2,0],["Suspension",3,0],["Brakes",6,-1],["Wheels",2,1],["Weight reduction",3,-1]]
 const SHORT_NAMES := ["Engine", "Intake", "Exhaust", "Fuel system", "ECU", "Induction", "Nitrous", "Transmission", "Clutch", "Differential", "Tires", "Suspension", "Brakes", "Wheels", "Weight"]
 func _init(game: Node2D) -> void:

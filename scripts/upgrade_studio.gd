@@ -49,6 +49,9 @@ func restore(index: int) -> void:
 				break
 	if remembered.has(index):
 		for key in remembered[index]: g.workshop.set(key,remembered[index][key])
+	# Never reopen a removed per-upgrade tuning page after a hot reload.
+	if g.workshop.mode=="tune":
+		g.workshop.mode="basic" if index in GarageHub.STAGE_CATEGORIES else "hardware"
 
 func status(index: int) -> String:
 	var h: GarageHub=g.menu.hub; var count:=0
@@ -84,8 +87,10 @@ func overview() -> void:
 		g.mobile.header("UPGRADES")
 		fit(str(GameCatalog.spec(g.profile.vehicle_id).name),24,108,340,25)
 		t("%d hp / %.0f lb-ft"%[g.car.peak_horsepower(),ImperialUnits.torque(GarageHub.peak_torque(g.car))],24,148,22,g.MUTED)
+		button("open_tuning","Tuning",Rect2(214,80,166,68))
 		button("hub_dyno","Live Dyno",Rect2(396,80,180,68))
 	else:
+		button("open_tuning","Tuning",Rect2(634,103,154,48))
 		button("hub_test","Test build",Rect2(800,103,156,48))
 		button("hub_dyno","Live Dyno",Rect2(968,103,198,48))
 	for i in SYSTEMS.size():
@@ -118,7 +123,6 @@ func sections() -> Array:
 	for i in GarageHub.CATEGORY_SLOTS[h.selected].size():
 		var slot: String=GarageHub.CATEGORY_SLOTS[h.selected][i]
 		result.append({"id":"hw_slot_%d"%i,"label":UpgradeWorkshop.TITLES[slot],"selected":g.workshop.mode=="hardware" and g.workshop.slot_index==i})
-	if GarageHub.TUNE_KEYS.has(h.selected): result.append({"id":"upgrade_section_tune","label":"Tuning","selected":g.workshop.mode=="tune"})
 	return result
 
 func detail() -> void:
@@ -143,9 +147,6 @@ func detail() -> void:
 		"transmission":
 			if mobile: g.mobile.gearboxes()
 			else: w.draw_transmissions()
-		"tune":
-			if mobile: g.mobile.tuning()
-			else: w.draw_scoped_tuning()
 		"test":
 			if mobile: g.mobile.vehicle_test()
 			else: w.draw_test()

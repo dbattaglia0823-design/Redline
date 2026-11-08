@@ -676,7 +676,9 @@ func action(id: String) -> void:
 		return
 	if id=="open_championships": tab="races"; career_board.open(); return
 	if id.begins_with("cb_"): career_board.action(id); return
-	if id=="open_tuning": tuning.open(); return
+	if id in ["open_tuning","upgrade_section_tune","system_tuning","work_tune"]:
+		tuning.open()
+		return
 	if id.begins_with("tt_"): tuning.action(id); return
 	if id == "race_units":
 		profile.metric_speed = false; profile.save(); menu_dirty = true; return
@@ -811,10 +813,6 @@ func action_enabled(id: String) -> bool:
 	if id == "hub_torque": return not menu.hub.show_torque or menu.hub.show_hp
 	if id == "lab_run": return workshop.lab == null or workshop.lab.done
 	if id == "tune_reset": return profile.hardware.tune.has("shift_rpms")
-	if id.begins_with("preset_"):
-		for key in GarageHub.TUNE_KEYS.get(menu.hub.selected,[]):
-			if workshop.tuning_enabled(key) and key not in ["ratio","shift"]: return true
-		return false
 	if id == "bet_clear": return wager > 0
 	if id == "custom_discard": return menu.customize.has_preview()
 	if id == "custom_zoom_in": return menu.customize.zoom_step<2

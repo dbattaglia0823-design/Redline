@@ -304,9 +304,6 @@ func catalog_action(id: String) -> bool:
 			game.show_toast(message,install_flash_pending)
 			game.refresh_car()
 		return true
-	if id=="system_tuning":
-		game.tuning.open(TuningSetup.GROUPS.keys().find("Gearbox" if h.selected==7 else "Power"))
-		return true
 	if id.begins_with("system_pick_"):
 		var slot:=id.trim_prefix("system_pick_")
 		w.mode="hardware"
@@ -697,8 +694,7 @@ func detail_workspace(body: VBoxContainer) -> void:
 	button(tools,"hub_dyno","Live Dyno")
 	if h.selected==7: button(tools,"upgrade_section_transmission","Gearbox")
 	elif quote.reason!="" and VehicleParts.TRANSMISSION_SLOTS.has(slot): button(tools,"catalog_gearbox","Gearbox")
-	if GarageHub.TUNE_KEYS.has(h.selected): button(tools,"upgrade_section_tune","Tuning")
-	elif h.selected in [0,1,2,8]: button(tools,"sound_preview","Sound")
+	if h.selected in [0,1,2,8]: button(tools,"sound_preview","Sound")
 	var price: int=quote.cost
 	var text: String="Purchase & install  /  $%d"%price if price>0 else "Equip Free"
 	if quote.items.size()>1: text=("Confirm changes" if confirming else "Equip Free") if price==0 else ("Confirm installation" if confirming else "Purchase & install all")+"  /  $%d"%price
@@ -798,7 +794,6 @@ func system_shop(body: VBoxContainer, transmission: bool) -> void:
 	var preview := workshop_hero(preview_parent,candidate,0,preview_height,"CURRENT CAR" if candidate==installed or (gearbox_selected and w.selected_trans==installed.transmission_id) or quote.get("equipped",false) else "BUILD PREVIEW")
 	if not portrait: preview.size_flags_vertical=Control.SIZE_EXPAND_FILL
 	var actions:=AutomotiveUI.row(body,8)
-	button(actions,"system_tuning","Tuning")
 	var equipped: bool=w.selected_trans==profile.hardware.transmission if gearbox_selected else quote.equipped
 	var owned: bool=profile.hardware.owned_transmissions.has(w.selected_trans)
 	var cost: int=(0 if owned else TransmissionCatalog.spec(w.selected_trans).cost) if gearbox_selected else quote.cost

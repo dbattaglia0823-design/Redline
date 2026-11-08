@@ -254,12 +254,30 @@ func action(id: String) -> void:
 	elif id=="tt_opt_apply" and optimizer!=null:
 		if optimizer.apply(g.profile): g.refresh_car(); g.show_toast("Measured recommendation applied")
 		else: g.show_toast("Complete a search on the current build first")
+	elif id.begins_with("tt_quick_"):
+		var preset: String=id.trim_prefix("tt_quick_")
+		if preset not in ["street","drag","safe"]: return
+		if g.profile.save_blocked or not g.profile.pending_wager.is_empty():
+			g.show_toast("Finish the active race or restore saving before tuning")
+			return
+		var before:=JSON.stringify(g.profile.hardware.tune)
+		g.profile.apply_tuning_preset(preset)
+		g.refresh_car()
+		g.show_toast(preset.capitalize()+" tuning applied" if JSON.stringify(g.profile.hardware.tune)!=before else "No compatible tuning changes")
+	elif id=="tt_reset_shift":
+		if g.profile.hardware.tune.has("shift_rpms") and g.profile.pending_wager.is_empty() and not g.profile.save_blocked:
+			g.profile.hardware.tune.erase("shift_rpms")
+			g.profile.save()
+			g.refresh_car()
+			g.show_toast("Automatic shift points restored")
 	elif id=="tt_restore": g.profile.hardware.tune.clear(); g.profile.save(); g.refresh_car(); g.show_toast("Installed hardware / factory tuning restored")
 	elif id=="tt_details": details=not details
 	elif id.begins_with("tt_channel_"): channel=id.trim_prefix("tt_channel_")
 	g.menu_dirty=true
 
 func enabled(id: String) -> bool:
+	if id.begins_with("tt_quick_"): return not g.profile.save_blocked and g.profile.pending_wager.is_empty()
+	if id=="tt_reset_shift": return g.profile.hardware.tune.has("shift_rpms") and g.profile.pending_wager.is_empty() and not g.profile.save_blocked
 	if id.begins_with("tt_plus_") or id.begins_with("tt_minus_"):
 		var key:=id.trim_prefix("tt_plus_").trim_prefix("tt_minus_")
 		if reason(key)!="": return false

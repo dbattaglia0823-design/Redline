@@ -9,6 +9,8 @@ var ratio_box: VBoxContainer
 var heading: Label
 var summary: Label
 var rows: Dictionary = {}
+var quick_buttons: Dictionary = {}
+var reset_shift_button: Button
 var count := -1
 var panel_group := ""
 var sections: Dictionary = {}
@@ -37,6 +39,19 @@ func setup(tuning: TuningLab) -> void:
 	var column:=VBoxContainer.new(); margin.add_child(column); column.add_theme_constant_override("separation",10)
 	heading=Label.new(); heading.add_theme_font_size_override("font_size",21); column.add_child(heading)
 	summary=Label.new(); summary.add_theme_font_size_override("font_size",14); summary.modulate=GlassPalette.MUTED; column.add_child(summary)
+	# Quick presets stay visible regardless of which tuning section is scrolled.
+	var quick_row:=HBoxContainer.new()
+	quick_row.add_theme_constant_override("separation",10)
+	column.add_child(quick_row)
+	for setup in ["street","drag","safe"]:
+		var control:=Button.new()
+		control.text=setup.capitalize()+" setup"
+		control.tooltip_text="Apply "+setup.capitalize()+" tuning to installed hardware"
+		control.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+		control.custom_minimum_size.y=48
+		control.pressed.connect(lab.action.bind("tt_quick_"+setup))
+		quick_row.add_child(control)
+		quick_buttons[setup]=control
 	scroll=ScrollContainer.new(); scroll.name="GearboxScroll"; scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED; scroll.follow_focus=false; scroll.scroll_deadzone=10; column.add_child(scroll)
 	list=VBoxContainer.new(); list.size_flags_horizontal=Control.SIZE_EXPAND_FILL; list.add_theme_constant_override("separation",10); scroll.add_child(list)
@@ -112,6 +127,7 @@ func reveal_row(column: Control) -> void:
 func rebuild_group(_group: String) -> void:
 	rows.clear()
 	sections.clear()
+	reset_shift_button=null
 	for child in list.get_children(): list.remove_child(child); child.queue_free()
 	for group_name in TuningSetup.GROUPS:
 		var section:=label(list,group_name.to_upper(),20)
@@ -124,6 +140,11 @@ func rebuild_group(_group: String) -> void:
 			ratio_box.add_theme_constant_override("separation",10)
 			list.add_child(ratio_box)
 			rebuild_ratios()
+			reset_shift_button=Button.new()
+			reset_shift_button.text="Reset to automatic shift points"
+			reset_shift_button.custom_minimum_size.y=52
+			reset_shift_button.pressed.connect(lab.action.bind("tt_reset_shift"))
+			list.add_child(reset_shift_button)
 			continue
 		for key in TuningSetup.GROUPS[group_name]:
 			if key=="boost_gear":
@@ -206,6 +227,11 @@ func sync() -> void:
 		jump_to_section.call_deferred(group)
 	heading.text="Complete vehicle tuning"
 	summary.text="All installed settings · category buttons jump to a section"
+	for preset in quick_buttons:
+		var control: Button=quick_buttons[preset]
+		control.disabled=not lab.enabled("tt_quick_"+preset)
+	if is_instance_valid(reset_shift_button):
+		reset_shift_button.disabled=not lab.enabled("tt_reset_shift")
 	for key in rows:
 		var row: Dictionary=rows[key]; var limits:=bounds(key); var value:=current(key)
 		var lock:=reason(key)

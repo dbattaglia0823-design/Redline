@@ -132,25 +132,6 @@ func gearboxes() -> void:
 	var owned: bool = g.profile.hardware.owned_transmissions.has(w.selected_trans)
 	var blocked: bool = not TransmissionCatalog.compatible(w.selected_trans,g.profile.vehicle_id) or g.profile.transmission_unlock_stage() < int(s.stage)
 	b("tx_buy","LOCKED" if blocked else ("INSTALL OWNED" if owned else ("BUY / $%d" % int(s.cost) if int(s.cost) <= g.profile.credits else g.missing_credits(int(s.cost)))),Rect2(24,1030,552,76),not blocked and (owned or int(s.cost) <= g.profile.credits))
-func tuning() -> void:
-	var w: UpgradeWorkshop = g.workshop; var keys: Array = GarageHub.TUNE_KEYS.get(g.menu.hub.selected,[])
-	w.gear_index = clampi(w.gear_index,0,g.car.gear_ratios.size()-1)
-	if g.menu.hub.selected == 7:
-		b("tune_gear_prev","< GEAR",Rect2(24,354,264,68)); b("tune_gear_next","GEAR %d >" % (w.gear_index+1),Rect2(312,354,264,68))
-	var values := {"launch_rpm":g.car.launch_rpm,"redline":g.car.redline_rpm,"boost":g.car.boost_target(g.car.redline_rpm,1),"firmness":g.car.shift_firmness,"final_drive":g.car.final_drive,"ratio":g.car.gear_ratios[w.gear_index],"shift":g.car.shift_map[w.gear_index] if w.gear_index < g.car.shift_map.size() else 0}
-	var labels := {"launch_rpm":"Launch RPM","redline":"Rev limiter","boost":"Boost / PSI","firmness":"Shift firmness","final_drive":"Final drive","ratio":"Gear ratio","shift":"Upshift RPM"}
-	for i in keys.size():
-		var key: String = keys[i]; var y := 454+i*124
-		var enabled := w.tuning_enabled(key)
-		var needs := {"launch_rpm":"Requires ECU","redline":"Requires ECU","boost":"Boost controller","firmness":"Auto / DCT only"}
-		if key=="boost" and g.profile.hardware.parts.values().has("boost_control") and not enabled: needs.boost="Inactive for belt drive" if g.car._supercharger!="" else "Turbo source required"
-		var fallback: String=TuningSetup.reason(key,g.profile.hardware,int(g.profile.stages[4]),g.profile.vehicle_id) if TuningSetup.EXTRA.has(key) else "Hardware required"
-		t(str(labels.get(key,TuningSetup.EXTRA.get(key,[""])[0])),24,y+24,23)
-		g.fit_text(w.tune_value(key,float(values.get(key,w.tune_default(key)))) if enabled else str(needs.get(key,fallback)),24,y+64,282,20,g.GREEN if enabled else g.MUTED)
-		b("tune_minus_"+key,"-",Rect2(312,y,120,76)); b("tune_plus_"+key,"+",Rect2(456,y,120,76))
-	b("open_tuning","SAVED SETUPS / TEST TRACK",Rect2(24,830,552,70))
-	for i in 3: b("preset_"+["street","drag","safe"][i],["STREET","DRAG","SAFE"][i],Rect2(24+i*184,930,172,68))
-	if g.menu.hub.selected == 7: b("tune_reset","RESET SHIFT MAP",Rect2(24,1030,552,76))
 func vehicle_test() -> void:
 	var w: UpgradeWorkshop = g.workshop
 	b("lab_run","RUN VEHICLE TEST",Rect2(24,218,552,76),true)

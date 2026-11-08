@@ -52,10 +52,13 @@ func run_checks() -> void:
 	await click("tx_pick_"+str(game.profile.hardware.transmission)); capture("gearboxes")
 	await click("system_pick_gear_strength"); await click("hw_buy")
 	check(game.profile.hardware.parts.has("gear_strength"),"Gearbox upgrade did not install")
-	await click("system_tuning")
+	await click("hub_back")
+	await click("open_tuning")
+	check(game.tab=="tuning","Upgrades did not open the single main Tuning tab")
 	var ratio: float = game.car.gear_ratios[0]
-	await click("tt_plus_ratio")
-	check(game.car.gear_ratios[0]>ratio,"Ratio tuning did not change physics")
+	game.tuning.gearbox_panel.rows["ratio_0"].plus.pressed.emit()
+	await refresh()
+	check(game.car.gear_ratios[0]>ratio,"Main Tuning ratio slider did not change physics")
 	capture("tuning")
 	game.selected_opponent = 0; game.wager = 0; RosterTest.ready(game); game.start_race(); game.countdown = 0.0; game.car.running = true
 	await refresh(); capture("h_gate")

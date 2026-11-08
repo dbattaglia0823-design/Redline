@@ -6,6 +6,8 @@ func run() -> void:
 	game.profile=DriverProfile.new(); game.refresh_car()
 	game.tuning.open(2); await frame()
 	var panel: GearboxTuningPanel=game.tuning.gearbox_panel
+	check(panel.quick_buttons.size()==3,"Central tuning is missing Street / Drag / Safe shortcuts")
+	check(is_instance_valid(panel.reset_shift_button),"Central tuning is missing automatic shift-map reset")
 	for dimensions in [Vector2i(1200,760),Vector2i(390,844),Vector2i(844,390)]:
 		root.size=dimensions; await frame()
 		panel.scroll.ensure_control_visible(panel.rows.ratio_1.slider); await frame()

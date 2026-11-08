@@ -32,7 +32,9 @@ static func reason(key: String,b: Dictionary,stage: int,vehicle: String) -> Stri
 	if key=="clutch_rate": return "Adjustable clutch pack required" if not b.parts.has("clutch") or kind in ["drag","automatic"] else ""
 	if key=="launch_gear":
 		if kind != "automatic": return "Conventional automatic required"
-	if key=="tire_pressure": return "Upgrade tires to tune pressure" if not b.parts.has("tires") and not fitted.has("drag_wheels") else ""
+	# Tire pressure is adjustable on factory tires as well as upgraded sets.
+	# The old upgraded-tires requirement belonged to the removed per-part tuning UI.
+	if key=="tire_pressure": return ""
 	if key=="launch_damping":
 		var suspension: Dictionary=VehicleParts.PARTS.get(b.parts.get("suspension",""),{})
 		return "" if suspension.get("adjustable",false) else "Adjustable suspension required"

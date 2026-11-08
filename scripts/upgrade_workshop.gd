@@ -14,7 +14,6 @@ var preview_stage := -1
 var selected_hardware := ""
 var _part_preview_key := ""
 var _part_preview: Drivetrain
-var tune_page := 0
 var gear_index := 0
 var lab: VehicleBench
 var lab_result: Dictionary = {}
@@ -34,7 +33,6 @@ func draw() -> void:
 		"basic": draw_basic()
 		"hardware": draw_parts()
 		"transmission": draw_transmissions()
-		"tune": draw_scoped_tuning()
 		"test": draw_test()
 
 func draw_basic() -> void:
@@ -101,14 +99,6 @@ func part_details(part: Dictionary) -> Array[String]:
 	if rows.is_empty(): rows.append("Factory matched mechanical hardware")
 	return rows
 
-func tune_row(label: String, value: String, key: String, y: float, enabled: bool) -> void:
-	t(label,57,y+20,15,g.MUTED)
-	var needs := {"launch_rpm":"ECU","redline":"ECU","boost":"Boost controller","firmness":"Auto / DCT hardware"}
-	if key=="boost" and g.profile.hardware.parts.values().has("boost_control") and not enabled: needs.boost="Inactive for belt drive" if g.car._supercharger!="" else "Turbo source required"
-	t(value if enabled else str(needs.get(key,"Hardware required")),270,y+22,16,g.INK if enabled else g.MUTED)
-	b("tune_minus_"+key,"-",Rect2(495,y-8,77,46),false)
-	b("tune_plus_"+key,"+",Rect2(584,y-8,77,46),enabled)
-
 func draw_test() -> void:
 	box(Rect2(36,247,1130,408))
 	t("SAME CAR. SAME ROAD. REAL PHYSICS.",58,283,23)
@@ -141,25 +131,6 @@ func invalidate_test() -> void:
 	if lab_build != "" and key != lab_build:
 		lab = null; lab_result.clear(); lab_build = ""
 
-func draw_scoped_tuning() -> void:
-	box(Rect2(36,247,1130,408))
-	var keys: Array = GarageHub.TUNE_KEYS.get(g.menu.hub.selected,[])
-	var fitted: Array = g.profile.hardware.parts.values()
-	var labels := {"launch_rpm":"Launch RPM","redline":"Rev limiter","boost":"Boost target / PSI","firmness":"Shift firmness","final_drive":"Final drive","ratio":"Gear ratio","shift":"Upshift RPM"}
-	var enabled := {"launch_rpm":g.car.hardware.parts.has("ecu") or g.car.transmission_kind=="drag","redline":VehicleParts.can_tune_rpm(g.car.hardware),"boost":fitted.has("boost_control"),"firmness":g.car.transmission_kind in ["drag","automatic","dct"],"final_drive":true,"ratio":true,"shift":true}
-	gear_index = clampi(gear_index,0,g.car.gear_ratios.size()-1)
-	if g.menu.hub.selected == 7:
-		b("tune_gear_prev","< GEAR",Rect2(741,273,170,48)); b("tune_gear_next","GEAR >",Rect2(971,273,174,48))
-		t("GEAR %d" % (gear_index+1),745,356,24)
-	for i in keys.size():
-		var key: String = keys[i]
-		var values := {"launch_rpm":g.car.launch_rpm,"redline":g.car.redline_rpm,"boost":g.car.boost_target(g.car.redline_rpm,1),"firmness":g.car.shift_firmness,"final_drive":g.car.final_drive,"ratio":g.car.gear_ratios[gear_index],"shift":g.car.shift_map[gear_index] if gear_index < g.car.shift_map.size() else 0}
-		tune_row(str(labels.get(key,TuningSetup.EXTRA.get(key,[""])[0])),tune_value(key,float(values.get(key,tune_default(key)))),key,300+i*85,tuning_enabled(key))
-	t("Applies to installed hardware",744,470,16,g.MUTED)
-	b("open_tuning","Saved setups / test track",Rect2(743,479,402,44))
-	for i in 3: b("preset_"+["street","drag","safe"][i],["STREET","DRAG","SAFE"][i],Rect2(743+i*136,533,128,48))
-	if g.menu.hub.selected == 7: b("tune_reset","RESET AUTOMATIC SHIFT MAP",Rect2(743,596,402,48))
-
 func tune_default(key: String) -> float:
 	var row: Array=TuningSetup.EXTRA.get(key,[])
 	return float(g.profile.hardware.tune.get(key,row[4])) if not row.is_empty() else 0.0
@@ -175,10 +146,12 @@ func tune_value(key: String,value: float) -> String:
 func action(id: String) -> bool:
 	if id == "details_toggle": details = not details; return true
 	if id.begins_with("stage_pick_"): preview_stage = int(id.trim_prefix("stage_pick_")); return true
+	if id=="work_tune":
+		g.tuning.open()
+		return true
 	if id.begins_with("work_"):
 		mode = id.trim_prefix("work_")
 		if mode == "hardware": selected_hardware = str(g.profile.hardware.parts.get(current_slot(),""))
-		if mode == "tune" and g.car.shift_map.is_empty(): g.car.rebuild_shift_map()
 		if mode == "transmission":
 			var kind: String = TransmissionCatalog.spec(selected_trans).kind
 			filter_index = 0 if kind == "manual" else (3 if kind == "drag" else (2 if kind == "automatic" else 1))
@@ -193,21 +166,10 @@ func action(id: String) -> bool:
 	elif id == "hw_pick_factory": selected_hardware = ""
 	elif id.begins_with("hw_pick_"): selected_hardware = id.trim_prefix("hw_pick_")
 	elif id == "hw_buy": g.show_toast(g.profile.install_hardware(selected_hardware) if selected_hardware != "" else g.profile.remove_hardware(current_slot())); g.refresh_car()
-	elif id.begins_with("preset_"):
-		var before := JSON.stringify(g.profile.hardware.tune)
-		g.profile.apply_tuning_preset(id.trim_prefix("preset_"),GarageHub.TUNE_KEYS.get(g.menu.hub.selected,[])); g.refresh_car()
-		g.show_toast("Tuning updated" if before != JSON.stringify(g.profile.hardware.tune) else "No tuning changes / check fitted hardware")
 	elif id == "hw_prev": parts_page = maxi(0,parts_page-1)
 	elif id == "hw_next": parts_page += 1
 	elif id.begins_with("hw_install_"): g.show_toast(g.profile.install_hardware(id.trim_prefix("hw_install_"))); g.refresh_car()
 	elif id == "hw_factory": g.show_toast(g.profile.remove_hardware(current_slot())); g.refresh_car()
-	elif id.begins_with("tune_page_"): tune_page = int(id.trim_prefix("tune_page_"))
-	elif id == "tune_gear_prev": gear_index = maxi(0,gear_index-1)
-	elif id == "tune_gear_next": gear_index = mini(g.car.gear_ratios.size()-1,gear_index+1)
-	elif id == "tune_reset": g.profile.hardware.tune.erase("shift_rpms"); g.profile.save(); g.refresh_car()
-	elif id.begins_with("tune_plus_") or id.begins_with("tune_minus_"):
-		var direction := 1.0 if id.begins_with("tune_plus_") else -1.0
-		change_tune(id.trim_prefix("tune_plus_").trim_prefix("tune_minus_"),direction)
 	elif id == "lab_run":
 		if lab != null and not lab.done: return true
 		lab_build = JSON.stringify([g.profile.vehicle_id,g.profile.stages,g.profile.hardware])
