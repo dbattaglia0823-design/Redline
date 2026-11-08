@@ -74,6 +74,7 @@ var _blowoff_flutter := 0.0
 var _blowoff_noise_low := 0.0
 var _blowoff_noise_high := 0.0
 var _blowoff_phase := 0.0
+var _blowoff_flutter_phase := 0.0
 var _turbo_air_low := 0.0
 var _turbo_air_high := 0.0
 var _turbo_active := false
@@ -232,7 +233,8 @@ func blowoff_sample(noise: float) -> float:
 	_blowoff_noise_high += (noise - _blowoff_noise_high) * 0.34
 	var air := _blowoff_noise_high - _blowoff_noise_low
 	_blowoff_phase = fposmod(_blowoff_phase + (420.0 + 1300.0 * blowoff) / RATE, 1.0)
-	var flutter := 1.0 - _blowoff_flutter * 0.46 * (0.5 + 0.5 * sin(_blowoff_phase * TAU * 0.053))
+	_blowoff_flutter_phase = fposmod(_blowoff_flutter_phase + (24.0 + 19.0 * blowoff) / RATE, 1.0)
+	var flutter := 1.0 - _blowoff_flutter * 0.46 * (0.5 + 0.5 * sin(_blowoff_flutter_phase * TAU))
 	var chirp := sin(_blowoff_phase * TAU) * (0.055 + _blowoff_flutter * 0.040)
 	var sample := (air * 0.37 + chirp) * blowoff * flutter
 	blowoff *= _blowoff_decay
