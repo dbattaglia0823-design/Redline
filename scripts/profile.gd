@@ -788,7 +788,15 @@ func award_race(contract: Dictionary,won: bool,red: bool,et: float,reaction: flo
 		event_records[id]=record
 	elif won and legacy_career>=0 and legacy_career<3 and legacy_rival==int(career_wins[legacy_career]):
 		career_wins[legacy_career]=mini(5,legacy_rival+1)
+	var stake: int = int(pending_wager.get("amount",0))
 	var bet_return:=settle_wager(won)
+	# Career-only cash perk pays a percentage of the winning stake; never
+	# refunds a loss, red light, or zero-credit wager.
+	var cash_bonus := roundi(float(stake)*DriverSkills.money_bonus(skill_ranks,level(),won,red)) if stake>0 else 0
+	credits += cash_bonus
+	bet_return += cash_bonus
+	bonus = cash_bonus
+	base = cash_bonus
 	xp+=maxi(0,xp_award); races+=1
 	if won: wins+=1
 	save()

@@ -94,7 +94,7 @@ func present(rect: Rect2,section: String) -> void:
 	position=rect.position
 	var resized:=size!=rect.size
 	size=rect.size
-	active="garage" if section in ["owned","style","performance","tuning"] else section
+	active="driver" if section=="skills" else ("garage" if section in ["owned","style","performance","tuning"] else section)
 	var unit:=(size.x-28.0)/4.18
 	var x:=8.0
 	selection_target=Rect2()

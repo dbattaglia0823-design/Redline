@@ -4,34 +4,34 @@ extends RefCounted
 # Driver progression is separate from vehicle upgrades. Ranks are stored by stable ID.
 const CATEGORIES := ["Launch", "Shifting", "Racecraft", "Career"]
 const NODES := [
-	{"id":"launch_basics","category":"Launch","name":"Launch Basics","description":"Earn 5% more XP from every completed race.","requires":[],"max_rank":1,"bonus":0.05},
-	{"id":"tree_reaction","category":"Launch","name":"Tree Reaction","description":"Earn 10% extra XP on a legal reaction of 0.200 seconds or faster.","requires":["launch_basics"],"max_rank":1,"bonus":0.10},
-	{"id":"holeshot","category":"Launch","name":"Holeshot","description":"Earn 15% extra XP for wins with a legal reaction of 0.100 seconds or faster.","requires":["tree_reaction"],"max_rank":1,"bonus":0.15},
-	{"id":"shift_basics","category":"Shifting","name":"Shift Discipline","description":"Earn 5% more XP from every completed race.","requires":[],"max_rank":1,"bonus":0.05},
-	{"id":"clean_gears","category":"Shifting","name":"Clean Gears","description":"Earn 10% extra XP when you achieve at least two perfect shifts.","requires":["shift_basics"],"max_rank":1,"bonus":0.10},
-	{"id":"shift_master","category":"Shifting","name":"Shift Master","description":"Earn 15% extra XP when you achieve at least four perfect shifts.","requires":["clean_gears"],"max_rank":1,"bonus":0.15},
-	{"id":"track_time","category":"Racecraft","name":"Track Time","description":"Earn 5% more XP from every completed race.","requires":[],"max_rank":1,"bonus":0.05},
-	{"id":"competitor","category":"Racecraft","name":"Competitor","description":"Earn 10% extra XP for a race victory.","requires":["track_time"],"max_rank":1,"bonus":0.10},
-	{"id":"consistent","category":"Racecraft","name":"Consistency","description":"Earn 15% extra XP for a race victory without a red light.","requires":["competitor"],"max_rank":1,"bonus":0.15},
-	{"id":"street_rookie","category":"Career","name":"Street Rookie","description":"Earn 5% more XP from every completed race.","requires":[],"max_rank":1,"bonus":0.05},
-	{"id":"street_veteran","category":"Career","name":"Street Veteran","description":"Earn 10% extra XP on a win at driver level 5 or higher.","requires":["street_rookie"],"max_rank":1,"bonus":0.10},
-	{"id":"street_legend","category":"Career","name":"Street Legend","description":"Earn 15% extra XP on a win at driver level 10 or higher.","requires":["street_veteran"],"max_rank":1,"bonus":0.15},
-	{"id":"launch_repeatability","category":"Launch","name":"Repeatable Launch","description":"Gain 8% XP on every clean, non-red-light finish.","requires":["launch_basics"],"max_rank":1,"bonus":0.08},
-	{"id":"amber_reader","category":"Launch","name":"Amber Reader","description":"Gain 10% XP for a legal reaction of 0.300 seconds or faster.","requires":["launch_repeatability"],"max_rank":1,"bonus":0.10},
-	{"id":"launch_specialist","category":"Launch","name":"Launch Specialist","description":"Gain 12% XP on a win with a legal reaction of 0.150 seconds or faster.","requires":["tree_reaction","amber_reader"],"max_rank":1,"bonus":0.12},
-	{"id":"perfect_start","category":"Launch","name":"Perfect Start","description":"Gain 15% XP on a win with a legal reaction of 0.050 seconds or faster.","requires":["holeshot","launch_specialist"],"max_rank":1,"bonus":0.15},
-	{"id":"shift_rhythm","category":"Shifting","name":"Shift Rhythm","description":"Gain 8% XP when you make at least one perfect shift.","requires":["shift_basics"],"max_rank":1,"bonus":0.08},
-	{"id":"shift_streak","category":"Shifting","name":"Shift Streak","description":"Gain 10% XP when you make at least three perfect shifts.","requires":["shift_rhythm"],"max_rank":1,"bonus":0.10},
-	{"id":"gear_precision","category":"Shifting","name":"Gear Precision","description":"Gain 12% XP on a victory with at least two perfect shifts.","requires":["clean_gears","shift_streak"],"max_rank":1,"bonus":0.12},
-	{"id":"flawless_gears","category":"Shifting","name":"Flawless Gears","description":"Gain 15% XP on a victory with at least five perfect shifts.","requires":["shift_master","gear_precision"],"max_rank":1,"bonus":0.15},
-	{"id":"finish_line","category":"Racecraft","name":"Finish Line","description":"Gain 8% XP for every legal, completed race.","requires":["track_time"],"max_rank":1,"bonus":0.08},
-	{"id":"close_competition","category":"Racecraft","name":"Close Competition","description":"Gain 10% XP for a legal win.","requires":["finish_line"],"max_rank":1,"bonus":0.10},
-	{"id":"race_veteran","category":"Racecraft","name":"Race Veteran","description":"Gain 12% XP for winning at driver level 5 or higher.","requires":["competitor","close_competition"],"max_rank":1,"bonus":0.12},
-	{"id":"track_ace","category":"Racecraft","name":"Track Ace","description":"Gain 15% XP for winning at driver level 10 or higher.","requires":["consistent","race_veteran"],"max_rank":1,"bonus":0.15},
-	{"id":"street_learner","category":"Career","name":"Street Learner","description":"Gain 8% XP from every completed race.","requires":["street_rookie"],"max_rank":1,"bonus":0.08},
-	{"id":"night_regular","category":"Career","name":"Regular Competitor","description":"Gain 10% XP for legal finishes after reaching level 3.","requires":["street_learner"],"max_rank":1,"bonus":0.10},
-	{"id":"reputation","category":"Career","name":"Reputation","description":"Gain 12% XP from victories at level 7 or higher.","requires":["street_veteran","night_regular"],"max_rank":1,"bonus":0.12},
-	{"id":"champion_mentality","category":"Career","name":"Champion Mentality","description":"Gain 15% XP from victories at level 15 or higher.","requires":["street_legend","reputation"],"max_rank":1,"bonus":0.15}
+	{"id":"launch_basics","category":"Launch","name":"Grip Fundamentals","description":"+2% tire grip during launches and racing.","requires":[],"max_rank":1,"bonus":0.02,"effect":"grip"},
+	{"id":"tree_reaction","category":"Launch","name":"Staging Control","description":"+1% tire grip for more consistent launches.","requires":["launch_basics"],"max_rank":1,"bonus":0.01,"effect":"grip"},
+	{"id":"holeshot","category":"Launch","name":"Holeshot Setup","description":"+3% low-speed launch bite.","requires":["tree_reaction"],"max_rank":1,"bonus":0.03,"effect":"launch"},
+	{"id":"shift_basics","category":"Shifting","name":"Shift Discipline","description":"Reduce shift delay by 2%.","requires":[],"max_rank":1,"bonus":0.02,"effect":"shift"},
+	{"id":"clean_gears","category":"Shifting","name":"Smooth Engagement","description":"Reduce shift delay by another 2%.","requires":["shift_basics"],"max_rank":1,"bonus":0.02,"effect":"shift"},
+	{"id":"shift_master","category":"Shifting","name":"Shift Master","description":"Reduce shift delay by another 3%.","requires":["clean_gears"],"max_rank":1,"bonus":0.03,"effect":"shift"},
+	{"id":"track_time","category":"Racecraft","name":"Track Familiarity","description":"+2% braking effectiveness.","requires":[],"max_rank":1,"bonus":0.02,"effect":"brake"},
+	{"id":"competitor","category":"Racecraft","name":"Cornerstone Control","description":"+1% grip across the run.","requires":["track_time"],"max_rank":1,"bonus":0.01,"effect":"grip"},
+	{"id":"consistent","category":"Racecraft","name":"Consistent Inputs","description":"2% more responsive throttle control.","requires":["competitor"],"max_rank":1,"bonus":0.02,"effect":"throttle"},
+	{"id":"street_rookie","category":"Career","name":"Street Rookie","description":"+5% race XP.","requires":[],"max_rank":1,"bonus":0.05,"effect":"xp"},
+	{"id":"street_veteran","category":"Career","name":"Street Veteran","description":"+10% XP from race wins at level 5 or higher.","requires":["street_rookie"],"max_rank":1,"bonus":0.1,"effect":"xp"},
+	{"id":"street_legend","category":"Career","name":"Street Legend","description":"+15% XP from race wins at level 10 or higher.","requires":["street_veteran"],"max_rank":1,"bonus":0.15,"effect":"xp"},
+	{"id":"launch_repeatability","category":"Launch","name":"Launch Repeatability","description":"+2% launch traction when accelerating from the line.","requires":["launch_basics"],"max_rank":1,"bonus":0.02,"effect":"launch"},
+	{"id":"amber_reader","category":"Launch","name":"Throttle Precision","description":"2% more responsive accelerator pedal.","requires":["launch_repeatability"],"max_rank":1,"bonus":0.02,"effect":"throttle"},
+	{"id":"launch_specialist","category":"Launch","name":"Wheelspin Recovery","description":"Reduce wheelspin traction loss by 8%.","requires":["tree_reaction","amber_reader"],"max_rank":1,"bonus":0.08,"effect":"spin"},
+	{"id":"perfect_start","category":"Launch","name":"Launch Mastery","description":"+3% overall grip to keep launches planted.","requires":["holeshot","launch_specialist"],"max_rank":1,"bonus":0.03,"effect":"grip"},
+	{"id":"shift_rhythm","category":"Shifting","name":"Clutch Timing","description":"Engage the clutch 3% faster.","requires":["shift_basics"],"max_rank":1,"bonus":0.03,"effect":"clutch"},
+	{"id":"shift_streak","category":"Shifting","name":"Gear Rhythm","description":"Reduce shift delay by another 2%.","requires":["shift_rhythm"],"max_rank":1,"bonus":0.02,"effect":"shift"},
+	{"id":"gear_precision","category":"Shifting","name":"Precision Engagement","description":"Engage the clutch 4% faster.","requires":["clean_gears","shift_streak"],"max_rank":1,"bonus":0.04,"effect":"clutch"},
+	{"id":"flawless_gears","category":"Shifting","name":"Fast Hands","description":"Reduce shift delay by another 3%.","requires":["shift_master","gear_precision"],"max_rank":1,"bonus":0.03,"effect":"shift"},
+	{"id":"finish_line","category":"Racecraft","name":"Brake Control","description":"+2% braking effectiveness.","requires":["track_time"],"max_rank":1,"bonus":0.02,"effect":"brake"},
+	{"id":"close_competition","category":"Racecraft","name":"Road Sense","description":"+1% tire grip across the run.","requires":["finish_line"],"max_rank":1,"bonus":0.01,"effect":"grip"},
+	{"id":"race_veteran","category":"Racecraft","name":"Experienced Hands","description":"Reduce shift delay by 2%.","requires":["competitor","close_competition"],"max_rank":1,"bonus":0.02,"effect":"shift"},
+	{"id":"track_ace","category":"Racecraft","name":"Racecraft Mastery","description":"+2% tire grip throughout the race.","requires":["consistent","race_veteran"],"max_rank":1,"bonus":0.02,"effect":"grip"},
+	{"id":"street_learner","category":"Career","name":"Street Learner","description":"+8% race XP.","requires":["street_rookie"],"max_rank":1,"bonus":0.08,"effect":"xp"},
+	{"id":"night_regular","category":"Career","name":"Prize Negotiator","description":"+5% bonus credits on winning wagers.","requires":["street_learner"],"max_rank":1,"bonus":0.05,"effect":"money"},
+	{"id":"reputation","category":"Career","name":"Reputation","description":"+8% bonus credits on winning wagers at level 7 or higher.","requires":["street_veteran","night_regular"],"max_rank":1,"bonus":0.08,"effect":"money"},
+	{"id":"champion_mentality","category":"Career","name":"Champion Mentality","description":"+10% bonus credits on winning wagers at level 15 or higher.","requires":["street_legend","reputation"],"max_rank":1,"bonus":0.1,"effect":"money"}
 ]
 
 static func node_for(id: String) -> Dictionary:
@@ -80,37 +80,45 @@ static func unlock(ranks: Dictionary, level: int, id: String) -> Dictionary:
 	next[id] = int(next.get(id, 0)) + 1
 	return next
 
-static func xp_bonus(ranks: Dictionary, level: int, won: bool, red: bool, reaction: float, perfect_shifts: int) -> float:
+# Only Career perks alter rewards. Racing perks are applied to the player's
+# drivetrain at configuration time, never to rival AI or stored vehicle builds.
+static func performance_modifiers(ranks: Dictionary, level: int) -> Dictionary:
+	var valid := sanitize(ranks, level)
+	var values: Dictionary = {"grip":0.0,"launch":0.0,"spin":0.0,"throttle":0.0,"shift":0.0,"clutch":0.0,"brake":0.0}
+	for node in NODES:
+		if int(valid.get(str(node.id),0)) == 0: continue
+		var effect: String = str(node.get("effect",""))
+		if values.has(effect): values[effect] += float(node.bonus)
+	# Modest hard caps prevent perks from replacing mechanical upgrades.
+	values.grip = minf(0.10, float(values.grip))
+	values.launch = minf(0.08, float(values.launch))
+	values.spin = minf(0.10, float(values.spin))
+	values.shift = minf(0.15, float(values.shift))
+	return values
+
+static func xp_bonus(ranks: Dictionary, level: int, won: bool, red: bool, _reaction: float, _perfect_shifts: int) -> float:
 	var valid := sanitize(ranks, level)
 	var bonus := 0.0
 	for node in NODES:
-		if int(valid.get(str(node.id), 0)) == 0: continue
-		var id: String = str(node.id)
-		var active := false
-		match id:
-			"launch_basics", "shift_basics", "track_time", "street_rookie": active = true
-			"tree_reaction": active = not red and reaction >= 0.0 and reaction <= 0.2
-			"holeshot": active = won and not red and reaction >= 0.0 and reaction <= 0.1
-			"clean_gears": active = perfect_shifts >= 2
-			"shift_master": active = perfect_shifts >= 4
-			"competitor", "consistent": active = won and not red
-			"street_veteran": active = won and not red and level >= 5
-			"street_legend": active = won and not red and level >= 10
-			"launch_repeatability": active = not red
-			"amber_reader": active = not red and reaction >= 0.0 and reaction <= 0.3
-			"launch_specialist": active = won and not red and reaction >= 0.0 and reaction <= 0.15
-			"perfect_start": active = won and not red and reaction >= 0.0 and reaction <= 0.05
-			"shift_rhythm": active = perfect_shifts >= 1
-			"shift_streak": active = perfect_shifts >= 3
-			"gear_precision": active = won and not red and perfect_shifts >= 2
-			"flawless_gears": active = won and not red and perfect_shifts >= 5
-			"finish_line": active = not red
-			"close_competition": active = won and not red
-			"race_veteran": active = won and not red and level >= 5
-			"track_ace": active = won and not red and level >= 10
-			"street_learner": active = true
-			"night_regular": active = not red and level >= 3
-			"reputation": active = won and not red and level >= 7
-			"champion_mentality": active = won and not red and level >= 15
-		if active: bonus += float(node.bonus)
-	return minf(0.75, bonus)
+		if node.category != "Career" or str(node.effect) != "xp" or int(valid.get(str(node.id),0)) == 0: continue
+		match str(node.id):
+			"street_rookie", "street_learner": bonus += float(node.bonus)
+			"street_veteran": 
+				if won and not red and level >= 5: bonus += float(node.bonus)
+			"street_legend":
+				if won and not red and level >= 10: bonus += float(node.bonus)
+	return minf(0.75,bonus)
+
+static func money_bonus(ranks: Dictionary, level: int, won: bool, red: bool) -> float:
+	if not won or red: return 0.0
+	var valid := sanitize(ranks,level)
+	var bonus := 0.0
+	for node in NODES:
+		if node.category != "Career" or str(node.effect) != "money" or int(valid.get(str(node.id),0)) == 0: continue
+		match str(node.id):
+			"night_regular": bonus += float(node.bonus)
+			"reputation":
+				if level >= 7: bonus += float(node.bonus)
+			"champion_mentality":
+				if level >= 15: bonus += float(node.bonus)
+	return minf(0.25,bonus)
