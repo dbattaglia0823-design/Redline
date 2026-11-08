@@ -861,7 +861,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/miata/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/miata/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/miata/glass.png",
       "lamps": "res://assets/vehicles/miata/lamps.png",
@@ -891,10 +891,12 @@
     ],
     "art_pipeline_version": 2,
     "texture_size": [
-      2000,
-      720
+      1000,
+      360
     ],
-    "master": "res://assets/vehicles/miata/master.png"
+    "master": "res://assets/vehicles/miata/master.png",
+    "fallback_body": "res://assets/vehicles/miata/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/miata/"
   },
   "civic_si": {
     "size": [
@@ -942,7 +944,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/civic_si/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/civic_si/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/civic_si/glass.png",
       "lamps": "res://assets/vehicles/civic_si/lamps.png",
@@ -975,7 +977,9 @@
       1000,
       360
     ],
-    "master": "res://assets/vehicles/civic_si/master.png"
+    "master": "res://assets/vehicles/civic_si/master.png",
+    "fallback_body": "res://assets/vehicles/civic_si/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/civic_si/"
   },
   "gti_vr6": {
     "size": [
@@ -1023,7 +1027,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/gti_vr6/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/gti_vr6/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/gti_vr6/glass.png",
       "lamps": "res://assets/vehicles/gti_vr6/lamps.png",
@@ -1056,7 +1060,9 @@
       1000,
       360
     ],
-    "master": "res://assets/vehicles/gti_vr6/master.png"
+    "master": "res://assets/vehicles/gti_vr6/master.png",
+    "fallback_body": "res://assets/vehicles/gti_vr6/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/gti_vr6/"
   },
   "rsx": {
     "size": [
@@ -1104,7 +1110,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/rsx/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/rsx/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/rsx/glass.png",
       "lamps": "res://assets/vehicles/rsx/lamps.png",
@@ -1137,7 +1143,9 @@
       1000,
       360
     ],
-    "master": "res://assets/vehicles/rsx/master.png"
+    "master": "res://assets/vehicles/rsx/master.png",
+    "fallback_body": "res://assets/vehicles/rsx/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/rsx/"
   },
   "brz": {
     "size": [
@@ -1185,7 +1193,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/brz/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/brz/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/brz/glass.png",
       "lamps": "res://assets/vehicles/brz/lamps.png",
@@ -1218,7 +1226,9 @@
       1000,
       360
     ],
-    "master": "res://assets/vehicles/brz/master.png"
+    "master": "res://assets/vehicles/brz/master.png",
+    "fallback_body": "res://assets/vehicles/brz/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/brz/"
   },
   "integra": {
     "size": [
@@ -1266,7 +1276,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/integra/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/integra/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/integra/glass.png",
       "lamps": "res://assets/vehicles/integra/lamps.png",
@@ -1299,7 +1309,9 @@
       1000,
       360
     ],
-    "master": "res://assets/vehicles/integra/master.png"
+    "master": "res://assets/vehicles/integra/master.png",
+    "fallback_body": "res://assets/vehicles/integra/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/integra/"
   },
   "gti": {
     "size": [
@@ -1347,7 +1359,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/gti/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/gti/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/gti/glass.png",
       "lamps": "res://assets/vehicles/gti/lamps.png",
@@ -1380,7 +1392,9 @@
       1000,
       360
     ],
-    "master": "res://assets/vehicles/gti/master.png"
+    "master": "res://assets/vehicles/gti/master.png",
+    "fallback_body": "res://assets/vehicles/gti/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/gti/"
   },
   "s2000": {
     "size": [
@@ -1428,7 +1442,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/s2000/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/s2000/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/s2000/glass.png",
       "lamps": "res://assets/vehicles/s2000/lamps.png",
@@ -1461,7 +1475,9 @@
       1000,
       360
     ],
-    "master": "res://assets/vehicles/s2000/master.png"
+    "master": "res://assets/vehicles/s2000/master.png",
+    "fallback_body": "res://assets/vehicles/s2000/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/s2000/"
   },
   "gr86": {
     "size": [
@@ -1509,7 +1525,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/gr86/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/gr86/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/gr86/glass.png",
       "lamps": "res://assets/vehicles/gr86/lamps.png",
@@ -1542,7 +1558,9 @@
       1000,
       360
     ],
-    "master": "res://assets/vehicles/gr86/master.png"
+    "master": "res://assets/vehicles/gr86/master.png",
+    "fallback_body": "res://assets/vehicles/gr86/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/gr86/"
   },
   "z350": {
     "size": [
@@ -1590,7 +1608,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/z350/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/z350/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/z350/glass.png",
       "lamps": "res://assets/vehicles/z350/lamps.png",
@@ -1623,7 +1641,9 @@
       1000,
       360
     ],
-    "master": "res://assets/vehicles/z350/master.png"
+    "master": "res://assets/vehicles/z350/master.png",
+    "fallback_body": "res://assets/vehicles/z350/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/z350/"
   },
   "supra": {
     "size": [
@@ -1671,7 +1691,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/supra/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/supra/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/supra/glass.png",
       "lamps": "res://assets/vehicles/supra/lamps.png",
@@ -1679,7 +1699,7 @@
       "tint": "res://assets/vehicles/supra/tint.png",
       "stripe": "res://assets/vehicles/supra/stripe.png",
       "number": "res://assets/vehicles/supra/number.png",
-      "paint_mask": "res://assets/vehicles/supra/paint_mask.png"
+      "paint_mask": "res://Replacement Vehicle Models/supra/paint_mask.png"
     },
     "compatible": [
       "paint",
@@ -1701,10 +1721,12 @@
     ],
     "art_pipeline_version": 2,
     "texture_size": [
-      2000,
-      720
+      1000,
+      360
     ],
-    "master": "res://assets/vehicles/supra/master.png"
+    "master": "res://assets/vehicles/supra/master.png",
+    "fallback_body": "res://assets/vehicles/supra/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/supra/"
   },
   "m3": {
     "size": [
@@ -1752,7 +1774,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/m3/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/m3/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/m3/glass.png",
       "lamps": "res://assets/vehicles/m3/lamps.png",
@@ -1760,7 +1782,7 @@
       "tint": "res://assets/vehicles/m3/tint.png",
       "stripe": "res://assets/vehicles/m3/stripe.png",
       "number": "res://assets/vehicles/m3/number.png",
-      "paint_mask": "res://assets/vehicles/m3/paint_mask.png"
+      "paint_mask": "res://Replacement Vehicle Models/m3/paint_mask.png"
     },
     "compatible": [
       "paint",
@@ -1785,7 +1807,9 @@
       1000,
       360
     ],
-    "master": "res://assets/vehicles/m3/master.png"
+    "master": "res://assets/vehicles/m3/master.png",
+    "fallback_body": "res://assets/vehicles/m3/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/m3/"
   },
   "sti": {
     "size": [
@@ -1833,7 +1857,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/sti/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/sti/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/sti/glass.png",
       "lamps": "res://assets/vehicles/sti/lamps.png",
@@ -1841,7 +1865,7 @@
       "tint": "res://assets/vehicles/sti/tint.png",
       "stripe": "res://assets/vehicles/sti/stripe.png",
       "number": "res://assets/vehicles/sti/number.png",
-      "paint_mask": "res://assets/vehicles/sti/paint_mask.png"
+      "paint_mask": "res://Replacement Vehicle Models/sti/paint_mask.png"
     },
     "compatible": [
       "paint",
@@ -1870,7 +1894,9 @@
     "wheel_radii": [
       70,
       75
-    ]
+    ],
+    "fallback_body": "res://assets/vehicles/sti/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/sti/"
   },
   "evo": {
     "size": [
@@ -1918,7 +1944,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/evo/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/evo/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/evo/glass.png",
       "lamps": "res://assets/vehicles/evo/lamps.png",
@@ -1926,7 +1952,7 @@
       "tint": "res://assets/vehicles/evo/tint.png",
       "stripe": "res://assets/vehicles/evo/stripe.png",
       "number": "res://assets/vehicles/evo/number.png",
-      "paint_mask": "res://assets/vehicles/evo/paint_mask.png"
+      "paint_mask": "res://Replacement Vehicle Models/evo/paint_mask.png"
     },
     "compatible": [
       "paint",
@@ -1951,7 +1977,9 @@
       1000,
       360
     ],
-    "master": "res://assets/vehicles/evo/master.png"
+    "master": "res://assets/vehicles/evo/master.png",
+    "fallback_body": "res://assets/vehicles/evo/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/evo/"
   },
   "type_r": {
     "size": [
@@ -1999,7 +2027,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/type_r/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/type_r/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/type_r/glass.png",
       "lamps": "res://assets/vehicles/type_r/lamps.png",
@@ -2007,7 +2035,7 @@
       "tint": "res://assets/vehicles/type_r/tint.png",
       "stripe": "res://assets/vehicles/type_r/stripe.png",
       "number": "res://assets/vehicles/type_r/number.png",
-      "paint_mask": "res://assets/vehicles/type_r/paint_mask.png"
+      "paint_mask": "res://Replacement Vehicle Models/type_r/paint_mask.png"
     },
     "compatible": [
       "paint",
@@ -2032,7 +2060,9 @@
       1000,
       360
     ],
-    "master": "res://assets/vehicles/type_r/master.png"
+    "master": "res://assets/vehicles/type_r/master.png",
+    "fallback_body": "res://assets/vehicles/type_r/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/type_r/"
   },
   "mustang": {
     "size": [
@@ -2080,7 +2110,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/mustang/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/mustang/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/mustang/glass.png",
       "lamps": "res://assets/vehicles/mustang/lamps.png",
@@ -2088,7 +2118,7 @@
       "tint": "res://assets/vehicles/mustang/tint.png",
       "stripe": "res://assets/vehicles/mustang/stripe.png",
       "number": "res://assets/vehicles/mustang/number.png",
-      "paint_mask": "res://assets/vehicles/mustang/paint_mask.png"
+      "paint_mask": "res://Replacement Vehicle Models/mustang/paint_mask.png"
     },
     "compatible": [
       "paint",
@@ -2110,10 +2140,12 @@
     ],
     "art_pipeline_version": 2,
     "texture_size": [
-      2000,
-      720
+      1000,
+      360
     ],
-    "master": "res://assets/vehicles/mustang/master.png"
+    "master": "res://assets/vehicles/mustang/master.png",
+    "fallback_body": "res://assets/vehicles/mustang/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/mustang/"
   },
   "supra_gr": {
     "size": [
@@ -2161,7 +2193,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/supra_gr/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/supra_gr/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/supra_gr/glass.png",
       "lamps": "res://assets/vehicles/supra_gr/lamps.png",
@@ -2169,7 +2201,7 @@
       "tint": "res://assets/vehicles/supra_gr/tint.png",
       "stripe": "res://assets/vehicles/supra_gr/stripe.png",
       "number": "res://assets/vehicles/supra_gr/number.png",
-      "paint_mask": "res://assets/vehicles/supra_gr/paint_mask.png"
+      "paint_mask": "res://Replacement Vehicle Models/supra_gr/paint_mask.png"
     },
     "compatible": [
       "paint",
@@ -2194,7 +2226,9 @@
       1000,
       360
     ],
-    "master": "res://assets/vehicles/supra_gr/master.png"
+    "master": "res://assets/vehicles/supra_gr/master.png",
+    "fallback_body": "res://assets/vehicles/supra_gr/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/supra_gr/"
   },
   "camaro": {
     "size": [
@@ -2242,7 +2276,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/camaro/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/camaro/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/camaro/glass.png",
       "lamps": "res://assets/vehicles/camaro/lamps.png",
@@ -2250,7 +2284,7 @@
       "tint": "res://assets/vehicles/camaro/tint.png",
       "stripe": "res://assets/vehicles/camaro/stripe.png",
       "number": "res://assets/vehicles/camaro/number.png",
-      "paint_mask": "res://assets/vehicles/camaro/paint_mask.png"
+      "paint_mask": "res://Replacement Vehicle Models/camaro/paint_mask.png"
     },
     "compatible": [
       "paint",
@@ -2275,7 +2309,9 @@
       1000,
       360
     ],
-    "master": "res://assets/vehicles/camaro/master.png"
+    "master": "res://assets/vehicles/camaro/master.png",
+    "fallback_body": "res://assets/vehicles/camaro/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/camaro/"
   },
   "golf_r": {
     "size": [
@@ -2323,7 +2359,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/golf_r/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/golf_r/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/golf_r/glass.png",
       "lamps": "res://assets/vehicles/golf_r/lamps.png",
@@ -2331,7 +2367,7 @@
       "tint": "res://assets/vehicles/golf_r/tint.png",
       "stripe": "res://assets/vehicles/golf_r/stripe.png",
       "number": "res://assets/vehicles/golf_r/number.png",
-      "paint_mask": "res://assets/vehicles/golf_r/paint_mask.png"
+      "paint_mask": "res://Replacement Vehicle Models/golf_r/paint_mask.png"
     },
     "compatible": [
       "paint",
@@ -2356,7 +2392,9 @@
       1000,
       360
     ],
-    "master": "res://assets/vehicles/golf_r/master.png"
+    "master": "res://assets/vehicles/golf_r/master.png",
+    "fallback_body": "res://assets/vehicles/golf_r/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/golf_r/"
   },
   "z400": {
     "size": [
@@ -2404,7 +2442,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/z400/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/z400/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/z400/glass.png",
       "lamps": "res://assets/vehicles/z400/lamps.png",
@@ -2412,7 +2450,7 @@
       "tint": "res://assets/vehicles/z400/tint.png",
       "stripe": "res://assets/vehicles/z400/stripe.png",
       "number": "res://assets/vehicles/z400/number.png",
-      "paint_mask": "res://assets/vehicles/z400/paint_mask.png"
+      "paint_mask": "res://Replacement Vehicle Models/z400/paint_mask.png"
     },
     "compatible": [
       "paint",
@@ -2437,7 +2475,9 @@
       1000,
       360
     ],
-    "master": "res://assets/vehicles/z400/master.png"
+    "master": "res://assets/vehicles/z400/master.png",
+    "fallback_body": "res://assets/vehicles/z400/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/z400/"
   },
   "z06": {
     "size": [
@@ -2485,7 +2525,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/z06/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/z06/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/z06/glass.png",
       "lamps": "res://assets/vehicles/z06/lamps.png",
@@ -2493,7 +2533,7 @@
       "tint": "res://assets/vehicles/z06/tint.png",
       "stripe": "res://assets/vehicles/z06/stripe.png",
       "number": "res://assets/vehicles/z06/number.png",
-      "paint_mask": "res://assets/vehicles/z06/paint_mask.png"
+      "paint_mask": "res://Replacement Vehicle Models/z06/paint_mask.png"
     },
     "compatible": [
       "paint",
@@ -2522,7 +2562,9 @@
     "wheel_radii": [
       82,
       76
-    ]
+    ],
+    "fallback_body": "res://assets/vehicles/z06/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/z06/"
   },
   "gtr": {
     "size": [
@@ -2570,7 +2612,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/gtr/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/gtr/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/gtr/glass.png",
       "lamps": "res://assets/vehicles/gtr/lamps.png",
@@ -2578,7 +2620,7 @@
       "tint": "res://assets/vehicles/gtr/tint.png",
       "stripe": "res://assets/vehicles/gtr/stripe.png",
       "number": "res://assets/vehicles/gtr/number.png",
-      "paint_mask": "res://assets/vehicles/gtr/paint_mask.png"
+      "paint_mask": "res://Replacement Vehicle Models/gtr/paint_mask.png"
     },
     "compatible": [
       "paint",
@@ -2603,7 +2645,9 @@
       1000,
       360
     ],
-    "master": "res://assets/vehicles/gtr/master.png"
+    "master": "res://assets/vehicles/gtr/master.png",
+    "fallback_body": "res://assets/vehicles/gtr/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/gtr/"
   },
   "r8": {
     "size": [
@@ -2651,7 +2695,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/r8/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/r8/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/r8/glass.png",
       "lamps": "res://assets/vehicles/r8/lamps.png",
@@ -2659,7 +2703,7 @@
       "tint": "res://assets/vehicles/r8/tint.png",
       "stripe": "res://assets/vehicles/r8/stripe.png",
       "number": "res://assets/vehicles/r8/number.png",
-      "paint_mask": "res://assets/vehicles/r8/paint_mask.png"
+      "paint_mask": "res://Replacement Vehicle Models/r8/paint_mask.png"
     },
     "compatible": [
       "paint",
@@ -2688,7 +2732,9 @@
     "wheel_radii": [
       75,
       70
-    ]
+    ],
+    "fallback_body": "res://assets/vehicles/r8/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/r8/"
   },
   "gt500": {
     "size": [
@@ -2736,7 +2782,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/gt500/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/gt500/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/gt500/glass.png",
       "lamps": "res://assets/vehicles/gt500/lamps.png",
@@ -2744,7 +2790,7 @@
       "tint": "res://assets/vehicles/gt500/tint.png",
       "stripe": "res://assets/vehicles/gt500/stripe.png",
       "number": "res://assets/vehicles/gt500/number.png",
-      "paint_mask": "res://assets/vehicles/gt500/paint_mask.png"
+      "paint_mask": "res://Replacement Vehicle Models/gt500/paint_mask.png"
     },
     "compatible": [
       "paint",
@@ -2769,7 +2815,9 @@
       1000,
       360
     ],
-    "master": "res://assets/vehicles/gt500/master.png"
+    "master": "res://assets/vehicles/gt500/master.png",
+    "fallback_body": "res://assets/vehicles/gt500/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/gt500/"
   },
   "redeye": {
     "size": [
@@ -2817,7 +2865,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/redeye/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/redeye/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/redeye/glass.png",
       "lamps": "res://assets/vehicles/redeye/lamps.png",
@@ -2825,7 +2873,7 @@
       "tint": "res://assets/vehicles/redeye/tint.png",
       "stripe": "res://assets/vehicles/redeye/stripe.png",
       "number": "res://assets/vehicles/redeye/number.png",
-      "paint_mask": "res://assets/vehicles/redeye/paint_mask.png"
+      "paint_mask": "res://Replacement Vehicle Models/redeye/paint_mask.png"
     },
     "compatible": [
       "paint",
@@ -2854,7 +2902,9 @@
     "wheel_radii": [
       79,
       74
-    ]
+    ],
+    "fallback_body": "res://assets/vehicles/redeye/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/redeye/"
   },
   "turbo_s": {
     "size": [
@@ -2902,7 +2952,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/turbo_s/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/turbo_s/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/turbo_s/glass.png",
       "lamps": "res://assets/vehicles/turbo_s/lamps.png",
@@ -2910,7 +2960,7 @@
       "tint": "res://assets/vehicles/turbo_s/tint.png",
       "stripe": "res://assets/vehicles/turbo_s/stripe.png",
       "number": "res://assets/vehicles/turbo_s/number.png",
-      "paint_mask": "res://assets/vehicles/turbo_s/paint_mask.png"
+      "paint_mask": "res://Replacement Vehicle Models/turbo_s/paint_mask.png"
     },
     "compatible": [
       "paint",
@@ -2939,7 +2989,9 @@
     "wheel_radii": [
       86,
       81
-    ]
+    ],
+    "fallback_body": "res://assets/vehicles/turbo_s/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/turbo_s/"
   },
   "mclaren": {
     "size": [
@@ -2987,7 +3039,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/mclaren/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/mclaren/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/mclaren/glass.png",
       "lamps": "res://assets/vehicles/mclaren/lamps.png",
@@ -2995,7 +3047,7 @@
       "tint": "res://assets/vehicles/mclaren/tint.png",
       "stripe": "res://assets/vehicles/mclaren/stripe.png",
       "number": "res://assets/vehicles/mclaren/number.png",
-      "paint_mask": "res://assets/vehicles/mclaren/paint_mask.png"
+      "paint_mask": "res://Replacement Vehicle Models/mclaren/paint_mask.png"
     },
     "compatible": [
       "paint",
@@ -3020,7 +3072,9 @@
       1000,
       360
     ],
-    "master": "res://assets/vehicles/mclaren/master.png"
+    "master": "res://assets/vehicles/mclaren/master.png",
+    "fallback_body": "res://assets/vehicles/mclaren/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/mclaren/"
   },
   "sf90": {
     "size": [
@@ -3068,7 +3122,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/sf90/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/sf90/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/sf90/glass.png",
       "lamps": "res://assets/vehicles/sf90/lamps.png",
@@ -3076,7 +3130,7 @@
       "tint": "res://assets/vehicles/sf90/tint.png",
       "stripe": "res://assets/vehicles/sf90/stripe.png",
       "number": "res://assets/vehicles/sf90/number.png",
-      "paint_mask": "res://assets/vehicles/sf90/paint_mask.png"
+      "paint_mask": "res://Replacement Vehicle Models/sf90/paint_mask.png"
     },
     "compatible": [
       "paint",
@@ -3105,7 +3159,9 @@
     "wheel_radii": [
       88,
       84
-    ]
+    ],
+    "fallback_body": "res://assets/vehicles/sf90/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/sf90/"
   },
   "demon": {
     "size": [
@@ -3153,7 +3209,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/demon/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/demon/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/demon/glass.png",
       "lamps": "res://assets/vehicles/demon/lamps.png",
@@ -3161,7 +3217,7 @@
       "tint": "res://assets/vehicles/demon/tint.png",
       "stripe": "res://assets/vehicles/demon/stripe.png",
       "number": "res://assets/vehicles/demon/number.png",
-      "paint_mask": "res://assets/vehicles/demon/paint_mask.png"
+      "paint_mask": "res://Replacement Vehicle Models/demon/paint_mask.png"
     },
     "compatible": [
       "paint",
@@ -3190,7 +3246,9 @@
     "wheel_radii": [
       88,
       81
-    ]
+    ],
+    "fallback_body": "res://assets/vehicles/demon/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/demon/"
   },
   "chiron": {
     "size": [
@@ -3238,7 +3296,7 @@
         198
       ]
     ],
-    "body": "res://assets/vehicles/chiron/body_%d_%s.png",
+    "body": "res://Replacement Vehicle Models/chiron/body_%d_%s.png",
     "layers": {
       "glass": "res://assets/vehicles/chiron/glass.png",
       "lamps": "res://assets/vehicles/chiron/lamps.png",
@@ -3246,7 +3304,7 @@
       "tint": "res://assets/vehicles/chiron/tint.png",
       "stripe": "res://assets/vehicles/chiron/stripe.png",
       "number": "res://assets/vehicles/chiron/number.png",
-      "paint_mask": "res://assets/vehicles/chiron/paint_mask.png"
+      "paint_mask": "res://Replacement Vehicle Models/chiron/paint_mask.png"
     },
     "compatible": [
       "paint",
@@ -3275,6 +3333,8 @@
     "wheel_radii": [
       81,
       82
-    ]
+    ],
+    "fallback_body": "res://assets/vehicles/chiron/body_%d_%s.png",
+    "replacement_source": "res://Replacement Vehicle Models/chiron/"
   }
 }
