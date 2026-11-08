@@ -101,7 +101,7 @@ func close() -> void:
 func _back_to_driver() -> void:
 	close()
 	var game := get_parent()
-	if game != null: game.action("tab_driver")
+	if game != null: game.call("action","tab_driver")
 
 func _on_action(action: String, payload: Dictionary) -> void:
 	var item: Variant = payload.get("item", {})
@@ -116,7 +116,7 @@ func _on_action(action: String, payload: Dictionary) -> void:
 	elif action == "skills.unlock":
 		if profile.unlock_driver_skill(selected):
 			var game := get_parent()
-			if game != null: game.refresh_car()
+			if game != null: game.call("refresh_car")
 	refresh()
 
 func refresh() -> void:
