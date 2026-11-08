@@ -174,6 +174,8 @@ func driver() -> void:
 	header("DRIVER")
 	t("LEVEL %02d" % g.profile.level(),24,177,46,g.GREEN)
 	t("%d XP TO NEXT LEVEL" % (g.profile.next_level_xp()-g.profile.xp),24,233,24,g.MUTED)
+	t("SKILL POINTS: %d" % g.profile.available_skill_points(),24,285,23,g.ORANGE)
+	b("driver_skills","SKILL TREE",Rect2(292,253,284,72),true)
 	t("%d WINS / %d RACES" % [g.profile.wins,g.profile.races],24,341,29)
 	t("BEST 1/4 TOTAL  "+("--" if g.profile.best <= 0 else "%.3f S" % g.profile.best),24,410,28)
 	for i in 3: t(GameCatalog.CAREER_NAMES[i]+"  %d / 5" % g.profile.career_wins[i],24,515+i*74,24,g.GREEN if g.profile.level() >= GameCatalog.CAREER_LEVELS[i] else g.MUTED)
