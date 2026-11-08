@@ -18,6 +18,7 @@ var preview:=Drivetrain.new()
 var selected_source: Drivetrain
 var time:=0.0
 var playing:=true
+var _preview_was_shifting := false
 var compact:=false
 var _building:=false
 var _saved_layers: Dictionary={}
@@ -139,7 +140,7 @@ func rebuild() -> void:
 			build.owned_parts.append("plenum"); build.owned_parts.append("headers")
 		preview=Drivetrain.new(); preview.configure_vehicle(GameCatalog.spec(id)); preview.configure(levels); preview.configure_build(build,id,false); preview.reset(); preview.running=true
 	if family_picker.selected>0: preview._base_spec["audio_family_override"]=family_picker.get_item_text(family_picker.selected)
-	time=0; physics_accumulator=0; game.sound.preview_car=preview
+	time=0; physics_accumulator=0; _preview_was_shifting=false; game.sound.preview_car=preview
 
 func toggle_recording() -> void:
 	if not OS.is_debug_build() or compact: return
@@ -200,7 +201,16 @@ func _process(dt: float) -> void:
 		else:
 			preview.rpm=values.RPM.value; preview.throttle=values.Throttle.value; preview.engine_load=values.Load.value; preview.boost=PressureUnits.from_psi(values["Boost PSI"].value); preview.clutch_engagement=values["Clutch engagement"].value
 		preview.gear=clampi(int(values.Gear.value),0,preview.gear_ratios.size())
-		preview.shift_left=.1 if flags.Shifting.button_pressed else 0
+		var preview_shifting: bool = flags.Shifting.button_pressed
+		preview.shift_left=.1 if preview_shifting else 0
+		# Match live racing: only the transition into a shift vents the turbo.
+		# Keep this event confined to Audio Lab's simulated preview vehicle.
+		if preview_shifting and not _preview_was_shifting:
+			preview.last_shift_rpm = preview.rpm
+			preview.last_shift_load = maxf(0.45,preview.engine_load)
+			preview.shift_direction = 1
+			preview.shift_serial += 1
+		_preview_was_shifting = preview_shifting
 		preview.fuel_cut=flags.Limiter.button_pressed or (flags.Shifting.button_pressed and preview.control_mode!="hpattern")
 		preview.combustion_fraction=.15 if flags.Limiter.button_pressed else (preview.shift_retention if flags.Shifting.button_pressed and preview.control_mode!="hpattern" else 1.0)
 		if flags.Shifting.button_pressed and preview.control_mode=="hpattern": preview.clutch_engagement=0; preview.throttle=0
