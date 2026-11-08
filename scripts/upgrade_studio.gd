@@ -84,8 +84,10 @@ func overview() -> void:
 		g.mobile.header("UPGRADES")
 		fit(str(GameCatalog.spec(g.profile.vehicle_id).name),24,108,340,25)
 		t("%d hp / %.0f lb-ft"%[g.car.peak_horsepower(),ImperialUnits.torque(GarageHub.peak_torque(g.car))],24,148,22,g.MUTED)
+		button("open_tuning","Tuning",Rect2(214,80,166,68))
 		button("hub_dyno","Live Dyno",Rect2(396,80,180,68))
 	else:
+		button("open_tuning","Tuning",Rect2(634,103,154,48))
 		button("hub_test","Test build",Rect2(800,103,156,48))
 		button("hub_dyno","Live Dyno",Rect2(968,103,198,48))
 	for i in SYSTEMS.size():
