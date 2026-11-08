@@ -336,7 +336,7 @@ func next_effect_sample() -> float:
 	var bov := blowoff_sample(noise) * induction_mix
 	var transients := filtered_noise * pop_gain * .21 * exhaust_fx_mix + noise * shift_tick_gain * .025 * mechanical_mix + bov
 	var electric:=sin(_hybrid_phase*TAU)*clampf(hybrid_power/162000,0,1)*.009*mechanical_mix if hybrid_power>1 else 0.0
-	pop*=.9990; blowoff*=.9996; shift_tick*=.9965
+	pop*=.9990; shift_tick*=.9965
 	var value:=tanh((induction+tire+whine*mechanical_mix+transients+intake_filter*.07*nitro_gain*nitro_mix+electric+grind_sample())*gain)
 	peak_jump=maxf(peak_jump,absf(value-last_sample)); last_sample=value; samples_generated+=1
 	return value
