@@ -7,6 +7,10 @@ var signature: String=""
 var scene_key := ""
 var scene_fade: Tween
 var targets: Dictionary={}
+var saved_scrolls := MenuScrollState.new()
+var scroll_scope := ""
+var scroll_revision := 0
+var scroll_restore_pending := false
 var portrait:=false
 var notice: PanelContainer
 var notice_label: Label
@@ -168,6 +172,25 @@ func button(parent: Node,id: String,title: String,primary: bool=false) -> Button
 	var b:=AutomotiveUI.button(parent,title,"Primary" if primary else "Secondary",70 if portrait else 46)
 	bind(b,id); return b
 
+func _scroll_context() -> String:
+	if game.screen=="results": return "results"
+	if game.screen!="garage": return game.screen
+	# Stable across item selection, purchases, search/filter, and subpage redraws.
+	# Distinct scopes prevent a scrollbar from one menu being imposed on another.
+	if game.tab=="performance":
+		return "performance_overview" if game.menu.hub.categories else "performance_detail_"+str(game.menu.hub.selected)+"_"+str(game.workshop.mode)
+	if game.tab=="dealer":
+		return "dealer_classes_"+game.menu.dealer.vehicle_type if game.menu.dealer.class_picker else "dealer_inventory_"+game.menu.dealer.vehicle_type+"_"+str(game.menu.dealer.class_filter)
+	if game.tab=="style": return "style_"+game.menu.customize.category
+	return game.tab
+
+func _restore_menu_scrolls(context: String, revision: int) -> void:
+	# Containers need one layout frame to determine their scroll ranges.
+	await get_tree().process_frame
+	if not is_inside_tree() or revision!=scroll_revision or not visible or _scroll_context()!=context: return
+	saved_scrolls.restore(self,context)
+	scroll_restore_pending=false
+
 func sync() -> void:
 	visible=supports()
 	if not visible: return
@@ -175,12 +198,20 @@ func sync() -> void:
 	var key:=state_key()
 	if game.tab=="performance": key+=confirm_quote
 	if key!=signature:
+		# If another interaction occurs before the previous layout frame, keep the
+		# original position rather than overwriting it with a temporary zero.
+		if scroll_scope!="" and not scroll_restore_pending: saved_scrolls.remember(self,scroll_scope)
+		var next_scope:=_scroll_context()
+		scroll_scope=next_scope
+		scroll_revision+=1
+		scroll_restore_pending=true
 		signature=key
 		for child in get_children():
 			if child is CanvasItem: child.hide()
 			remove_child(child)
 			child.queue_free()
 		targets.clear(); build()
+		_restore_menu_scrolls(next_scope,scroll_revision)
 	var next_scene := str([game.screen,game.tab,game.menu.hub.categories,game.menu.dealer.class_picker,
 		game.menu.dealer.details,game.career_board.active,game.career_board.picker])
 	if next_scene != scene_key:

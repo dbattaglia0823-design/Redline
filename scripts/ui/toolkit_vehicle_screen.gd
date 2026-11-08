@@ -11,6 +11,7 @@ var touch_origin := Vector2.ZERO
 var touch_offset := 0
 var touch_moved := false
 var touch_scroll: ScrollContainer
+var catalog_revision := 0
 var hero: VehiclePreview
 var selected_id := ""
 
@@ -247,9 +248,16 @@ func set_data(data: Dictionary) -> void:
 		elif ui is Label and value!=null: ui.text=_display(value)
 		elif ui is LineEdit and not ui.has_focus(): ui.text=_display(value)
 
+func _restore_catalog_scroll(scroll: ScrollContainer,offset: int,revision: int) -> void:
+	await get_tree().process_frame
+	if not is_instance_valid(scroll) or scroll.is_queued_for_deletion() or revision!=catalog_revision: return
+	scroll.scroll_vertical=offset
+
 func rebuild_catalog() -> void:
 	if not controls.has("vehicles"): return
 	var scroll: ScrollContainer=controls.vehicles
+	var previous_position: int=scroll.scroll_vertical
+	catalog_revision+=1
 	var grid: GridContainer=scroll.get_node("Entries")
 	grid.size_flags_horizontal=Control.SIZE_EXPAND_FILL; grid.add_theme_constant_override("v_separation",8)
 	for id in owner_screen.targets.keys():
@@ -274,6 +282,7 @@ func rebuild_catalog() -> void:
 	if controls.has("filter"): controls.filter.text=["All","Owned","Unowned"][owner_screen.dealer_filter]
 	for id in ["previous_vehicle","next_vehicle"]:
 		if controls.has(id): controls[id].disabled=catalog_items.size()<2
+	_restore_catalog_scroll(scroll,previous_position,catalog_revision)
 	owner_screen.publish_targets.call_deferred()
 
 func route_action(action_id: String,payload: Dictionary={}) -> void:
