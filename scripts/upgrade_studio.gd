@@ -118,7 +118,6 @@ func sections() -> Array:
 	for i in GarageHub.CATEGORY_SLOTS[h.selected].size():
 		var slot: String=GarageHub.CATEGORY_SLOTS[h.selected][i]
 		result.append({"id":"hw_slot_%d"%i,"label":UpgradeWorkshop.TITLES[slot],"selected":g.workshop.mode=="hardware" and g.workshop.slot_index==i})
-	if GarageHub.TUNE_KEYS.has(h.selected): result.append({"id":"upgrade_section_tune","label":"Tuning","selected":g.workshop.mode=="tune"})
 	return result
 
 func detail() -> void:
@@ -143,9 +142,6 @@ func detail() -> void:
 		"transmission":
 			if mobile: g.mobile.gearboxes()
 			else: w.draw_transmissions()
-		"tune":
-			if mobile: g.mobile.tuning()
-			else: w.draw_scoped_tuning()
 		"test":
 			if mobile: g.mobile.vehicle_test()
 			else: w.draw_test()
