@@ -1,5 +1,5 @@
 extends Control
-## Driver skill overlay: imports a v2 layout from Game-Dev-Toolkit.
+## Standalone Driver Skills page. The root contains no modal backdrop.
 const LayoutRenderer = preload("res://scripts/ui/toolkit_skill_layout.gd")
 const TEMPLATE = "res://data/driver_skill_tree.layout.json"
 const ACCENT = Color("f39a55")
@@ -8,7 +8,6 @@ const MUTED = Color("aab5c4")
 
 var profile: DriverProfile
 var renderer
-var backdrop: ColorRect
 var close_button: Button
 var category := "Launch"
 var selected := "launch_basics"
@@ -16,13 +15,10 @@ var selected := "launch_basics"
 func setup(p: DriverProfile) -> void:
 	profile = p
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	mouse_filter = Control.MOUSE_FILTER_STOP
-	z_index = 100
+	# The dock remains usable outside the page contents.
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	z_index = 10
 	visible = false
-	backdrop = ColorRect.new()
-	backdrop.color = Color(0.015, 0.025, 0.043, 0.97)
-	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(backdrop)
 	renderer = LayoutRenderer.new()
 	add_child(renderer)
 	if not renderer.load_from_file(TEMPLATE):
@@ -73,10 +69,10 @@ func setup(p: DriverProfile) -> void:
 	var detail: Label = renderer.controls.get("node_6") as Label
 	if detail != null: detail.vertical_alignment = VERTICAL_ALIGNMENT_TOP
 	close_button = Button.new()
-	close_button.text = "CLOSE  X"
+	close_button.text = "BACK"
 	close_button.position = Vector2(692, 3)
 	close_button.size = Vector2(96, 34)
-	close_button.pressed.connect(close)
+	close_button.pressed.connect(_back_to_driver)
 	renderer.add_child(close_button)
 	renderer.action_requested.connect(_on_action)
 	get_viewport().size_changed.connect(_resize_layout)
@@ -85,10 +81,12 @@ func setup(p: DriverProfile) -> void:
 
 func _resize_layout() -> void:
 	if renderer == null: return
-	var available := get_viewport_rect().size - Vector2(24, 24)
+	var viewport_size := get_viewport_rect().size
+	# Fit above the shared floating bottom navigation, not over it.
+	var available := Vector2(viewport_size.x - 32.0, viewport_size.y - (140.0 if viewport_size.x < viewport_size.y else 112.0))
 	var factor: float = minf(available.x / 800.0, available.y / 500.0)
 	renderer.scale = Vector2.ONE * minf(factor, 1.5)
-	renderer.position = (get_viewport_rect().size - Vector2(800, 500) * renderer.scale) * 0.5
+	renderer.position = Vector2((viewport_size.x - 800.0 * factor) * 0.5, 22.0 + (available.y - 500.0 * factor) * 0.5)
 
 func show_tree() -> void:
 	if profile == null or renderer == null: return
@@ -99,6 +97,11 @@ func show_tree() -> void:
 
 func close() -> void:
 	visible = false
+
+func _back_to_driver() -> void:
+	close()
+	var game := get_parent()
+	if game != null: game.action("tab_driver")
 
 func _on_action(action: String, payload: Dictionary) -> void:
 	var item: Variant = payload.get("item", {})
