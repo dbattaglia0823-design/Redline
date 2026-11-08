@@ -14,8 +14,10 @@ func equipped() -> DriverProfile:
 func _initialize() -> void:
 	var stock:=DriverProfile.new()
 	for key in TuningSetup.EXTRA:
-		if key=="launch_gear": continue
+		if key in ["launch_gear","tire_pressure"]: continue
 		check(not stock.tune_hardware(key,TuningSetup.EXTRA[key][4],false),"Stock build accepted gated tuning: "+key)
+	check(stock.tune_hardware("tire_pressure",30.0,false),"Factory tire pressure incorrectly requires an upgrade")
+	check(is_equal_approx(float(stock.hardware.tune.get("tire_pressure",0)),30.0),"Factory tire pressure tune did not persist in build")
 	var p:=equipped()
 	check(p.tune_hardware("launch_rpm",4600,false),"ECU launch target rejected")
 	check(p.tune_hardware("tc_slip",.08,false),"ECU traction controller rejected")
