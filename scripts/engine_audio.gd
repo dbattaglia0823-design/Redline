@@ -48,7 +48,7 @@ func update_vehicle(car: Drivetrain,paused: bool=false) -> void:
 		voice.pop=0; voice.blowoff=0; voice.shift_tick=0
 		# Never carry a vent tail, cooldown, or boost spool across car/engine swaps.
 		voice._blowoff_pressure=0; voice._blowoff_cooldown=0
-		voice._blowoff_flutter=0; voice._blowoff_phase=0
+		voice._blowoff_flutter=0; voice._blowoff_phase=0; voice._blowoff_flutter_phase=0
 		voice._blowoff_noise_low=0; voice._blowoff_noise_high=0
 		voice._turbo_air_low=0; voice._turbo_air_high=0
 		voice._turbo_spool=0; voice.blowoff_gain=0
