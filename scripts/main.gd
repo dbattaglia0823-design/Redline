@@ -541,7 +541,7 @@ func handle_key_input(event: InputEventKey) -> void:
 	if code==KEY_F7 and screen=="garage" and audio_lab!=null:
 		audio_lab.open_lab(); return
 	if screen == "garage" and code == KEY_TAB and event.ctrl_pressed and not menu.hub.dyno_open:
-		var sections := ["garage","races","dealer","driver"]
+		var sections := ["garage","races","dealer","driver","skills"]
 		var current := maxi(0,sections.find(tab))
 		action("tab_"+str(sections[posmod(current+(-1 if event.shift_pressed else 1),sections.size())])); return
 	if screen == "garage" and tab == "owned" and code in [KEY_LEFT,KEY_RIGHT]:
@@ -560,6 +560,8 @@ func handle_key_input(event: InputEventKey) -> void:
 		if native_workshop!=null and native_workshop.template_action("shop_car_prev" if code==KEY_LEFT else "shop_car_next"): return
 		menu.dealer.navigate(-1 if code == KEY_LEFT else 1)
 		return
+	if code==KEY_ESCAPE and screen=="garage" and tab=="skills":
+		action("tab_driver"); return
 	if code==KEY_ESCAPE and screen=="garage" and tab=="races" and career_board.active:
 		if career_board.picker: go_garage()
 		else: career_board.action("cb_back")
@@ -605,8 +607,8 @@ func handle_key_input(event: InputEventKey) -> void:
 					glass.focused = str(ids[(ids.size()-1 if event.shift_pressed else 0) if current < 0 else posmod(current+(-1 if event.shift_pressed else 1),ids.size())])
 
 func _input(event: InputEvent) -> void:
-	if skill_tree != null and skill_tree.visible:
-		if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE: skill_tree.close()
+	if tab == "skills" and screen == "garage" and event is InputEventKey and event.pressed and not event.echo and RaceControls.key_code(event) == KEY_ESCAPE:
+		action("tab_driver")
 		return
 	if event is InputEventJoypadButton or event is InputEventJoypadMotion:
 		gamepad.handle(self,event)
@@ -670,7 +672,9 @@ func activate_at(pos: Vector2, pointer: String, allow_menu: bool = true) -> void
 
 func action(id: String) -> void:
 	if id == "driver_skills":
+		tab = "skills"
 		if skill_tree != null: skill_tree.show_tree()
+		menu_dirty = true
 		return
 	if native_workshop!=null and native_workshop.template_action(id): return
 	if id in ["garage_previous","garage_next"]:
@@ -724,6 +728,7 @@ func action(id: String) -> void:
 		return
 	if id.begins_with("tab_"):
 		tab = id.trim_prefix("tab_")
+		if skill_tree != null and tab != "skills": skill_tree.close()
 		if tab=="dealer": menu.dealer.open()
 		if tab=="races": career_board.open()
 		if tab == "performance": menu.hub.categories = true
@@ -916,6 +921,10 @@ func _draw() -> void:
 	glass.background(self,Vector2(get_window().content_scale_size))
 	if native_workshop!=null and native_workshop.supports():
 		native_workshop.sync()
+	elif screen=="garage" and tab=="skills":
+		if compact: mobile.header("DRIVER SKILLS")
+		else: draw_header()
+		draw_navigation()
 	elif screen=="garage" and tab=="races" and career_board.active:
 		career_board.draw()
 	elif screen=="practice_results" or (screen=="garage" and tab=="tuning"):
@@ -1055,6 +1064,7 @@ func refresh_car(plan: bool = true) -> void:
 	car.configure_vehicle(GameCatalog.spec(profile.vehicle_id))
 	car.configure(profile.stages)
 	car.configure_build(profile.hardware,profile.vehicle_id,plan)
+	car.apply_driver_skills(profile.skill_ranks,profile.level())
 
 func install_part(index: int, tier: int = -1) -> void:
 	if profile.upgrade(index,tier):
