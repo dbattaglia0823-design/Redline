@@ -19,7 +19,7 @@ const CARS := {
 const PART_NAMES: Array[String] = ["Engine", "Turbo", "Tires", "Weight", "Gearbox", "Exhaust", "Brakes", "Nitrous"]
 const PART_COSTS: Array[int] = [700,1000,600,800,900,450,400,650]
 const STAGE_PRICE_MULTIPLIERS := [0,1,3,8,18,36]
-const CHAMPIONSHIP_BET_BASE := [2000,4000,7500,13000,22000,40000]
+const CHAMPIONSHIP_BET_BASE := [500,1000,2000,3500,7000,16000]
 const CHAMPIONSHIP_BET_SCALE := [1.0,1.5,2.2,3.2,4.6,6.5,9.0,12.5,17.0,25.0]
 
 static func championship_bet_cap(letter: String,round_index: int) -> int:
