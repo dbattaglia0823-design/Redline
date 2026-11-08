@@ -344,6 +344,8 @@ func next_effect_sample() -> float:
 	return value
 
 func induction_sample() -> float:
+	# An engine without a turbo or driven blower must stay acoustically unboosted.
+	if not _turbo_active and _induction_type == "": return 0.0
 	var pressure:=lerpf(maxf(0,boost),maxf(boost,throttle*.22)+_super_bypass,supercharger_blend)
 	if pressure<.00001 or induction_mix<=0: return 0.0
 	# Turbo spool follows physical pressure, pedal demand, and RPM.
