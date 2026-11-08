@@ -22,8 +22,10 @@ func _initialize() -> void:
 		check(definition.has("stock_wheels") and definition.stock_wheels.size() == 2, id + ": missing independent wheel textures")
 		for finish in ["gloss", "matte", "metallic"]:
 			for paint in 6:
-				var path: String = str(definition.body) % [paint, finish]
+				var path: String = VehicleAppearance.body_variant_path(definition, paint, finish)
 				check(ResourceLoader.exists(path), id + ": missing " + path)
+				if id != "integra" or paint < 4:
+					check(path.begins_with("res://Replacement Vehicle Models/"), id + ": replacement source was not selected")
 	check(integrated == 30, "Expected 30 photoreal REDLINE vehicle definitions, got " + str(integrated))
 	# Old saves retain their caliper field, but the option cannot be bought or rendered
 	# as a separate procedural overlay on a photorealistic car.
