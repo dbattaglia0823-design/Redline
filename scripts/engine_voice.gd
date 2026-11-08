@@ -187,7 +187,7 @@ func set_from_vehicle(car: Drivetrain, audible: bool = true) -> void:
 	if not audible or not can_relieve:
 		_blowoff_armed = false
 		_blowoff_pressure = 0.0
-	var charged: bool = can_relieve and car.throttle > 0.58 and car.boost > 0.09
+	var charged: bool = audible and can_relieve and car.throttle > 0.58 and car.boost > 0.09
 	if charged:
 		_blowoff_armed = true
 		_blowoff_pressure = maxf(_blowoff_pressure, car.boost)
