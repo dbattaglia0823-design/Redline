@@ -53,6 +53,7 @@ static func draw_vehicle_wheel(g: Node2D,center: Vector2,radius: float,state: Di
 	var radii: Array=definition.get("wheel_radii",[definition.radius,definition.radius])
 	var metal_radii: Array=definition.get("rim_radius",[float(definition.radius)*.70,float(definition.radius)*.70])
 	var rim_fraction:=float(metal_radii[index])/float(radii[index])
+	var metal_radius:=radius*rim_fraction
 	if not rim_only:
 		var authored: Texture2D
 		if definition.has("stock_wheels"): authored=VehicleAppearance.texture(str(definition.stock_wheels[index]))
@@ -64,7 +65,6 @@ static func draw_vehicle_wheel(g: Node2D,center: Vector2,radius: float,state: Di
 		else:
 			g.draw_circle(center,radius,Color("10151b")*light,true,-1,true)
 			g.draw_arc(center,radius*.94,PI*1.10,PI*1.88,48,Color("3b4145")*light,maxf(1,radius*.025),true)
-		var metal_radius:=radius*rim_fraction
 		g.draw_circle(center,metal_radius,Color("0a1016")*light,true,-1,true)
 		g.draw_circle(center,metal_radius*.86,Color("34414b")*light,true,-1,true)
 		for ring in (12 if quality==2 else 6):
