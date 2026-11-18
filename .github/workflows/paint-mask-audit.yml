@@ -1,0 +1,31 @@
+name: Audit replacement paint masks
+
+on:
+  push:
+    branches: [fix/preexisting-godot-regressions]
+    paths:
+      - 'tools/audit_paint_alignment.py'
+      - '.github/workflows/paint-mask-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit-paint:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install image decoder
+        run: python -m pip install --disable-pip-version-check Pillow==11.3.0
+      - name: Audit original authored image masks (read-only)
+        run: python tools/audit_paint_alignment.py --report .qa/paint_mask_audit.json
+      - name: Archive detailed audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: paint-mask-audit
+          path: .qa/paint_mask_audit.json
