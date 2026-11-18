@@ -18,11 +18,20 @@ func run() -> void:
 		check(absf(car.peak_horsepower()-float(s.ice_hp))/float(s.ice_hp)<.04,id+" engine output differs from rating")
 		check(VehicleAppearance.validate(id).is_empty(),id+" art manifest invalid")
 		var definition:=VehicleAppearance.definition(id)
-		var mask: Texture2D=load(definition.layers.paint_mask); var body: Texture2D=load(str(definition.body)%[0,"gloss"])
-		var a:=mask.get_image(); var b:=body.get_image(); var opaque:=true
-		for y in range(0,a.get_height(),5):
-			for x in range(0,a.get_width(),5):
-				if a.get_pixel(x,y).a>.99 and b.get_pixel(x,y).a<.99: opaque=false
+		# Compare the original authored PNGs: imported GPU textures can be
+		# downscaled independently by the headless renderer, making otherwise
+		# matching paint/body assets appear different sizes in a pixel audit.
+		var mask_path: String=str(definition.layers.paint_mask)
+		var body_path: String=str(definition.body)%[0,"gloss"]
+		var a:=Image.load_from_file(ProjectSettings.globalize_path(mask_path))
+		var b:=Image.load_from_file(ProjectSettings.globalize_path(body_path))
+		var size_ok:=not a.is_empty() and not b.is_empty() and a.get_size()==b.get_size()
+		check(size_ok,id+" authored paint mask/body image size mismatch")
+		var opaque:=size_ok
+		if size_ok:
+			for y in range(0,a.get_height(),5):
+				for x in range(0,a.get_width(),5):
+					if a.get_pixel(x,y).a>.99 and b.get_pixel(x,y).a<.99: opaque=false
 		check(opaque,id+" transparent body interior")
 		var hash:=FileAccess.get_sha256(definition.layers.paint_mask)
 		check(not silhouettes.has(hash),id+" repeated silhouette"); silhouettes[hash]=true

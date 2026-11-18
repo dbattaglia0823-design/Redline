@@ -45,7 +45,7 @@ func _initialize() -> void:
 				var pos:=Vector2i((center+direction*band).round())
 				if img.get_pixelv(pos).a>.20: visible+=1
 			check(visible>=8,id+": insufficient authored rubber around wheel "+str(axle)+" ("+str(visible)+"/24)")
-	check(VehicleAppearance.validate(id).is_empty(),id+": invalid tire geometry")
+		check(VehicleAppearance.validate(id).is_empty(),id+": invalid tire geometry")
 	check(replacements==30,"Expected all 30 replacement cars to have tire sidewalls")
 	print("REPLACEMENT TIRE SIDEWALL ASSETS: ","PASS" if failures==0 else "FAIL"," / ",checks," checks")
 	quit(0 if failures==0 else 1)
