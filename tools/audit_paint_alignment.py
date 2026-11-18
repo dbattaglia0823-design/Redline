@@ -42,6 +42,9 @@ def audit() -> list[dict]:
         selected = sum(value > 0 for value in mask_alpha)
         excluded = sum(paint > 0 and color < 255 for paint, color in zip(mask_alpha, body_alpha))
         ratio = excluded / selected if selected else 1.0
+        significantly_transparent = sum(
+            paint > 0 and color < 243 for paint, color in zip(mask_alpha, body_alpha)
+        )
         alpha_histogram = {
             "zero": 0, "low_1_127": 0, "mid_128_251": 0,
             "near_opaque_252_254": 0, "opaque_255": 0,
@@ -69,6 +72,8 @@ def audit() -> list[dict]:
             "selected_pixels": selected,
             "pixels_outside_opaque_body": excluded,
             "excluded_fraction": round(ratio, 6),
+            "below_95pct_opaque_pixels": significantly_transparent,
+            "below_95pct_fraction": round(significantly_transparent / selected if selected else 1.0, 6),
             "body_alpha_at_mask_pixels": alpha_histogram,
         })
     return rows
@@ -83,6 +88,7 @@ def main() -> int:
         print(f'{row["id"]}: mask={row["mask_size"]}, body={row["body_size"]}, '
               f'excluded={row["pixels_outside_opaque_body"]}/{row["selected_pixels"]} '
               f'({row["excluded_fraction"] * 100:.3f}%) '
+              f'alpha_below_95%={row["below_95pct_fraction"] * 100:.3f}% '
               f'alpha_hist={row["body_alpha_at_mask_pixels"]}')
     report = {
         "mode": "read-only audit",
