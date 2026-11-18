@@ -29,9 +29,34 @@ jobs:
         run: |
           set -o pipefail
           gdb -batch -ex 'set pagination off' -ex run -ex 'thread apply all bt 16' --args "$RUNNER_TEMP/godot/Godot_v4.6.3-stable_linux.x86_64" --headless --path . --script res://tests/test_driver_skill_page.gd 2>&1 | tee /tmp/godot-abort-trace.log
+      - name: Compare exit behavior with alternate thread and rendering settings
+        shell: bash
+        run: |
+          set +e
+          ulimit -c 0
+          GODOT="$RUNNER_TEMP/godot/Godot_v4.6.3-stable_linux.x86_64"
+          for scenario in normal single-threaded no-render-thread minimal; do
+            echo "===== BEGIN $scenario ====="
+            case "$scenario" in
+              normal) "$GODOT" --headless --path . --script res://tests/test_driver_skill_page.gd >/tmp/"$scenario".log 2>&1 ;;
+              single-threaded) "$GODOT" --headless --single-threaded-scene --path . --script res://tests/test_driver_skill_page.gd >/tmp/"$scenario".log 2>&1 ;;
+              no-render-thread) "$GODOT" --headless --rendering-method gl_compatibility --path . --script res://tests/test_driver_skill_page.gd >/tmp/"$scenario".log 2>&1 ;;
+              minimal) "$GODOT" --headless --path . --script res://tests/test_tuning_consolidation.gd >/tmp/"$scenario".log 2>&1 ;;
+            esac
+            result=$?
+            echo "scenario=$scenario exit=$result"
+            tail -25 /tmp/"$scenario".log
+            echo "===== END $scenario ====="
+          done
+          exit 0
       - name: Upload trace
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: godot-abort-backtrace
-          path: /tmp/godot-abort-trace.log
+          path: |
+            /tmp/godot-abort-trace.log
+            /tmp/normal.log
+            /tmp/single-threaded.log
+            /tmp/no-render-thread.log
+            /tmp/minimal.log
