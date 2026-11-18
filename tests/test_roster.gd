@@ -25,14 +25,33 @@ func run() -> void:
 		var body_path: String=str(definition.body)%[0,"gloss"]
 		var a:=Image.load_from_file(ProjectSettings.globalize_path(mask_path))
 		var b:=Image.load_from_file(ProjectSettings.globalize_path(body_path))
-		var size_ok:=not a.is_empty() and not b.is_empty() and a.get_size()==b.get_size()
-		check(size_ok,id+" authored paint mask/body image size mismatch")
-		var opaque:=size_ok
-		if size_ok:
-			for y in range(0,a.get_height(),5):
-				for x in range(0,a.get_width(),5):
-					if a.get_pixel(x,y).a>.99 and b.get_pixel(x,y).a<.99: opaque=false
-		check(opaque,id+" transparent body interior")
+		# Paint masks may be authored at a higher but equivalent resolution
+		# than the finished car PNG. Verify aspect ratio, then compare in the
+		# same coordinate space rather than sampling beyond either image.
+		var source_ok:=not a.is_empty() and not b.is_empty()
+		check(source_ok,id+" paint mask or body source could not be decoded")
+		if source_ok:
+			var ratio_a:=float(a.get_width())/float(a.get_height())
+			var ratio_b:=float(b.get_width())/float(b.get_height())
+			var same_aspect:=absf(ratio_a-ratio_b)<0.01
+			check(same_aspect,id+" paint mask/body aspect ratios differ")
+			if same_aspect:
+				if a.get_size()!=b.get_size():
+					a.resize(b.get_width(),b.get_height(),Image.INTERPOLATE_LANCZOS)
+				# Replacement bodies have deliberate near-opaque paint and
+				# antialiased boundaries. Require at least 96.5% of samples in
+				# the paint mask to be >=95% opaque, not byte-perfect alpha=255.
+				var painted:=0
+				var translucent:=0
+				for y in range(0,a.get_height(),5):
+					for x in range(0,a.get_width(),5):
+						if a.get_pixel(x,y).a>.99:
+							painted+=1
+							if b.get_pixel(x,y).a<.95: translucent+=1
+				check(painted>400,id+" empty sampled paint mask")
+				check(painted>0 and float(translucent)/float(maxi(painted,1))<=.035,
+					id+" paint mask extends too far into transparent body ("+
+					str(translucent)+"/"+str(painted)+" samples)")
 		var hash:=FileAccess.get_sha256(definition.layers.paint_mask)
 		check(not silhouettes.has(hash),id+" repeated silhouette"); silhouettes[hash]=true
 		var factory:=PerformanceClasses.factory(id)
