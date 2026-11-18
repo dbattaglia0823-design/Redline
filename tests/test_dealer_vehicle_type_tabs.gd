@@ -64,7 +64,10 @@ func _run() -> void:
 		print("DEALERSHIP VEHICLE TYPE TABS PASS")
 	else:
 		print("DEALERSHIP VEHICLE TYPE TABS FAIL: ",failures)
+	# Match main.gd request_quit's audio callback retirement window before
+	# destroying the scene; a single process frame is not sufficient in CI.
 	game.stop_presentation_audio()
+	await create_timer(0.16).timeout
 	game.queue_free()
 	await process_frame
 	await process_frame

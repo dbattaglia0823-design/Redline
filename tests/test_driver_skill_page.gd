@@ -33,7 +33,10 @@ func run() -> void:
 	game.action("driver_skills")
 	game.skill_tree._back_to_driver()
 	check(game.tab == "driver" and not game.skill_tree.visible, "Back did not return to Driver page")
+	# Match main.gd request_quit's audio callback retirement window before
+	# destroying the scene; a single process frame is not sufficient in CI.
 	game.stop_presentation_audio()
+	await create_timer(0.16).timeout
 	game.queue_free()
 	await process_frame
 	print("DRIVER SKILLS PAGE: ", "PASS" if failures.is_empty() else "FAIL")

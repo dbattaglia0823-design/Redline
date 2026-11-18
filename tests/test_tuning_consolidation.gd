@@ -48,7 +48,10 @@ func run() -> void:
 	check(game.profile.credits == money, "Tuning charged credits")
 	game.tuning.action("tt_back")
 	check(game.tab == "performance", "Tuning did not return to Upgrades")
+	# Match main.gd request_quit's audio callback retirement window before
+	# destroying the scene; a single process frame is not sufficient in CI.
 	game.stop_presentation_audio()
+	await create_timer(0.16).timeout
 	game.queue_free()
 	await process_frame
 	print("UNIFIED TUNING: ", checks, " checks / ", "PASS" if failures.is_empty() else "FAIL")
