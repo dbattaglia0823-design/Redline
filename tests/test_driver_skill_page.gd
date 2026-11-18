@@ -11,8 +11,12 @@ func _initialize() -> void:
 	call_deferred("run")
 
 func run() -> void:
+	# These tests validate menu behavior. Audio playback is tested separately;
+	# avoid creating the full audio mixer during a headless UI-only fixture.
+	EngineAudio.skip_output_for_ui_fixtures = true
 	var game: Node2D = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
+	EngineAudio.skip_output_for_ui_fixtures = false
 	game.set_process(false)
 	game.set_physics_process(false)
 	check(game.tab == "garage", "Game did not open at Garage")

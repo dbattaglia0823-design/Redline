@@ -1,6 +1,11 @@
 class_name EngineAudio
 extends AudioStreamPlayer
 
+# Headless UI-only fixture isolation: script-driven navigation should not
+# initialize live engine audio buses or synth streams. Real engine-audio tests
+# run without this flag and continue to exercise the full playback pipeline.
+static var skip_output_for_ui_fixtures := false
+
 var playback: AudioStreamGeneratorPlayback
 var voice:=EngineVoice.new()
 var atmosphere:=RaceAtmosphere.new()
@@ -23,6 +28,9 @@ const BUFFER_SECONDS:=0.055
 func generator() -> AudioStreamGenerator:
 	var value:=AudioStreamGenerator.new(); value.mix_rate=RATE; value.buffer_length=BUFFER_SECONDS; return value
 func _ready() -> void:
+	if skip_output_for_ui_fixtures:
+		_closed = true
+		return
 	EngineLoopPlayer.ensure_buses()
 	loops=EngineLoopPlayer.new(); loops.role="Player"; add_child(loops)
 	opponent=EngineLoopPlayer.new(); opponent.role="Rival"; add_child(opponent)
