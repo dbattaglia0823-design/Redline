@@ -1,0 +1,37 @@
+name: Diagnose Godot headless scene shutdown abort
+
+on:
+  push:
+    branches: [fix/preexisting-godot-regressions]
+    paths:
+      - '.github/workflows/godot-abort-diagnostics.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  trace-exit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install debugger and Godot 4.6.3
+        run: |
+          if ! command -v gdb >/dev/null; then sudo apt-get update -qq && sudo apt-get install -y -qq gdb; fi
+          curl --fail --location --retry 3 https://github.com/godotengine/godot/releases/download/4.6.3-stable/Godot_v4.6.3-stable_linux.x86_64.zip -o "$RUNNER_TEMP/godot.zip"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+      - name: Import game source
+        run: |
+          "$RUNNER_TEMP/godot/Godot_v4.6.3-stable_linux.x86_64" --headless --path . --editor --import --quit
+      - name: Capture abort stack trace for a passing UI test
+        shell: bash
+        run: |
+          set -o pipefail
+          gdb -batch -ex 'set pagination off' -ex run -ex 'thread apply all bt 16' --args "$RUNNER_TEMP/godot/Godot_v4.6.3-stable_linux.x86_64" --headless --path . --script res://tests/test_driver_skill_page.gd 2>&1 | tee /tmp/godot-abort-trace.log
+      - name: Upload trace
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: godot-abort-backtrace
+          path: /tmp/godot-abort-trace.log
