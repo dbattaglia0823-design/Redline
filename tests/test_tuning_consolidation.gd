@@ -13,12 +13,8 @@ func _initialize() -> void:
 	call_deferred("run")
 
 func run() -> void:
-	# These tests validate menu behavior. Audio playback is tested separately;
-	# avoid creating the full audio mixer during a headless UI-only fixture.
-	EngineAudio.skip_output_for_ui_fixtures = true
 	var game: Node2D = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
-	EngineAudio.skip_output_for_ui_fixtures = false
 	game.set_process(false)
 	game.set_physics_process(false)
 	game.profile = DriverProfile.new()
@@ -57,6 +53,10 @@ func run() -> void:
 	game.stop_presentation_audio()
 	await create_timer(0.16).timeout
 	game.queue_free()
+	# Godot 4.6 may free queued Nodes at the end of this frame. Allow the
+	# deferred deletion to settle before the script's main loop exits.
+	await process_frame
 	await process_frame
 	print("UNIFIED TUNING: ", checks, " checks / ", "PASS" if failures.is_empty() else "FAIL")
-	quit(0 if failures.is_empty() else 1)
+	# Defer quit so the coroutine's local GDScript references are released.
+	call_deferred("quit",0 if failures.is_empty() else 1)
