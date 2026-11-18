@@ -18,3 +18,7 @@ REDLINE is an **existing Godot 4.6 drag-racing game**. Do not rebuild working sy
 - Add focused regression tests with implementation changes. Run the real project's headless runner and graphical checks where relevant; explain what was not tested.
 - Only after verifying code/tests, update `docs/` and `docs/HANDOFF.md` with the actual modified paths, test output, and remaining risks.
 - Never copy external skills, vaults, assets or scripts without checking license, trust and Godot compatibility; never commit secrets or local machine paths.
+
+## Locally installed skills
+
+Use the specific skill under `.agents/skills/` only when relevant. See [docs/SHARED_SKILLS.md](docs/SHARED_SKILLS.md) for source/version and update instructions. These are optional snapshots; do not load all of them by default.
