@@ -64,15 +64,8 @@ func _run() -> void:
 		print("DEALERSHIP VEHICLE TYPE TABS PASS")
 	else:
 		print("DEALERSHIP VEHICLE TYPE TABS FAIL: ",failures)
-	# Match main.gd request_quit's audio callback retirement window before
-	# destroying the scene; a single process frame is not sufficient in CI.
 	game.stop_presentation_audio()
-	await create_timer(0.16).timeout
-	dealer = null # Drop the RefCounted dealership controller before process exit.
 	game.queue_free()
-	# Godot 4.6 may free queued Nodes at the end of this frame. Allow the
-	# deferred deletion to settle before the script's main loop exits.
 	await process_frame
 	await process_frame
-	# Defer quit so the coroutine's local GDScript references are released.
-	call_deferred("quit",0 if failures.is_empty() else 1)
+	quit(0 if failures.is_empty() else 1)

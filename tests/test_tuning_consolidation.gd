@@ -48,15 +48,8 @@ func run() -> void:
 	check(game.profile.credits == money, "Tuning charged credits")
 	game.tuning.action("tt_back")
 	check(game.tab == "performance", "Tuning did not return to Upgrades")
-	# Match main.gd request_quit's audio callback retirement window before
-	# destroying the scene; a single process frame is not sufficient in CI.
 	game.stop_presentation_audio()
-	await create_timer(0.16).timeout
 	game.queue_free()
-	# Godot 4.6 may free queued Nodes at the end of this frame. Allow the
-	# deferred deletion to settle before the script's main loop exits.
-	await process_frame
 	await process_frame
 	print("UNIFIED TUNING: ", checks, " checks / ", "PASS" if failures.is_empty() else "FAIL")
-	# Defer quit so the coroutine's local GDScript references are released.
-	call_deferred("quit",0 if failures.is_empty() else 1)
+	quit(0 if failures.is_empty() else 1)

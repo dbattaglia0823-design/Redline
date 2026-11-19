@@ -1,7 +1,6 @@
 class_name EngineAudio
 extends AudioStreamPlayer
 
-
 var playback: AudioStreamGeneratorPlayback
 var voice:=EngineVoice.new()
 var atmosphere:=RaceAtmosphere.new()
