@@ -24,3 +24,7 @@ For UI changes, run appropriate graphical cases where the environment supports a
 Review actual runner semantics and artifacts first. CI's stored `validation/` reports may describe historical runs; inspect the current workflow conclusion and the actual report.
 
 **Do not claim** headless success proves wheel artwork, touch-safe UI, accurate sound, or real-device performance. For save/career changes, validate existing profile compatibility and backups.
+
+## Current CI limitation (verified 2026-11-18)
+
+The full Godot 4.6.3 suite may report failure despite all game assertions in three UI integration tests passing: the engine aborts during shutdown (`exit=-6`). This is **not** a passing CI result. See [KNOWN_ISSUES.md](KNOWN_ISSUES.md). The runner now reports true process return codes and logs; continue requiring code 0. The roster image and tire-sidewall regression tests have been confirmed passing separately in full CI logs before merging their fixes.

@@ -43,10 +43,17 @@ def main():
                     results[name] = "timeout"
                     print(f"{name}: timeout", flush=True)
                     return False
-        errors = re.search(r"^\s*(?:SCRIPT ERROR|ERROR):|\bFAIL\b", log.read_text(encoding="utf-8", errors="replace"), re.M) if log.exists() else True
-        passed = process.returncode == 0 and not errors
+        log_text = log.read_text(encoding="utf-8", errors="replace") if log.exists() else ""
+        stdout_file = output / f"{name}.stdout"
+        stdout_text = stdout_file.read_text(encoding="utf-8", errors="replace") if stdout_file.exists() else ""
+        error_pattern = r"^\s*(?:SCRIPT ERROR|ERROR):|\bFAIL\b"
+        errors = bool(re.search(error_pattern, log_text, re.M) or re.search(error_pattern, stdout_text, re.M))
+        passed = process.returncode == 0 and not errors and log.exists()
         results[name] = "pass" if passed else "fail"
-        print(f"{name}: {results[name]}", flush=True)
+        print(f"{name}: {results[name]} (exit={process.returncode}, diagnostics={errors})", flush=True)
+        if not passed:
+            tail = "\n".join((stdout_text or log_text).splitlines()[-30:])
+            print(f"{name}: failure output tail:\n{tail}", flush=True)
         return passed
 
     if run("import", ["--headless", "--editor", "--import", "--quit"], 720):
