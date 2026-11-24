@@ -254,8 +254,26 @@ func gas_input() -> float:
 
 func _exit_tree() -> void:
 	stop_presentation_audio()
-	# Release shared GPU resources while the rendering server is still alive.
+	# These global work queues may hold scripted Drivetrain/VehicleBench instances.
+	# Drop them while GDScript is still alive, before the engine tears down
+	# script classes and native servers during process shutdown.
+	RaceAI.pending.clear()
+	RaceAI.cache.clear()
+	PerformanceClasses.jobs.clear()
+	PerformanceClasses.cache.clear()
+	PerformanceClasses.factories.clear()
+	# Release shared GPU and cached runtime resources while their servers live.
+	VehicleAppearance._frame_textures.clear()
 	VehicleAppearance._textures.clear()
+	RimArt.frame_cache.clear()
+	RimArt.cache.clear()
+	AutomotiveUI.action_icons.clear()
+	AutomotiveUI.glass_styles.clear()
+	AutomotiveUI.shared_theme = null
+	AutomotiveUI.soft_light = null
+	EngineLoopPlayer.bank.clear()
+	EngineLoopPlayer.vehicle_banks.clear()
+	EngineAudioProfile.acoustic_designs.clear()
 
 func brake_input() -> float:
 	if input_override.y >= 0.0: return clampf(input_override.y, 0.0, 1.0)
