@@ -1,4 +1,4 @@
-extends SceneTree
+extends Node
 
 var failures: Array[String] = []
 var checks := 0
@@ -9,12 +9,12 @@ func check(value: bool, message: String) -> void:
 		failures.append(message)
 		push_error(message)
 
-func _initialize() -> void:
+func _ready() -> void:
 	call_deferred("run")
 
 func run() -> void:
 	var game: Node2D = load("res://scenes/main.tscn").instantiate()
-	root.add_child(game)
+	get_tree().root.add_child(game)
 	game.set_process(false)
 	game.set_physics_process(false)
 	game.profile = DriverProfile.new()
@@ -52,7 +52,7 @@ func run() -> void:
 	# Synchronous teardown avoids carrying scene-owned GDScript resources into engine shutdown.
 	game.free()
 	game = null
-	await process_frame
-	await process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
 	print("UNIFIED TUNING: ", checks, " checks / ", "PASS" if failures.is_empty() else "FAIL")
-	quit(0 if failures.is_empty() else 1)
+	get_tree().quit(0 if failures.is_empty() else 1)
