@@ -34,7 +34,11 @@ func run() -> void:
 	game.skill_tree._back_to_driver()
 	check(game.tab == "driver" and not game.skill_tree.visible, "Back did not return to Driver page")
 	game.stop_presentation_audio()
-	game.queue_free()
+	# Release the entire integration scene while GDScript is still active.
+	game.free()
+	game = null
+	points = null
+	await process_frame
 	await process_frame
 	print("DRIVER SKILLS PAGE: ", "PASS" if failures.is_empty() else "FAIL")
 	quit(0 if failures.is_empty() else 1)
