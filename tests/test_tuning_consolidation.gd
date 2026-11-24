@@ -49,10 +49,7 @@ func run() -> void:
 	game.tuning.action("tt_back")
 	check(game.tab == "performance", "Tuning did not return to Upgrades")
 	game.stop_presentation_audio()
-	# Synchronous teardown avoids carrying scene-owned GDScript resources into engine shutdown.
-	game.free()
-	game = null
-	await process_frame
+	game.queue_free()
 	await process_frame
 	print("UNIFIED TUNING: ", checks, " checks / ", "PASS" if failures.is_empty() else "FAIL")
 	quit(0 if failures.is_empty() else 1)

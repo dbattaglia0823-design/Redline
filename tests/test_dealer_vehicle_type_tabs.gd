@@ -65,11 +65,7 @@ func _run() -> void:
 	else:
 		print("DEALERSHIP VEHICLE TYPE TABS FAIL: ",failures)
 	game.stop_presentation_audio()
-	# Do not retain the scripted dealership controller after the root scene is freed.
-	dealer = null
-	native = null
-	game.free()
-	game = null
+	game.queue_free()
 	await process_frame
 	await process_frame
 	quit(0 if failures.is_empty() else 1)
