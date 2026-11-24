@@ -13,7 +13,8 @@ func _initialize() -> void:
 	call_deferred("run")
 
 func run() -> void:
-	var game: Node2D = load("res://scenes/main.tscn").instantiate()
+	var scene: PackedScene = ResourceLoader.load("res://scenes/main.tscn", "PackedScene", ResourceLoader.CACHE_MODE_IGNORE_DEEP) as PackedScene
+	var game: Node2D = scene.instantiate()
 	root.add_child(game)
 	game.set_process(false)
 	game.set_physics_process(false)
@@ -52,6 +53,7 @@ func run() -> void:
 	# Synchronous teardown avoids carrying scene-owned GDScript resources into engine shutdown.
 	game.free()
 	game = null
+	scene = null
 	await process_frame
 	await process_frame
 	print("UNIFIED TUNING: ", checks, " checks / ", "PASS" if failures.is_empty() else "FAIL")
